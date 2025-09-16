@@ -2,9 +2,6 @@ export async function POST(req) {
   const body = await req.json();
 
 
-  console.log(body)
-
-
   try {
     const response = await fetch("https://script.google.com/macros/s/AKfycbzL0pXNsK0jSc4IKYK_TtiP2CV2nJEadA7LnOrBxqPLNUztZ9jH7DToTSMi4NElzZxW_Q/exec", {
       method: "POST",
