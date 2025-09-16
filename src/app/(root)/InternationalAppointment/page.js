@@ -249,19 +249,11 @@ export default function InternationalAppointmentPage() {
                 required
                 className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 bg-white text-gray-900"
               >
-                <option value="">Choose your country</option>
-                <option value="India">India</option>
-                <option value="United States">United States</option>
-                <option value="United Kingdom">United Kingdom</option>
-                <option value="Canada">Canada</option>
-                <option value="Australia">Australia</option>
-                <option value="Germany">Germany</option>
-                <option value="France">France</option>
-                <option value="Singapore">Singapore</option>
-                <option value="United Arab Emirates">
-                  United Arab Emirates
-                </option>
-                <option value="Other">Other</option>
+                <option value="">Choose your City</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Hyderabad">Hyderabad</option>
+              
               </select>
             </div>
           </div>

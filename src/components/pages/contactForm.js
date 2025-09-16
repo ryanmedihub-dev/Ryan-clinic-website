@@ -35,8 +35,6 @@ export default function ContactForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ✅ Frontend phone validation
-
     setLoading(true);
 
     try {
@@ -50,6 +48,12 @@ export default function ContactForm() {
 
       if (data.success) {
         alert("✅ Form submitted successfully!");
+
+        // ✅ Redirect to WhatsApp
+        window.location.href =
+          "https://wa.me/919911111247?text=Hi, I have submitted the Google form.";
+
+        // ✅ Reset form
         setFormData({
           name: "",
           email: "",

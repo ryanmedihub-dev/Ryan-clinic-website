@@ -8,7 +8,6 @@ const handler = async (req) => {
   try {
     const body = await req.json();
 
-    console.log("📩 Incoming lead:", body);
 
     // ✅ Validate phone number (10 digits only)
     // if (!/^\d{10}$/.test(body.phone)) {
@@ -23,9 +22,7 @@ const handler = async (req) => {
 
     // ✅ Save to DB (allow duplicates now)
     const newLead = await Leads.create(body);
-    console.log("✅ Lead saved to DB");
 
-    // ✅ Send to Google Sheets (non-blocking)
     fetch(GOOGLE_SCRIPT_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
