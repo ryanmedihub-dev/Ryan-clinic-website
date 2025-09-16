@@ -238,7 +238,7 @@ export default function InternationalAppointmentPage() {
           {/* Country Dropdown */}
           <div>
             <label className="block text-gray-700 font-medium mb-1">
-              Which brach are you comfortable to vist <span className="text-red-500">*</span>
+              Which brach are you comfortable to visit <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <Globe className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
@@ -249,7 +249,7 @@ export default function InternationalAppointmentPage() {
                 required
                 className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 bg-white text-gray-900"
               >
-                <option value="">Choose your City</option>
+                <option value="">Select Branch</option>
                 <option value="Delhi">Delhi</option>
                 <option value="Mumbai">Mumbai</option>
                 <option value="Hyderabad">Hyderabad</option>
