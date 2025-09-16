@@ -38,6 +38,8 @@ export default function BookAppointment() {
         headers: { "Content-Type": "application/json" },
       });
 
+      // console.log(first)
+
       const result = await response.json();
 
       if (result.success) {

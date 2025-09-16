@@ -30,12 +30,16 @@ const handler = async (req) => {
       );
     }
 
+
+
+
     // Transform the incoming data to match the schema structure
     const formattedUpdate = {
       bannerData: {
         title: updateData.bannerTitle,
         description: updateData.bannerDescription,
-        imageurl: updateData.bannerImage
+        imageurl: updateData.bannerImage,
+        imageAlt: updateData.bannerAlt
       },
       benefitsData: {
         title: updateData.benefitsTitle,
@@ -61,7 +65,9 @@ const handler = async (req) => {
       }
     };
 
-    console.log("Transformed update data:", formattedUpdate);
+
+    // console.log(first)
+
 
     const updatedService = await Services.findByIdAndUpdate(
       id,

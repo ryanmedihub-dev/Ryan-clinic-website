@@ -23,6 +23,8 @@ const initialFormState = {
   bannerTitle: "",
   bannerDescription: "",
   bannerImage: "",
+  bannerImage: "",
+  bannerAlt: "",
   overviewContent: "",
   typesDetails: "",
   typeImages: ["", "", ""],
@@ -86,6 +88,7 @@ export default function EditService({ initialData }) {
         bannerTitle: initialData.bannerData?.title || "",
         bannerDescription: initialData.bannerData?.description || "",
         bannerImage: initialData.bannerData?.imageurl || "",
+        bannerAlt: initialData.bannerData?.imageAlt || "",
         overviewContent: initialData.metadata?.overviewData || "",
         typesDetails: initialData.typesData?.details || "",
         typeImages: initialData.typesData?.images || ["", "", ""],
@@ -108,29 +111,34 @@ export default function EditService({ initialData }) {
     }
   }, [initialData]);
 
+  
+
   // After each editor is ready AND data is loaded, inject initial HTML ONCE
   useEffect(() => {
     if (!dataLoaded) return;
 
-    ["overviewContent", "typesDetails", "extraDetail1", "extraDetail2"].forEach((name) => {
-      if (editorReady[name] && !injectedRef.current[name]) {
-        try {
-          const inst = editorRefs.current[name];
-          if (inst && inst.setContents) {
-            inst.setContents(formData[name] || "");
-            injectedRef.current[name] = true;
+    ["overviewContent", "typesDetails", "extraDetail1", "extraDetail2"].forEach(
+      (name) => {
+        if (editorReady[name] && !injectedRef.current[name]) {
+          try {
+            const inst = editorRefs.current[name];
+            if (inst && inst.setContents) {
+              inst.setContents(formData[name] || "");
+              injectedRef.current[name] = true;
+            }
+          } catch (err) {
+            console.error(`Error setting ${name} contents:`, err);
           }
-        } catch (err) {
-          console.error(`Error setting ${name} contents:`, err);
         }
       }
-    });
+    );
   }, [dataLoaded, editorReady, formData]);
 
   const validateForm = () => {
     const newErrors = {};
     if (!formData.pageName.trim()) newErrors.pageName = "Page name is required";
-    if (!formData.serviceTitle.trim()) newErrors.serviceTitle = "Service title is required";
+    if (!formData.serviceTitle.trim())
+      newErrors.serviceTitle = "Service title is required";
     if (!formData.pageUrl.trim()) newErrors.pageUrl = "Page URL is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -161,7 +169,10 @@ export default function EditService({ initialData }) {
   const addBenefit = () => {
     setFormData((prev) => ({
       ...prev,
-      benefitComponents: [...prev.benefitComponents, { title: "", description: "", icon: "" }],
+      benefitComponents: [
+        ...prev.benefitComponents,
+        { title: "", description: "", icon: "" },
+      ],
     }));
   };
 
@@ -179,11 +190,17 @@ export default function EditService({ initialData }) {
   };
 
   const addFaq = () => {
-    setFormData((prev) => ({ ...prev, faqs: [...prev.faqs, { question: "", answer: "" }] }));
+    setFormData((prev) => ({
+      ...prev,
+      faqs: [...prev.faqs, { question: "", answer: "" }],
+    }));
   };
 
   const removeFaq = (index) => {
-    setFormData((prev) => ({ ...prev, faqs: prev.faqs.filter((_, i) => i !== index) }));
+    setFormData((prev) => ({
+      ...prev,
+      faqs: prev.faqs.filter((_, i) => i !== index),
+    }));
   };
 
   const handleImageUpload = (url) => {
@@ -205,6 +222,7 @@ export default function EditService({ initialData }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
+
 
       if (!response.ok) throw new Error("Failed to update service");
 
@@ -232,7 +250,9 @@ export default function EditService({ initialData }) {
       <div className="bg-white border-b border-gray-200 px-6 py-8">
         <div className="max-w-5xl mx-auto">
           <h1 className="text-3xl font-bold text-gray-900">Edit Service</h1>
-          <p className="mt-2 text-gray-600">Update the service details below.</p>
+          <p className="mt-2 text-gray-600">
+            Update the service details below.
+          </p>
         </div>
       </div>
 
@@ -241,12 +261,18 @@ export default function EditService({ initialData }) {
           {/* Service Metadata */}
           <div className="bg-white rounded-xl border border-gray-200 p-8">
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">Service Metadata</h2>
-              <p className="text-gray-600">Basic information about your service</p>
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                Service Metadata
+              </h2>
+              <p className="text-gray-600">
+                Basic information about your service
+              </p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Page Name*</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Page Name*
+                </label>
                 <input
                   name="pageName"
                   value={formData.pageName}
@@ -256,11 +282,15 @@ export default function EditService({ initialData }) {
                     errors.pageName ? "border-red-500" : "border-gray-300"
                   }`}
                 />
-                {errors.pageName && <p className="mt-1 text-sm text-red-600">{errors.pageName}</p>}
+                {errors.pageName && (
+                  <p className="mt-1 text-sm text-red-600">{errors.pageName}</p>
+                )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Page Type</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Page Type
+                </label>
                 <select
                   name="pageType"
                   value={formData.pageType}
@@ -274,7 +304,9 @@ export default function EditService({ initialData }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Service Title*</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Service Title*
+                </label>
                 <input
                   name="serviceTitle"
                   value={formData.serviceTitle}
@@ -284,11 +316,17 @@ export default function EditService({ initialData }) {
                     errors.serviceTitle ? "border-red-500" : "border-gray-300"
                   }`}
                 />
-                {errors.serviceTitle && <p className="mt-1 text-sm text-red-600">{errors.serviceTitle}</p>}
+                {errors.serviceTitle && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.serviceTitle}
+                  </p>
+                )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Description
+                </label>
                 <input
                   name="description"
                   value={formData.description}
@@ -299,7 +337,9 @@ export default function EditService({ initialData }) {
               </div>
 
               <div className="lg:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Page URL*</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Page URL*
+                </label>
                 <input
                   name="pageUrl"
                   value={formData.pageUrl}
@@ -309,7 +349,9 @@ export default function EditService({ initialData }) {
                     errors.pageUrl ? "border-red-500" : "border-gray-300"
                   }`}
                 />
-                {errors.pageUrl && <p className="mt-1 text-sm text-red-600">{errors.pageUrl}</p>}
+                {errors.pageUrl && (
+                  <p className="mt-1 text-sm text-red-600">{errors.pageUrl}</p>
+                )}
               </div>
             </div>
           </div>
@@ -317,12 +359,18 @@ export default function EditService({ initialData }) {
           {/* Banner Configuration */}
           <div className="bg-white rounded-xl border border-gray-200 p-8">
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">Banner Configuration</h2>
-              <p className="text-gray-600">Set up the main banner for your service page</p>
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                Banner Configuration
+              </h2>
+              <p className="text-gray-600">
+                Set up the main banner for your service page
+              </p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Banner Title</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Banner Title
+                </label>
                 <input
                   name="bannerTitle"
                   value={formData.bannerTitle}
@@ -332,7 +380,9 @@ export default function EditService({ initialData }) {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Banner Description</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Banner Description
+                </label>
                 <input
                   name="bannerDescription"
                   value={formData.bannerDescription}
@@ -342,12 +392,27 @@ export default function EditService({ initialData }) {
                 />
               </div>
               <div className="lg:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Banner Image</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Banner Image
+                </label>
                 <FileUpload
                   onUpload={handleImageUpload}
                   initialImage={formData.bannerImage}
                   accept="image/*"
                   maxSize={5 * 1024 * 1024}
+                />
+                <a href={formData.bannerImage} target="_blank" className="text-xs cursor-pointer text-blue-500">{formData.bannerImage}</a>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Image Alt Tag
+                </label>
+                <input
+                  name="bannerAlt"
+                  value={formData.bannerAlt}
+                  onChange={handleChange}
+                  placeholder="Image Alt"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                 />
               </div>
             </div>
@@ -356,7 +421,9 @@ export default function EditService({ initialData }) {
           {/* Service Overview */}
           <div className="bg-white rounded-xl border border-gray-200 p-8">
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">Service Overview</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                Service Overview
+              </h2>
               <p className="text-gray-600">Detailed overview of your service</p>
             </div>
             <div className="min-h-[200px]">
@@ -373,8 +440,12 @@ export default function EditService({ initialData }) {
           {/* Service Types */}
           <div className="bg-white rounded-xl border border-gray-200 p-8">
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">Service Types</h2>
-              <p className="text-gray-600">Define your service type and add representative images</p>
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                Service Types
+              </h2>
+              <p className="text-gray-600">
+                Define your service type and add representative images
+              </p>
             </div>
             <div className="space-y-8">
               <div className="min-h-[200px]">
@@ -387,7 +458,9 @@ export default function EditService({ initialData }) {
                 />
               </div>
               <div>
-                <h3 className="text-lg font-medium text-gray-900 mb-5">Service Images (3 required)</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-5">
+                  Service Images (3 required)
+                </h3>
                 <div className="gap-4">
                   {formData.typeImages.map((img, idx) => (
                     <div key={idx} className="my-3">
@@ -400,7 +473,7 @@ export default function EditService({ initialData }) {
                         accept="image/*"
                         maxSize={5 * 1024 * 1024}
                       />
-                      <p className="text-xs text-blue-500">{img}</p>
+                      <a href={img} target="_blank" className="text-xs cursor-pointer text-blue-500">{img}</a>
                     </div>
                   ))}
                 </div>
@@ -411,12 +484,18 @@ export default function EditService({ initialData }) {
           {/* Service Benefits */}
           <div className="bg-white rounded-xl border border-gray-200 p-8">
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">Service Benefits</h2>
-              <p className="text-gray-600">Highlight the key benefits of your service</p>
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                Service Benefits
+              </h2>
+              <p className="text-gray-600">
+                Highlight the key benefits of your service
+              </p>
             </div>
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Benefits Title</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Benefits Title
+                </label>
                 <input
                   name="benefitsTitle"
                   value={formData.benefitsTitle}
@@ -426,7 +505,9 @@ export default function EditService({ initialData }) {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Benefits Description</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Benefits Description
+                </label>
                 <input
                   name="benefitsDescription"
                   value={formData.benefitsDescription}
@@ -438,7 +519,9 @@ export default function EditService({ initialData }) {
 
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-medium text-gray-900">Benefit Components</h3>
+                  <h3 className="text-lg font-medium text-gray-900">
+                    Benefit Components
+                  </h3>
                   <button
                     type="button"
                     onClick={addBenefit}
@@ -451,9 +534,14 @@ export default function EditService({ initialData }) {
 
                 <div className="space-y-6">
                   {formData.benefitComponents.map((b, index) => (
-                    <div key={index} className="bg-gray-50 rounded-lg p-4 space-y-4">
+                    <div
+                      key={index}
+                      className="bg-gray-50 rounded-lg p-4 space-y-4"
+                    >
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-700">Benefit {index + 1}</span>
+                        <span className="text-sm font-medium text-gray-700">
+                          Benefit {index + 1}
+                        </span>
                         <button
                           type="button"
                           onClick={() => removeBenefit(index)}
@@ -463,28 +551,44 @@ export default function EditService({ initialData }) {
                         </button>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Title
+                        </label>
                         <input
                           value={b.title}
-                          onChange={(e) => handleBenefitChange(index, "title", e.target.value)}
+                          onChange={(e) =>
+                            handleBenefitChange(index, "title", e.target.value)
+                          }
                           placeholder="Title"
                           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Description
+                        </label>
                         <input
                           value={b.description}
-                          onChange={(e) => handleBenefitChange(index, "description", e.target.value)}
+                          onChange={(e) =>
+                            handleBenefitChange(
+                              index,
+                              "description",
+                              e.target.value
+                            )
+                          }
                           placeholder="Description"
                           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Icon URL</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Icon URL
+                        </label>
                         <input
                           value={b.icon}
-                          onChange={(e) => handleBenefitChange(index, "icon", e.target.value)}
+                          onChange={(e) =>
+                            handleBenefitChange(index, "icon", e.target.value)
+                          }
                           placeholder="Icon URL"
                           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                         />
@@ -499,11 +603,15 @@ export default function EditService({ initialData }) {
           {/* FAQs */}
           <div className="bg-white rounded-xl border border-gray-200 p-8">
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">Frequently Asked Questions</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                Frequently Asked Questions
+              </h2>
             </div>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium text-gray-900">FAQ Entries</h3>
+                <h3 className="text-lg font-medium text-gray-900">
+                  FAQ Entries
+                </h3>
                 <button
                   type="button"
                   onClick={addFaq}
@@ -516,9 +624,14 @@ export default function EditService({ initialData }) {
 
               <div className="space-y-6">
                 {formData.faqs.map((faq, index) => (
-                  <div key={index} className="bg-gray-50 rounded-lg p-4 space-y-4">
+                  <div
+                    key={index}
+                    className="bg-gray-50 rounded-lg p-4 space-y-4"
+                  >
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">FAQ {index + 1}</span>
+                      <span className="text-sm font-medium text-gray-700">
+                        FAQ {index + 1}
+                      </span>
                       <button
                         type="button"
                         onClick={() => removeFaq(index)}
@@ -528,19 +641,27 @@ export default function EditService({ initialData }) {
                       </button>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Question</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Question
+                      </label>
                       <input
                         value={faq.question}
-                        onChange={(e) => handleFaqChange(index, "question", e.target.value)}
+                        onChange={(e) =>
+                          handleFaqChange(index, "question", e.target.value)
+                        }
                         placeholder="FAQ Question"
                         className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Answer</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Answer
+                      </label>
                       <textarea
                         value={faq.answer}
-                        onChange={(e) => handleFaqChange(index, "answer", e.target.value)}
+                        onChange={(e) =>
+                          handleFaqChange(index, "answer", e.target.value)
+                        }
                         rows={3}
                         className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors resize-none"
                         placeholder="Enter FAQ answer"
@@ -555,12 +676,18 @@ export default function EditService({ initialData }) {
           {/* Additional Information */}
           <div className="bg-white rounded-xl border border-gray-200 p-8">
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">Additional Information</h2>
-              <p className="text-gray-600">Any additional details or custom fields</p>
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                Additional Information
+              </h2>
+              <p className="text-gray-600">
+                Any additional details or custom fields
+              </p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Extra Detail 1</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Extra Detail 1
+                </label>
                 <Editor
                   value={formData.extraDetail1 || ""}
                   onChange={(val) => handleEditorChange("extraDetail1", val)}
@@ -570,7 +697,9 @@ export default function EditService({ initialData }) {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Extra Detail 2</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Extra Detail 2
+                </label>
                 <Editor
                   value={formData.extraDetail2 || ""}
                   onChange={(val) => handleEditorChange("extraDetail2", val)}
@@ -585,8 +714,12 @@ export default function EditService({ initialData }) {
           {/* Submit Section */}
           <div className="bg-white rounded-xl border border-gray-200 p-8">
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">Ready to Update Service?</h2>
-              <p className="text-gray-600">Review all information before submitting</p>
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                Ready to Update Service?
+              </h2>
+              <p className="text-gray-600">
+                Review all information before submitting
+              </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
@@ -626,4 +759,3 @@ export default function EditService({ initialData }) {
     </div>
   );
 }
-
