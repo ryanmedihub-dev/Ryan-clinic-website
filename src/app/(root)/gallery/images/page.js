@@ -34,7 +34,7 @@ import ImageTwentySeven from '../../../../../public/uploads/images/image27.jpg'
 import ImageTwentyEight from '../../../../../public/uploads/images/image28.jpg'
 import ImageTwentyNine from '../../../../../public/uploads/images/image29.jpg'
 import ImageThirty from '../../../../../public/uploads/images/image30.jpg'
-
+import GalleryBanner from "../../../../../public/uploads/images/image25.jpg";
 
 
 const images = [
@@ -95,14 +95,14 @@ export default function GalleryPage() {
         description="Regain your confidence with world-class
           Turkey's Technique hair restoration at Turkey's
           top-rated Ryan Clinic!"
-        url="https://res.cloudinary.com/dq1tzl5ir/image/upload/v1751372327/uploads/arkntkldmtlryycqivm4.jpg"
+        url={GalleryBanner}
       />
 
 
       <section className="container mx-auto px-4 pb-10">
-        <h1 className="text-4xl font-bold text-center mb-6 text-gray-800 underline">
+        <h3 className="text-4xl font-bold text-center mb-6 text-gray-800 underline">
           Our Gallery
-        </h1>
+        </h3>
 
         {/* Filter Buttons */}
         <div className="flex justify-center gap-4 mb-12 flex-wrap">

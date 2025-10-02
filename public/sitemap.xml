@@ -6,12 +6,12 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://clinicryan.com/about-us/</loc>
+    <loc>https://clinicryan.com/about/</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://clinicryan.com/sapphire-fue/</loc>
+    <loc>https://clinicryan.com/fue-hair-transplant/</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
@@ -46,46 +46,46 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://clinicryan.com/alopecia-treatment/</loc>
+    <loc>https://clinicryan.com/alopecia-treatments/</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://clinicryan.com/gallery/</loc>
+    <loc>https://clinicryan.com/gallery/images/</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
-  <url>
+  <!-- <url>
     <loc>https://clinicryan.com/videos/</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
-  </url>
+  </url> -->
   <url>
-    <loc>https://clinicryan.com/delhi/</loc>
+    <loc>https://clinicryan.com/hair-transplant-in-Delhi/</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://clinicryan.com/mumbai/</loc>
+    <loc>https://clinicryan.com/hair-transplant-in-mumbai/</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://clinicryan.com/hyderabad/</loc>
+    <loc>https://clinicryan.com/hair-transplant-in-Hyderabad/</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://clinicryan.com/contact-us/</loc>
+    <loc>https://clinicryan.com/contact/</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
+  <!-- <url>
     <loc>https://clinicryan.com/jobs/</loc>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
-  </url>
-  <url>
+  </url> -->
+  <!-- <url>
     <loc>https://clinicryan.com/privacy-policy/</loc>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
@@ -94,5 +94,5 @@
     <loc>https://clinicryan.com/terms-and-conditions/</loc>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
-  </url>
+  </url> -->
 </urlset>

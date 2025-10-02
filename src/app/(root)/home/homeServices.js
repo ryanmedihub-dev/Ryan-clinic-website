@@ -34,7 +34,7 @@ export default function HairTransplantPage() {
   return (
     <section>
       <div className="containerFull">
-        <h1 className="hidden md:block text-xl md:text-3xl text-center mb-4 md:mb-10 font-hind">
+        <h1 className="text-xl md:text-3xl text-center mb-4 md:mb-10 font-semibold font-hind">
           Top Hair Transplant Clinics in Delhi, and Across India: Best Deals &
           Results
         </h1>
@@ -43,11 +43,7 @@ export default function HairTransplantPage() {
           {/* Full Card Slider */}
 
           <div className="md:pr-6">
-            <h1 className=" md:hidden text-xl md:text-[60px] text-center mb-4 md:mb-10 font-hind font-bold">
-              Top Hair Transplant Clinic in Delhi, and Across India: Best Deals
-              & Results
-            </h1>
-
+           
             <Swiper
               modules={[Navigation, Pagination, Autoplay]}
               navigation

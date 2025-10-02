@@ -2,6 +2,7 @@ import PageBanner from "@/components/layouts/pageBanner";
 import AboutSection from "./aboutSection";
 import StepsSection from "./stepsSection";
 import ChooseSection from "./chooseSection";
+import AboutBanner from "../../../../public/uploads/about-banner.webp"
 
 const page = () => {
   return (
@@ -11,7 +12,7 @@ const page = () => {
         description="Regain your confidence with world-class
           Turkey's Technique hair restoration at Turkey's
           top-rated Ryan Clinic!"
-        url="https://res.cloudinary.com/dq1tzl5ir/image/upload/v1751372327/uploads/arkntkldmtlryycqivm4.jpg"
+        url={AboutBanner}
       />
       <AboutSection />
       <StepsSection />

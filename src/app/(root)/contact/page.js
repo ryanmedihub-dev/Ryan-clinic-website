@@ -7,6 +7,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import AboutBanner from "../../../../public/uploads/about-banner.webp"
+
 import {
   Select,
   SelectTrigger,
@@ -78,7 +80,7 @@ export default function ContactUs() {
         <PageBanner
           title="Contact Us"
           description="Regain your confidence with world-class Turkey's Technique hair restoration at Turkey's top-rated Ryan Clinic!"
-          url="https://res.cloudinary.com/dq1tzl5ir/image/upload/v1751372327/uploads/arkntkldmtlryycqivm4.jpg"
+          url={AboutBanner}
         />
 
         {/* ✅ Contact Section */}
