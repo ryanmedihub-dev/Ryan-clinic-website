@@ -12,9 +12,9 @@ import MumbaiImg from "../../../../public/uploads/Mumbai.jpg";
 import HyderabadImg from "../../../../public/uploads/Hyderabad.jpg";
 
 const locations = [
-  { name: "Delhi", image: DelhiImg, link: "/delhi" },
-  { name: "Mumbai", image: MumbaiImg, link: "/mumbai" },
-  { name: "Hyderabad", image: HyderabadImg, link: "/hyderabad" },
+  { name: "Delhi", image: DelhiImg, link: "/hair-transplant-in-Delhi" },
+  { name: "Mumbai", image: MumbaiImg, link: "/hair-transplant-in-mumbai" },
+  { name: "Hyderabad", image: HyderabadImg, link: "/hair-transplant-in-Hyderabad" },
 ];
 
 export default function OurBranches() {
