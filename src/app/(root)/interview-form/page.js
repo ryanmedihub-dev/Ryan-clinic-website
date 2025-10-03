@@ -382,7 +382,7 @@ export default function InterviewForm() {
                         </svg>
                       </div>
                       <input
-                        type="tel"
+                        type="number"
                         name="phone"
                         placeholder="Enter phone number"
                         value={formData.phone}

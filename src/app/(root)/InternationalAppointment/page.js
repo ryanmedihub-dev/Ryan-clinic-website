@@ -127,7 +127,7 @@ export default function InternationalAppointmentPage() {
               <div className="relative">
                 <Phone className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
                 <input
-                  type="tel"
+                  type="number"
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}

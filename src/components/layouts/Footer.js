@@ -49,7 +49,7 @@ export default function Footer() {
               </div>
               <div>
                 <input
-                  type="tel"
+                  type="number"
                   placeholder="Phone Number*"
                   className="w-full p-2 px-4 text-sm rounded bg-gray-100 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />

@@ -185,7 +185,7 @@ export default function ContactUs() {
                   </div>
                   <Input
                     placeholder="Contact Number*"
-                    type="tel"
+                    type="number"
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
