@@ -38,9 +38,9 @@ const Header = () => {
         { name: "Beard Transplant", href: "/beard-transplant" },
         { name: "Female Hair Transplant", href: "/female-hair-transplant" },
         { name: "Eyebrow Transplant", href: "/eyebrow-transplant" },
-        { name: "Hair Transplant In Delhi", href: "/hair-transplant-in-Delhi" },
+        { name: "Hair Transplant In Delhi", href: "/hair-transplant-in-delhi" },
         { name: "Hair Transplant In Mumbai", href: "/hair-transplant-in-mumbai" },
-        { name: "Hair Transplant In Hyderabad", href: "/hair-transplant-in-Hyderabad" },
+        { name: "Hair Transplant In Hyderabad", href: "/hair-transplant-in-hyderabad" },
       ],
     },
     {
