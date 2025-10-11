@@ -36,7 +36,7 @@ export default function Home() {
             priority
             sizes="100vw" // 👈 ensures proper scaling on mobile
             className="w-full h-auto object-cover aspect-[3/4] rounded-lg"
-          />
+          />  
         </div>
       </div>
 

@@ -49,7 +49,7 @@ export default function aboutSection() {
               expert services.
             </p>
             <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition text-sm sm:text-base">
-              <a href="https://api.whatsapp.com/send?phone=+918882356930&text=Hi">
+              <a href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi">
                 Book Your Appointment
               </a>
             </button>
