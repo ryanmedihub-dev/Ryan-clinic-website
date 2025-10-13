@@ -367,7 +367,6 @@ section {
   color: #111827;
 }
 .pageLayoutBox p {
-
   font-size: 1.02rem;
 }
 .pageLayoutBox h1 {
@@ -382,7 +381,6 @@ section {
   font-weight: 700;
   margin-top: 0;
   margin-bottom: 0.6rem;
-
 }
 
 .pageLayoutBox h3 {
@@ -412,31 +410,28 @@ section {
   line-height: 1.45;
 }
 
-.pageLayoutBox ul li{
+.pageLayoutBox ul li {
   position: relative;
   margin-top: 10px;
 }
-.pageLayoutBox ul li::after{
+.pageLayoutBox ul li::after {
   position: absolute;
   left: 2px;
   top: 2px;
-  width: 2px ;
+  width: 2px;
   height: 2px;
   border-radius: 100%;
   background: #000;
-
 }
 
-
-
-.swiper-pagination-fraction, .swiper-pagination-custom, .swiper-horizontal > .swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal {
-    display: none;
-    width: 0%;
-    left: 0;
+.swiper-pagination-fraction,
+.swiper-pagination-custom,
+.swiper-horizontal > .swiper-pagination-bullets,
+.swiper-pagination-bullets.swiper-pagination-horizontal {
+  display: none;
+  width: 0%;
+  left: 0;
 }
-
-
-
 
 @media (max-width: 1024px) {
   .pageLayoutBox h1 {
@@ -540,10 +535,16 @@ section {
     display: none !important;
   }
 
-  .pageLayout{
+  .pageLayout {
     display: block;
   }
-
+  .new-pageLayout h2,
+  .new-pageLayout h3 {
+    font-size: 1.37rem;
+  }
+  .new-pageLayout p {
+    font-size: 15px;
+  }
   .bannerImg {
     aspect-ratio: 2 / 3;
     clip-path: ellipse(100% 85% at 0%);
