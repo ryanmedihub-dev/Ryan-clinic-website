@@ -8,9 +8,11 @@ const handler = async (req) => {
   const {
     metaTitle,
     metaDiscription,
-    pageTitle,
     pageUrl,
+    pageTitle,
+    pageDiscription,
     pageImageUrl,
+    pageImageAlt,
     blogTitle,
     blogContent,
   } = body;
@@ -19,8 +21,11 @@ const handler = async (req) => {
   if (
     !metaTitle?.trim() ||
     !metaDiscription?.trim() ||
-    !pageTitle?.trim() ||
     !pageUrl?.trim() ||
+    !pageTitle?.trim() ||
+    !pageDiscription?.trim() ||
+    !pageImageUrl?.trim() ||
+    !pageImageAlt?.trim() ||
     !blogTitle?.trim() ||
     !blogContent?.trim()
   ) {
@@ -65,9 +70,11 @@ const handler = async (req) => {
   const newBlog = new Blog({
     metaTitle,
     metaDiscription,
-    pageTitle,
     pageUrl,
+    pageTitle,
+    pageDiscription,
     pageImageUrl,
+    pageImageAlt,
     blogTitle,
     blogContent,
   });
@@ -75,8 +82,7 @@ const handler = async (req) => {
   await newBlog.save();
 
   return NextResponse.json(
-    { message: "Blog created successfully!", data: newBlog },
-    { status: 201 }
+    { message: "Blog created successfully!", status: 200},
   );
 };
 

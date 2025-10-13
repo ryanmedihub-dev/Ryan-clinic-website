@@ -21,8 +21,10 @@ const EditBlog = ({ initialData }) => {
     metaTitle: "",
     metaDiscription: "",
     pageTitle: "",
+    pageDiscription: "",
     pageUrl: "",
     pageImageUrl: "",
+    pageImageAlt: "",
     blogTitle: "",
     blogContent: "",
   });
@@ -38,8 +40,10 @@ const EditBlog = ({ initialData }) => {
         metaTitle: initialData.metaTitle || "",
         metaDiscription: initialData.metaDiscription || "",
         pageTitle: initialData.pageTitle || "",
+        pageDiscription: initialData.pageDiscription || "",
         pageUrl: initialData.pageUrl || "",
         pageImageUrl: initialData.pageImageUrl || "",
+        pageImageAlt: initialData.pageImageAlt || "",
         blogTitle: initialData.blogTitle || "",
         blogContent: initialData.blogContent || "",
       });
@@ -47,6 +51,8 @@ const EditBlog = ({ initialData }) => {
       injectedOnceRef.current = false; // reset injection when record changes
     }
   }, [initialData]);
+
+  console.log(initialData);
 
   const handleEditorLoad = (sunEditor) => {
     editorRef.current = sunEditor;
@@ -129,7 +135,10 @@ const EditBlog = ({ initialData }) => {
     <section className="p-4">
       <AdminHeader title="/ Edit Blog" />
 
-      <form onSubmit={handleSubmit} className="space-y-6 px-6 mx-auto max-w-6xl">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-6 px-6 mx-auto max-w-6xl"
+      >
         <h3 className="text-2xl font-bold underline mb-5">Meta Details</h3>
 
         <div className="flex gap-6 flex-col md:flex-row">
@@ -146,7 +155,9 @@ const EditBlog = ({ initialData }) => {
               placeholder="Enter meta title"
               maxLength={60}
             />
-            <p className="text-xs text-gray-500 mt-1">Recommended: 50-60 characters</p>
+            <p className="text-xs text-gray-500 mt-1">
+              Recommended: 50-60 characters
+            </p>
           </div>
 
           <div className="w-full">
@@ -162,7 +173,9 @@ const EditBlog = ({ initialData }) => {
               maxLength={160}
               required
             />
-            <p className="text-xs text-gray-500 mt-1">Recommended: 150-160 characters</p>
+            <p className="text-xs text-gray-500 mt-1">
+              Recommended: 150-160 characters
+            </p>
           </div>
         </div>
 
@@ -181,7 +194,6 @@ const EditBlog = ({ initialData }) => {
               className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholder="https://your-page-url.com"
             />
-            <p className="text-xs text-gray-500 mt-1">Must start with http:// or https://</p>
           </div>
 
           <div className="w-full">
@@ -199,16 +211,51 @@ const EditBlog = ({ initialData }) => {
             />
           </div>
         </div>
-
+        <div className="w-full">
+          <label className="block text-sm font-semibold text-gray-700 mb-1">
+            Banner Description
+          </label>
+          <input
+            type="text"
+            name="pageDiscription"
+            value={formData.pageDiscription}
+            onChange={handleChange}
+            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Enter page Discription"
+            required
+          />
+        </div>
         <div className="mt-4">
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Banner Image
           </label>
-          <ImageUploader onUpload={handleImageUpload} initialImage={formData.pageImageUrl} />
-          <p className="text-xs text-gray-500 mt-1">Recommended size: 1200x630 pixels</p>
+          <ImageUploader
+            onUpload={handleImageUpload}
+            initialImage={formData.pageImageUrl}
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            Recommended size: 1200x630 pixels
+          </p>
         </div>
 
-        <h3 className="text-2xl font-bold underline mt-10 mb-5">Blog Body Content</h3>
+        <div className="w-full">
+          <label className="block text-sm font-semibold text-gray-700 mb-1">
+            Image Alt
+          </label>
+          <input
+            type="text"
+            name="pageImageAlt"
+            value={formData.pageImageAlt}
+            onChange={handleChange}
+            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Enter image alt"
+            required
+          />
+        </div>
+
+        <h3 className="text-2xl font-bold underline mt-10 mb-5">
+          Blog Body Content
+        </h3>
 
         <div className="mb-6">
           <label className="block text-sm font-semibold text-gray-700 mb-1">
@@ -238,7 +285,14 @@ const EditBlog = ({ initialData }) => {
               buttonList: [
                 ["undo", "redo"],
                 ["font", "fontSize", "formatBlock"],
-                ["bold", "underline", "italic", "strike", "subscript", "superscript"],
+                [
+                  "bold",
+                  "underline",
+                  "italic",
+                  "strike",
+                  "subscript",
+                  "superscript",
+                ],
                 ["fontColor", "hiliteColor"],
                 ["align", "horizontalRule", "list", "table"],
                 ["link", "image", "video"],

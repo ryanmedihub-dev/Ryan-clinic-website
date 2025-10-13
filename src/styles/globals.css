@@ -540,6 +540,10 @@ section {
     display: none !important;
   }
 
+  .pageLayout{
+    display: block;
+  }
+
   .bannerImg {
     aspect-ratio: 2 / 3;
     clip-path: ellipse(100% 85% at 0%);

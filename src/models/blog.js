@@ -9,17 +9,24 @@ const blogSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  pageTitle: {
-    type: String,
-    required: true,
-    minlength: 3,
-  },
   pageUrl: {
     type: String,
     required: true,
     unique: true,
   },
+  pageTitle: {
+    type: String,
+    required: true,
+    minlength: 3,
+  },
+  pageDiscription: {
+    type: String,
+    required: true,
+  },
   pageImageUrl: {
+    type: String,
+  },
+  pageImageAlt: {
     type: String,
   },
   blogTitle: {

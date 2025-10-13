@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { FaWhatsapp } from "react-icons/fa";
 
-export default function pageBanner({title , description , url}) {
+export default function pageBanner({title , description , url , alt="Ryan clinic"}) {
   return (
     <div className="md:relative flex flex-col lg:flex-row md:items-center overflow-hidden h-fit md:min-h-[600px] bannerBackground">
       <div className="relative z-10 w-full lg:w-1/2  md:h-fit px-4 md:px-12 lg:px-20 py-8 md:py-16">
@@ -28,7 +28,7 @@ export default function pageBanner({title , description , url}) {
       <div className="md:w-full md:lg:w-1/2 h-24 overflow-hidden md:relative bannerImg ">
         <Image
           src={url} // Put this image in your public folder
-          alt="Ryan Clinic"
+          alt={alt}
           width={800}
           height={600}
           className="w-full h-full object-cover relative z-10"

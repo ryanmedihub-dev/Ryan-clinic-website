@@ -15,8 +15,10 @@ const Blog = () => {
     metaTitle: "",
     metaDiscription: "",
     pageTitle: "",
+    pageDiscription: "",
     pageUrl: "",
     pageImageUrl: "",
+    pageImageAlt: "",
     blogTitle: "",
     blogContent: "",
   });
@@ -43,8 +45,6 @@ const Blog = () => {
   };
 
   const handleSubmit = async (e) => {
-
-
     e.preventDefault();
 
     const res = await fetch("/api/blog/create", {
@@ -57,14 +57,18 @@ const Blog = () => {
 
     const data = await res.json();
 
+    console.log(data);
+
     if (data.status === 200) {
       alert("Blog created successfully");
       setFormData({
         metaTitle: "",
         metaDiscription: "",
         pageTitle: "",
+        pageDiscription: "",
         pageUrl: "",
         pageImageUrl: "",
+        pageImageAlt: "",
         blogTitle: "",
         blogContent: "",
       });
@@ -144,13 +148,40 @@ const Blog = () => {
             />
           </div>
         </div>
-
+        <div className="w-full">
+          <label className="block text-sm font-semibold text-gray-700">
+            Banner Description
+          </label>
+          <input
+            type="text"
+            name="pageDiscription"
+            value={formData.pageDiscription}
+            onChange={handleChange}
+            className="w-full mt-2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500 text-md"
+            placeholder="Enter page Discription"
+            required
+          />
+        </div>
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Banner Image URL
           </label>
 
           <ImageUploader onUpload={handleImageUpload} />
+        </div>
+        <div className="w-full">
+          <label className="block text-sm font-semibold text-gray-700">
+            Image Alt
+          </label>
+          <input
+            type="text"
+            name="pageImageAlt"
+            value={formData.pageImageAlt}
+            onChange={handleChange}
+            className="w-full mt-2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500 text-md"
+            placeholder="Enter image Alt"
+            required
+          />
         </div>
 
         <h3 className="text-2xl font-bold underline mt-10 mb-5">
