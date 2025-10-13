@@ -6,8 +6,6 @@ export default async function EditBlogPage({ params }) {
 
   const { slug } = await params;
   
-
-  console.log(slug);
   
   const blog = await getBlogBySlug(slug);
 

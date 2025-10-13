@@ -57,8 +57,6 @@ const Blog = () => {
 
     const data = await res.json();
 
-    console.log(data);
-
     if (data.status === 200) {
       alert("Blog created successfully");
       setFormData({

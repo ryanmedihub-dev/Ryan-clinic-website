@@ -52,7 +52,6 @@ const EditBlog = ({ initialData }) => {
     }
   }, [initialData]);
 
-  console.log(initialData);
 
   const handleEditorLoad = (sunEditor) => {
     editorRef.current = sunEditor;

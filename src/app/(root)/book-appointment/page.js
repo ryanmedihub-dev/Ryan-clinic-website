@@ -38,7 +38,6 @@ export default function BookAppointment() {
         headers: { "Content-Type": "application/json" },
       });
 
-      // console.log(first)
 
       const result = await response.json();
 
@@ -58,7 +57,6 @@ export default function BookAppointment() {
         alert("❌ Failed to book. Please try again.");
       }
     } catch (error) {
-      console.error("Error:", error);
       alert("⚠️ Something went wrong. Try again later.");
     }
 

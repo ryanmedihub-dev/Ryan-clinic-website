@@ -60,7 +60,6 @@ export default function ContactUs() {
         alert("⚠️ " + data.message);
       }
     } catch (error) {
-      console.error(error);
       alert("❌ Server error.");
     }
   };
