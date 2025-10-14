@@ -55,11 +55,6 @@
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
-  <!-- <url>
-    <loc>https://clinicryan.com/videos/</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url> -->
   <url>
     <loc>https://clinicryan.com/hair-transplant-in-delhi/</loc>
     <changefreq>daily</changefreq>
@@ -80,19 +75,34 @@
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- <url>
-    <loc>https://clinicryan.com/jobs/</loc>
+ 
+  <url>
+    <loc>https://www.clinicryan.com/blog/what-are-the-side-effects-of-hair-transplant-in-india</loc>
     <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url> -->
-  <!-- <url>
-    <loc>https://clinicryan.com/privacy-policy/</loc>
+    <priority>0.8</priority>
+  </url>
+ 
+  <url>
+    <loc>https://www.clinicryan.com/blog/prp-injections-after-a-hair-transplant</loc>
     <changefreq>daily</changefreq>
-    <priority>0.5</priority>
+    <priority>0.8</priority>
+  </url>
+ 
+  <url>
+    <loc>https://www.clinicryan.com/blog/what-is-prp-hair-treatment</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+ 
+  <url>
+    <loc>https://www.clinicryan.com/blog/female-hair-transplant</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://clinicryan.com/terms-and-conditions/</loc>
+    <loc>https://www.clinicryan.com/blog/beard-transplant-in-Delhi</loc>
     <changefreq>daily</changefreq>
-    <priority>0.5</priority>
-  </url> -->
+    <priority>0.8</priority>
+  </url>
+ 
 </urlset>
