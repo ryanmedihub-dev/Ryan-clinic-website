@@ -6,7 +6,7 @@ const serviceSchema = new mongoose.Schema(
       title: String,
       description: String,
       imageurl: String,
-      imagealt: String, // ✅ banner alt tag
+      imagealt: String, 
     },
     benefitsData: {
       title: String,
@@ -48,8 +48,12 @@ const serviceSchema = new mongoose.Schema(
     },
     typesData: {
       details: String,
-      images: [String],
-      alt: [String],
+      images: [
+        {
+          url: String,
+          alt: String,
+        },
+      ],
     },
   },
   {

@@ -70,6 +70,7 @@ export default async function ServicesPage({ params }) {
           title={service?.bannerData?.title}
           description={service?.bannerData?.description}
           url={service?.bannerData?.imageurl}
+          alt={service?.bannerData?.imagealt}
         />
 
         <section className="bg-light py-8 md:py-12">
@@ -97,8 +98,8 @@ export default async function ServicesPage({ params }) {
                 <div className="h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[45%_55%] gap-4 md:gap-6 sticky top-40">
                   <div className="rounded-xl h-48 md:h-60 lg:h-full overflow-hidden shadow-md">
                     <img
-                      src={service?.typesData?.images[0]}
-                      alt="Person"
+                      src={service?.typesData?.images[0]?.url}
+                      alt={service?.typesData?.images[0]?.alt}
                       className="w-full h-full object-cover"
                       width="100%"
                       height="100%"
@@ -108,8 +109,8 @@ export default async function ServicesPage({ params }) {
                   <div className="grid grid-cols-1 md:grid-rows-2 gap-4 md:gap-6">
                     <div className="rounded-xl h-48 md:h-auto overflow-hidden shadow-md">
                       <img
-                        src={service?.typesData?.images[1]}
-                        alt="Tool on scalp"
+                        src={service?.typesData?.images[1]?.url}
+                        alt={service?.typesData?.images[0]?.alt}
                         className="w-full h-full object-cover"
                         width="100%"
                         height="auto"
@@ -117,8 +118,8 @@ export default async function ServicesPage({ params }) {
                     </div>
                     <div className="rounded-xl h-48 md:h-auto overflow-hidden shadow-md">
                       <img
-                        src={service?.typesData?.images[2]}
-                        alt="Implant tool"
+                        src={service?.typesData?.images[2]?.url}
+                        alt={service?.typesData?.images[0]?.alt}
                         className="w-full h-full object-cover"
                         width="100%"
                         height="auto"

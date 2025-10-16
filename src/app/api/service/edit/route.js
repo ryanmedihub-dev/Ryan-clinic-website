@@ -57,11 +57,13 @@ const handler = async (req) => {
         description: updateData.description,
         pageurl: updateData.pageUrl,
         title: updateData.serviceTitle,
-        overviewData: updateData.overviewContent
+        overviewData: updateData.overviewContent,
+        keywords: updateData.keywords
       },
       typesData: {
         details: updateData.typesDetails,
-        images: updateData.typeImages
+        images: updateData.typeImages,
+        alt: updateData.alt
       }
     };
 
