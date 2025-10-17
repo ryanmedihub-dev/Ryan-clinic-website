@@ -10,7 +10,7 @@ import "suneditor/dist/css/suneditor.min.css";
 
 // Memoized Input Field Component
 const InputField = memo(
-  ({ label, value, onChange, placeholder, required, type = "text" }) => (
+  ({ label, value, onChange, placeholder, required, type = "text", error }) => (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-2">
         {label}
@@ -21,8 +21,11 @@ const InputField = memo(
         onChange={onChange}
         placeholder={placeholder}
         required={required}
-        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+        className={`w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors ${
+          error ? "border-red-500" : "border-gray-300"
+        }`}
       />
+      {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
     </div>
   )
 );
@@ -239,16 +242,16 @@ export default function CreateServicePage() {
   // Editor refs
   const overviewEditorRef = useRef(null);
   const typesEditorRef = useRef(null);
-  const benefitsEditorRef = useRef(null);
   const additionalDetail1EditorRef = useRef(null);
   const additionalDetail2EditorRef = useRef(null);
 
   // Form state
   const [form, setForm] = useState({
     bannerData: {
+      title: "",
       description: "",
       imageurl: "",
-      title: ""
+      imagealt: "" // Added imagealt field
     },
     benefitsData: {
       title: "",
@@ -273,15 +276,18 @@ export default function CreateServicePage() {
       description: "",
       pageurl: "",
       title: "",
-      overviewData: ""
+      overviewData: "",
+      keywords: [] // Added keywords array
     },
     typesData: {
       details: "",
-      images: ["", "", ""]
+      images: [] // Changed to array of objects
     }
   });
   const [serverMsg, setServerMsg] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [keywordInput, setKeywordInput] = useState("");
 
   // Optimized form update helper with batch updates
   const updateForm = useCallback((updates) => {
@@ -293,16 +299,16 @@ export default function CreateServicePage() {
         updates.forEach(({ path, value }) => {
           path.reduce((obj, key, idx) => {
             if (idx === path.length - 1) obj[key] = value;
-            else obj = obj[key];
-            return obj;
+            else obj[key] = { ...obj[key] };
+            return obj[key];
           }, next);
         });
       } else {
         const { path, value } = updates;
         path.reduce((obj, key, idx) => {
           if (idx === path.length - 1) obj[key] = value;
-          else obj = obj[key];
-          return obj;
+          else obj[key] = { ...obj[key] };
+          return obj[key];
         }, next);
       }
 
@@ -314,8 +320,11 @@ export default function CreateServicePage() {
   const handleMetadataChange = useCallback(
     (field) => (e) => {
       updateForm({ path: ["metadata", field], value: e.target.value });
+      if (errors[field]) {
+        setErrors(prev => ({ ...prev, [field]: "" }));
+      }
     },
-    [updateForm]
+    [updateForm, errors]
   );
 
   const handleBannerDataChange = useCallback(
@@ -372,7 +381,22 @@ export default function CreateServicePage() {
   const handleServiceImageUpload = useCallback(
     (index) => (url) => {
       const newImages = [...form.typesData.images];
-      newImages[index] = url;
+      if (!newImages[index]) {
+        newImages[index] = { url: "", alt: "" };
+      }
+      newImages[index] = { ...newImages[index], url };
+      updateForm({ path: ["typesData", "images"], value: newImages });
+    },
+    [form.typesData.images, updateForm]
+  );
+
+  const handleImageAltChange = useCallback(
+    (index, alt) => {
+      const newImages = [...form.typesData.images];
+      if (!newImages[index]) {
+        newImages[index] = { url: "", alt: "" };
+      }
+      newImages[index] = { ...newImages[index], alt };
       updateForm({ path: ["typesData", "images"], value: newImages });
     },
     [form.typesData.images, updateForm]
@@ -434,42 +458,47 @@ export default function CreateServicePage() {
     [form.benefitsData.component, updateForm]
   );
 
+  // Keywords management
+  const handleAddKeyword = useCallback(() => {
+    if (keywordInput.trim() && !form.metadata.keywords.includes(keywordInput.trim())) {
+      const newKeywords = [...form.metadata.keywords, keywordInput.trim()];
+      updateForm({ path: ["metadata", "keywords"], value: newKeywords });
+      setKeywordInput("");
+    }
+  }, [keywordInput, form.metadata.keywords, updateForm]);
+
+  const handleRemoveKeyword = useCallback((index) => {
+    const newKeywords = form.metadata.keywords.filter((_, i) => i !== index);
+    updateForm({ path: ["metadata", "keywords"], value: newKeywords });
+  }, [form.metadata.keywords, updateForm]);
+
+  const handleKeywordInputKeyPress = useCallback((e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleAddKeyword();
+    }
+  }, [handleAddKeyword]);
+
   // Form validation
   const validateForm = useCallback(() => {
-    const { metadata, bannerData, benefitsData, typesData, faq } = form;
-
-    if (!metadata.title || !metadata.description || !metadata.pageurl || !metadata.pageName) {
-      return "Please fill in all metadata fields";
-    }
-    if (!bannerData.title || !bannerData.description || !bannerData.imageurl) {
-      return "Please fill in all banner fields";
-    }
-    if (!benefitsData.title || !benefitsData.description) {
-      return "Please fill in benefits title and description";
-    }
-    if (benefitsData.component.some(comp => !comp.title || !comp.description || !comp.icon)) {
-      return "Please fill in all benefit components";
-    }
-    if (!typesData.details) {
-      return "Please provide type description";
-    }
-    if (typesData.images.some((img) => !img)) {
-      return "Please provide all 3 service images";
-    }
-    if (faq.some((entry) => !entry.question || !entry.answer)) {
-      return "Please fill in all FAQ questions and answers";
-    }
-
-    return null;
-  }, [form]);
+    const newErrors = {};
+    
+    if (!form.metadata.pageName?.trim()) newErrors.pageName = "Page name is required";
+    if (!form.metadata.title?.trim()) newErrors.serviceTitle = "Service title is required";
+    if (!form.metadata.pageurl?.trim()) newErrors.pageUrl = "Page URL is required";
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }, [form.metadata]);
 
   // Reset form after successful submission
   const resetForm = useCallback(() => {
     const initialForm = {
       bannerData: {
+        title: "",
         description: "",
         imageurl: "",
-        title: ""
+        imagealt: ""
       },
       benefitsData: {
         title: "",
@@ -494,15 +523,18 @@ export default function CreateServicePage() {
         description: "",
         pageurl: "",
         title: "",
-        overviewData: ""
+        overviewData: "",
+        keywords: []
       },
       typesData: {
         details: "",
-        images: ["", "", ""]
+        images: []
       }
     };
 
     setForm(initialForm);
+    setKeywordInput("");
+    setErrors({});
 
     // Reset editors with proper error handling
     setTimeout(() => {
@@ -530,9 +562,8 @@ export default function CreateServicePage() {
       setLoading(true);
       setServerMsg("");
 
-      const validationError = validateForm();
-      if (validationError) {
-        setServerMsg(`Validation Error: ${validationError}`);
+      if (!validateForm()) {
+        setServerMsg("Please fix the validation errors before submitting.");
         setLoading(false);
         return;
       }
@@ -543,17 +574,21 @@ export default function CreateServicePage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(form),
         });
-        const data = await res.json();
+        
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.error || "Failed to create service");
+        }
 
-        setServerMsg(
-          data.ok ? "Service created successfully!" : `Error: ${data.message}`
-        );
+        const data = await res.json();
+        setServerMsg("Service created successfully!");
 
         if (data.ok) {
           resetForm();
         }
       } catch (err) {
-        setServerMsg(`Request failed: ${err.message}`);
+        console.error("Error creating service:", err);
+        setServerMsg(`Error creating service: ${err.message}`);
       } finally {
         setLoading(false);
       }
@@ -613,11 +648,12 @@ export default function CreateServicePage() {
           >
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <InputField
-                label="Page Name"
+                label="Page Name*"
                 value={form.metadata.pageName}
                 onChange={handleMetadataChange("pageName")}
                 placeholder="Enter page name"
                 required={true}
+                error={errors.pageName}
               />
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -634,27 +670,69 @@ export default function CreateServicePage() {
                 </select>
               </div>
               <InputField
-                label="Service Title"
+                label="Service Title*"
                 value={form.metadata.title}
                 onChange={handleMetadataChange("title")}
                 placeholder="Enter service title"
                 required={true}
+                error={errors.serviceTitle}
               />
               <InputField
                 label="Description"
                 value={form.metadata.description}
                 onChange={handleMetadataChange("description")}
                 placeholder="Brief description"
-                required={true}
               />
               <div className="lg:col-span-2">
                 <InputField
-                  label="Page URL"
+                  label="Page URL*"
                   value={form.metadata.pageurl}
                   onChange={handleMetadataChange("pageurl")}
                   placeholder="https://example.com/service-page"
                   required={true}
+                  error={errors.pageUrl}
                 />
+              </div>
+
+              {/* Keywords Section */}
+              <div className="lg:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Keywords
+                </label>
+                <div className="flex gap-2 mb-2">
+                  <input
+                    type="text"
+                    value={keywordInput}
+                    onChange={(e) => setKeywordInput(e.target.value)}
+                    onKeyPress={handleKeywordInputKeyPress}
+                    placeholder="Add a keyword"
+                    className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddKeyword}
+                    className="px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Add
+                  </button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {form.metadata.keywords.map((keyword, index) => (
+                    <div
+                      key={index}
+                      className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
+                    >
+                      {keyword}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveKeyword(index)}
+                        className="text-blue-600 hover:text-blue-800"
+                      >
+                        <Trash className="h-3 w-3" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </Section>
@@ -670,14 +748,12 @@ export default function CreateServicePage() {
                 value={form.bannerData.title}
                 onChange={handleBannerDataChange("title")}
                 placeholder="Main banner title"
-                required={true}
               />
               <InputField
                 label="Banner Description"
                 value={form.bannerData.description}
                 onChange={handleBannerDataChange("description")}
                 placeholder="Banner subtitle or description"
-                required={true}
               />
               <div className="lg:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -696,6 +772,14 @@ export default function CreateServicePage() {
                     </a>
                   )}
                 </div>
+              </div>
+              <div className="lg:col-span-2">
+                <InputField
+                  label="Banner Image Alt Text"
+                  value={form.bannerData.imagealt}
+                  onChange={handleBannerDataChange("imagealt")}
+                  placeholder="Alternative text for banner image"
+                />
               </div>
             </div>
           </Section>
@@ -717,7 +801,7 @@ export default function CreateServicePage() {
           {/* Types Section */}
           <Section
             title="Service Types"
-            description="Define your service type and add three representative images"
+            description="Define your service type and add representative images"
           >
             <div className="space-y-8">
               <EditorField
@@ -730,28 +814,35 @@ export default function CreateServicePage() {
 
               <div>
                 <h3 className="text-lg font-medium text-gray-900 mb-4">
-                  Service Images (3 required)
+                  Service Images
                 </h3>
                 <div className="space-y-4">
-                  {form.typesData.images.map((imageUrl, index) => (
+                  {[0, 1, 2].map((index) => (
                     <div key={index}>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Image {index + 1} URL
+                        Image {index + 1}
                       </label>
                       <div className="space-y-2">
                         <ImageUploader
                           onUpload={handleServiceImageUpload(index)}
                         />
-                        {imageUrl && (
+                        {form.typesData.images[index]?.url && (
                           <a
                             className="text-xs text-blue-500 cursor-pointer"
                             target="_blank"
                             rel="noopener noreferrer"
-                            href={imageUrl}
+                            href={form.typesData.images[index]?.url}
                           >
-                            {imageUrl}
+                            {form.typesData.images[index]?.url}
                           </a>
                         )}
+                        <input
+                          type="text"
+                          value={form.typesData.images[index]?.alt || ""}
+                          onChange={(e) => handleImageAltChange(index, e.target.value)}
+                          placeholder="Image alt text"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                        />
                       </div>
                     </div>
                   ))}
@@ -771,14 +862,12 @@ export default function CreateServicePage() {
                 value={form.benefitsData.title}
                 onChange={handleBenefitsDataChange("title")}
                 placeholder="Enter benefits title"
-                required={true}
               />
               <InputField
                 label="Benefits Description"
                 value={form.benefitsData.description}
                 onChange={handleBenefitsDataChange("description")}
                 placeholder="Enter benefits description"
-                required={true}
               />
               
               <div className="space-y-4">

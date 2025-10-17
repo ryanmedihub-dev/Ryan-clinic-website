@@ -23,17 +23,17 @@ const initialFormState = {
   bannerTitle: "",
   bannerDescription: "",
   bannerImage: "",
-  bannerImage: "",
   bannerAlt: "",
   overviewContent: "",
   typesDetails: "",
-  typeImages: ["", "", ""],
+  typeImages: [],
   benefitsTitle: "",
   benefitsDescription: "",
   benefitComponents: [],
   faqs: [],
   extraDetail1: "",
   extraDetail2: "",
+  keywords: [],
 };
 
 export default function EditService({ initialData }) {
@@ -42,6 +42,7 @@ export default function EditService({ initialData }) {
   const [errors, setErrors] = useState({});
   const [isMounted, setIsMounted] = useState(false);
   const [serverMsg, setServerMsg] = useState("");
+  const [keywordInput, setKeywordInput] = useState("");
 
   // editor instance refs
   const editorRefs = useRef({
@@ -88,16 +89,17 @@ export default function EditService({ initialData }) {
         bannerTitle: initialData.bannerData?.title || "",
         bannerDescription: initialData.bannerData?.description || "",
         bannerImage: initialData.bannerData?.imageurl || "",
-        bannerAlt: initialData.bannerData?.imageAlt || "",
+        bannerAlt: initialData.bannerData?.imagealt || "", // Fixed: imagealt instead of imageAlt
         overviewContent: initialData.metadata?.overviewData || "",
         typesDetails: initialData.typesData?.details || "",
-        typeImages: initialData.typesData?.images || ["", "", ""],
+        typeImages: initialData.typesData?.images || [],
         benefitsTitle: initialData.benefitsData?.title || "",
         benefitsDescription: initialData.benefitsData?.description || "",
         benefitComponents: initialData.benefitsData?.component || [],
         faqs: initialData.faq || [],
         extraDetail1: initialData.extraFields?.detail1 || "",
         extraDetail2: initialData.extraFields?.detail2 || "",
+        keywords: initialData.metadata?.keywords || [],
       });
       setDataLoaded(true);
 
@@ -110,8 +112,6 @@ export default function EditService({ initialData }) {
       };
     }
   }, [initialData]);
-
-  
 
   // After each editor is ready AND data is loaded, inject initial HTML ONCE
   useEffect(() => {
@@ -156,7 +156,19 @@ export default function EditService({ initialData }) {
 
   const handleFileUpload = (index, url) => {
     const updatedImages = [...formData.typeImages];
-    updatedImages[index] = url;
+    if (!updatedImages[index]) {
+      updatedImages[index] = { url: "", alt: "" };
+    }
+    updatedImages[index] = { ...updatedImages[index], url };
+    setFormData((prev) => ({ ...prev, typeImages: updatedImages }));
+  };
+
+  const handleImageAltChange = (index, alt) => {
+    const updatedImages = [...formData.typeImages];
+    if (!updatedImages[index]) {
+      updatedImages[index] = { url: "", alt: "" };
+    }
+    updatedImages[index] = { ...updatedImages[index], alt };
     setFormData((prev) => ({ ...prev, typeImages: updatedImages }));
   };
 
@@ -207,6 +219,70 @@ export default function EditService({ initialData }) {
     setFormData((prev) => ({ ...prev, bannerImage: url }));
   };
 
+  const handleAddKeyword = () => {
+    if (
+      keywordInput.trim() &&
+      !formData.keywords.includes(keywordInput.trim())
+    ) {
+      setFormData((prev) => ({
+        ...prev,
+        keywords: [...prev.keywords, keywordInput.trim()],
+      }));
+      setKeywordInput("");
+    }
+  };
+
+  const handleRemoveKeyword = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      keywords: prev.keywords.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleKeywordInputKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleAddKeyword();
+    }
+  };
+
+  const formatDataForAPI = (data) => {
+    return {
+      bannerData: {
+        title: data.bannerTitle,
+        description: data.bannerDescription,
+        imageurl: data.bannerImage,
+        imagealt: data.bannerAlt,
+      },
+      benefitsData: {
+        title: data.benefitsTitle,
+        description: data.benefitsDescription,
+        component: data.benefitComponents,
+      },
+      extraFields: {
+        detail1: data.extraDetail1,
+        detail2: data.extraDetail2,
+      },
+      faq: data.faqs,
+      metadata: {
+        pageName: data.pageName,
+        pageType: data.pageType,
+        description: data.description,
+        pageurl: data.pageUrl,
+        title: data.serviceTitle,
+        overviewData: data.overviewContent,
+        keywords: data.keywords,
+      },
+      typesData: {
+        details: data.typesDetails,
+        images: data.typeImages.map((img) => ({
+          url: img.url || "",
+          alt: img.alt || "",
+        })),
+      },
+    };
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) {
@@ -217,20 +293,23 @@ export default function EditService({ initialData }) {
     setIsSubmitting(true);
     setServerMsg("");
     try {
+      // Send the flat formData structure that the API expects
       const response = await fetch("/api/service/edit", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData), // Send formData directly
       });
 
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to update service");
+      }
 
-      if (!response.ok) throw new Error("Failed to update service");
-
-      await response.json();
+      const result = await response.json();
       setServerMsg("Service updated successfully!");
     } catch (error) {
       console.error("Error updating service:", error);
-      setServerMsg("Error updating service. Please try again.");
+      setServerMsg(`Error updating service: ${error.message}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -353,6 +432,47 @@ export default function EditService({ initialData }) {
                   <p className="mt-1 text-sm text-red-600">{errors.pageUrl}</p>
                 )}
               </div>
+
+              {/* Keywords Section */}
+              <div className="lg:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Keywords
+                </label>
+                <div className="flex gap-2 mb-2">
+                  <input
+                    type="text"
+                    value={keywordInput}
+                    onChange={(e) => setKeywordInput(e.target.value)}
+                    onKeyPress={handleKeywordInputKeyPress}
+                    placeholder="Add a keyword"
+                    className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddKeyword}
+                    className="px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Add
+                  </button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {formData.keywords.map((keyword, index) => (
+                    <div
+                      key={index}
+                      className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
+                    >
+                      {keyword}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveKeyword(index)}
+                        className="text-blue-600 hover:text-blue-800"
+                      >
+                        <Trash className="h-3 w-3" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
@@ -401,7 +521,13 @@ export default function EditService({ initialData }) {
                   accept="image/*"
                   maxSize={5 * 1024 * 1024}
                 />
-                <a href={formData.bannerImage} target="_blank" className="text-xs cursor-pointer text-blue-500">{formData.bannerImage}</a>
+                <a
+                  href={formData.bannerImage}
+                  target="_blank"
+                  className="text-xs cursor-pointer text-blue-500"
+                >
+                  {formData.bannerImage}
+                </a>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -459,21 +585,36 @@ export default function EditService({ initialData }) {
               </div>
               <div>
                 <h3 className="text-lg font-medium text-gray-900 mb-5">
-                  Service Images (3 required)
+                  Service Images
                 </h3>
-                <div className="gap-4">
-                  {formData.typeImages.map((img, idx) => (
+                <div className="space-y-4">
+                  {[0, 1, 2].map((idx) => (
                     <div key={idx} className="my-3">
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Type Image {idx + 1}
                       </label>
                       <FileUpload
                         onUpload={(url) => handleFileUpload(idx, url)}
-                        initialImage={img}
+                        initialImage={formData.typeImages[idx]?.url || ""}
                         accept="image/*"
                         maxSize={5 * 1024 * 1024}
                       />
-                      <a href={img} target="_blank" className="text-xs cursor-pointer text-blue-500">{img}</a>
+                      <a
+                        href={formData.typeImages[idx]?.url}
+                        target="_blank"
+                        className="text-xs cursor-pointer text-blue-500"
+                      >
+                        {formData.typeImages[idx]?.url}
+                      </a>
+                      <input
+                        type="text"
+                        value={formData.typeImages[idx]?.alt || ""}
+                        onChange={(e) =>
+                          handleImageAltChange(idx, e.target.value)
+                        }
+                        placeholder="Image alt text"
+                        className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                      />
                     </div>
                   ))}
                 </div>
