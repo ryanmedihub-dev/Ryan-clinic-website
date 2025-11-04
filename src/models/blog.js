@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const blogSchema = new mongoose.Schema({
   metaTitle: {
@@ -45,4 +45,4 @@ const blogSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.models.Blog || mongoose.model('Blog', blogSchema);
+export default mongoose.models.Blog || mongoose.model("Blog", blogSchema);

@@ -238,7 +238,8 @@ export default function InternationalAppointmentPage() {
           {/* Country Dropdown */}
           <div>
             <label className="block text-gray-700 font-medium mb-1">
-              Which brach are you comfortable to visit <span className="text-red-500">*</span>
+              Which brach are you comfortable to visit{" "}
+              <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <Globe className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
@@ -253,7 +254,22 @@ export default function InternationalAppointmentPage() {
                 <option value="Delhi">Delhi</option>
                 <option value="Mumbai">Mumbai</option>
                 <option value="Hyderabad">Hyderabad</option>
-              
+                <option value="Chandigarh">Chandigarh</option>
+                <option value="Lucknow">Lucknow</option>
+                <option value="Guwahati">Guwahati</option>
+                <option value="Ahmedabad">Ahmedabad</option>
+                <option value="Bangalore">Bangalore</option>
+                <option value="Chennai">Chennai</option>
+                <option value="Calicut">Calicut</option>
+                <option value="Kochi">Kochi</option>
+                <option value="West Bengal">West Bengal</option>
+                <option value="Jaipur">Jaipur</option>
+                <option value="Jalandhar">Jalandhar</option>
+                <option value="Ludhiana">Ludhiana</option>
+                <option value="Pune">Pune</option>
+                <option value="Patna">Patna</option>
+                <option value="Himachal">Himachal</option>
+                <option value="Kashmir">Kashmir</option>
               </select>
             </div>
           </div>
