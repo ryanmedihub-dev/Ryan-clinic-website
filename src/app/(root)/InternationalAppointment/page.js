@@ -238,7 +238,7 @@ export default function InternationalAppointmentPage() {
           {/* Country Dropdown */}
           <div>
             <label className="block text-gray-700 font-medium mb-1">
-              Which brach are you comfortable to visit{" "}
+              Which branch are you comfortable to visit{" "}
               <span className="text-red-500">*</span>
             </label>
             <div className="relative">
