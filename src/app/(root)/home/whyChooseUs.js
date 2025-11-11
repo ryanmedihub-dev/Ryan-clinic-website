@@ -6,6 +6,11 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 
+import Years from "@/../public/assets/calendar.png";
+import Patients from "@/../public/assets/patient.png";
+import Procedure from "@/../public/assets/procedure.png";
+import Country from "@/../public/assets/country.png";
+import Branch from "@/../public/assets/branches.png";
 // -------------------- Animated Number --------------------
 function AnimatedNumber({ end, suffix, start }) {
   const [count, setCount] = useState(0);
@@ -65,35 +70,35 @@ export default function WhyChooseRyanClinic() {
   const stats = [
     {
       image:
-        "https://res.cloudinary.com/dha2ecdnn/image/upload/v1744614668/calender_qwn8yt.png",
+        Years,
       end: 12,
       label: "Years",
       suffix: "+",
     },
     {
       image:
-        "https://res.cloudinary.com/dha2ecdnn/image/upload/v1744614669/patients_prrolz.png",
+        Patients,
       end: 66,
       label: "Delighted Patients",
       suffix: "K+",
     },
     {
       image:
-        "https://res.cloudinary.com/dha2ecdnn/image/upload/v1744614668/hospital_gzd17w.png",
+        Branch,
       end: 12,
       label: "Branches",
       suffix: "+",
     },
     {
       image:
-        "https://res.cloudinary.com/dha2ecdnn/image/upload/v1744614668/globe_dxpeps.png",
+        Country,
       end: 4,
       label: "Countries",
       suffix: "+",
     },
     {
       image:
-        "https://res.cloudinary.com/dha2ecdnn/image/upload/v1744614668/bill_jp5tje.png",
+        Procedure,
       end: 100,
       label: "Procedures Everyday",
       suffix: "+",
@@ -258,7 +263,7 @@ export default function WhyChooseRyanClinic() {
                   alt={item.label}
                   width={55}
                   height={55}
-                  className="w-[50px] h-[50px] sm:w-[55px] sm:h-[55px] md:w-fit md:h-fit my-4 md:scale-150"
+                  className="w-[40px] h-[40px] sm:w-[55px] sm:h-[55px] md:w-fit md:h-fit my-4 "
                 />
                 <p className="font-bold text-black text-xl sm:text-2xl md:text-2xl my-1">
                   <AnimatedNumber
