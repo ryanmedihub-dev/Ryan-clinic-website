@@ -1,12 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { User, Mail, Phone, Calendar, MapPin, MessageSquare, Star } from 'lucide-react'
+import { User, Phone, Calendar, MapPin, MessageSquare } from 'lucide-react'
 
 export default function FeedbackForm() {
   const [formData, setFormData] = useState({
     fullName: '',
-    email: '',
     phone: '',
     visitDate: '',
     branch: '',
@@ -48,12 +47,11 @@ export default function FeedbackForm() {
       const result = await response.json()
 
       if (response.ok) {
-        alert('✅ Thank you for your valuable feedback! We appreciate you taking the time to share your experience with us.')
+        alert('✅ Thank you so much! Your feedback means a lot to us! 💙')
         
         // Reset form
         setFormData({
           fullName: '',
-          email: '',
           phone: '',
           visitDate: '',
           branch: '',
@@ -69,11 +67,11 @@ export default function FeedbackForm() {
           additionalComments: ''
         })
       } else {
-        alert('❌ Error submitting feedback. Please try again.')
+        alert('❌ Oops! Something went wrong. Please try again.')
         console.error('Error:', result)
       }
     } catch (error) {
-      alert('⚠️ Something went wrong. Try again later.')
+      alert('⚠️ Connection error. Please try again later.')
       console.error('Error:', error)
     } finally {
       setIsSubmitting(false)
@@ -85,18 +83,18 @@ export default function FeedbackForm() {
       { value: 1, emoji: '😞', label: 'Poor' },
       { value: 2, emoji: '😐', label: 'Fair' },
       { value: 3, emoji: '🙂', label: 'Good' },
-      { value: 4, emoji: '😊', label: 'V.Good' },
+      { value: 4, emoji: '😊', label: 'Great' },
       { value: 5, emoji: '😍', label: 'Excellent' }
     ]
 
     return (
-      <div className="mb-4 md:mb-6">
-        <label className="block font-medium text-gray-700 mb-3">
+      <div className="mb-8">
+        <label className="block font-semibold text-gray-800 mb-4 text-lg">
           {label} {required && <span className="text-red-500">*</span>}
         </label>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex justify-between gap-2">
           {ratings.map((rating) => (
-            <div key={rating.value} className="flex-1 min-w-[55px]">
+            <div key={rating.value} className="flex-1">
               <input
                 type="radio"
                 id={`${name}-${rating.value}`}
@@ -109,10 +107,10 @@ export default function FeedbackForm() {
               />
               <label
                 htmlFor={`${name}-${rating.value}`}
-                className="block text-center py-2.5 md:py-3 px-2 bg-white rounded-lg cursor-pointer transition-all duration-300 peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 hover:border-blue-500"
+                className="flex flex-col items-center justify-center p-2 bg-white rounded-2xl cursor-pointer transition-all duration-200 peer-checked:bg-blue-500 peer-checked:scale-110 active:scale-95"
               >
-                <div className="text-2xl md:text-3xl mb-1">{rating.emoji}</div>
-                <div className="text-xs md:text-sm font-medium">
+                <div className=" mb-2">{rating.emoji}</div>
+                <div className="text-xs font-medium text-gray-600 peer-checked:text-white">
                   {rating.label}
                 </div>
               </label>
@@ -124,317 +122,290 @@ export default function FeedbackForm() {
   }
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 via-white to-blue-50 px-4 py-12">
-      <div className="w-full max-w-2xl">
-        {/* Header */}
-        <div className="text-center md:mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-            Patient Feedback Form
-          </h2>
-          <p className="text-gray-600 text-base md:text-lg">
-            Your feedback helps us serve you better
-          </p>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-8 text-center">
+        <div className="text-5xl mb-3">⭐</div>
+        <h1 className="text-3xl font-bold mb-2">
+          Share Your Experience
+        </h1>
+        <p className="text-blue-100 text-base">
+          We'd love to hear from you!
+        </p>
+      </div>
+
+      {/* Form */}
+      <form onSubmit={handleSubmit} className="px-5 py-6 space-y-8">
+        
+        {/* Step 1: Personal Info */}
+        <div>
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md">
+              1
+            </div>
+            <h2 className="text-xl font-bold text-gray-800">
+              Your Details
+            </h2>
+          </div>
+
+          <div className="space-y-4">
+            {/* Full Name */}
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2 text-base">
+                👤 Your Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleChange}
+                required
+                placeholder="Enter your name"
+                className="w-full px-4 py-4 bg-white rounded-xl text-base text-gray-900 placeholder-gray-400 border-0 shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
+              />
+            </div>
+
+            {/* Phone Number */}
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2 text-base">
+                📱 Phone Number <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+                placeholder="9876543210"
+                className="w-full px-4 py-4 bg-white rounded-xl text-base text-gray-900 placeholder-gray-400 border-0 shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
+              />
+            </div>
+
+            {/* Date */}
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2 text-base">
+                📅 Visit Date <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="date"
+                name="visitDate"
+                value={formData.visitDate}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-4 bg-white rounded-xl text-base text-gray-900 border-0 shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
+              />
+            </div>
+
+            {/* Branch */}
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2 text-base">
+                📍 Branch <span className="text-red-500">*</span>
+              </label>
+              <select
+                name="branch"
+                value={formData.branch}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-4 bg-white rounded-xl text-base text-gray-900 border-0 shadow-sm focus:ring-2 focus:ring-blue-400 outline-none appearance-none"
+              >
+                <option value="">Select your branch</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Hyderabad">Hyderabad</option>
+              </select>
+            </div>
+          </div>
         </div>
 
-        {/* Form */}
-        <form
-          onSubmit={handleSubmit}
-          className="md:bg-white rounded-2xl p-6 sm:p-8 md:border md:border-gray-200 md:shadow-md space-y-4 md:space-y-6"
-        >
-          {/* Personal Information Section */}
-          <div>
-            <h3 className="text-xl md:text-2xl font-bold text-blue-600 mb-4 md:mb-6">
-              Personal Information
-            </h3>
+        {/* Divider */}
+        <div className="border-t-2 border-gray-200"></div>
 
-            <div className="space-y-4 md:space-y-5">
-              {/* Full Name */}
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">
-                  Full Name <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <User className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
+        {/* Step 2: Rate Your Visit */}
+        <div>
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md">
+              2
+            </div>
+            <h2 className="text-xl font-bold text-gray-800">
+              Rate Your Visit
+            </h2>
+          </div>
+
+          <RatingGroup
+            label="🏥 First Visit Experience"
+            name="consultRating"
+            required
+          />
+
+          <RatingGroup
+            label="👨‍⚕️ Doctor's Consultation"
+            name="doctorRating"
+            required
+          />
+
+          {/* Doctor Explanation */}
+          <div className="mb-8">
+            <label className="block font-semibold text-gray-800 mb-4 text-lg">
+              💬 Did doctor explain clearly?
+            </label>
+            <div className="space-y-3">
+              {[
+                { value: 'yes', emoji: '✅', label: 'Yes, very clear' },
+                { value: 'partial', emoji: '🤔', label: 'Had some doubts' },
+                { value: 'no', emoji: '❌', label: 'Not clear' }
+              ].map((option) => (
+                <div key={option.value}>
                   <input
-                    type="text"
-                    name="fullName"
-                    value={formData.fullName}
+                    type="radio"
+                    id={`explain-${option.value}`}
+                    name="doctorExplanation"
+                    value={option.value}
+                    checked={formData.doctorExplanation === option.value}
                     onChange={handleChange}
-                    required
-                    placeholder="John Doe"
-                    className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    className="hidden peer"
                   />
-                </div>
-              </div>
-
-              {/* Phone & Email */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
-                <div>
-                  <label className="block text-gray-700 font-medium mb-1">
-                    Phone Number <span className="text-red-500">*</span>
+                  <label
+                    htmlFor={`explain-${option.value}`}
+                    className="flex items-center gap-3 p-4 bg-white rounded-xl cursor-pointer transition-all peer-checked:bg-blue-500 peer-checked:scale-105 active:scale-95 shadow-sm"
+                  >
+                    <span>{option.emoji}</span>
+                    <span className="text-base font-medium text-gray-700 peer-checked:text-white">{option.label}</span>
                   </label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      required
-                      placeholder="+91 98765 43210"
-                      className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                    />
-                  </div>
                 </div>
-
-                <div>
-                  <label className="block text-gray-700 font-medium mb-1">
-                    Email Address <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      placeholder="you@example.com"
-                      className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Date & Branch */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
-                <div>
-                  <label className="block text-gray-700 font-medium mb-1">
-                    Date of Visit <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-                    <input
-                      type="date"
-                      name="visitDate"
-                      value={formData.visitDate}
-                      onChange={handleChange}
-                      required
-                      className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-gray-700 font-medium mb-1">
-                    Clinic Branch <span className="text-red-500">*</span>
-                  </label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-                    <select
-                      name="branch"
-                      value={formData.branch}
-                      onChange={handleChange}
-                      required
-                      className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                    >
-                      <option value="">Choose a branch</option>
-                      <option value="Delhi">Delhi</option>
-                      <option value="Mumbai">Mumbai</option>
-                      <option value="Hyderabad">Hyderabad</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
-          {/* Consultation Experience Section */}
-          <div className="pt-4 md:pt-6">
-            <h3 className="text-xl md:text-2xl font-bold text-blue-600 mb-4 md:mb-6">
-              Consultation Experience
-            </h3>
+          <RatingGroup
+            label="👥 Staff Behavior"
+            name="staffRating"
+            required
+          />
 
-            <RatingGroup
-              label="How would you rate your initial consultation experience?"
-              name="consultRating"
-              required
-            />
+          <RatingGroup
+            label="✨ Cleanliness"
+            name="hygieneRating"
+            required
+          />
+        </div>
 
-            <RatingGroup
-              label="How satisfied were you with the doctor's consultation?"
-              name="doctorRating"
-              required
-            />
+        {/* Divider */}
+        <div className="border-t-2 border-gray-200"></div>
 
-            <div className="mb-4 md:mb-6">
-              <label className="block font-medium text-gray-700 mb-3">
-                Did the doctor explain the procedure clearly and answer all your questions?
-              </label>
-              <div className="space-y-2 md:space-y-3">
-                {[
-                  { value: 'yes', label: 'Yes, very clearly' },
-                  { value: 'partial', label: 'Somewhat, but had some doubts' },
-                  { value: 'no', label: 'No, I had many unanswered questions' }
-                ].map((option) => (
-                  <div key={option.value} className="flex items-center">
-                    <input
-                      type="radio"
-                      id={`explain-${option.value}`}
-                      name="doctorExplanation"
-                      value={option.value}
-                      checked={formData.doctorExplanation === option.value}
-                      onChange={handleChange}
-                      className="w-4 h-4 md:w-5 md:h-5 text-blue-600 cursor-pointer"
-                    />
-                    <label
-                      htmlFor={`explain-${option.value}`}
-                      className="ml-2 md:ml-3 text-gray-700 cursor-pointer text-sm md:text-base"
-                    >
-                      {option.label}
-                    </label>
-                  </div>
-                ))}
-              </div>
+        {/* Step 3: Overall */}
+        <div>
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md">
+              3
             </div>
-          </div>
-
-          {/* Staff & Facility Section */}
-          <div className="pt-4 md:pt-6">
-            <h3 className="text-xl md:text-2xl font-bold text-blue-600 mb-4 md:mb-6">
-              Staff & Facility
-            </h3>
-
-            <RatingGroup
-              label="How would you rate the behavior and professionalism of our staff?"
-              name="staffRating"
-              required
-            />
-
-            <RatingGroup
-              label="How would you rate the cleanliness and hygiene of our clinic?"
-              name="hygieneRating"
-              required
-            />
-          </div>
-
-          {/* Overall Experience Section */}
-          <div className="pt-4 md:pt-6">
-            <h3 className="text-xl md:text-2xl font-bold text-blue-600 mb-4 md:mb-6">
+            <h2 className="text-xl font-bold text-gray-800">
               Overall Experience
-            </h3>
+            </h2>
+          </div>
 
-            <RatingGroup
-              label="Overall, how satisfied are you with your experience at our clinic?"
-              name="overallRating"
-              required
-            />
+          <RatingGroup
+            label="🌟 Overall Rating"
+            name="overallRating"
+            required
+          />
 
-            <div className="mb-4 md:mb-6">
-              <label className="block font-medium text-gray-700 mb-3">
-                Would you recommend our clinic to friends and family?
-              </label>
-              <div className="space-y-2 md:space-y-3">
-                {[
-                  { value: 'yes', label: 'Yes, definitely' },
-                  { value: 'maybe', label: 'Maybe' },
-                  { value: 'no', label: 'No' }
-                ].map((option) => (
-                  <div key={option.value} className="flex items-center">
-                    <input
-                      type="radio"
-                      id={`recommend-${option.value}`}
-                      name="recommend"
-                      value={option.value}
-                      checked={formData.recommend === option.value}
-                      onChange={handleChange}
-                      className="w-4 h-4 md:w-5 md:h-5 text-blue-600 cursor-pointer"
-                    />
-                    <label
-                      htmlFor={`recommend-${option.value}`}
-                      className="ml-2 md:ml-3 text-gray-700 cursor-pointer text-sm md:text-base"
-                    >
-                      {option.label}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Text Areas */}
-            <div className="space-y-4 md:space-y-5">
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">
-                  What did you like most about your experience?
-                </label>
-                <div className="relative">
-                  <MessageSquare className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-                  <textarea
-                    name="likedMost"
-                    value={formData.likedMost}
+          {/* Recommendation */}
+          <div className="mb-8">
+            <label className="block font-semibold text-gray-800 mb-4 text-lg">
+              💙 Would you recommend us?
+            </label>
+            <div className="space-y-3">
+              {[
+                { value: 'yes', emoji: '👍', label: 'Yes, definitely!' },
+                { value: 'maybe', emoji: '🤷', label: 'Maybe' },
+                { value: 'no', emoji: '👎', label: 'No' }
+              ].map((option) => (
+                <div key={option.value}>
+                  <input
+                    type="radio"
+                    id={`recommend-${option.value}`}
+                    name="recommend"
+                    value={option.value}
+                    checked={formData.recommend === option.value}
                     onChange={handleChange}
-                    rows="3"
-                    placeholder="Share what you enjoyed..."
-                    className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    className="hidden peer"
                   />
+                  <label
+                    htmlFor={`recommend-${option.value}`}
+                    className="flex items-center gap-3 p-4 bg-white rounded-xl cursor-pointer transition-all peer-checked:bg-green-500 peer-checked:scale-105 active:scale-95 shadow-sm"
+                  >
+                    <span>{option.emoji}</span>
+                    <span className="text-base font-medium text-gray-700 peer-checked:text-white">{option.label}</span>
+                  </label>
                 </div>
-              </div>
-
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">
-                  What areas do you think we could improve?
-                </label>
-                <div className="relative">
-                  <MessageSquare className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-                  <textarea
-                    name="improvements"
-                    value={formData.improvements}
-                    onChange={handleChange}
-                    rows="3"
-                    placeholder="Your suggestions are valuable to us..."
-                    className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-gray-700 font-medium mb-1">
-                  Any additional comments or feedback
-                </label>
-                <div className="relative">
-                  <MessageSquare className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-                  <textarea
-                    name="additionalComments"
-                    value={formData.additionalComments}
-                    onChange={handleChange}
-                    rows="3"
-                    placeholder="Please share any other thoughts..."
-                    className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                  />
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className={`w-full py-3 md:py-4 rounded-lg font-semibold text-white text-lg transition-all duration-300 ${
-              isSubmitting
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300"
-            }`}
-          >
-            {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
-          </button>
+          {/* Comments */}
+          <div className="space-y-4">
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2 text-base">
+                💚 What did you like?
+              </label>
+              <textarea
+                name="likedMost"
+                value={formData.likedMost}
+                onChange={handleChange}
+                rows="3"
+                placeholder="Tell us what made you happy..."
+                className="w-full px-4 py-4 bg-white rounded-xl text-base text-gray-900 placeholder-gray-400 border-0 shadow-sm focus:ring-2 focus:ring-blue-400 outline-none resize-none"
+              />
+            </div>
 
-          {/* Privacy Note */}
-          <p className="text-xs text-gray-500 text-center">
-            🔒 Your feedback is confidential and helps us improve our services.
-          </p>
-        </form>
-      </div>
-    </section>
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2 text-base">
+                💡 How can we improve?
+              </label>
+              <textarea
+                name="improvements"
+                value={formData.improvements}
+                onChange={handleChange}
+                rows="3"
+                placeholder="Your suggestions help us..."
+                className="w-full px-4 py-4 bg-white rounded-xl text-base text-gray-900 placeholder-gray-400 border-0 shadow-sm focus:ring-2 focus:ring-blue-400 outline-none resize-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2 text-base">
+                💬 Anything else?
+              </label>
+              <textarea
+                name="additionalComments"
+                value={formData.additionalComments}
+                onChange={handleChange}
+                rows="3"
+                placeholder="Share any other thoughts..."
+                className="w-full px-4 py-4 bg-white rounded-xl text-base text-gray-900 placeholder-gray-400 border-0 shadow-sm focus:ring-2 focus:ring-blue-400 outline-none resize-none"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={`w-full py-5 rounded-2xl font-bold text-white text-lg transition-all duration-300 shadow-lg ${
+            isSubmitting
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-gradient-to-r from-blue-500 to-blue-600 active:scale-95"
+          }`}
+        >
+          {isSubmitting ? '✨ Sending...' : '🚀 Submit Feedback'}
+        </button>
+
+        {/* Privacy Note */}
+        <p className="text-sm text-gray-500 text-center px-4">
+          🔒 Your feedback helps us serve you better
+        </p>
+      </form>
+    </div>
   )
 }
