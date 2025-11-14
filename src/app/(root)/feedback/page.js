@@ -47,7 +47,8 @@ export default function FeedbackForm() {
       const result = await response.json()
 
       if (response.ok) {
-        alert('✅ Thank you so much! Your feedback means a lot to us! 💙')
+        // Check if user gave 5 stars before resetting form
+        const isFiveStar = parseInt(formData.overallRating) === 5;
         
         // Reset form
         setFormData({
@@ -66,6 +67,16 @@ export default function FeedbackForm() {
           improvements: '',
           additionalComments: ''
         })
+
+        // Show message and redirect for 5 stars
+        if (isFiveStar) {
+          alert('✅ Thanks for your feedback! Would you please rate us on Google?')
+          setTimeout(() => {
+            window.location.href = 'https://shorturl.at/0QdEW'
+          }, 1000)
+        } else {
+          alert('✅ Thank you so much! Your feedback means a lot to us! 💙')
+        }
       } else {
         alert('❌ Oops! Something went wrong. Please try again.')
         console.error('Error:', result)
