@@ -192,6 +192,7 @@ export default function InternationalAppointmentPage() {
                     <option value="Bangalore">Bangalore</option>
                     <option value="Chennai">Chennai</option>
                     <option value="Calicut">Calicut</option>
+                    <option value="Kolkata">Kolkata</option>
                     <option value="Kochi">Kochi</option>
                     <option value="West Bengal">West Bengal</option>
                     <option value="Jaipur">Jaipur</option>
