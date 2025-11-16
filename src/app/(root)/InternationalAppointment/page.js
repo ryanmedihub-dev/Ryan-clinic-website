@@ -1,27 +1,25 @@
 "use client";
 import { useState, useEffect } from "react";
 import {
-  Mail,
   Phone,
   User,
   Calendar,
-  Clock,
   MapPin,
   MessageSquare,
   Globe,
+  Users,
 } from "lucide-react";
 
 export default function InternationalAppointmentPage() {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
-    email: "",
     date: "",
-    time: "",
     branch: "Delhi",
-    visit: "",
     notes: "",
     country: "",
+    agentName: "",
+    teamLeaderName: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -62,13 +60,12 @@ export default function InternationalAppointmentPage() {
         setFormData({
           name: "",
           phone: "",
-          email: "",
           date: "",
-          time: "",
           branch: "",
-          visit: "",
           notes: "",
           country: "",
+          agentName: "",
+          teamLeaderName: "",
         });
       } else {
         alert("❌ Failed to book. Please try again.");
@@ -90,7 +87,7 @@ export default function InternationalAppointmentPage() {
             Book Your Appointment
           </h2>
           <p className="text-gray-600 text-base md:text-lg">
-            Fill in your details and we’ll confirm your appointment shortly.
+            Fill in your details and we'll confirm your appointment shortly.
           </p>
         </div>
 
@@ -118,122 +115,80 @@ export default function InternationalAppointmentPage() {
             </div>
           </div>
 
-          {/* Phone + Email */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <div>
-              <label className="block text-gray-700 font-medium mb-1">
-                Phone Number <span className="text-red-500">*</span>
-              </label>
-              <div className="relative">
-                <Phone className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-                <input
-                  type="number"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                  placeholder="+91 98765 43210"
-                  className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 text-gray-900"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-gray-700 font-medium mb-1">
-                Email Address
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="you@example.com"
-                  className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 text-gray-900"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Date + Time */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <div>
-              <label className="block text-gray-700 font-medium mb-1">
-                Preferred Date <span className="text-red-500"></span>
-              </label>
-              <div className="relative">
-                <Calendar className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-                <input
-                  type="date"
-                  name="date"
-                  value={formData.date}
-                  onChange={handleChange}
-                  min={new Date().toISOString().split("T")[0]}
-                  className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 text-gray-900"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-gray-700 font-medium mb-1">
-                Preferred Time <span className="text-red-500"></span>
-              </label>
-              <div className="relative">
-                <Clock className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-                <input
-                  type="time"
-                  name="time"
-                  value={formData.time}
-                  onChange={handleChange}
-                  min="09:00"
-                  max="19:00"
-                  className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 text-gray-900"
-                />
-              </div>
-            </div>
-          </div>
-
+          {/* Phone Number */}
           <div>
             <label className="block text-gray-700 font-medium mb-1">
-              When do you plan for hair transplant{" "}
-              <span className="text-red-500"></span>
+              Phone Number <span className="text-red-500">*</span>
             </label>
             <div className="relative">
-              <Clock className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-              <select
-                name="visit"
-                value={formData.visit}
+              <Phone className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
+              <input
+                type="number"
+                name="phone"
+                value={formData.phone}
                 onChange={handleChange}
-                className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-              >
-                <option value="within week">Within a week</option>
-                <option value="within month">Within a month</option>
-                <option value="next 2-3 month">Next 2-3 month</option>
-                <option value="not sure">Not Sure</option>
-              </select>
+                required
+                placeholder="+91 98765 43210"
+                className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 text-gray-900"
+              />
             </div>
           </div>
 
-          {/* Branch */}
-          {/* <div>
+          {/* Preferred Date */}
+          <div>
             <label className="block text-gray-700 font-medium mb-1">
-              Select Branch <span className="text-red-500">*</span>
+              Preferred Date <span className="text-red-500"></span>
             </label>
             <div className="relative">
-              <MapPin className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-              <select
-                name="branch"
-                value={formData.branch}
+              <Calendar className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
+              <input
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+                min={new Date().toISOString().split("T")[0]}
+                className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 text-gray-900"
+              />
+            </div>
+          </div>
+
+          {/* Agent Name */}
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">
+              Agent Name <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <User className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
+              <input
+                type="text"
+                name="agentName"
+                value={formData.agentName}
                 onChange={handleChange}
                 required
-                className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 bg-white text-gray-900"
-              >
-                <option value="">Choose a branch</option>
-                <option value="Mumbai">Mumbai</option>
-                <option value="Delhi">Delhi</option>
-                <option value="Hyderabad">Hyderabad</option>
-              </select>
+                placeholder="Enter agent name"
+                className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 text-gray-900"
+              />
             </div>
-          </div> */}
+          </div>
+
+          {/* Team Leader Name */}
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">
+              Team Leader Name <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <Users className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
+              <input
+                type="text"
+                name="teamLeaderName"
+                value={formData.teamLeaderName}
+                onChange={handleChange}
+                required
+                placeholder="Enter team leader name"
+                className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 text-gray-900"
+              />
+            </div>
+          </div>
 
           {/* Country Dropdown */}
           <div>

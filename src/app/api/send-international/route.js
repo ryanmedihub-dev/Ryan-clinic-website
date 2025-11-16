@@ -2,25 +2,10 @@ export async function POST(req) {
   try {
     const body = await req.json();
 
-    // ✅ If no country selected, fallback to auto-detect
-    if (!body.country || body.country === "") {
-      const ip =
-        req.headers.get("x-forwarded-for")?.split(",")[0] ||
-        req.headers.get("x-real-ip") ||
-        "8.8.8.8"; // fallback
-      try {
-        const geoRes = await fetch(`https://ipapi.co/${ip}/json/`);
-        const geo = await geoRes.json();
-        body.country = geo.country_name || "Unknown";
-      } catch (geoErr) {
-        console.error("Geo lookup failed:", geoErr);
-        body.country = "Unknown";
-      }
-    }
 
     // ✅ Send to Google Sheets
     const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbwwUT5rjsrEQud8syRW5Xf3Xotuq2diAhTukmCpBcoDLykxmvcJkasXZG02gOmb1119Fg/exec",
+      "https://script.google.com/macros/s/AKfycbwXmhraJdZ5pZE-CrzkIC-gi1CMK4biJ_h1J2o1w4fahUhRDuAhCVsYuCl-wsUtxyTO/exec",
       {
         method: "POST",
         body: JSON.stringify(body),
