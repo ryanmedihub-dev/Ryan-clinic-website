@@ -197,6 +197,7 @@ export default function InternationalAppointmentPage() {
                     <option value="Jaipur">Jaipur</option>
                     <option value="Jalandhar">Jalandhar</option>
                     <option value="Ludhiana">Ludhiana</option>
+                    <option value="Jharkhand">Jharkhand</option>
                     <option value="Pune">Pune</option>
                     <option value="Patna">Patna</option>
                     <option value="Himachal">Himachal</option>
