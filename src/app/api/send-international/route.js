@@ -2,10 +2,11 @@ export async function POST(req) {
   try {
     const body = await req.json();
 
+    
 
     // ✅ Send to Google Sheets
     const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbwXmhraJdZ5pZE-CrzkIC-gi1CMK4biJ_h1J2o1w4fahUhRDuAhCVsYuCl-wsUtxyTO/exec",
+      "https://script.google.com/macros/s/AKfycbzd3QOmYpl5xf-eSsjNlhbAbWwIUC_n_o0LibFrbhORCdHszzusosJziKzGkC-SHWbfnQ/exec",
       {
         method: "POST",
         body: JSON.stringify(body),
