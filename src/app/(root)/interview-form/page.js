@@ -1,5 +1,5 @@
 "use client";
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
 
 export default function InterviewForm() {
   const [formData, setFormData] = useState({
@@ -45,7 +45,6 @@ export default function InterviewForm() {
     }
   }, []);
 
-
   const experienceYears = Array.from({ length: 21 }, (_, i) => i);
 
   const handleChange = (e) => {
@@ -62,26 +61,29 @@ export default function InterviewForm() {
   // Validation functions for each step
   const validateStep1 = () => {
     const errors = {};
-    
+
     if (!formData.name.trim()) errors.name = "Name is required";
     if (!formData.date) errors.date = "Date is required";
     if (!formData.position) errors.position = "Position is required";
     if (!formData.phone.trim()) errors.phone = "Phone number is required";
     if (!formData.address.trim()) errors.address = "Address is required";
-    
+
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
   const validateStep2 = () => {
     const errors = {};
-    
+
     if (formData.experienceType === "Experienced") {
-      if (!formData.yearsOfExperience) errors.yearsOfExperience = "Years of experience is required";
-      if (!formData.previousCompany.trim()) errors.previousCompany = "Previous company is required";
-      if (!formData.previousPosition.trim()) errors.previousPosition = "Previous position is required";
+      if (!formData.yearsOfExperience)
+        errors.yearsOfExperience = "Years of experience is required";
+      if (!formData.previousCompany.trim())
+        errors.previousCompany = "Previous company is required";
+      if (!formData.previousPosition.trim())
+        errors.previousPosition = "Previous position is required";
     }
-    
+
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -98,12 +100,10 @@ export default function InterviewForm() {
         body: JSON.stringify(formData),
       });
 
-
       const data = await res.json();
       if (res.ok) {
-                alert("✅ Form submitted successfully!");
-
         setMessage("✅ Form submitted successfully!");
+
         setFormData({
           name: "",
           date: "",
@@ -122,6 +122,10 @@ export default function InterviewForm() {
           reference: "",
         });
         setCurrentStep(1);
+
+        setTimeout(() => {
+          window.location.href = "https://www.instagram.com/ryan_clinic/";
+        }, 500); // 1.5 second delay to show success message
       } else {
         setMessage("❌ " + (data.message || "Submission failed"));
       }
@@ -134,13 +138,13 @@ export default function InterviewForm() {
 
   const nextStep = () => {
     let isValid = false;
-    
+
     if (currentStep === 1) {
       isValid = validateStep1();
     } else if (currentStep === 2) {
       isValid = validateStep2();
     }
-    
+
     if (isValid) {
       setCurrentStep(currentStep + 1);
       window.scrollTo(0, 0);
@@ -255,13 +259,17 @@ export default function InterviewForm() {
                         value={formData.name}
                         onChange={handleChange}
                         className={`w-full pl-10 pr-4 py-3 border ${
-                          validationErrors.name ? "border-red-500" : "border-gray-300"
+                          validationErrors.name
+                            ? "border-red-500"
+                            : "border-gray-300"
                         } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition`}
                         required
                       />
                     </div>
                     {validationErrors.name && (
-                      <p className="text-red-500 text-xs mt-1">{validationErrors.name}</p>
+                      <p className="text-red-500 text-xs mt-1">
+                        {validationErrors.name}
+                      </p>
                     )}
                   </div>
 
@@ -293,13 +301,17 @@ export default function InterviewForm() {
                         onChange={handleChange}
                         min={new Date().toISOString().split("T")[0]} // ✅ Prevent past dates
                         className={`w-full pl-10 pr-4 py-3 border ${
-                          validationErrors.date ? "border-red-500" : "border-gray-300"
+                          validationErrors.date
+                            ? "border-red-500"
+                            : "border-gray-300"
                         } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition`}
                         required
                       />
                     </div>
                     {validationErrors.date && (
-                      <p className="text-red-500 text-xs mt-1">{validationErrors.date}</p>
+                      <p className="text-red-500 text-xs mt-1">
+                        {validationErrors.date}
+                      </p>
                     )}
                   </div>
 
@@ -329,7 +341,9 @@ export default function InterviewForm() {
                         value={formData.position}
                         onChange={handleChange}
                         className={`w-full pl-10 pr-4 py-3 border ${
-                          validationErrors.position ? "border-red-500" : "border-gray-300"
+                          validationErrors.position
+                            ? "border-red-500"
+                            : "border-gray-300"
                         } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition appearance-none`}
                         required
                       >
@@ -356,7 +370,9 @@ export default function InterviewForm() {
                       </div>
                     </div>
                     {validationErrors.position && (
-                      <p className="text-red-500 text-xs mt-1">{validationErrors.position}</p>
+                      <p className="text-red-500 text-xs mt-1">
+                        {validationErrors.position}
+                      </p>
                     )}
                   </div>
 
@@ -388,13 +404,17 @@ export default function InterviewForm() {
                         value={formData.phone}
                         onChange={handleChange}
                         className={`w-full pl-10 pr-4 py-3 border ${
-                          validationErrors.phone ? "border-red-500" : "border-gray-300"
+                          validationErrors.phone
+                            ? "border-red-500"
+                            : "border-gray-300"
                         } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition`}
                         required
                       />
                     </div>
                     {validationErrors.phone && (
-                      <p className="text-red-500 text-xs mt-1">{validationErrors.phone}</p>
+                      <p className="text-red-500 text-xs mt-1">
+                        {validationErrors.phone}
+                      </p>
                     )}
                   </div>
 
@@ -496,14 +516,18 @@ export default function InterviewForm() {
                       value={formData.address}
                       onChange={handleChange}
                       className={`w-full pl-10 pr-4 py-3 border ${
-                        validationErrors.address ? "border-red-500" : "border-gray-300"
+                        validationErrors.address
+                          ? "border-red-500"
+                          : "border-gray-300"
                       } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition`}
                       rows="3"
                       required
                     ></textarea>
                   </div>
                   {validationErrors.address && (
-                    <p className="text-red-500 text-xs mt-1">{validationErrors.address}</p>
+                    <p className="text-red-500 text-xs mt-1">
+                      {validationErrors.address}
+                    </p>
                   )}
                 </div>
 
@@ -641,7 +665,9 @@ export default function InterviewForm() {
                           value={formData.yearsOfExperience}
                           onChange={handleChange}
                           className={`w-full pl-10 pr-4 py-3 border ${
-                            validationErrors.yearsOfExperience ? "border-red-500" : "border-gray-300"
+                            validationErrors.yearsOfExperience
+                              ? "border-red-500"
+                              : "border-gray-300"
                           } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition appearance-none`}
                           required
                         >
@@ -668,7 +694,9 @@ export default function InterviewForm() {
                         </div>
                       </div>
                       {validationErrors.yearsOfExperience && (
-                        <p className="text-red-500 text-xs mt-1">{validationErrors.yearsOfExperience}</p>
+                        <p className="text-red-500 text-xs mt-1">
+                          {validationErrors.yearsOfExperience}
+                        </p>
                       )}
                     </div>
 
@@ -700,13 +728,17 @@ export default function InterviewForm() {
                           value={formData.previousCompany}
                           onChange={handleChange}
                           className={`w-full pl-10 pr-4 py-3 border ${
-                            validationErrors.previousCompany ? "border-red-500" : "border-gray-300"
+                            validationErrors.previousCompany
+                              ? "border-red-500"
+                              : "border-gray-300"
                           } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition`}
                           required
                         />
                       </div>
                       {validationErrors.previousCompany && (
-                        <p className="text-red-500 text-xs mt-1">{validationErrors.previousCompany}</p>
+                        <p className="text-red-500 text-xs mt-1">
+                          {validationErrors.previousCompany}
+                        </p>
                       )}
                     </div>
 
@@ -738,13 +770,17 @@ export default function InterviewForm() {
                           value={formData.previousPosition}
                           onChange={handleChange}
                           className={`w-full pl-10 pr-4 py-3 border ${
-                            validationErrors.previousPosition ? "border-red-500" : "border-gray-300"
+                            validationErrors.previousPosition
+                              ? "border-red-500"
+                              : "border-gray-300"
                           } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition`}
                           required
                         />
                       </div>
                       {validationErrors.previousPosition && (
-                        <p className="text-red-500 text-xs mt-1">{validationErrors.previousPosition}</p>
+                        <p className="text-red-500 text-xs mt-1">
+                          {validationErrors.previousPosition}
+                        </p>
                       )}
                     </div>
 
