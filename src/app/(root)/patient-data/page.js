@@ -186,6 +186,7 @@ export default function InternationalAppointmentPage() {
                     <option value="Hyderabad">Hyderabad</option>
                     <option value="Chandigarh">Chandigarh</option>
                     <option value="Lucknow">Lucknow</option>
+                    <option value="Bhopal">Bhopal</option>
                     <option value="Guwahati">Guwahati</option>
                     <option value="Prayagraj">Prayagraj</option>
                     <option value="Ahmedabad">Ahmedabad</option>

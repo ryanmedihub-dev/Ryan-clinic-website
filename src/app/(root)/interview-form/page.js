@@ -103,6 +103,7 @@ export default function InterviewForm() {
       const data = await res.json();
       if (res.ok) {
         setMessage("✅ Form submitted successfully!");
+        
 
         setFormData({
           name: "",
@@ -914,8 +915,8 @@ export default function InterviewForm() {
                       <option value="HR Sanjana">HR Sanjana</option>
                       <option value="HR Tulsi">HR Tulsi</option>
                       <option value="HR Sakshi">HR Sakshi</option>
-                      <option value="HR Sarabjeet">HR Sarabjeet</option>
-                      <option value="HR Kashish">HR Kashish</option>
+                      <option value="HR Muskan">HR Muskan</option>
+                      {/* <option value="HR Kashish">HR Kashish</option> */}
                       <option value="Other">Other</option>
                     </select>
                     <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
