@@ -203,7 +203,7 @@ export default function InternationalAppointmentPage() {
                     <option value="Pune">Pune</option>
                     <option value="Patna">Patna</option>
                     <option value="Himachal">Himachal</option>
-                    <option value="Kashmir">Kashmir</option>
+                    <option value="Jammu & Kashmir">Jammu & Kashmir</option>
                   </select>
                 </div>
               </div>
