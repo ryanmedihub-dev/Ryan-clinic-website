@@ -14,11 +14,14 @@ import {
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
+    formtype: "Website Form",
     name: "",
     email: "",
     phone: "",
-    serviceType: "",
+    service: "",
     message: "",
+    location: "India",
+    source : "Main Website",
   });
 
   const [loading, setLoading] = useState(false);
@@ -29,7 +32,7 @@ export default function ContactForm() {
   };
 
   const handleSelectChange = (value) => {
-    setFormData((prev) => ({ ...prev, serviceType: value }));
+    setFormData((prev) => ({ ...prev, service: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -58,7 +61,7 @@ export default function ContactForm() {
           name: "",
           email: "",
           phone: "",
-          serviceType: "",
+          service: "",
           message: "",
         });
       } else {
@@ -107,7 +110,7 @@ export default function ContactForm() {
           />
 
           <Select
-            value={formData.serviceType}
+            value={formData.service}
             onValueChange={handleSelectChange}
           >
             <SelectTrigger className="w-full">
