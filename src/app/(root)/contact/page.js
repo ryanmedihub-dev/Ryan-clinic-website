@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import AboutBanner from "../../../../public/uploads/about-banner.webp"
+import AboutBanner from "../../../../public/uploads/about-banner.webp";
 
 import {
   Select,
@@ -86,7 +86,6 @@ export default function ContactUs() {
         <section className="py-12 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-              
               {/* Left Side - Contact Info */}
               <div className="bg-white rounded-2xl shadow-md p-8">
                 <h2 className="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">
@@ -114,7 +113,8 @@ export default function ContactUs() {
                       Mumbai Clinic
                     </h3>
                     <p className="text-gray-600 text-sm">
-                      45 Marine Drive, Churchgate, Mumbai, 400020
+                      mhada 4 bunglow, 168, Phase D, SV Patel Nagar, Andheri
+                      West, Mumbai, Maharashtra 400053
                     </p>
                   </div>
                 </div>
@@ -157,7 +157,6 @@ export default function ContactUs() {
                 </div>
 
                 {/* Google Map */}
-               
               </div>
 
               {/* Right Side - Custom Contact Form */}

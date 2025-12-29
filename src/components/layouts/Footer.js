@@ -201,8 +201,7 @@ export default function Footer() {
               Mumbai Branch
             </h4>
             <p className="text-sm md:text-base">
-              Office No.1 & 2,1st floor, Owala Naka, OM SAI PLAZA, w)-400615,
-              Kasarvadavali, Thane West, Thane, Mumbai, Maharashtra 400615
+             mhada 4 bunglow, 168, Phase D, SV Patel Nagar, Andheri West, Mumbai, Maharashtra 400053
             </p>
           </div>
 
