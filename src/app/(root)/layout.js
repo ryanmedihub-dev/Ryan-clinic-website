@@ -3,6 +3,7 @@ import Header from "@/components/layouts/Header";
 import Footer from "@/components/layouts/Footer";
 import { Baloo_Bhaijaan_2 } from "next/font/google";
 import { Hind_Siliguri } from "next/font/google";
+import Script from "next/script";
 
 const hindSiliguri = Hind_Siliguri({
   subsets: ["latin"],
@@ -82,7 +83,6 @@ export default function RootLayout({ children }) {
         {/* ✅ Extra Meta Tags */}
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="msvalidate.01" content="DD718F54C1640669F3FF6B86F0C3BBDF" />
-        {/* <meta name="yandex-verification" content="2c48028280a84f749a812039bf6567f8" /> */}
         <meta name="yandex-verification" content="2a66899c829e502a" />
         <meta name="yahooSeeker" content="index, follow" />
         <meta name="msnbot" content="index, follow" />
@@ -91,7 +91,24 @@ export default function RootLayout({ children }) {
         <meta name="distribution" content="global" />
         <meta name="author" content="Ryan Clinic" />
         <meta name="copyright" content="clinicryan.com" />
+
+        {/* ✅ Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-EC3DHJNBK5"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-EC3DHJNBK5', {
+        page_path: window.location.pathname,
+      });
+    `}
+        </Script>
       </head>
+
       <body className={`${hindSiliguri.className} antialiased`}>
         <Header />
         {children}
