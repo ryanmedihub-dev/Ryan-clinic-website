@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown  , CircleCheck} from "lucide-react";
 
 import Years from "@/../public/assets/calendar.png";
 import Patients from "@/../public/assets/patient.png";
@@ -111,57 +111,41 @@ export default function WhyChooseRyanClinic() {
       name: "Completely Safe",
       discription:
         "Our hair transplant procedures are performed in a sterile environment, ensuring the highest safety standards.",
-      image:
-        "https://res.cloudinary.com/dha2ecdnn/image/upload/v1744614668/hair_cqzsax.png",
     },
     {
       name: "Natural-Looking Results",
       discription:
         "Our precise control over graft depth, direction, and placement angle guarantees a completely natural appearance.",
-      image:
-        "https://res.cloudinary.com/dha2ecdnn/image/upload/v1744614685/shield_b3ueha.png",
     },
     {
       name: "Pain-Free Hair Transplant",
       discription:
         "Using tiny, disposable instruments with a diameter of 1mm or less, we ensure a comfortable, pain-free experience during graft extraction and placement.",
-      image:
-        "https://res.cloudinary.com/dha2ecdnn/image/upload/v1744614685/techniq_rj2sy8.png",
     },
     {
       name: "High Graft Survival Rate",
       discription:
         "With a graft survival rate exceeding 90%, our success rate far surpasses the industry average of 50%, as confirmed by independent research.",
-      image:
-        "https://res.cloudinary.com/dha2ecdnn/image/upload/v1744614669/pen_bsegei.png",
     },
     {
       name: "Hair Transplant Surgeons",
       discription:
         "At our clinic, all hair transplant procedures are performed exclusively by highly skilled and certified medical doctors and their team.",
-      image:
-        "https://res.cloudinary.com/dha2ecdnn/image/upload/v1744614669/boy_lrhm0u.png",
     },
     {
       name: "Permanent Hair Growth",
       discription:
         "We exclusively select healthy hair follicles for implantation, ensuring long-term, lasting hair growth free from dormant hair in the telogen phase.",
-      image:
-        "https://res.cloudinary.com/dha2ecdnn/image/upload/v1744614669/people_ngty1b.png",
     },
     {
       name: "Our Presence",
       discription:
         "With a global presence, we are renowned for trusted hair restoration solutions that restore confidence and deliver natural results.",
-      image:
-        "https://res.cloudinary.com/dha2ecdnn/image/upload/v1744614669/map-icon_ufrpdg.png",
     },
     {
       name: "Medical Team",
       discription:
         "Our expert medical team is dedicated to providing the highest standard of care, ensuring safe, effective, and natural hair restoration results.",
-      image:
-        "https://res.cloudinary.com/dha2ecdnn/image/upload/v1744614669/medical-team_bchhcu.png",
     },
   ];
 
@@ -216,12 +200,7 @@ export default function WhyChooseRyanClinic() {
                     <div className="flex justify-between items-center">
                       <h3 className="title font-bold gap-3 flex items-center">
                         <span>
-                          <Image
-                            src={item.image}
-                            width={40}
-                            height={40}
-                            alt={item.name}
-                          />
+                          <CircleCheck />
                         </span>
                         {item?.name}
                       </h3>

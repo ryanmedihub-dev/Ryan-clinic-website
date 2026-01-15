@@ -4,7 +4,7 @@ import { withDB } from "@/lib/withDB";
 
 export const PUT = withDB(async (req, { params }) => {
   try {
-    const { id } = params;
+    const { id } = await params;
     const body = await req.json();
 
     if (!id || !/^[0-9a-fA-F]{24}$/.test(id)) {
