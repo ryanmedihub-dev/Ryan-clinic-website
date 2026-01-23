@@ -916,6 +916,8 @@ export default function InterviewForm() {
                       <option value="HR Tulsi">HR Tulsi</option>
                       <option value="HR Sakshi">HR Sakshi</option>
                       <option value="HR Muskan">HR Muskan</option>
+                      <option value="HR Hamida">HR Hamida</option>
+                      <option value="HR Tanvi">HR Tanvi</option>
                       {/* <option value="HR Kashish">HR Kashish</option> */}
                       <option value="Other">Other</option>
                     </select>
