@@ -139,7 +139,7 @@ export default function ContactUs() {
                     <h3 className="text-lg font-semibold text-gray-700">
                       Mobile No.
                     </h3>
-                    <p className="text-gray-600 text-sm">+91 9911111247</p>
+                    <p className="text-gray-600 text-sm">+91 9217466356</p>
                   </div>
                 </div>
 

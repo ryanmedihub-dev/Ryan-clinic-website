@@ -15,7 +15,7 @@ export default function pageBanner({title , description , url , alt="Ryan clinic
         </p>
 
         <a
-          href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi, I visited your website. Please guide me with the best treatment."
+          href="https://api.whatsapp.com/send?phone=+919217466356&text=Hi, I visited your website. Please guide me with the best treatment."
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center text-xs md:text-lg md:px-5 px-3 md:py-3 py-2   border border-gray-400 rounded-md bg-white shadow-md hover:shadow-lg transition"

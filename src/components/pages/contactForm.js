@@ -54,7 +54,7 @@ export default function ContactForm() {
 
         // ✅ Redirect to WhatsApp
         window.location.href =
-          "https://wa.me/919911111247?text=Hi, I have submitted the Google form.";
+          "https://wa.me/919217466356?text=Hi, I have submitted the Google form.";
 
         // ✅ Reset form
         setFormData({
