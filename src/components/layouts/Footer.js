@@ -1,7 +1,8 @@
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
-import Logo from '../../../public/uploads/logo-2.png'
+import Logo from '../../../public/uploads/logo-2.png';
+import FooterCallbackForm from "@/components/pages/FooterCallbackForm";
 
 export default function Footer() {
   return (
@@ -31,45 +32,7 @@ export default function Footer() {
 
           {/* Right Side - Callback Form */}
           <div className="bg-zinc-800 rounded-md p-6 sm:p-8 md:p-10">
-            <form className="space-y-4">
-              <h2 className="text-xl sm:text-2xl font-bold underline text-center mb-4">
-                Request a Callback
-              </h2>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <input
-                  type="text"
-                  placeholder="Name*"
-                  className="w-full p-2 px-4 text-sm rounded bg-gray-100 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="w-full p-2 px-4 text-sm rounded bg-gray-100 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div>
-                <input
-                  type="number"
-                  placeholder="Phone Number*"
-                  className="w-full p-2 px-4 text-sm rounded bg-gray-100 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <select
-                className="w-full p-2 px-4 text-sm rounded bg-gray-100 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="locations"
-              >
-                <option value="Delhi">Delhi</option>
-                <option value="Mumbai">Mumbai</option>
-                <option value="Hyderabad">Hyderabad</option>
-              </select>
-
-              <button
-                type="submit"
-                className="w-full bg-slate-300 text-black cursor-pointer font-semibold py-2 rounded hover:bg-gray-200 transition duration-300"
-              >
-                Submit
-              </button>
-            </form>
+            <FooterCallbackForm />
           </div>
         </div>
       </div>
@@ -99,7 +62,7 @@ export default function Footer() {
             </div>
             <div className="flex text-xl gap-2 items-center">
               <FaFacebookF className="text-blue-500" />
-              <a href="https://www.instagram.com/ryan_clinic?igsh=MTVjbHJja2xpMGxrdg%3D%3D" className="underline text-base md:text-lg font-medium hover:text-blue-400 transition">
+              <a href="https://www.facebook.com/RyanClinic3210" className="underline text-base md:text-lg font-medium hover:text-blue-400 transition">
                 RyanClinic3210
               </a>
             </div>
@@ -141,7 +104,7 @@ export default function Footer() {
               <Link href="/chemical-skin-peels">Chemical Skin Peels</Link>
             </li>
             <li className="text-base md:text-lg my-3 md:pl-6 hover:text-blue-300 transition">
-              <Link href="/chemical-skin-peels">Alopecia Treatment</Link>
+              <Link href="/alopecia-treatments">Alopecia Treatment</Link>
             </li>
           </ul>
         </div>
@@ -151,7 +114,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 text-left border-y border-gray-600 py-8 md:py-10">
           <ul className="md:border-r md:border-gray-600 md:pr-4">
             <li className="text-base md:text-lg my-3 md:pl-6 hover:text-blue-300 transition">
-              <Link href="/contact">Home</Link>
+              <Link href="/">Home</Link>
             </li>
             <li className="text-base md:text-lg my-3 md:pl-6 hover:text-blue-300 transition">
               <Link href="/about">About</Link>
@@ -159,10 +122,10 @@ export default function Footer() {
           </ul>
           <ul className="md:border-r md:border-gray-600 md:px-4">
             <li className="text-base md:text-lg my-3 md:pl-6 hover:text-blue-300 transition">
-              <Link href="/chemical-skin-peels">Our Gallery</Link>
+              <Link href="/gallery/images">Our Gallery</Link>
             </li>
             <li className="text-base md:text-lg my-3 md:pl-6 hover:text-blue-300 transition">
-              <Link href="/chemical-skin-peels">Our Videos</Link>
+              <Link href="/gallery/images">Our Videos</Link>
             </li>
           </ul>
           <ul className="md:border-r md:border-gray-600 md:px-4">
@@ -178,7 +141,7 @@ export default function Footer() {
               <Link href="/contact">Follow us</Link>
             </li>
             <li className="text-base flex gap-4 my-3 md:pl-6">
-              <a href="https://www.instagram.com/ryan_clinic?igsh=MTVjbHJja2xpMGxrdg%3D%3D" className="hover:text-blue-500 transition"><FaFacebookF /></a>
+              <a href="https://www.facebook.com/RyanClinic3210" className="hover:text-blue-500 transition"><FaFacebookF /></a>
               <a href="https://www.instagram.com/ryan_clinic?igsh=MTVjbHJja2xpMGxrdg%3D%3D" className="hover:text-pink-500 transition"><FaInstagram /></a>
               <a href="https://www.youtube.com/@RyanTranplant" className="hover:text-red-500 transition"><FaYoutube /></a>
             </li>

@@ -28,7 +28,7 @@ const procedures = [
     highlight: true,
   },
   {
-    title: "Turkey Specialist Technique Technique",
+    title: "Turkey Specialist Technique",
     image:
       "https://res.cloudinary.com/dha2ecdnn/image/upload/v1742129542/Turkey Specialist Technique-banner_cfkksz.jpg",
     features: [

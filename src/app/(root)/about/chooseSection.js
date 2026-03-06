@@ -16,7 +16,7 @@ const steps = [
     id: 1,
     title: "Contact Us",
     description:
-      "Reach out to us via phone at (+919217466356) or email at (Clinicryanofficial@gmail.com) to schedule a consultation.",
+      "Reach out to us via phone at (+919217974937) or email at (Clinicryanofficial@gmail.com) to schedule a consultation.",
     icon: Phone,
   },
   {

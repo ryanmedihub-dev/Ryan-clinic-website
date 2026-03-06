@@ -242,7 +242,7 @@ const BlogCarousel = ({ blogsdata }) => {
         {/* Mobile view link */}
         <div className="mt-8 text-center lg:hidden">
           <Link
-            href="/"
+            href="/blog"
             className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium group"
           >
             View All Blogs

@@ -12,17 +12,19 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 
+const emptyForm = {
+  formtype: "Website Form",
+  name: "",
+  email: "",
+  phone: "",
+  service: "",
+  message: "",
+  location: "India",
+  source: "Main Website",
+};
+
 export default function ContactForm() {
-  const [formData, setFormData] = useState({
-    formtype: "Website Form",
-    name: "",
-    email: "",
-    phone: "",
-    service: "",
-    message: "",
-    location: "India",
-    source : "Main Website",
-  });
+  const [formData, setFormData] = useState(emptyForm);
 
   const [loading, setLoading] = useState(false);
 
@@ -52,18 +54,9 @@ export default function ContactForm() {
       if (data.success) {
         alert("✅ Form submitted successfully!");
 
-        // ✅ Redirect to WhatsApp
         window.location.href =
-          "https://wa.me/919217466356?text=Hi, I have submitted the Google form.";
-
-        // ✅ Reset form
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          service: "",
-          message: "",
-        });
+          "https://wa.me/919217974937?text=Hi, I have submitted the Google form.";
+        setFormData(emptyForm);
       } else {
         alert("⚠️ " + (data.message || data.error || "Something went wrong"));
       }
@@ -102,7 +95,7 @@ export default function ContactForm() {
 
           <Input
             placeholder="Contact Number*"
-            type="number"
+            type="tel"
             name="phone"
             value={formData.phone}
             onChange={handleChange}

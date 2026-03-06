@@ -109,42 +109,42 @@ export default function WhyChooseRyanClinic() {
   const chooseData = [
     {
       name: "Completely Safe",
-      discription:
+      description:
         "Our hair transplant procedures are performed in a sterile environment, ensuring the highest safety standards.",
     },
     {
       name: "Natural-Looking Results",
-      discription:
+      description:
         "Our precise control over graft depth, direction, and placement angle guarantees a completely natural appearance.",
     },
     {
       name: "Pain-Free Hair Transplant",
-      discription:
+      description:
         "Using tiny, disposable instruments with a diameter of 1mm or less, we ensure a comfortable, pain-free experience during graft extraction and placement.",
     },
     {
       name: "High Graft Survival Rate",
-      discription:
+      description:
         "With a graft survival rate exceeding 90%, our success rate far surpasses the industry average of 50%, as confirmed by independent research.",
     },
     {
       name: "Hair Transplant Surgeons",
-      discription:
+      description:
         "At our clinic, all hair transplant procedures are performed exclusively by highly skilled and certified medical doctors and their team.",
     },
     {
       name: "Permanent Hair Growth",
-      discription:
+      description:
         "We exclusively select healthy hair follicles for implantation, ensuring long-term, lasting hair growth free from dormant hair in the telogen phase.",
     },
     {
       name: "Our Presence",
-      discription:
+      description:
         "With a global presence, we are renowned for trusted hair restoration solutions that restore confidence and deliver natural results.",
     },
     {
       name: "Medical Team",
-      discription:
+      description:
         "Our expert medical team is dedicated to providing the highest standard of care, ensuring safe, effective, and natural hair restoration results.",
     },
   ];
@@ -175,7 +175,7 @@ export default function WhyChooseRyanClinic() {
               </p>
 
               <Button className="mb-10 text p-3 px-4">
-                <a href="https://api.whatsapp.com/send?phone=+919217466356&text=Hi, I visited your website. Please guide me with the best treatment.">
+                <a href="https://api.whatsapp.com/send?phone=+919217974937&text=Hi, I visited your website. Please guide me with the best treatment.">
                   Learn More About Ryan Transplants
                 </a>
               </Button>
@@ -219,7 +219,7 @@ export default function WhyChooseRyanClinic() {
                           : "max-h-0 opacity-0 pt-0"
                       }`}
                     >
-                      {item.discription}
+                      {item.description}
                     </p>
                   </div>
                 );

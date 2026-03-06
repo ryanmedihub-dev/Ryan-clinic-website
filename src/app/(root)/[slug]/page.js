@@ -1,3 +1,4 @@
+import Image from "next/image";
 import PageBanner from "@/components/layouts/pageBanner";
 import ContactForm from "@/components/pages/contactForm";
 import FAQSection from "./FAQSection";
@@ -96,33 +97,33 @@ export default async function ServicesPage({ params }) {
             <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
               <div className="w-full lg:w-5/12">
                 <div className="h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[45%_55%] gap-4 md:gap-6 sticky top-40">
-                  <div className="rounded-xl h-48 md:h-60 lg:h-full overflow-hidden shadow-md">
-                    <img
+                  <div className="relative rounded-xl h-48 md:h-60 lg:h-full overflow-hidden shadow-md">
+                    <Image
                       src={service?.typesData?.images[0]?.url}
-                      alt={service?.typesData?.images[0]?.alt}
-                      className="w-full h-full object-cover"
-                      width="100%"
-                      height="100%"
+                      alt={service?.typesData?.images[0]?.alt || "Service image"}
+                      fill
+                      unoptimized
+                      className="object-cover"
                     />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-rows-2 gap-4 md:gap-6">
-                    <div className="rounded-xl h-48 md:h-auto overflow-hidden shadow-md">
-                      <img
+                    <div className="relative rounded-xl h-48 overflow-hidden shadow-md">
+                      <Image
                         src={service?.typesData?.images[1]?.url}
-                        alt={service?.typesData?.images[0]?.alt}
-                        className="w-full h-full object-cover"
-                        width="100%"
-                        height="auto"
+                        alt={service?.typesData?.images[1]?.alt || "Service image"}
+                        fill
+                        unoptimized
+                        className="object-cover"
                       />
                     </div>
-                    <div className="rounded-xl h-48 md:h-auto overflow-hidden shadow-md">
-                      <img
+                    <div className="relative rounded-xl h-48 overflow-hidden shadow-md">
+                      <Image
                         src={service?.typesData?.images[2]?.url}
-                        alt={service?.typesData?.images[0]?.alt}
-                        className="w-full h-full object-cover"
-                        width="100%"
-                        height="auto"
+                        alt={service?.typesData?.images[2]?.alt || "Service image"}
+                        fill
+                        unoptimized
+                        className="object-cover"
                       />
                     </div>
                   </div>

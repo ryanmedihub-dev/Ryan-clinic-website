@@ -1,7 +1,5 @@
-// pages/contact.js
 "use client";
 
-import Head from "next/head";
 import { MapPin, PhoneCall, Mail } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -18,15 +16,11 @@ import {
 } from "@/components/ui/select";
 import PageBanner from "@/components/layouts/pageBanner";
 
+const emptyForm = { name: "", email: "", phone: "", serviceType: "", message: "" };
+
 export default function ContactUs() {
-  // ✅ Form state
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    serviceType: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState(emptyForm);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,6 +33,7 @@ export default function ContactUs() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await fetch("/api/leads", {
         method: "POST",
@@ -48,33 +43,20 @@ export default function ContactUs() {
 
       const data = await res.json();
       if (data.success) {
-        alert("✅ Form submitted successfully!");
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          serviceType: "",
-          message: "",
-        });
+        alert("Form submitted successfully!");
+        setFormData(emptyForm);
       } else {
-        alert("⚠️ " + data.message);
+        alert(data.message || "Something went wrong.");
       }
-    } catch (error) {
-      alert("❌ Server error.");
+    } catch {
+      alert("Server error. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <>
-      <Head>
-        <title>Contact Us | Ryan Clinic</title>
-        <meta
-          name="description"
-          content="Contact our clinic for appointments and inquiries"
-        />
-      </Head>
-
-      <main>
+    <main>
         {/* ✅ Banner */}
         <PageBanner
           title="Contact Us"
@@ -139,7 +121,7 @@ export default function ContactUs() {
                     <h3 className="text-lg font-semibold text-gray-700">
                       Mobile No.
                     </h3>
-                    <p className="text-gray-600 text-sm">+91 9217466356</p>
+                    <p className="text-gray-600 text-sm">+91 92179 74937</p>
                   </div>
                 </div>
 
@@ -183,7 +165,7 @@ export default function ContactUs() {
                   </div>
                   <Input
                     placeholder="Contact Number*"
-                    type="number"
+                    type="tel"
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
@@ -220,16 +202,16 @@ export default function ContactUs() {
                   />
                   <Button
                     type="submit"
+                    disabled={loading}
                     className="w-full h-12 text-white bg-gray-800 hover:bg-gray-900"
                   >
-                    Get a Free Consult
+                    {loading ? "Submitting..." : "Get a Free Consult"}
                   </Button>
                 </form>
               </div>
             </div>
           </div>
         </section>
-      </main>
-    </>
+    </main>
   );
 }
