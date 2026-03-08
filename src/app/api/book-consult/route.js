@@ -1,64 +1,41 @@
 export async function POST(req) {
   try {
     const body = await req.json();
-    console.log("📤 Sending data to Google Sheets:", body);
 
-    const googleScriptUrl =
-      "https://script.google.com/macros/s/AKfycbwd7YvpHm8oMKmigUW5dmIv2EF9824Tg9pXhnw1i0oXf-APkiF6CFWmB3kjk_niUlnD/exec";
+    const { name, phone, email, date, visit, city, notes } = body;
 
-    // ✅ Send to Google Sheets
-    const response = await fetch(googleScriptUrl, {
+    const crmPayload = {
+      name,
+      phone,
+      email,
+      location: city,
+      visitDate: date || undefined,
+      visitPlan: visit,
+      remarks: notes || "",
+      tag: "Form Leads",
+    };
+
+    const response = await fetch("https://www.ryanmedihub.com/api/leads/create", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-      redirect: "follow",
+      body: JSON.stringify(crmPayload),
+      headers: { "Content-Type": "application/json" },
     });
 
-    // ✅ Read response properly
-    const responseText = await response.text();
+    const data = await response.json();
 
-    console.log("📩 Raw Google Script Response:", responseText);
-
-    let result;
-
-    try {
-      result = JSON.parse(responseText);
-    } catch (parseError) {
-      throw new Error(
-        `Invalid JSON response from Google Script: ${responseText.substring(
-          0,
-          200
-        )}`
-      );
-    }
-
-    if (!response.ok || !result.success) {
-      throw new Error(
-        result.error || `Google Script returned status ${response.status}`
-      );
+    if (!response.ok) {
+      throw new Error(data?.message || "CRM API error");
     }
 
     return new Response(
       JSON.stringify({ success: true }),
-      {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      }
+      { status: 200, headers: { "Content-Type": "application/json" } }
     );
   } catch (error) {
-    console.error("❌ Error sending to Google Sheet:", error);
-
+    console.error("❌ Error sending to Ryan CRM:", error);
     return new Response(
-      JSON.stringify({
-        success: false,
-        error: error.message,
-      }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      }
+      JSON.stringify({ success: false, error: error.message }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
 }

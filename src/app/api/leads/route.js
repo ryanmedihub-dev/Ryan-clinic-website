@@ -1,39 +1,43 @@
-import Leads from "@/models/leads";
-import { withDB } from "@/lib/withDB";
-
-const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbw2QjldFW8b4vtfVF0HUJ2rp2rU-1L2590V6nS7zCqbUy5UjhS3japJAU5gdmhN7e3q/exec";
-
-const handler = async (req) => {
+export async function POST(req) {
   try {
     const body = await req.json();
 
+    const { name, phone, email, location, service, message } = body;
 
+    const remarksParts = [];
+    if (service) remarksParts.push(`Service: ${service}`);
+    if (message) remarksParts.push(`Message: ${message}`);
 
-    // ✅ Save to DB (allow duplicates now)
-    const newLead = await Leads.create(body);
+    const crmPayload = {
+      name,
+      phone,
+      email,
+      location,
+      remarks: remarksParts.join(" | "),
+      tag: "Google Leads",
+    };
 
-    fetch(GOOGLE_SCRIPT_URL, {
+    const response = await fetch("https://www.ryanmedihub.com/api/leads/create", {
       method: "POST",
+      body: JSON.stringify(crmPayload),
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    })
-      .then(() => console.log("✅ Lead also sent to Google Sheets"))
-      .catch((err) =>
-        console.error("⚠️ Failed to send lead to Google Sheets:", err)
-      );
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data?.message || "CRM API error");
+    }
 
     return new Response(
-      JSON.stringify({ success: true, data: newLead }),
-      { status: 201 }
+      JSON.stringify({ success: true }),
+      { status: 200, headers: { "Content-Type": "application/json" } }
     );
   } catch (error) {
-    console.error("❌ Server Error:", error);
+    console.error("❌ Error sending to Ryan CRM:", error);
     return new Response(
       JSON.stringify({ success: false, error: error.message }),
-      { status: 500 }
+      { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
-};
-
-export const POST = withDB(handler);
+}

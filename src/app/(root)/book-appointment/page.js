@@ -20,10 +20,11 @@ const emptyForm = {
   name: "",
   phone: "",
   email: "",
-  date: "",
+  visitDate: "",
   visit: "",
-  branch: "",
-  notes: "",
+  location: "",
+  remarks: "",
+  tag: "From Leads"
 };
 
 export default function BookAppointment() {
@@ -113,8 +114,8 @@ export default function BookAppointment() {
             <AppointmentFormField label="Preferred Date" icon={Calendar}>
               <input
                 type="date"
-                name="date"
-                value={formData.date}
+                name="visitDate"
+                value={formData.visitDate}
                 onChange={handleChange}
                 min={new Date().toISOString().split("T")[0]}
                 className={inputCls}
@@ -135,25 +136,25 @@ export default function BookAppointment() {
             </AppointmentFormField>
           </div>
 
-          <AppointmentFormField label="Select Branch" required icon={MapPin}>
+          <AppointmentFormField label="Select Location" required icon={MapPin}>
             <select
-              name="branch"
-              value={formData.branch}
+              name="location"
+              value={formData.location}
               onChange={handleChange}
               required
               className={selectCls}
             >
-              <option value="">Choose a branch</option>
+              <option value="">Choose a location</option>
               <option value="Mumbai">Mumbai</option>
               <option value="Delhi">Delhi</option>
               <option value="Hyderabad">Hyderabad</option>
             </select>
           </AppointmentFormField>
 
-          <AppointmentFormField label="Notes / Concerns" icon={MessageSquare}>
+          <AppointmentFormField label="remarks / Concerns" icon={MessageSquare}>
             <textarea
-              name="notes"
-              value={formData.notes}
+              name="remarks"
+              value={formData.remarks}
               onChange={handleChange}
               placeholder="Any special concerns..."
               rows="3"

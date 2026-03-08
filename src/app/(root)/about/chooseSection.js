@@ -94,7 +94,7 @@ export default function ChooseSection() {
             {steps.map(({ id, title, description, icon: Icon }) => (
               <div key={id} className="pl-0 lg:pl-0">
                 <div className="flex items-start gap-3 md:gap-4">
-                  <div className="min-w-[30px] md:min-w-[42px] h-[30px] md:h-[42px] flex items-center justify-center rounded-full border-2 border-gray-400  flex-shrink-0">
+                  <div className="min-w-7.5 md:min-w-10.5 h-7.5 md:h-10.5 flex items-center justify-center rounded-full border-2 border-gray-400  shrink-0">
                     <Icon className="text-gray-700 w-3 h-3 md:w-5 md:h-5" />
                   </div>
                   <div>
