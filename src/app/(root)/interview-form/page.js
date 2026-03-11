@@ -912,13 +912,11 @@ export default function InterviewForm() {
                     >
                       <option value="">Select a reference</option>
                       <option value="Individual">Individual</option>
-                      <option value="HR Sanjana">HR Sanjana</option>
                       <option value="HR Tulsi">HR Tulsi</option>
-                      <option value="HR Sakshi">HR Sakshi</option>
                       <option value="HR Muskan">HR Muskan</option>
                       <option value="HR Hamida">HR Hamida</option>
-                      <option value="HR Tanvi">HR Tanvi</option>
-                      {/* <option value="HR Kashish">HR Kashish</option> */}
+                      <option value="HR Simran Kaur">HR Simran Kaur</option>
+                      <option value="HR Pratibha">HR Pratibha</option>
                       <option value="Other">Other</option>
                     </select>
                     <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
