@@ -1,22 +1,15 @@
 // lib/blogData.js
-
-const API_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog/get-blog`;
+import { DBConnection } from "./db";
+import Blog from "@/models/blog";
 
 /**
  * Get all blog posts
  */
 export const getAllBlogs = async () => {
   try {
-    const res = await fetch(API_URL, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-    });
-
-    const result = await res.json();
-    return result.data || [];
+    await DBConnection();
+    const blogs = await Blog.find({}).lean();
+    return JSON.parse(JSON.stringify(blogs || []));
   } catch (error) {
     console.error("getAllBlogs error:", error.message);
     return [];
@@ -25,19 +18,9 @@ export const getAllBlogs = async () => {
 
 export const getBlogBySlug = async (slug) => {
   try {
-    const res = await fetch(API_URL, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      cache: "no-store",
-    });
-
-    const result = await res.json();
-
-    const blogs = result.data || [];
-
-    return blogs.find((blog) => blog.pageUrl === slug) || null;
+    await DBConnection();
+    const blog = await Blog.findOne({ pageUrl: slug }).lean();
+    return blog ? JSON.parse(JSON.stringify(blog)) : null;
   } catch (error) {
     console.error("getBlogBySlug error:", error.message);
     return null;
