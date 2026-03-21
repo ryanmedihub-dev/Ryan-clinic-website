@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"c:/dashzer/Ryan-next-project-new/src/app/\\(root\\)\")",
+      "Bash(ls \"c:/dashzer/Ryan-next-project-new/src/app/\\(standalone\\)/apply/\")",
+      "Bash(ls \"c:/dashzer/Ryan-next-project-new/src/app/\\(root\\)/\")"
+    ],
+    "additionalDirectories": [
+      "c:\\dashzer\\Ryan-next-project-new\\src\\app\\(standalone)"
+    ]
+  }
+}
