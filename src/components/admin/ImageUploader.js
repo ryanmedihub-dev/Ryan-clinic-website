@@ -55,7 +55,7 @@ export default function ImageUploader({ onUpload }) {
       {imageURL && (
         <div className="mt-2 flex align-middle gap-3">
           <p className="text-sm text-gray-600">Uploaded Preview:</p>
-          <a href={imageURL} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 break-words">
+          <a href={imageURL} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 wrap-break-words">
             {imageURL}
           </a>
         </div>
