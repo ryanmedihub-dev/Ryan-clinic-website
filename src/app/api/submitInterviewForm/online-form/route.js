@@ -39,7 +39,7 @@ export async function POST(req) {
         headers: { "Content-Type": "application/json" },
         body:    JSON.stringify(body),
       }),
-      fetch("http://localhost:3001/api/hr/candidates", {
+      fetch("https://www.ryanmedihub.com/api/hr/candidates", {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
         body:    JSON.stringify(candidatePayload),
