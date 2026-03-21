@@ -25,6 +25,7 @@ const FIELD_LABELS = {
   partnerDiet: "Partner Diet", attracts: "Attracted To", turnoffs: "Turn-offs",
   whySingle: "Why Single", idealPartner: "Ideal Partner", noCompromise: "Non-Negotiables",
   relocate: "Relocate?", children: "Children?",
+  instaId: "Instagram ID", facebookId: "Facebook ID",
 };
 
 const WIDE_FIELDS = new Set(["whyNow", "whySingle", "idealPartner", "noCompromise"]);

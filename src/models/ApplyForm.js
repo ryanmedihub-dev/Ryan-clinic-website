@@ -63,9 +63,9 @@ const ApplyFormSchema = new mongoose.Schema(
     relocate: { type: String },
     children: { type: String },
 
-    // Photo (Cloudinary)
-    photoUrl: { type: String, default: "" },
-    photoPublicId: { type: String, default: "" },
+    // Social
+    instaId: { type: String, default: "" },
+    facebookId: { type: String, default: "" },
 
     // Meta
     status: {

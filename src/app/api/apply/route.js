@@ -1,38 +1,11 @@
-import { v2 as cloudinary } from "cloudinary";
 import ApplyForm from "@/models/ApplyForm";
 import { withDB } from "@/lib/withDB";
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-// ── Helper: upload a Buffer to Cloudinary ─────────────────────────────────────
-async function uploadToCloudinary(buffer, filename) {
-  return new Promise((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream(
-      {
-        folder: "intent-dating/applicants",
-        public_id: `applicant_${Date.now()}_${filename.replace(/\.[^/.]+$/, "")}`,
-        resource_type: "image",
-        transformation: [{ width: 800, height: 800, crop: "limit", quality: "auto" }],
-      },
-      (error, result) => {
-        if (error) reject(error);
-        else resolve(result);
-      }
-    );
-    stream.end(buffer);
-  });
-}
 
 // ── POST /api/apply ────────────────────────────────────────────────────────────
 async function postHandler(request) {
   try {
     const formData = await request.formData();
 
-    // Parse all text fields
     const fields = [
       "fullName", "age", "gender", "city", "profession", "income",
       "lookingFor", "marriageTimeline", "seriousnessScore", "whyNow",
@@ -45,13 +18,13 @@ async function postHandler(request) {
       "attracts", "turnoffs",
       "whySingle", "idealPartner", "noCompromise",
       "relocate", "children",
+      "instaId", "facebookId",
     ];
 
     const data = {};
     for (const key of fields) {
       const value = formData.get(key);
       if (value !== null) {
-        // JSON-encoded arrays (attracts, turnoffs)
         if (key === "attracts" || key === "turnoffs") {
           try { data[key] = JSON.parse(value); } catch { data[key] = []; }
         } else if (["age", "seriousnessScore", "familyImportance", "religionImportance"].includes(key)) {
@@ -60,16 +33,6 @@ async function postHandler(request) {
           data[key] = value;
         }
       }
-    }
-
-    // Handle photo upload
-    const photoFile = formData.get("photo");
-    if (photoFile && photoFile.size > 0) {
-      const arrayBuffer = await photoFile.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-      const result = await uploadToCloudinary(buffer, photoFile.name || "photo.jpg");
-      data.photoUrl = result.secure_url;
-      data.photoPublicId = result.public_id;
     }
 
     const application = await ApplyForm.create(data);

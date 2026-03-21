@@ -234,12 +234,13 @@ const SECTIONS = [
   },
   {
     id: 12,
-    emoji: "📸",
-    label: "Photo",
-    title: "Upload your photo",
-    subtitle: "Optional but highly recommended. Profiles with photos get priority.",
+    emoji: "📱",
+    label: "Social",
+    title: "Your social profile",
+    subtitle: "Share your Instagram or Facebook ID so we can verify your profile.",
     fields: [
-      { id: "photo", label: "Your Photo", type: "file" },
+      { id: "instaId", label: "Instagram ID", type: "text", placeholder: "@your_instagram" },
+      { id: "facebookId", label: "Facebook ID / Profile Name", type: "text", placeholder: "facebook.com/yourname" },
     ],
   },
 ];
@@ -357,39 +358,6 @@ function TextareaInput({ field, value, onChange }) {
   );
 }
 
-function FileInput({ field, value, onChange }) {
-  const ref = useRef();
-  const [preview, setPreview] = useState(null);
-
-  const handleChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      onChange(field.id, file);
-      setPreview(URL.createObjectURL(file));
-    }
-  };
-
-  return (
-    <div className="field-group">
-      <label className="field-label">{field.label}</label>
-      <div
-        onClick={() => ref.current.click()}
-        className="file-drop-zone"
-      >
-        {preview ? (
-          <img src={preview} alt="Preview" className="w-32 h-32 object-cover rounded-xl mx-auto" />
-        ) : (
-          <>
-            <div className="text-4xl mb-3">📸</div>
-            <p className="text-sm text-stone-400">Click to upload a clear photo of yourself</p>
-            <p className="text-xs text-stone-500 mt-1">JPG, PNG up to 5MB</p>
-          </>
-        )}
-      </div>
-      <input ref={ref} type="file" accept="image/*" onChange={handleChange} className="hidden" />
-    </div>
-  );
-}
 
 function renderField(field, value, set) {
   switch (field.type) {
@@ -404,8 +372,6 @@ function renderField(field, value, set) {
       return <ScaleInput key={field.id} field={field} value={value} onChange={set} />;
     case "textarea":
       return <TextareaInput key={field.id} field={field} value={value} onChange={set} />;
-    case "file":
-      return <FileInput key={field.id} field={field} value={value} onChange={set} />;
     default:
       return null;
   }
@@ -492,9 +458,7 @@ export default function IntentDatingForm() {
       try {
         const formData = new FormData();
         for (const [key, value] of Object.entries(data)) {
-          if (key === "photo" && value instanceof File) {
-            formData.append("photo", value);
-          } else if (Array.isArray(value)) {
+          if (Array.isArray(value)) {
             formData.append(key, JSON.stringify(value));
           } else if (value !== undefined && value !== null) {
             formData.append(key, value);
