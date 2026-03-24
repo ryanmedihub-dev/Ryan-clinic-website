@@ -94,7 +94,7 @@ export default function BookAppointment() {
                 value={formData.phone}
                 onChange={handleChange}
                 required
-                placeholder="+91 98765 43210"
+                placeholder="+91 92179 58539"
                 className={inputCls}
               />
             </AppointmentFormField>

@@ -142,7 +142,7 @@ export default function InternationalAppointmentPage() {
                     value={formData.phone}
                     onChange={handleChange}
                     required
-                    placeholder="+91 98765 43210"
+                    placeholder="+91 92179 58539"
                     className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                   />
                 </div>

@@ -180,7 +180,7 @@ const Header = () => {
                 asChild
                 className="md:h-9 h-8 bg-white text-black hover:bg-black hover:text-white"
               >
-                <Link href="tel:+919217974937">
+                <Link href="tel:+919217958539">
                   <Phone className="h-4 w-4" />
                   <span>Call us</span>
                 </Link>
@@ -283,7 +283,7 @@ const Header = () => {
               asChild
               className="bg-white text-black hover:bg-black hover:text-white"
             >
-              <Link href="tel:+919217974937">
+              <Link href="tel:+919217958539">
                 <Phone className="h-4 w-4" />
                 <span>Call us</span>
               </Link>
@@ -328,7 +328,7 @@ const Header = () => {
           size="icon"
           className="rounded-full w-12 h-12 bg-blue-500 hover:bg-blue-600 text-white shadow-lg"
         >
-          <Link href="tel:+919217974937">
+          <Link href="tel:+919217958539">
             <Phone className="h-6 w-6" />
           </Link>
         </Button>
@@ -337,7 +337,7 @@ const Header = () => {
           size="icon"
           className="rounded-full w-12 h-12 bg-green-500 hover:bg-green-600 text-white shadow-lg"
         >
-          <Link href="https://api.whatsapp.com/send?phone=+919217974937&text=Hi">
+          <Link href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi">
             <FaWhatsapp className="h-6 w-6" />
           </Link>
         </Button>

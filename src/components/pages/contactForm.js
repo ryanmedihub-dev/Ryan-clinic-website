@@ -55,7 +55,7 @@ export default function ContactForm() {
         alert("✅ Form submitted successfully!");
 
         window.location.href =
-          "https://wa.me/919217974937?text=Hi, I have submitted the Google form.";
+          "https://wa.me/919217958539?text=Hi, I have submitted the Google form.";
         setFormData(emptyForm);
       } else {
         alert("⚠️ " + (data.message || data.error || "Something went wrong"));
