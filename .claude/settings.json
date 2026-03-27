@@ -3,7 +3,9 @@
     "allow": [
       "Bash(ls \"c:/dashzer/Ryan-next-project-new/src/app/\\(root\\)\")",
       "Bash(ls \"c:/dashzer/Ryan-next-project-new/src/app/\\(standalone\\)/apply/\")",
-      "Bash(ls \"c:/dashzer/Ryan-next-project-new/src/app/\\(root\\)/\")"
+      "Bash(ls \"c:/dashzer/Ryan-next-project-new/src/app/\\(root\\)/\")",
+      "Bash(node scripts/update-admin.mjs)",
+      "Bash(node --env-file=.env.local scripts/update-admin.mjs)"
     ],
     "additionalDirectories": [
       "c:\\dashzer\\Ryan-next-project-new\\src\\app\\(standalone)"
