@@ -19,6 +19,7 @@ async function postHandler(request) {
       "whySingle", "idealPartner", "noCompromise",
       "relocate", "children",
       "instaId", "facebookId",
+      "razorpaySubscriptionId", "razorpayPaymentId", "paymentStatus",
     ];
 
     const data = {};
@@ -29,6 +30,8 @@ async function postHandler(request) {
           try { data[key] = JSON.parse(value); } catch { data[key] = []; }
         } else if (["age", "seriousnessScore", "familyImportance", "religionImportance"].includes(key)) {
           data[key] = Number(value);
+        } else if (key === "paymentStatus") {
+          data[key] = value; // "pending" or "paid"
         } else {
           data[key] = value;
         }

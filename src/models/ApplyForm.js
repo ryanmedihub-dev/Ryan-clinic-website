@@ -67,6 +67,15 @@ const ApplyFormSchema = new mongoose.Schema(
     instaId: { type: String, default: "" },
     facebookId: { type: String, default: "" },
 
+    // Payment
+    razorpaySubscriptionId: { type: String, default: "" },
+    razorpayPaymentId: { type: String, default: "" },
+    paymentStatus: {
+      type: String,
+      enum: ["pending", "paid"],
+      default: "pending",
+    },
+
     // Meta
     status: {
       type: String,

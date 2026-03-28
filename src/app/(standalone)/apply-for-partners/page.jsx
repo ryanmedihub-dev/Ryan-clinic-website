@@ -407,6 +407,48 @@ function StepDots({ sections, current }) {
   );
 }
 
+// ─── PAYMENT SCREEN ──────────────────────────────────────────────────────────
+
+function PaymentScreen({ onPay, paying, error }) {
+  return (
+    <div className="payment-screen">
+      <div className="payment-icon">💳</div>
+      <h2 className="payment-title">One Last Step</h2>
+      <p className="payment-subtitle">
+        Complete your registration with a monthly membership.
+      </p>
+
+      <div className="payment-card">
+        <div className="payment-plan-header">
+          <span className="payment-plan-badge">Monthly Membership</span>
+        </div>
+        <div className="payment-amount">
+          <span className="payment-currency">₹</span>
+          <span className="payment-price">99</span>
+          <span className="payment-period">/month</span>
+        </div>
+        <ul className="payment-features">
+          <li>✔ Curated match suggestions</li>
+          <li>✔ Priority profile review</li>
+          <li>✔ Auto-renewed monthly</li>
+          <li>✔ Cancel anytime</li>
+        </ul>
+        <p className="payment-autopay-note">
+          🔄 <strong>Auto-pay enabled</strong> — ₹99 will be automatically deducted from your account every month.
+        </p>
+      </div>
+
+      {error && <p className="payment-error">{error}</p>}
+
+      <button onClick={onPay} className="btn-primary w-full" disabled={paying} style={{ opacity: paying ? 0.7 : 1, marginTop: "20px" }}>
+        {paying ? "Opening Payment…" : "Subscribe ₹99/month & Register →"}
+      </button>
+
+      <p className="payment-secure">🔒 Secured by Razorpay</p>
+    </div>
+  );
+}
+
 // ─── SUCCESS SCREEN ──────────────────────────────────────────────────────────
 
 function SuccessScreen() {
@@ -431,6 +473,9 @@ function SuccessScreen() {
 export default function IntentDatingForm() {
   const [step, setStep] = useState(0); // 0 = landing
   const [section, setSection] = useState(0);
+  const [showPayment, setShowPayment] = useState(false);
+  const [paying, setPaying] = useState(false);
+  const [paymentError, setPaymentError] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -448,31 +493,108 @@ export default function IntentDatingForm() {
     }, 280);
   };
 
-  const handleNext = async () => {
+  const submitForm = async (paymentId, orderId) => {
+    setSubmitting(true);
+    setSubmitError("");
+    try {
+      const formData = new FormData();
+      for (const [key, value] of Object.entries(data)) {
+        if (Array.isArray(value)) {
+          formData.append(key, JSON.stringify(value));
+        } else if (value !== undefined && value !== null) {
+          formData.append(key, value);
+        }
+      }
+      formData.append("razorpayPaymentId", paymentId);
+      formData.append("razorpaySubscriptionId", orderId);
+      formData.append("paymentStatus", "paid");
+      const res = await fetch("/api/apply", { method: "POST", body: formData });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.message || "Submission failed");
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handlePay = async () => {
+    setPaying(true);
+    setPaymentError("");
+    try {
+      // 1. Create subscription on backend
+      const subRes = await fetch("/api/razorpay/create-subscription", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: data.fullName || "Applicant" }),
+      });
+      const subJson = await subRes.json();
+      if (!subJson.success) throw new Error(subJson.message || "Could not initiate payment");
+
+      // 2. Load Razorpay script if not loaded
+      await new Promise((resolve, reject) => {
+        if (window.Razorpay) return resolve();
+        const script = document.createElement("script");
+        script.src = "https://checkout.razorpay.com/v1/checkout.js";
+        script.onload = resolve;
+        script.onerror = () => reject(new Error("Failed to load Razorpay"));
+        document.body.appendChild(script);
+      });
+
+      // 3. Open Razorpay checkout with subscription
+      await new Promise((resolve, reject) => {
+        const options = {
+          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+          subscription_id: subJson.subscriptionId,
+          name: "Intent Dating",
+          description: "Monthly Membership – ₹99/month",
+          handler: async (response) => {
+            try {
+              // 4. Verify payment signature
+              const verifyRes = await fetch("/api/razorpay/verify-payment", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_subscription_id: response.razorpay_subscription_id,
+                  razorpay_signature: response.razorpay_signature,
+                }),
+              });
+              const verifyJson = await verifyRes.json();
+              if (!verifyJson.success) throw new Error("Payment verification failed");
+              // 5. Submit form
+              await submitForm(response.razorpay_payment_id, response.razorpay_subscription_id);
+              resolve();
+            } catch (err) {
+              reject(err);
+            }
+          },
+          prefill: { name: data.fullName || "" },
+          theme: { color: "#c9614a" },
+          modal: {
+            ondismiss: () => reject(new Error("Payment cancelled. Please try again.")),
+          },
+        };
+        const rzp = new window.Razorpay(options);
+        rzp.on("payment.failed", (response) => {
+          reject(new Error(response.error?.description || "Payment failed"));
+        });
+        rzp.open();
+      });
+    } catch (err) {
+      setPaymentError(err.message || "Payment failed. Please try again.");
+    } finally {
+      setPaying(false);
+    }
+  };
+
+  const handleNext = () => {
     if (section < SECTIONS.length - 1) {
       goTo(section + 1, "forward");
     } else {
-      // Last section — submit
-      setSubmitting(true);
-      setSubmitError("");
-      try {
-        const formData = new FormData();
-        for (const [key, value] of Object.entries(data)) {
-          if (Array.isArray(value)) {
-            formData.append(key, JSON.stringify(value));
-          } else if (value !== undefined && value !== null) {
-            formData.append(key, value);
-          }
-        }
-        const res = await fetch("/api/apply", { method: "POST", body: formData });
-        const json = await res.json();
-        if (!json.success) throw new Error(json.message || "Submission failed");
-        setSubmitted(true);
-      } catch (err) {
-        setSubmitError(err.message || "Something went wrong. Please try again.");
-      } finally {
-        setSubmitting(false);
-      }
+      // Last section — show payment screen
+      setShowPayment(true);
     }
   };
 
@@ -515,6 +637,26 @@ export default function IntentDatingForm() {
         <Style />
         <div className="page-root">
           <SuccessScreen />
+        </div>
+      </>
+    );
+  }
+
+  if (showPayment) {
+    return (
+      <>
+        <Style />
+        <div className="page-root">
+          {submitting ? (
+            <div className="success-screen">
+              <div className="success-ring" style={{ animation: "spin 1s linear infinite" }}>
+                ⏳
+              </div>
+              <h2 className="success-title" style={{ fontSize: "24px" }}>Submitting your application…</h2>
+            </div>
+          ) : (
+            <PaymentScreen onPay={handlePay} paying={paying} error={paymentError || submitError} />
+          )}
         </div>
       </>
     );
@@ -938,12 +1080,119 @@ function Style() {
         border-radius: 100px;
       }
 
+      /* PAYMENT SCREEN */
+      .payment-screen {
+        max-width: 440px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 24px;
+      }
+      .payment-icon { font-size: 48px; margin-bottom: 16px; }
+      .payment-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 38px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 8px;
+        text-align: center;
+      }
+      .payment-subtitle {
+        font-size: 14px;
+        color: var(--text-muted);
+        text-align: center;
+        margin-bottom: 28px;
+        line-height: 1.6;
+      }
+      .payment-card {
+        width: 100%;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 28px 24px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      }
+      .payment-plan-header { margin-bottom: 16px; }
+      .payment-plan-badge {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--gold);
+        border: 1px solid rgba(200,169,110,0.3);
+        padding: 4px 14px;
+        border-radius: 100px;
+      }
+      .payment-amount {
+        display: flex;
+        align-items: baseline;
+        gap: 4px;
+        margin-bottom: 20px;
+      }
+      .payment-currency {
+        font-size: 22px;
+        color: var(--rose-light);
+        font-weight: 500;
+      }
+      .payment-price {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 64px;
+        font-weight: 600;
+        color: var(--text);
+        line-height: 1;
+      }
+      .payment-period {
+        font-size: 16px;
+        color: var(--text-muted);
+      }
+      .payment-features {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        font-size: 14px;
+        color: var(--text-muted);
+        margin-bottom: 20px;
+        padding: 0;
+      }
+      .payment-features li { color: var(--text-muted); }
+      .payment-autopay-note {
+        font-size: 12.5px;
+        color: rgba(200,169,110,0.8);
+        background: rgba(200,169,110,0.08);
+        border: 1px solid rgba(200,169,110,0.18);
+        border-radius: 10px;
+        padding: 10px 14px;
+        line-height: 1.6;
+      }
+      .payment-autopay-note strong { color: var(--gold); }
+      .payment-error {
+        color: #e07b64;
+        font-size: 13px;
+        text-align: center;
+        margin-top: 12px;
+      }
+      .payment-secure {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: 14px;
+        opacity: 0.6;
+      }
+
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+
       @media (max-width: 480px) {
         .landing-card { padding: 40px 24px; }
         .landing-title { font-size: 40px; }
         .section-card { padding: 28px 20px 24px; }
         .section-title { font-size: 26px; }
         .scale-btn { width: 38px; height: 38px; font-size: 14px; }
+        .payment-price { font-size: 52px; }
       }
     `}</style>
   );
