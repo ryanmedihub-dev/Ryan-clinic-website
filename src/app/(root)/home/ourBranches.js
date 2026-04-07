@@ -20,45 +20,114 @@ const locations = [
 export default function OurBranches() {
   return (
     <section
+      className="relative bg-cover bg-center bg-no-repeat py-16 md:py-20 lg:py-24 overflow-hidden"
       style={{
         background:
-          "linear-gradient(rgb(0 0 0 / 78%), rgb(0 0 0 / 78%)), url(https://res.cloudinary.com/dha2ecdnn/image/upload/v1740393396/background_lvar2m.webp)",
+          "linear-gradient(rgb(0 0 0 / 82%), rgb(0 0 0 / 82%)), url(https://res.cloudinary.com/dha2ecdnn/image/upload/v1740393396/background_lvar2m.webp)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
       }}
-      className="relative bg-cover bg-center bg-no-repeat py-12 md:py-16 lg:py-20"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20 items-center">
-          {/* Left Text Content */}
-          <div className="flex flex-col justify-center order-2 lg:order-1">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 md:mb-6 underline decoration-blue-500 decoration-2 underline-offset-4">
-              Our Branches
-            </h2>
-            <p className="text-gray-200 mb-6 md:mb-6 leading-relaxed text-base md:text-lg">
-              Ryan Healthcare is one of the leaders in offering hair transplant
-              services because it has many branches that are well-staffed to
-              undertake various procedures. FUE and Turkey Specialist Technique procedures are performed
-              at clinics with modern equipment and skilled surgeons at a
-              relatively low cost. The needs of the patient take priority, and
-              we ensure that each one of them walks away with results that are
-              as close to nature as possible.
-              <br />
-              <br />
-              The best clinics for the restoration of hair are just a branch
-              away, so visit us now.
-            </p>
-            <Button
-              variant="Primary"
-              className="w-full sm:w-fit px-6 py-2 text-base md:text-md  bg-white"
-            >
-              <a className="font-semibold" href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi, I visited your website. Please guide me with the best treatment.">
-                                          
+      {/* Subtle red top border accent */}
+      <div
+        className="absolute top-0 left-0 right-0 h-1"
+        style={{ background: "var(--primary-red)" }}
+      />
 
-                Visit Branch
-              </a>
-            </Button>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20 items-center">
+          {/* ── Left Text ── */}
+          <div className="flex flex-col justify-center order-2 lg:order-1">
+            {/* Section label */}
+            <div className="flex items-center gap-3 mb-6">
+              <span
+                className="block w-8 h-px"
+                style={{ background: "var(--accent-gold)" }}
+              />
+              <span
+                className="text-[11px] font-semibold tracking-[0.22em] uppercase"
+                style={{ color: "var(--accent-gold)" }}
+              >
+                Pan-India Presence
+              </span>
+            </div>
+
+            <h2
+              className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-5"
+              style={{ color: "#ffffff" }}
+            >
+              Our{" "}
+              <span style={{ color: "var(--accent-gold)" }}>Branches</span>
+              <br />
+              Across India
+            </h2>
+
+            <p
+              className="leading-relaxed text-base md:text-lg mb-4"
+              style={{ color: "rgba(255,255,255,0.75)" }}
+            >
+              Ryan Healthcare leads India's hair transplant space with branches
+              equipped for advanced Turkey Sapphire FUE. Skilled doctors, modern
+              OT infrastructure and per-graft transparent pricing — available
+              across Delhi, Mumbai &amp; Hyderabad.
+            </p>
+
+            <p
+              className="text-sm mb-8"
+              style={{ color: "rgba(255,255,255,0.55)" }}
+            >
+              The best hair restoration clinic is closer than you think.
+            </p>
+
+            {/* Stats row */}
+            <div className="flex gap-8 mb-8">
+              {[
+                { num: "3", label: "Cities" },
+                { num: "10K+", label: "Patients" },
+                { num: "95%+", label: "Graft Survival" },
+              ].map((s) => (
+                <div key={s.label}>
+                  <p
+                    className="text-2xl font-bold"
+                    style={{ color: "var(--accent-gold)" }}
+                  >
+                    {s.num}
+                  </p>
+                  <p
+                    className="text-[11px] font-medium tracking-wide mt-0.5"
+                    style={{ color: "rgba(255,255,255,0.5)" }}
+                  >
+                    {s.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <a
+              href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi, I visited your website. Please guide me with the best treatment."
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 font-semibold text-sm py-3.5 px-7 rounded-xl w-full sm:w-fit justify-center text-white transition-colors"
+              style={{ background: "var(--primary-red)" }}
+            >
+              Visit a Branch Near You
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+                />
+              </svg>
+            </a>
           </div>
 
-          {/* Right Swiper Slider */}
+          {/* ── Right Swiper ── */}
           <div className="order-1 lg:order-2">
             <Swiper
               modules={[Navigation, Autoplay]}
@@ -77,25 +146,61 @@ export default function OurBranches() {
                 1024: { slidesPerView: 2, spaceBetween: 20 },
                 1280: { slidesPerView: 2, spaceBetween: 24 },
               }}
-              className="rounded-lg relative"
+              className="rounded-2xl relative"
             >
               {locations.map((item, index) => (
                 <SwiperSlide key={index} className="relative">
                   <a href={item.link}>
-                    <div className="branch-slide relative h-72 sm:h-80 md:h-96 rounded-lg overflow-hidden shadow-lg group">
-                      {/* Branch Image */}
+                    <div className="branch-slide relative h-72 sm:h-80 md:h-96 rounded-2xl overflow-hidden shadow-xl group">
+                      {/* Image */}
                       <Image
                         src={item.image}
                         alt={`${item.name} Branch`}
                         fill
-                        className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+                        className="object-cover opacity-80 group-hover:opacity-100 transition-all duration-400 group-hover:scale-105"
                         sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
-                      {/* Branch Label */}
-                      <div className="absolute right-0 bottom-0 w-40 h-12  rounded-tl-md bg-black bg-opacity-80 flex items-center justify-center">
-                        <h3 className="text-white font-bold text-lg md:text-xl">
-                          {item.name}
-                        </h3>
+
+                      {/* Overlay gradient */}
+                      <div
+                        className="absolute inset-0"
+                        style={{
+                          background:
+                            "linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)",
+                        }}
+                      />
+
+                      {/* City badge */}
+                      <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
+                        <div>
+                          <span
+                            className="block text-xs font-semibold uppercase tracking-widest mb-1"
+                            style={{ color: "var(--accent-gold)" }}
+                          >
+                            Ryan Clinic
+                          </span>
+                          <h3 className="text-white font-bold text-xl md:text-2xl">
+                            {item.name}
+                          </h3>
+                        </div>
+                        <div
+                          className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
+                          style={{ background: "var(--primary-red)" }}
+                        >
+                          <svg
+                            className="w-4 h-4 text-white"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
+                            />
+                          </svg>
+                        </div>
                       </div>
                     </div>
                   </a>
@@ -103,16 +208,30 @@ export default function OurBranches() {
               ))}
             </Swiper>
 
-            {/* Custom Navigation Buttons */}
-            <div className="flex justify-center mt-6 md:mt-8 space-x-4">
-              <div className="branch-swiper-button-prev cursor-pointer w-10 h-10 flex items-center justify-center rounded-full bg-white bg-opacity-20 text-black hover:bg-opacity-30 transition-colors">
+            {/* Custom navigation buttons */}
+            <div className="flex justify-center mt-6 space-x-3">
+              <div
+                className="branch-swiper-button-prev cursor-pointer w-10 h-10 flex items-center justify-center rounded-full border transition-all"
+                style={{
+                  borderColor: "rgba(255,255,255,0.2)",
+                  color: "#fff",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "var(--primary-red)";
+                  e.currentTarget.style.borderColor = "var(--primary-red)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={2}
                   stroke="currentColor"
-                  className="w-5 h-5"
+                  className="w-4 h-4"
                 >
                   <path
                     strokeLinecap="round"
@@ -121,14 +240,28 @@ export default function OurBranches() {
                   />
                 </svg>
               </div>
-              <div className="branch-swiper-button-next cursor-pointer w-10 h-10 flex items-center justify-center rounded-full bg-white bg-opacity-20 text-black hover:bg-opacity-30 transition-colors">
+              <div
+                className="branch-swiper-button-next cursor-pointer w-10 h-10 flex items-center justify-center rounded-full border transition-all"
+                style={{
+                  borderColor: "rgba(255,255,255,0.2)",
+                  color: "#fff",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "var(--primary-red)";
+                  e.currentTarget.style.borderColor = "var(--primary-red)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={2}
                   stroke="currentColor"
-                  className="w-5 h-5"
+                  className="w-4 h-4"
                 >
                   <path
                     strokeLinecap="round"
@@ -142,16 +275,18 @@ export default function OurBranches() {
         </div>
       </div>
 
-      {/* Extra styling */}
+      {/* Bottom red accent bar */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-1"
+        style={{ background: "var(--primary-red)" }}
+      />
+
       <style jsx global>{`
         .branch-slide {
           transition: transform 0.3s ease;
         }
         .branch-slide:hover {
-          transform: translateY(-4px);
-        }
-        .swiper-slide {
-          height: auto;
+          transform: translateY(-5px);
         }
       `}</style>
     </section>

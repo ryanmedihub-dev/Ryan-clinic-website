@@ -1,74 +1,214 @@
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import TurkeyDoctor from "../../../../public/uploads/turkey-doctor.jpg";
-import Link from "next/link";
+
+const highlights = [
+  "Original Turkey Choi Pen — exclusively in India",
+  "Certified doctors perform every surgical step",
+  "95%+ graft survival rate, far above industry average",
+  "Serving Delhi, Mumbai & Hyderabad since 2012",
+];
+
+const stats = [
+  { num: "12+", label: "Years of Excellence" },
+  { num: "10K+", label: "Successful Procedures" },
+  { num: "95%+", label: "Graft Survival Rate" },
+  { num: "4.9★", label: "Google Rating" },
+];
 
 export default function TurkeySpecialists() {
   return (
-    <section className=" overflow-hidden">
-      <div className="md:py-8">
-        <div className="containerFull grid grid-cols-1 md:grid-cols-2 gap-10 items-center ">
-          {/* Image Box */}
-          <div className="relative w-full h-60 md:h-[600px]">
-            {/* Background Shadow Square */}
+    <section
+      className="py-16 md:py-24"
+      style={{ background: "var(--bg-soft)" }}
+    >
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section label */}
+        <div className="flex items-center gap-3 mb-4 md:mb-8">
+          <span className="block w-8 h-px" style={{ background: "var(--primary-red)" }} />
+          <span
+            className="text-[11px] font-semibold tracking-[0.22em] uppercase"
+            style={{ color: "var(--primary-red)" }}
+          >
+            Our Specialists
+          </span>
+        </div>
 
-            <div className="imagebox md:w-[600px] md:h-[600px]  md:p-10 absolute z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          {/* ── Left — images ── */}
+          <div className="relative">
+            {/* Primary image */}
+            <div className="relative rounded-2xl overflow-hidden shadow-xl">
               <Image
-                src={TurkeyDoctor}
-                alt="Turkey Specialists"
-                width={800}
-                height={800}
-                // fill
-                className=" object-cover z-10 md:h-130 relative rounded-md"
+                src="/uploads/turkey-1.jpeg"
+                alt="Ryan Clinic Turkey Specialist"
+                width={640}
+                height={480}
+                className="w-full h-80 md:h-115 object-cover"
+                priority
               />
-              <div className="absolute md:block hidden top-2 left-2 md:w-[200px] md:h-[200px] w-20 h-20 bg-gray-700  -z-0 "></div>
-              <div className="absolute md:block hidden bottom-2 right-2 md:w-[200px] md:h-[200px] w-20 h-20 bg-gray-700  -z-0 "></div>
+              {/* Gradient overlay */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 60%, transparent 100%)",
+                }}
+              />
+              {/* Bottom badge */}
+              <div className="absolute bottom-5 left-5 right-5">
+                <span
+                  className="block w-8 h-0.5 mb-2 rounded-full"
+                  style={{ background: "var(--accent-gold)" }}
+                />
+                <p className="text-white font-bold text-lg leading-snug">
+                  Turkey's Original Technique — Now in India
+                </p>
+                <p
+                  className="text-xs mt-1"
+                  style={{ color: "var(--accent-gold-light)" }}
+                >
+                  Exclusively at Ryan Clinic
+                </p>
+              </div>
             </div>
+
+            {/* Floating secondary image */}
+            <div
+              className="hidden md:block absolute -bottom-6 -right-6 w-52 h-44 rounded-2xl overflow-hidden shadow-2xl border-4 border-white"
+            >
+              <Image
+                src="/uploads/turkey-2.jpeg"
+                alt="Ryan Clinic Procedure"
+                fill
+                className="object-cover"
+              />
+            </div>
+
+            {/* Red accent bar */}
+            <div
+              className="absolute top-0 left-0 w-1 h-24 rounded-r-full"
+              style={{ background: "var(--primary-red)" }}
+            />
           </div>
 
-          {/* Text Content */}
-          <div>
-            <h2 className="md:text-3xl text-2xl mt-14 md:mt-0 font-bold mb-2 md:mb-4">
-              Turkey&apos;s Specialists in India with 12+ Years of Ryan
-              Expertise
+          {/* ── Right — content ── */}
+          <div className="lg:pl-4">
+            <h2
+              className="text-3xl sm:text-4xl md:text-5xl font-bold leading-[1.1] tracking-tight mb-5"
+              style={{ color: "var(--text-primary)" }}
+            >
+              India's Only
+              <br />
+              <span style={{ color: "var(--primary-red)" }}>
+                Turkey-Certified
+              </span>
+              <br />
+              Hair Specialists
             </h2>
-            <p className="text-xs md:text-base text-gray-700 mb-4">
-              We bring you the best of both worlds — the advanced techniques of
-              Turkey&apos;s leading hair transplant specialists combined with
-              over 12 years of expertise and excellence in India. Our
-              experienced surgeons, trained in Turkey&apos;s renowned hair
-              restoration methods, offer the highest standard of care, ensuring
-              natural and long-lasting results.
-            </p>
-            <p className="text-xs md:text-base text-gray-700 mb-4">
-              We understand that hair restoration is a personal journey, which
-              is why our team of experts takes a personalized approach to every
-              procedure. From the initial consultation to post-operative care,
-              we ensure that each step is tailored to your unique needs. With
-              cutting-edge technology and a focus on precision, we provide
-              results that are not only effective but also safe and comfortable.
-            </p>
-            <p className="text-xs md:text-base text-gray-700 mb-4">
-              With over 12 years of experience in India, Ryan Clinic has earned
-              a reputation for delivering exceptional outcomes. We use the
-              latest techniques like FUE, Turkey Specialist Technique, and PRP,
-              ensuring the best results for hair restoration. Our clinic is
-              committed to providing quality care with affordable pricing,
-              allowing you to achieve the look you desire without compromising
-              on safety or results.
-            </p>
-            <p className="text-gray-700 mb-3">
-              Choose Ryan Clinic for world-class hair transplant solutions with
-              the expertise of Turkey&apos;s top specialists and over 12 years
-              of trusted experience in India.
+
+            <p
+              className="text-sm md:text-[15px] leading-relaxed mb-8"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Ryan Clinic is the only clinic in India exclusively operating with
+              Turkey's authentic Sapphire FUE technique and the original Choi
+              Pen. Our certified doctors trained in Turkey's leading hair
+              restoration centres deliver results that are unmatched anywhere
+              else in India — combining Turkey-level precision with 12+ years of
+              India-specific expertise.
             </p>
 
-            <Button
-              variant="outline"
-              className="bg-transparent mt-2 mt-md-0 text-black border-1 border-black  text-sm"
+            {/* Highlight list */}
+            <ul className="space-y-3 mb-8">
+              {highlights.map((item, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <span
+                    className="mt-1 w-5 h-5 rounded-full flex items-center justify-center shrink-0"
+                    style={{ background: "var(--primary-red)" }}
+                  >
+                    <svg
+                      className="w-3 h-3 text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  </span>
+                  <span
+                    className="text-sm leading-snug"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
+                    {item}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            {/* Stats row */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+              {stats.map((s) => (
+                <div
+                  key={s.label}
+                  className="rounded-xl p-4 text-center"
+                  style={{
+                    background: "var(--bg-main)",
+                    border: "1px solid var(--border-light)",
+                  }}
+                >
+                  <p
+                    className="text-xl font-bold"
+                    style={{ color: "var(--text-primary)" }}
+                  >
+                    {s.num}
+                  </p>
+                  <p
+                    className="text-[10px] font-medium mt-0.5"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    {s.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* CTA */}
+            <a
+              href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi, I want to learn more about the Turkey technique at Ryan Clinic."
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-3 font-semibold text-sm py-4 px-7 rounded-xl text-white transition-opacity hover:opacity-90"
+              style={{
+                background: "var(--primary-red)",
+                boxShadow: "0 4px 14px rgba(227,10,23,0.35)",
+              }}
             >
-              <Link href="/contact">Book Your Appointment</Link>
-            </Button>
+              Book Free Consultation
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+                />
+              </svg>
+            </a>
+            <p
+              className="text-[11px] mt-3"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Free scalp analysis · Graft count · Full cost breakdown — zero
+              obligation.
+            </p>
           </div>
         </div>
       </div>

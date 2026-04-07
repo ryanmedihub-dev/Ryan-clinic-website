@@ -5,9 +5,12 @@ import HairTransplantPage from "./home/homeServices";
 import WhyChooseRyanClinic from "./home/whyChooseUs";
 import OurResults from "./home/ourResults";
 import TurkeySpecialists from "./home/turkeySpecialists";
+import FeaturesOverview  from "./home/featuresOverview";
 import OurBranches from "./home/ourBranches";
 import Testimonials from "./home/testimonial";
 import BlogContent from "./home/blogContent";
+import FaqSection from "./home/faqSection";
+import { SplitCTA } from "./home/splitCTA";
 
 import Banner from "../../../public/uploads/banner.jpg";
 import Banner2 from "../../../public/uploads/banner2.jpg";
@@ -25,7 +28,7 @@ export default function Home() {
             placeholder="blur"
             priority // 👈 ensures hero loads first
             sizes="(max-width: 768px) 100vw, 1920px" // responsive sizing
-            className="w-full h-auto object-cover aspect-[16/9] md:aspect-[21/9] rounded-lg"
+            className="w-full h-auto object-cover aspect-video md:aspect-21/9 rounded-lg"
           />
         </div>
 
@@ -37,19 +40,24 @@ export default function Home() {
             placeholder="blur"
             priority
             sizes="100vw" // 👈 ensures proper scaling on mobile
-            className="w-full h-auto object-cover aspect-[3/4] rounded-lg"
+            className="w-full h-auto object-cover aspect-3/4 rounded-lg"
           />  
         </div>
       </div>
 
+      {/* <HeaderBanner /> */}
+
       {/* ✅ Lazy load non-critical sections */}
       <HairTransplantPage />
+      <FeaturesOverview />
       <OurResults />
       <WhyChooseRyanClinic />
       <TurkeySpecialists />
+      <SplitCTA />
+      <Testimonials />
       <OurBranches />
       <BlogContent />
-      <Testimonials />
+      <FaqSection />
     </>
   );
 }

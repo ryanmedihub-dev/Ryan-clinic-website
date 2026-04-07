@@ -10,15 +10,13 @@ const BlogCarousel = ({ blogsdata }) => {
 
   const blogs = blogsdata || [];
 
-  // Auto-play
   useEffect(() => {
     if (!blogs.length) return;
     autoplayRef.current = setInterval(() => {
       if (!isHovered) {
-        setActiveIndex((prevIndex) => (prevIndex + 1) % blogs.length);
+        setActiveIndex((prev) => (prev + 1) % blogs.length);
       }
     }, 5000);
-
     return () => {
       if (autoplayRef.current) clearInterval(autoplayRef.current);
     };
@@ -30,19 +28,17 @@ const BlogCarousel = ({ blogsdata }) => {
       clearInterval(autoplayRef.current);
       autoplayRef.current = setInterval(() => {
         if (!isHovered) {
-          setActiveIndex((prevIndex) => (prevIndex + 1) % blogs.length);
+          setActiveIndex((prev) => (prev + 1) % blogs.length);
         }
       }, 5000);
     }
   };
 
-  const goToPrevious = () => {
+  const goToPrevious = () =>
     setActiveIndex(activeIndex === 0 ? blogs.length - 1 : activeIndex - 1);
-  };
 
-  const goToNext = () => {
+  const goToNext = () =>
     setActiveIndex(activeIndex === blogs.length - 1 ? 0 : activeIndex + 1);
-  };
 
   const formatDate = (dateString) => {
     try {
@@ -57,28 +53,71 @@ const BlogCarousel = ({ blogsdata }) => {
   };
 
   if (!blogs.length) {
-    return <p className="text-center text-gray-500">No blogs available</p>;
+    return (
+      <p className="text-center py-12" style={{ color: "var(--text-muted)" }}>
+        No blogs available
+      </p>
+    );
   }
 
   return (
-    <section className="py-16 bg-gradient-to-br from-gray-50 to-gray-100">
-      <div className="max-w-7xl mx-auto px-4 md:px-6">
+    <section className="py-16 md:py-24" style={{ background: "var(--bg-soft)" }}>
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="flex justify-between items-end mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
           <div>
-            <h2 className="text-4xl font-bold text-gray-800 mt-4 md:mt-0">
-              Latest Articles
+            {/* Section label */}
+            <div className="flex items-center gap-3 mb-4">
+              <span
+                className="block w-8 h-px"
+                style={{ background: "var(--primary-red)" }}
+              />
+              <span
+                className="text-[11px] font-semibold tracking-[0.22em] uppercase"
+                style={{ color: "var(--primary-red)" }}
+              >
+                Hair Transplant Insights
+              </span>
+            </div>
+            <h2
+              className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight"
+              style={{ color: "var(--text-primary)" }}
+            >
+              Latest{" "}
+              <span style={{ color: "var(--primary-red)" }}>Articles</span>
             </h2>
-            <p className="text-gray-600 text-lg max-w-2xl">
-              Stay updated with our latest blogs and articles.
+            <p
+              className="text-sm md:text-base leading-relaxed mt-3 max-w-lg"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Expert advice on hair restoration, Sapphire FUE, aftercare and
+              everything you need to know before your procedure.
             </p>
           </div>
-          {/* <Link href="/blog" className="hidden lg:flex items-center text-blue-600 hover:text-blue-800 font-medium transition-colors group">
-            View All Blogs
-            <svg className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+
+          <Link
+            href="/blog"
+            className="hidden lg:inline-flex items-center gap-2 font-semibold text-sm py-3 px-6 rounded-xl border transition-colors shrink-0"
+            style={{
+              borderColor: "var(--primary-red)",
+              color: "var(--primary-red)",
+            }}
+          >
+            View All Articles
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M14 5l7 7m0 0l-7 7m7-7H3"
+              />
             </svg>
-          </Link> */}
+          </Link>
         </div>
 
         {/* Carousel */}
@@ -87,13 +126,18 @@ const BlogCarousel = ({ blogsdata }) => {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          {/* Arrows */}
+          {/* Prev arrow */}
           <button
             onClick={goToPrevious}
-            className="absolute md:block hidden -left-14 top-1/2 -translate-y-1/2 z-10  rounded-full p-3 text-7xl hover:bg-gray-100 transition-all"
+            className="absolute hidden md:flex -left-14 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full items-center justify-center transition-colors"
+            style={{
+              background: "var(--bg-main)",
+              border: "1px solid var(--border-light)",
+              color: "var(--primary-red)",
+            }}
           >
             <svg
-              className="w-10 h-10 text-gray-700"
+              className="w-5 h-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -106,12 +150,19 @@ const BlogCarousel = ({ blogsdata }) => {
               />
             </svg>
           </button>
+
+          {/* Next arrow */}
           <button
             onClick={goToNext}
-            className="absolute md:block hidden -right-14 top-1/2 -translate-y-1/2 z-10 rounded-full p-3 text-7xl hover:bg-gray-100 transition-all"
+            className="absolute hidden md:flex -right-14 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full items-center justify-center transition-colors"
+            style={{
+              background: "var(--bg-main)",
+              border: "1px solid var(--border-light)",
+              color: "var(--primary-red)",
+            }}
           >
             <svg
-              className="w-10 h-10 text-gray-700"
+              className="w-5 h-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -133,32 +184,64 @@ const BlogCarousel = ({ blogsdata }) => {
             >
               {blogs.map((blog) => (
                 <div key={blog._id} className="w-full flex-shrink-0">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:bg-white rounded-2xl md:p-8 md:shadow-lg">
-                    {/* Main Post */}
-                    <div className="relative overflow-hidden rounded-xl h-96">
+                  <div
+                    className="grid grid-cols-1 lg:grid-cols-2 gap-6 rounded-2xl p-6 md:p-8"
+                    style={{
+                      background: "var(--bg-main)",
+                      border: "1px solid var(--border-light)",
+                    }}
+                  >
+                    {/* Main featured post */}
+                    <div className="relative overflow-hidden rounded-xl h-80 md:h-96 group">
                       <Image
                         src={blog.pageImageUrl || "/api/placeholder/400/250"}
                         alt={blog.blogTitle}
                         fill
-                        className="object-cover transition-transform duration-700 hover:scale-105"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
                       />
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/100 to-transparent p-6 text-white">
-                        <div className="flex items-center text-sm mb-3">
-                          <span>{formatDate(blog.createdAt)}</span>
+                      {/* Gradient overlay */}
+                      <div
+                        className="absolute inset-0"
+                        style={{
+                          background:
+                            "linear-gradient(to top, rgba(165,0,0,0.92) 0%, rgba(0,0,0,0.5) 50%, transparent 100%)",
+                        }}
+                      />
+
+                      {/* Featured badge */}
+                      <div className="absolute top-4 left-4">
+                        <span
+                          className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-md"
+                          style={{
+                            background: "var(--accent-gold)",
+                            color: "#000",
+                          }}
+                        >
+                          Featured
+                        </span>
+                      </div>
+
+                      {/* Bottom content */}
+                      <div className="absolute bottom-0 left-0 right-0 p-5 z-10">
+                        <div
+                          className="text-xs mb-2 font-medium"
+                          style={{ color: "var(--accent-gold-light)" }}
+                        >
+                          {formatDate(blog.createdAt)}
                         </div>
-                        <h3 className="text-2xl font-bold mb-3">
+                        <h3 className="text-white text-lg md:text-xl font-bold mb-2 leading-snug line-clamp-2">
                           {blog.blogTitle}
                         </h3>
-                        <p className="text-gray-200 mb-4">
+                        <p className="text-gray-300 text-xs leading-relaxed mb-4 line-clamp-2">
                           {blog.metaDiscription}
                         </p>
                         <Link
                           href={`/blog/${blog.pageUrl}`}
-                          className="inline-flex items-center text-white font-medium group"
+                          className="inline-flex items-center gap-2 text-white font-semibold text-sm group/link"
                         >
-                          Read More
+                          Read Article
                           <svg
-                            className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform"
+                            className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -174,8 +257,8 @@ const BlogCarousel = ({ blogsdata }) => {
                       </div>
                     </div>
 
-                    {/* Sidebar: latest 3 excluding current */}
-                    <div className="flex flex-col space-y-6">
+                    {/* Sidebar: 3 related posts */}
+                    <div className="flex flex-col gap-4 justify-between">
                       {blogs
                         .filter((b) => b._id !== blog._id)
                         .slice(0, 3)
@@ -183,39 +266,70 @@ const BlogCarousel = ({ blogsdata }) => {
                           <Link
                             href={`/blog/${sideBlog.pageUrl}`}
                             key={sideBlog._id}
+                            className="group/card flex items-start gap-4 p-4 rounded-xl transition-all"
+                            style={{
+                              background: "var(--bg-card)",
+                              border: "1px solid var(--border-soft)",
+                            }}
                           >
-                            <div className="flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-50 shadow-md transition-colors">
-                              <div className="flex-shrink-0 relative w-20 h-20 rounded-lg overflow-hidden">
-                                <Image
-                                  src={
-                                    sideBlog.pageImageUrl ||
-                                    "/api/placeholder/100/100"
-                                  }
-                                  alt={sideBlog.blogTitle}
-                                  fill
-                                  className="object-cover"
-                                />
-                              </div>
-                              <div className="flex-1">
-                                <h4 className="text-sm font-semibold text-gray-800 mt-1 line-clamp-2">
-                                  {sideBlog.blogTitle}
-                                </h4>
-                                <div className="flex items-center text-xs text-gray-500 mt-2">
-                                  <span>{formatDate(sideBlog.createdAt)}</span>
-                                </div>
-                              </div>
+                            {/* Thumbnail */}
+                            <div
+                              className="shrink-0 relative w-20 h-20 rounded-lg overflow-hidden"
+                              style={{ borderLeft: "3px solid var(--primary-red)" }}
+                            >
+                              <Image
+                                src={
+                                  sideBlog.pageImageUrl ||
+                                  "/api/placeholder/100/100"
+                                }
+                                alt={sideBlog.blogTitle}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+
+                            {/* Text */}
+                            <div className="flex-1 min-w-0">
+                              <p
+                                className="text-[11px] font-semibold uppercase tracking-wider mb-1"
+                                style={{ color: "var(--primary-red)" }}
+                              >
+                                {formatDate(sideBlog.createdAt)}
+                              </p>
+                              <h4
+                                className="text-sm font-semibold leading-snug line-clamp-2 transition-colors group-hover/card:underline"
+                                style={{ color: "var(--text-primary)" }}
+                              >
+                                {sideBlog.blogTitle}
+                              </h4>
                             </div>
                           </Link>
                         ))}
 
-                      {/* <div className="mt-auto pt-6 border-t border-gray-200">
-                        <Link href="/blog" className="flex items-center justify-center text-blue-600 hover:text-blue-800 font-medium group">
-                          Browse all articles
-                          <svg className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                          </svg>
-                        </Link>
-                      </div> */}
+                      {/* All blogs link */}
+                      <Link
+                        href="/blog"
+                        className="mt-auto flex items-center justify-center gap-2 font-semibold text-sm py-3 px-5 rounded-xl border transition-colors"
+                        style={{
+                          borderColor: "var(--primary-red)",
+                          color: "var(--primary-red)",
+                        }}
+                      >
+                        Browse All Articles
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M14 5l7 7m0 0l-7 7m7-7H3"
+                          />
+                        </svg>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -223,31 +337,39 @@ const BlogCarousel = ({ blogsdata }) => {
             </div>
           </div>
 
-          {/* Pagination */}
-          <div className="flex justify-center mt-8 space-x-3">
+          {/* Pagination dots */}
+          <div className="flex justify-center mt-7 gap-2">
             {blogs.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`w-10 h-2 rounded-full transition-all ${
-                  index === activeIndex
-                    ? "bg-blue-600"
-                    : "bg-gray-300 hover:bg-gray-400"
-                }`}
+                className="rounded-full transition-all duration-300"
+                style={{
+                  width: index === activeIndex ? "28px" : "10px",
+                  height: "10px",
+                  background:
+                    index === activeIndex
+                      ? "var(--primary-red)"
+                      : "var(--border-light)",
+                }}
               />
             ))}
           </div>
         </div>
 
-        {/* Mobile view link */}
+        {/* Mobile view all */}
         <div className="mt-8 text-center lg:hidden">
           <Link
             href="/blog"
-            className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium group"
+            className="inline-flex items-center gap-2 font-semibold text-sm py-3 px-6 rounded-xl border"
+            style={{
+              borderColor: "var(--primary-red)",
+              color: "var(--primary-red)",
+            }}
           >
-            View All Blogs
+            View All Articles
             <svg
-              className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform"
+              className="w-4 h-4"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

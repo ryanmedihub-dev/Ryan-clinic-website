@@ -48,11 +48,18 @@ export default function aboutSection() {
               clients who have achieved their hair restoration goals with our
               expert services.
             </p>
-            <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition text-sm sm:text-base">
-              <a href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi">
-                Book Your Appointment
-              </a>
-            </button>
+            <a
+              href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi, I want to book a hair transplant consultation at Ryan Clinic."
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 font-semibold text-sm py-3.5 px-7 rounded-xl text-white transition-opacity hover:opacity-90"
+              style={{ background: "var(--primary-red)", boxShadow: "0 4px 14px rgba(227,10,23,0.3)" }}
+            >
+              Book Your Appointment
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+              </svg>
+            </a>
           </div>
         </div>
       </div>

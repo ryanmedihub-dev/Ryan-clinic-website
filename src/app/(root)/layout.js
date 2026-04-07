@@ -2,36 +2,42 @@ import "../../styles/globals.css";
 import Header from "@/components/layouts/Header";
 import Footer from "@/components/layouts/Footer";
 import Script from "next/script";
-import { Baloo_Bhaijaan_2 } from "next/font/google";
-import { Hind_Siliguri } from "next/font/google";
+import SchemaMarkup from "@/components/SchemaMarkup";
 
-const hindSiliguri = Hind_Siliguri({
+import { Outfit, DM_Sans } from "next/font/google";
+
+// ✅ Outfit (headings — slim, geometric, professional)
+const outfit = Outfit({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700", "800"],
   display: "swap",
+  variable: "--font-outfit",
 });
 
-const baloo = Baloo_Bhaijaan_2({
+// ✅ DM Sans (body — clean, slim, highly readable)
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600"],
   display: "swap",
-  variable: "--font-baloo",
+  variable: "--font-dm-sans",
 });
 
 export const metadata = {
   metadataBase: new URL("https://clinicryan.com"),
-  title: {
-    default: "Best Hair Transplant in India | Ryan Clinic Experts",
-    template: "%s | Ryan Clinic",
-  },
+  title: "Hair Transplant in Delhi | Best Sapphire FUE Cost | Ryan Clinic",
   description:
-    "Get natural-looking hair with advanced, affordable transplants at Ryan Clinic. Turkey-trained experts. Book your free consultation now!",
+    "Ryan Clinic offers the best hair transplant in Delhi using advanced Turkey Sapphire FUE. Certified surgeons, 95%+ graft survival & affordable cost. Call +91-9217958539. Book free consultation!",
   keywords: [
-    "Hair Transplant India",
-    "Ryan Clinic",
-    "Best Hair Transplant",
-    "Hair Restoration",
-    "Affordable Hair Transplant",
+    "hair transplant in Delhi",
+    "best hair transplant in Delhi",
+    "hair transplant cost in Delhi",
+    "Turkey Sapphire FUE Delhi",
+    "Sapphire FUE hair transplant Delhi",
+    "hair transplant clinic in Delhi",
+    "best hair transplant surgeon Delhi",
+    "hair transplant doctor Delhi",
+    "FUE hair transplant Delhi NCR",
+    "Ryan Clinic Delhi hair transplant",
   ],
   robots: {
     index: true,
@@ -39,82 +45,87 @@ export const metadata = {
     googleBot: {
       index: true,
       follow: true,
-      maxSnippet: -1,
-      maxImagePreview: "large",
-      maxVideoPreview: -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
     },
   },
+  alternates: {
+    canonical: "https://www.clinicryan.com/hair-transplant-in-delhi",
+  },
+  authors: [{ name: "Dr. Pranendra Singh, Ryan Clinic" }],
   openGraph: {
-    type: "website",
+    type: "article",
+    locale: "en_IN",
+    url: "https://www.clinicryan.com/hair-transplant-in-delhi",
     siteName: "Ryan Clinic",
-    url: "https://clinicryan.com/",
-    title: "Best Hair Transplant in India | Ryan Clinic Experts",
+    title: "Best Hair Transplant in Delhi - Sapphire FUE Cost | Ryan Clinic",
     description:
-      "Get natural-looking hair with advanced, affordable transplants at Ryan Clinic. Turkey-trained experts. Book your free consultation now!",
+      "Ryan Clinic offers advanced Turkey Sapphire FUE hair transplant in Delhi. Certified surgeons, 95%+ graft survival & transparent pricing. Call +91-9217958539",
     images: [
       {
-        url: "/uploads/logo.png",
+        url: "https://www.clinicryan.com/uploads/1757745417011-1752733322451-Hair%20Transplant%204.jpg",
         width: 1200,
         height: 630,
-        alt: "Ryan Clinic Hair Transplant",
+        alt: "Ryan Clinic - Best Hair Transplant in Delhi",
       },
     ],
+    publishedTime: "2024-01-01T00:00:00+05:30",
+    modifiedTime: new Date().toISOString(),
   },
   twitter: {
     card: "summary_large_image",
     site: "@ryan_clinic",
-    title: "Best Hair Transplant in India | Ryan Clinic Experts",
+    creator: "@ryan_clinic",
+    title: "Best Hair Transplant in Delhi - Sapphire FUE | Ryan Clinic",
     description:
-      "Get natural-looking hair with advanced, affordable transplants at Ryan Clinic. Turkey-trained experts. Book your free consultation now!",
-    images: ["/uploads/logo.png"],
+      "Advanced Turkey Sapphire FUE hair transplant in Delhi. Certified surgeons & best cost. Call +91-9217958539.",
+    images: ["https://www.clinicryan.com/hair-transplant-in-delhi"],
   },
-  icons: {
-    icon: "/uploads/r-logo.png",
+  verification: {
+    yandex: "2a66899c829e502a",
+    other: {
+      "msvalidate.01": "DD718F54C1640669F3FF6B86F0C3BBDF",
+    },
   },
-  alternates: {
-    canonical: "https://clinicryan.com/",
+  other: {
+    "geo.region": "IN-DL",
+    "geo.placename": "New Delhi",
+    "geo.position": "28.6139;77.2090",
+    ICBM: "28.6139, 77.2090",
+    "allow-search": "yes",
+    "revisit-after": "7 days",
+    Rating: "General",
+    distribution: "global",
+    yahooSeeker: "index, follow",
+    msnbot: "index, follow",
+    "article:modified_time": new Date().toISOString(),
+    "article:publisher": "https://www.facebook.com/RyanClinic",
+    "format-detection": "telephone=no",
+    googlebot: "index, follow",
+    copyright: "clinicryan.com",
   },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={baloo.variable} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${outfit.variable} ${dmSans.variable}`}
+      suppressHydrationWarning
+    >
       <head>
-        {/* ✅ Extra Meta Tags */}
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="msvalidate.01" content="DD718F54C1640669F3FF6B86F0C3BBDF" />
-        <meta name="yandex-verification" content="2a66899c829e502a" />
-        <meta name="yahooSeeker" content="index, follow" />
-        <meta name="msnbot" content="index, follow" />
-        <meta name="allow-search" content="yes" />
-        <meta name="revisit-after" content="daily" />
-        <meta name="distribution" content="global" />
-        <meta name="author" content="Ryan Clinic" />
-        <meta name="copyright" content="clinicryan.com" />
-
-        {/* ✅ Google Tag Manager */}
-        <Script id="gtm-script" strategy="afterInteractive">
-          {`
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-TMX4VDK7');
-          `}
-        </Script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="icon" href="/uploads/r-logo.png" />
+        <link rel="apple-touch-icon" href="/uploads/r-logo.png" />
+        <SchemaMarkup />
       </head>
 
-      <body className={`${hindSiliguri.className} antialiased`}>
-        {/* ✅ Google Tag Manager (noscript) */}
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-TMX4VDK7"
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
-        </noscript>
-
+      <body className={`${dmSans.className} antialiased`}>
         <Header />
         {children}
         <Footer />

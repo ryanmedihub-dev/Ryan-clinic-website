@@ -1,17 +1,39 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #4a778b;
-  --primary: rgba(45, 45, 45, 1);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
+  /* Primary */
+  --primary-red: #e30a17;
+  --primary-red-light: #e30a18b8;
+  --primary-red-dark: #8B0000;
+  /* Accent */
+  --accent-gold: #D4A937;
+  --accent-gold-hover: #C89B2F;
+  --accent-gold-light: #E5C76B;
+  /* Backgrounds */
+  --bg-main: #FFFFFF;
+  --bg-soft: #F7F5F2;
+  --bg-card: #EFEAE3;
+  /* Text */
+  --text-primary: #302658;
+  --text-secondary: #333333;
+  --text-muted: #666666;
+  /* Borders */
+  --border-light: #E0D8CF;
+  --border-soft: #D6CFC7;
+
+  /* Legacy mappings — keeps var() references in components working */
+  --background: var(--bg-main);
+  --foreground: var(--primary-red);
+  --primary: var(--text-primary);
+  --primary-foreground: #ffffff;
+  --secondary: var(--bg-soft);
+  --secondary-foreground: var(--text-secondary);
 }
 
 body {
-  background: var(--background);
-  color: #0a0a0a;
+  background: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-dm-sans), sans-serif;
 }
 
 body::-webkit-scrollbar {
@@ -19,12 +41,12 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 6px #f2f2f2;
+  box-shadow: inset 0 0 6px var(--bg-soft);
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: var(--primary-color);
-  outline: 1px solid rgb(19, 19, 19);
+  background-color: var(--primary-red);
+  outline: 1px solid var(--primary-red-dark);
 }
 
 html {
@@ -39,8 +61,10 @@ button {
 h1,
 h2,
 h3,
-h4 {
-  font-family: var(--font-baloo), sans-serif;
+h4,
+h5,
+h6 {
+  font-family: var(--font-outfit), sans-serif;
 }
 
 .text {
@@ -80,23 +104,25 @@ section {
 .shadow-new {
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.137);
 }
+
 .bg-foreground {
-  background-color: #4a778b;
+  background-color: var(--primary-red);
 }
+
 .bg-light {
-  background-color: #f8f9fa78 !important;
+  background-color: var(--bg-soft) !important;
 }
 
 .swiper-button-prev:after,
 .swiper-button-next:after {
-  color: var(--foreground);
+  color: var(--primary-red);
   font-size: 24px !important;
   font-weight: bolder;
 }
 .swiper-button-prev,
 .swiper-button-next {
   top: 45% !important;
-  background-color: white;
+  background-color: var(--bg-main);
   padding: 10px 20px !important;
   border-radius: 50%;
   transform: scale(0.6);
@@ -107,6 +133,7 @@ section {
   grid-template-columns: 40% 57%;
   gap: 3%;
 }
+
 
 .branchslides .brachbox {
   transition: all 0.4s ease-in-out;
@@ -126,7 +153,7 @@ section {
 }
 
 .bg-primary {
-  background-color: var(--primary);
+  background-color: var(--primary-red);
 }
 
 .sun-editor .se-wrapper {
@@ -144,7 +171,7 @@ section {
 }
 
 .bannerBackground {
-  background: linear-gradient(rgba(13, 189, 238, 0.266)),
+  background: linear-gradient(rgba(0, 0, 0, 0.6)),
     url("https://res.cloudinary.com/dq1tzl5ir/image/upload/v1751445188/video-background_gkuate_b7xmrc.jpg");
   background-size: cover;
   background-position: center;
@@ -152,8 +179,11 @@ section {
 }
 
 .newBackground {
-  background: linear-gradient(60deg, #46bad133 2%, #46bad135),
+  background: linear-gradient(60deg, rgba(227, 10, 23, 0.08) 2%, rgba(227, 10, 23, 0.06)),
     url("https://res.cloudinary.com/dq1tzl5ir/image/upload/v1751445188/video-background_gkuate_b7xmrc.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .bannerImg {
@@ -165,7 +195,7 @@ section {
   background: blue;
   aspect-ratio: 2/3;
   clip-path: ellipse(100% 85% at 100% 50%);
-  background: white;
+  background: var(--bg-main);
   padding: 20px;
   padding-right: 0;
 }
@@ -202,7 +232,7 @@ section {
 }
 
 .new-pageLayout ul li strong {
-  color: var(--foreground) !important ;
+  color: var(--primary-red) !important;
   margin-right: 6px;
 }
 .new-pageLayout ul li {
@@ -216,7 +246,7 @@ section {
   content: " ";
   width: 8px;
   height: 8px;
-  background-color: var(--foreground);
+  background-color: var(--primary-red);
   border-radius: 100%;
   position: absolute;
   left: -21px;
@@ -228,7 +258,7 @@ section {
   width: 17px;
   height: 17px;
   background-color: transparent;
-  border: 1px solid var(--foreground);
+  border: 1px solid var(--primary-red);
   border-bottom: none;
   border-left: none;
   border-radius: 100%;
@@ -267,7 +297,7 @@ section {
   font-size: 1.75rem;
   line-height: 1.3;
   font-weight: bold;
-  color: var(--foreground);
+  color: var(--primary-red);
   margin-top: 28px;
   text-decoration: underline;
 }
@@ -295,11 +325,11 @@ section {
 
 .swiper-button-next,
 .swiper-button-prev {
-  color: #3b82f6;
+  color: var(--primary-red);
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: white;
+  background: var(--bg-main);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
@@ -311,19 +341,19 @@ section {
 .swiper-pagination-bullet {
   width: 10px;
   height: 10px;
-  background: #cbd5e1;
+  background: var(--border-light);
   opacity: 0.7;
 }
 .swiper-pagination-bullet-active {
-  background: #3b82f6;
+  background: var(--primary-red);
   opacity: 1;
 }
 
 .result-card {
   border-radius: 15px;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.178);
-  background-color: white;
+  border: 1px solid var(--border-soft);
+  background-color: var(--bg-main);
   transition: transform 0.3s ease;
 }
 
@@ -364,7 +394,7 @@ section {
   margin-top: 1.2em;
   margin-bottom: 0.4em;
   line-height: 1.3;
-  color: #111827;
+  color: var(--text-primary);
 }
 .pageLayoutBox p {
   font-size: 1.02rem;
@@ -388,7 +418,7 @@ section {
   font-size: 1.75rem;
   line-height: 1.3;
   font-weight: 600;
-  color: var(--foreground);
+  color: var(--primary-red);
 }
 
 .pageLayoutBox h4 {
@@ -396,7 +426,7 @@ section {
   font-size: 1.5rem;
   line-height: 1.35;
   font-weight: 600;
-  color: var(--foreground);
+  color: var(--primary-red);
 }
 
 .pageLayoutBox h5 {
@@ -421,7 +451,7 @@ section {
   width: 2px;
   height: 2px;
   border-radius: 100%;
-  background: #000;
+  background: var(--text-primary);
 }
 
 .swiper-pagination-fraction,
@@ -548,7 +578,7 @@ section {
   .bannerImg {
     aspect-ratio: 2 / 3;
     clip-path: ellipse(100% 85% at 0%);
-    background: #fff;
+    background: var(--bg-main);
     width: 94%;
     height: 200px;
     padding: 10px 10px 10px 0px;
