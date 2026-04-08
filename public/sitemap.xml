@@ -1,108 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://clinicryan.com/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://clinicryan.com/about/</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://clinicryan.com/fue-hair-transplant/</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://clinicryan.com/hairline-transplant/</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://clinicryan.com/beard-transplant/</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://clinicryan.com/female-hair-transplant/</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://clinicryan.com/eyebrow-transplant/</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://clinicryan.com/prp-treatment/</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://clinicryan.com/chemical-skin-peels/</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://clinicryan.com/alopecia-treatments/</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://clinicryan.com/gallery/images/</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://clinicryan.com/hair-transplant-in-delhi/</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://clinicryan.com/hair-transplant-in-mumbai/</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://clinicryan.com/hair-transplant-in-hyderabad/</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://clinicryan.com/contact/</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
- 
-  <url>
-    <loc>https://www.clinicryan.com/blog/what-are-the-side-effects-of-hair-transplant-in-india</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
- 
-  <url>
-    <loc>https://www.clinicryan.com/blog/prp-injections-after-a-hair-transplant</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
- 
-  <url>
-    <loc>https://www.clinicryan.com/blog/what-is-prp-hair-treatment</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
- 
-  <url>
-    <loc>https://www.clinicryan.com/blog/female-hair-transplant</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.clinicryan.com/blog/beard-transplant-in-Delhi</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
- 
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+
+<url>
+  <loc>https://www.clinicryan.com/</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/about</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/fue-hair-transplant</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/hairline-transplant</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/beard-transplant</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/female-hair-transplant</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/eyebrow-transplant</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/hair-transplant-in-delhi</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/hair-transplant-in-mumbai</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/hair-transplant-in-hyderabad</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/prp-treatment</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/chemical-skin-peels</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/alopecia-treatments</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/gallery/images</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/contact</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/blog/what-are-the-side-effects-of-hair-transplant-in-india</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/blog/prp-injections-after-a-hair-transplant</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/blog/what-is-prp-hair-treatment</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/blog/female-hair-transplant</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/blog/beard-transplant-in-Delhi</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/blog/understanding-the-role-of-minoxidil-in-hair-restoration</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/blog/finasteride-tablets-ip-1-mg-for-hair-solution</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.clinicryan.com/blog/hair-transplant-in-delhi-the-right-choice-for-a-new-you</loc>
+  <lastmod>2026-04-08T05:47:31+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+
+
 </urlset>

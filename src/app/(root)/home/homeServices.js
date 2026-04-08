@@ -58,7 +58,7 @@ export default function WhyRyanSection() {
           Mobile  : flex-col, height-based expansion (h-[520px] container)
           Desktop : flex-row, width-based expansion  (h-[480px] container)
         */}
-        <div className="flex flex-col md:flex-row h-[520px] sm:h-[560px] md:h-[480px] lg:h-[520px]">
+        <div className="flex flex-col md:flex-row h-140 sm:h-140 md:h-120 lg:h-130">
           {cards.map((card, index) => {
             const isActive = activeIndex === index;
 

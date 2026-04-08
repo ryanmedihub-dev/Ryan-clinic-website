@@ -7,7 +7,7 @@ export function SplitCTA() {
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
           {/* ── Left card — main CTA copy ── */}
-          <div className="flex flex-col justify-between rounded-2xl p-7 md:p-8">
+          <div className="flex flex-col justify-between rounded-2xl p-2 md:p-8">
             <div>
               {/* Label */}
               <div className="flex items-center gap-2 mb-6">

@@ -2,7 +2,7 @@ import PageBanner from "@/components/layouts/pageBanner";
 import AboutSection from "./aboutSection";
 import StepsSection from "./stepsSection";
 import ChooseSection from "./chooseSection";
-import AboutBanner from "../../../../public/uploads/about-banner.webp"
+import AboutBanner from "../../../../public/uploads/12.jpg"
 
 const page = () => {
   return (

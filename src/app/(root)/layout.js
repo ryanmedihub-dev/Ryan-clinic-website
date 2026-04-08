@@ -1,7 +1,6 @@
 import "../../styles/globals.css";
 import Header from "@/components/layouts/Header";
 import Footer from "@/components/layouts/Footer";
-import Script from "next/script";
 import SchemaMarkup from "@/components/SchemaMarkup";
 
 import { Outfit, DM_Sans } from "next/font/google";

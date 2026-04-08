@@ -96,7 +96,7 @@ export default function FeaturesOverview() {
     <section className="bg-white py-16 md:py-24">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top label */}
-        <div className="flex items-center gap-3 mb-8">
+        <div className="flex items-center gap-3 mb-4 md:mb-8">
           <span className="block w-8 h-px bg-[#D32F2F]" />
           <span className="text-[#D32F2F] text-[11px] font-semibold tracking-[0.22em] uppercase">
             Trusted by 10,000+ Patients
@@ -104,7 +104,7 @@ export default function FeaturesOverview() {
         </div>
 
         {/* Heading + intro */}
-        <div className="max-w-3xl mb-14 md:mb-14">
+        <div className="max-w-3xl mb-8 md:mb-14">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-normal text-gray-900 leading-[1.1] tracking-tight">
             Permanent Hair. Natural Results.{" "}
             <span className="text-[#D32F2F]">

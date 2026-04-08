@@ -341,7 +341,7 @@ export default function OurResults() {
 
         {/* Grid */}
         <div
-          className="or-mosaic"
+          className="or-mosaic pr-10 pl-6 mb-10"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(3, 1fr)",
@@ -388,7 +388,7 @@ export default function OurResults() {
 
         {/* Mosaic */}
         <div
-          className="or-mosaic w-full px-4 md:px-20 mt-0"
+          className="or-mosaic w-full px-12 md:px-20 mt-0"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(24, 1fr)",

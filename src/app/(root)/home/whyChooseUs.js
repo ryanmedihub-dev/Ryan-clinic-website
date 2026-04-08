@@ -151,7 +151,7 @@ export default function WhyChooseUs() {
                       className={`text-xs font-semibold tracking-[0.15em] shrink-0 pt-0.5 transition-colors duration-200 ${
                         open === i
                           ? "text-[#D32F2F]"
-                          : "text-gray-300 group-hover:text-[#D32F2F]"
+                          : "text-gray-600 group-hover:text-[#D32F2F]"
                       }`}
                     >
                       0{i + 1}
@@ -163,7 +163,7 @@ export default function WhyChooseUs() {
                         className={`font-semibold text-sm md:text-base leading-snug tracking-tight transition-colors duration-200 ${
                           open === i
                             ? "text-gray-900"
-                            : "text-gray-500 group-hover:text-gray-900"
+                            : "text-gray-700 group-hover:text-gray-900"
                         }`}
                       >
                         {item.title}
@@ -199,7 +199,7 @@ export default function WhyChooseUs() {
                   {/* Body */}
                   <div
                     className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                      open === i ? "max-h-48 opacity-100" : "max-h-0 opacity-0"
+                      open === i ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
                     }`}
                   >
                     <p className="pl-10 pb-6 text-xs md:text-sm text-gray-500 leading-relaxed">

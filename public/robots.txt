@@ -1,18 +1,29 @@
-# robots.txt for https://clinicryan.com
-# Generated on 2025-08-31
+# robots.txt for https://www.clinicryan.com/
+# Generated: April 2026
 
 User-agent: *
 Allow: /
-# Typical admin/search/cart paths to keep out of indexes; remove if not applicable
+Crawl-delay: 2
+
+# Block private/internal paths
+Disallow: /api/
+Disallow: /_next/
 Disallow: /admin/
-Disallow: /cgi-bin/
-Disallow: /*?s=
-Disallow: /*?replytocom=
-Disallow: /cart/
-Disallow: /checkout/
-Disallow: /account/
+Disallow: /dashboard/
+Disallow: /private/
+Disallow: /uploads/
+Disallow: /*.json$
+Disallow: /*?*utm_source=
+Disallow: /*?*utm_medium=
+Disallow: /*?*utm_campaign=
+Disallow: /*?*ref=
 
-# Crawl-delay can be used for very busy sites; uncomment if needed
-# Crawl-delay: 5
+# Block duplicate/parameter URLs
+Disallow: /*?page=
+Disallow: /*&page=
 
-Sitemap: https://clinicryan.com/sitemap.xml
+# -----------------------------------------------
+# Sitemap Location
+# -----------------------------------------------
+
+Sitemap: https://www.clinicryan.com/sitemap.xml

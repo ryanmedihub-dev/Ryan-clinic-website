@@ -20,7 +20,7 @@ export default function TurkeySpecialists() {
       className="py-16 md:py-24"
       style={{ background: "var(--bg-soft)" }}
     >
-      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-8xl mx-auto my-10 px-4 sm:px-6 lg:px-8">
         {/* Section label */}
         <div className="flex items-center gap-3 mb-4 md:mb-8">
           <span className="block w-8 h-px" style={{ background: "var(--primary-red)" }} />
@@ -42,7 +42,7 @@ export default function TurkeySpecialists() {
                 alt="Ryan Clinic Turkey Specialist"
                 width={640}
                 height={480}
-                className="w-full h-80 md:h-115 object-cover"
+                className="w-full h-80 md:h-175 object-cover"
                 priority
               />
               {/* Gradient overlay */}

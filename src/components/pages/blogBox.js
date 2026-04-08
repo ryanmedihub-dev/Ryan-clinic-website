@@ -183,7 +183,7 @@ const BlogCarousel = ({ blogsdata }) => {
               style={{ transform: `translateX(-${activeIndex * 100}%)` }}
             >
               {blogs.map((blog) => (
-                <div key={blog._id} className="w-full flex-shrink-0">
+                <div key={blog._id} className="w-full shrink-0">
                   <div
                     className="grid grid-cols-1 lg:grid-cols-2 gap-6 rounded-2xl p-6 md:p-8"
                     style={{
@@ -258,7 +258,7 @@ const BlogCarousel = ({ blogsdata }) => {
                     </div>
 
                     {/* Sidebar: 3 related posts */}
-                    <div className="flex flex-col gap-4 justify-between">
+                    <div className="md:flex flex-col gap-4 justify-between hidden ">
                       {blogs
                         .filter((b) => b._id !== blog._id)
                         .slice(0, 3)

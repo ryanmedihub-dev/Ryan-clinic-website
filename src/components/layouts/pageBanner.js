@@ -8,23 +8,26 @@ export default function PageBanner({
   description,
   breadcrumbLabel,
   bgImage,
+  url,
 }) {
   const crumbText = breadcrumbLabel || title || "";
+  const raw = bgImage || url;
+  const resolvedBg = raw
+    ? typeof raw === "object"
+      ? raw.src
+      : raw
+    : "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1600&q=80";
 
   return (
-    <section className="relative overflow-hidden min-h-[320px] md:min-h-[380px] flex items-center">
+    <section className="relative overflow-hidden min-h-80 md:min-h-95 flex items-center">
 
       {/* ── Background image ── */}
       <div
         className="absolute inset-0 bg-center bg-cover bg-no-repeat"
-        style={{
-          backgroundImage: bgImage
-            ? `url(${bgImage})`
-            : "url('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1600&q=80')",
-        }}
+        style={{ backgroundImage: `url(${resolvedBg})` }}
         aria-hidden="true"
       />
-
+ 
       {/* ── Red gradient overlay ── */}
       <div
         className="absolute inset-0"
@@ -103,7 +106,7 @@ export default function PageBanner({
             style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
             <span
-              className="inline-block w-[6px] h-[6px] rounded-full bg-[#D32F2F] mr-2.5 mb-0.5 align-middle"
+              className="inline-block w-1.5 h-1.5 rounded-full bg-[#D32F2F] mr-2.5 mb-0.5 align-middle"
               style={{ boxShadow: "0 0 0 3px rgba(211,47,47,0.25)" }}
               aria-hidden="true"
             />
