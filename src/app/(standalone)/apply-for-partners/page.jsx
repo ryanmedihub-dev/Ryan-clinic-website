@@ -302,39 +302,55 @@ function Background() {
 
 // ─── PAYMENT SCREEN ──────────────────────────────────────────────────────────
 
-function PaymentScreen({ onPay, paying, error }) {
+const UPI_LINK = "upi://pay?pa=8510895819@pthdfc&pn=Datevibe&am=99&cu=INR";
+
+function PaymentScreen({ onPay, onConfirm, upiOpened, paying, error }) {
   return (
     <div className="payment-screen">
       <div className="payment-icon-wrap">
         <span className="payment-icon">🌹</span>
       </div>
       <h2 className="payment-title">One Last Step</h2>
-      <p className="payment-subtitle">Complete your registration with a monthly membership.</p>
+      <p className="payment-subtitle">Complete your registration with a one-time membership fee.</p>
       <div className="payment-card">
         <div className="payment-plan-header">
-          <span className="payment-plan-badge">Monthly Membership</span>
+          <span className="payment-plan-badge">Membership Fee</span>
         </div>
         <div className="payment-amount">
           <span className="payment-currency">₹</span>
           <span className="payment-price">99</span>
-          <span className="payment-period">/month</span>
+          <span className="payment-period">one-time</span>
         </div>
         <ul className="payment-features">
           <li><span className="feat-dot" />Curated match suggestions</li>
           <li><span className="feat-dot" />Priority profile review</li>
-          <li><span className="feat-dot" />Auto-renewed monthly</li>
-          <li><span className="feat-dot" />Cancel anytime</li>
+          <li><span className="feat-dot" />Serious profiles only</li>
+          <li><span className="feat-dot" />WhatsApp contact within 24–48 hrs</li>
         </ul>
         <p className="payment-autopay-note">
-          ↻ <strong>Auto-pay enabled</strong> — ₹99 auto-deducted every month.
+          📲 Pay via any UPI app — GPay, PhonePe, Paytm, BHIM
         </p>
       </div>
       {error && <p className="payment-error">{error}</p>}
-      <button onClick={onPay} className="btn-primary w-full" disabled={paying}
-        style={{ opacity: paying ? 0.65 : 1, marginTop: "22px" }}>
-        {paying ? "Opening Payment…" : <>Subscribe ₹99/month &amp; Register <span className="btn-arrow">→</span></>}
-      </button>
-      <p className="payment-secure">🔒 Secured by Razorpay</p>
+
+      {!upiOpened ? (
+        <a href={UPI_LINK} onClick={onPay} className="btn-primary w-full"
+          style={{ display: "block", textAlign: "center", marginTop: "22px", textDecoration: "none" }}>
+          Pay ₹99 via UPI <span className="btn-arrow">→</span>
+        </a>
+      ) : (
+        <button onClick={onConfirm} className="btn-primary w-full" disabled={paying}
+          style={{ opacity: paying ? 0.65 : 1, marginTop: "22px" }}>
+          {paying ? "Submitting…" : <>I've Completed Payment <span className="btn-arrow">→</span></>}
+        </button>
+      )}
+
+      {upiOpened && (
+        <p style={{ textAlign: "center", fontSize: "12px", color: "var(--text-muted)", marginTop: "10px" }}>
+          Tap the button above after your UPI payment is done.
+        </p>
+      )}
+      <p className="payment-secure">🔒 Secure UPI Payment</p>
     </div>
   );
 }
@@ -362,7 +378,7 @@ export default function IntentDatingForm() {
   const [step, setStep] = useState(0);
   const [section, setSection] = useState(0);
   const [showPayment, setShowPayment] = useState(false);
-  const [paying, setPaying] = useState(false);
+  const [upiOpened, setUpiOpened] = useState(false);
   const [paymentError, setPaymentError] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -377,7 +393,7 @@ export default function IntentDatingForm() {
     setTimeout(() => { setSection(next); setVisible(true); }, 280);
   };
 
-  const submitForm = async (paymentId, orderId) => {
+  const submitForm = async () => {
     setSubmitting(true); setSubmitError("");
     try {
       const fd = new FormData();
@@ -385,8 +401,7 @@ export default function IntentDatingForm() {
         if (Array.isArray(v)) fd.append(k, JSON.stringify(v));
         else if (v !== undefined && v !== null) fd.append(k, v);
       }
-      fd.append("razorpayPaymentId", paymentId);
-      fd.append("razorpaySubscriptionId", orderId);
+      fd.append("paymentMethod", "upi");
       fd.append("paymentStatus", "paid");
       const res = await fetch("/api/apply", { method: "POST", body: fd });
       const json = await res.json();
@@ -397,50 +412,12 @@ export default function IntentDatingForm() {
     } finally { setSubmitting(false); }
   };
 
-  const handlePay = async () => {
-    setPaying(true); setPaymentError("");
-    try {
-      const subRes = await fetch("/api/razorpay/create-subscription", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: data.fullName || "Applicant" }),
-      });
-      const subJson = await subRes.json();
-      if (!subJson.success) throw new Error(subJson.message || "Could not initiate payment");
-      await new Promise((res, rej) => {
-        if (window.Razorpay) return res();
-        const s = document.createElement("script");
-        s.src = "https://checkout.razorpay.com/v1/checkout.js";
-        s.onload = res; s.onerror = () => rej(new Error("Failed to load Razorpay"));
-        document.body.appendChild(s);
-      });
-      await new Promise((res, rej) => {
-        const options = {
-          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-          subscription_id: subJson.subscriptionId,
-          name: "Intent Dating", description: "Monthly Membership – ₹99/month",
-          handler: async (r) => {
-            try {
-              const vr = await fetch("/api/razorpay/verify-payment", {
-                method: "POST", headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ razorpay_payment_id: r.razorpay_payment_id, razorpay_subscription_id: r.razorpay_subscription_id, razorpay_signature: r.razorpay_signature }),
-              });
-              const vj = await vr.json();
-              if (!vj.success) throw new Error("Payment verification failed");
-              await submitForm(r.razorpay_payment_id, r.razorpay_subscription_id);
-              res();
-            } catch (e) { rej(e); }
-          },
-          prefill: { name: data.fullName || "" },
-          theme: { color: "#D4607A" },
-          modal: { ondismiss: () => rej(new Error("Payment cancelled. Please try again.")) },
-        };
-        const rzp = new window.Razorpay(options);
-        rzp.on("payment.failed", (r) => rej(new Error(r.error?.description || "Payment failed")));
-        rzp.open();
-      });
-    } catch (err) {
-      setPaymentError(err.message || "Payment failed. Please try again.");
-    } finally { setPaying(false); }
+  const handlePay = () => {
+    setUpiOpened(true);
+  };
+
+  const handleConfirmPayment = () => {
+    submitForm();
   };
 
   const handleNext = () => section < SECTIONS.length - 1 ? goTo(section + 1) : setShowPayment(true);
@@ -493,7 +470,7 @@ export default function IntentDatingForm() {
             </div>
             <h2 className="success-title" style={{ fontSize: "26px" }}>Submitting your application…</h2>
           </div>
-        ) : <PaymentScreen onPay={handlePay} paying={paying} error={paymentError || submitError} />}
+        ) : <PaymentScreen onPay={handlePay} onConfirm={handleConfirmPayment} upiOpened={upiOpened} paying={submitting} error={paymentError || submitError} />}
       </div>
     </>
   );
