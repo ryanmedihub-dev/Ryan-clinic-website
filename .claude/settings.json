@@ -7,7 +7,9 @@
       "Bash(node scripts/update-admin.mjs)",
       "Bash(node --env-file=.env.local scripts/update-admin.mjs)",
       "Bash(ls c:/dashzer/Ryan-next-project-new/.env*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(mkdir -p \"c:/dashzer/Ryan-next-project-new/src/app/\\(root\\)/terms-and-conditions\")",
+      "Bash(mkdir -p \"c:/dashzer/Ryan-next-project-new/src/app/\\(root\\)/refund-policy\")"
     ],
     "additionalDirectories": [
       "c:\\dashzer\\Ryan-next-project-new\\src\\app\\(standalone)"
