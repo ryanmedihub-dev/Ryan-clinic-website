@@ -34,7 +34,7 @@ export default async function BlogPage({ params }) {
       <PageBanner
         title={blog?.pageTitle}
         description={blog?.pageDiscription}
-        url={blog?.pageImageUrl}
+        bgImage={blog?.pageImageUrl}
         alt={blog?.pageImageAlt}
       />
 

@@ -4,7 +4,7 @@ import AboutImg from "../../../../public/uploads/about-one.jpg";
 
 export default function aboutSection() {
   return (
-    <section className="py-8 md:py-12">
+    <section className="py-8 md:py-12 md:mt-20">
       <div className="w-full bg-white containerFull px-4 md:px-6">
         <div className="flex md:flex-col flex-col-reverse lg:flex-row gap-8 lg:gap-12">
           <div className="w-full lg:w-2/5 h-fit sm:h-80 md:h-96 lg:h-160">

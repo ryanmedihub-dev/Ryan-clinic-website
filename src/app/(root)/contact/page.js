@@ -61,7 +61,7 @@ export default function ContactUs() {
         <PageBanner
           title="Contact Us"
           description="Regain your confidence with world-class Turkey's Technique hair restoration at Turkey's top-rated Ryan Clinic!"
-          url={AboutBanner}
+          bgImage={AboutBanner}
         />
 
         {/* ✅ Contact Section */}

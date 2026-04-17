@@ -70,7 +70,7 @@ export default async function ServicesPage({ params }) {
         <PageBanner
           title={service?.bannerData?.title}
           description={service?.bannerData?.description}
-          url={service?.bannerData?.imageurl}
+          bgImage={service?.bannerData?.imageurl}
           alt={service?.bannerData?.imagealt}
         />
 
