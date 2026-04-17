@@ -321,27 +321,7 @@ const Header = () => {
         </div>
       )}
 
-      {/* Floating Action Buttons */}
-      <div className="fixed right-6 bottom-6 flex flex-col gap-4 z-50">
-        <Button
-          asChild
-          size="icon"
-          className="rounded-full w-12 h-12 bg-blue-500 hover:bg-blue-600 text-white shadow-lg"
-        >
-          <Link href="tel:+919217958539">
-            <Phone className="h-6 w-6" />
-          </Link>
-        </Button>
-        <Button
-          asChild
-          size="icon"
-          className="rounded-full w-12 h-12 bg-green-500 hover:bg-green-600 text-white shadow-lg"
-        >
-          <Link href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi">
-            <FaWhatsapp className="h-6 w-6" />
-          </Link>
-        </Button>
-      </div>
+     
     </>
   );
 };

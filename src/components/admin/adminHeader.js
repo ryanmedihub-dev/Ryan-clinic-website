@@ -1,17 +1,16 @@
 import React from "react";
 import LogoutButton from "../logoutBtn";
 
-const adminHeader = ({ title }) => {
+const AdminHeader = ({ title }) => {
   return (
-    <div>
-      <main className="flex-grow p-6 ">
-        <div className="flex justify-between items-center mb-6 pb-3 border-b-[1px] ">
-          <h1 className="text-2xl font-semibold">👨‍💻 Admin {title}</h1>
-          <LogoutButton />
-        </div>
-      </main>
+    <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
+      <div>
+        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-0.5">Admin Panel</p>
+        <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
+      </div>
+      <LogoutButton />
     </div>
   );
 };
 
-export default adminHeader;
+export default AdminHeader;

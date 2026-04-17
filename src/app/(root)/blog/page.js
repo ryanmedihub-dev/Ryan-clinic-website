@@ -1,0 +1,443 @@
+import Link from "next/link";
+import Image from "next/image";
+import { getAllBlogs } from "@/lib/blogData";
+
+export const metadata = {
+  title: "Hair Transplant Blog | Expert Tips & Insights | Ryan Clinic",
+  description:
+    "Explore Ryan Clinic's expert articles on Sapphire FUE, hair transplant aftercare, cost guides, and everything you need to know before your procedure.",
+};
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function formatDate(dateString) {
+  try {
+    return new Date(dateString).toLocaleDateString("en-IN", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  } catch {
+    return "";
+  }
+}
+
+function readingTime(content = "") {
+  const words = content.replace(/<[^>]*>/g, "").split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.ceil(words / 200));
+}
+
+// ─── Featured Card ────────────────────────────────────────────────────────────
+
+function FeaturedCard({ blog }) {
+  return (
+    <Link
+      href={`/blog/${blog.pageUrl}`}
+      className="group relative flex flex-col lg:flex-row rounded-2xl overflow-hidden"
+      style={{
+        background: "var(--bg-main)",
+        border: "1px solid var(--border-light)",
+        boxShadow: "0 4px 32px rgba(211,47,47,0.07)",
+      }}
+    >
+      {/* Image */}
+      <div className="relative w-full lg:w-3/5 h-64 sm:h-80 lg:h-[420px] shrink-0 overflow-hidden">
+        <Image
+          src={blog.pageImageUrl || "/uploads/banner.jpg"}
+          alt={blog.pageImageAlt || blog.blogTitle}
+          fill
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          priority
+          sizes="(max-width: 1024px) 100vw, 60vw"
+        />
+        {/* Overlay */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%)",
+          }}
+        />
+        {/* Featured badge */}
+        <div className="absolute top-4 left-4 z-10">
+          <span
+            className="text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-md"
+            style={{ background: "#D32F2F", color: "#fff" }}
+          >
+            Featured
+          </span>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="flex flex-col justify-between p-6 sm:p-8 lg:p-10 flex-1">
+        {/* Meta */}
+        <div>
+          <div className="flex items-center gap-3 mb-4 flex-wrap">
+            <span
+              className="text-[11px] font-semibold uppercase tracking-widest"
+              style={{ color: "var(--primary-red)" }}
+            >
+              Hair Transplant Insights
+            </span>
+            <span style={{ color: "var(--border-light)" }}>·</span>
+            <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>
+              {formatDate(blog.createdAt)}
+            </span>
+            <span style={{ color: "var(--border-light)" }}>·</span>
+            <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>
+              {readingTime(blog.blogContent)} min read
+            </span>
+          </div>
+
+          <h2
+            className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-snug mb-4 transition-colors group-hover:text-[#D32F2F]"
+            style={{ color: "var(--text-primary)" }}
+          >
+            {blog.blogTitle}
+          </h2>
+
+          <p
+            className="text-sm md:text-base leading-relaxed line-clamp-3"
+            style={{ color: "var(--text-muted)" }}
+          >
+            {blog.metaDiscription}
+          </p>
+        </div>
+
+        {/* CTA */}
+        <div className="mt-8 flex items-center gap-3">
+          <span
+            className="inline-flex items-center gap-2 font-semibold text-sm py-3 px-6 rounded-xl text-white transition-opacity group-hover:opacity-90"
+            style={{ background: "var(--primary-red)" }}
+          >
+            Read Article
+            <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </span>
+          <span
+            className="text-xs font-medium"
+            style={{ color: "var(--text-muted)" }}
+          >
+            {readingTime(blog.blogContent)} min read
+          </span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+// ─── Blog Card ────────────────────────────────────────────────────────────────
+
+function BlogCard({ blog }) {
+  return (
+    <Link
+      href={`/blog/${blog.pageUrl}`}
+      className="group flex flex-col rounded-2xl overflow-hidden h-full transition-all duration-300 hover:-translate-y-1"
+      style={{
+        background: "var(--bg-main)",
+        border: "1px solid var(--border-light)",
+        boxShadow: "0 2px 16px rgba(0,0,0,0.04)",
+      }}
+    >
+      {/* Thumbnail */}
+      <div className="relative w-full h-52 overflow-hidden shrink-0">
+        <Image
+          src={blog.pageImageUrl || "/uploads/banner.jpg"}
+          alt={blog.pageImageAlt || blog.blogTitle}
+          fill
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
+        {/* Red left accent on hover */}
+        <div
+          className="absolute top-0 left-0 w-1 h-0 group-hover:h-full transition-all duration-500 rounded-r-full"
+          style={{ background: "var(--primary-red)" }}
+        />
+      </div>
+
+      {/* Body */}
+      <div className="flex flex-col flex-1 p-5 sm:p-6">
+        {/* Meta row */}
+        <div className="flex items-center gap-2 mb-3 flex-wrap">
+          <span
+            className="text-[10px] font-bold uppercase tracking-widest"
+            style={{ color: "var(--primary-red)" }}
+          >
+            Ryan Clinic
+          </span>
+          <span style={{ color: "var(--border-light)", fontSize: "10px" }}>·</span>
+          <span className="text-[10px]" style={{ color: "var(--text-muted)" }}>
+            {formatDate(blog.createdAt)}
+          </span>
+          <span style={{ color: "var(--border-light)", fontSize: "10px" }}>·</span>
+          <span className="text-[10px]" style={{ color: "var(--text-muted)" }}>
+            {readingTime(blog.blogContent)} min
+          </span>
+        </div>
+
+        {/* Title */}
+        <h3
+          className="text-base sm:text-lg font-bold leading-snug mb-3 line-clamp-2 transition-colors group-hover:text-[#D32F2F]"
+          style={{ color: "var(--text-primary)" }}
+        >
+          {blog.blogTitle}
+        </h3>
+
+        {/* Excerpt */}
+        <p
+          className="text-sm leading-relaxed line-clamp-2 flex-1"
+          style={{ color: "var(--text-muted)" }}
+        >
+          {blog.metaDiscription}
+        </p>
+
+        {/* Footer */}
+        <div className="flex items-center justify-between mt-5 pt-4" style={{ borderTop: "1px solid var(--border-soft)" }}>
+          <span
+            className="text-xs font-semibold transition-colors group-hover:text-[#D32F2F]"
+            style={{ color: "var(--text-secondary)" }}
+          >
+            Read More →
+          </span>
+          <div
+            className="w-8 h-8 rounded-full flex items-center justify-center transition-colors group-hover:bg-[#D32F2F] group-hover:text-white"
+            style={{ background: "var(--bg-card)", color: "var(--primary-red)", border: "1px solid var(--border-light)" }}
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+// ─── Empty State ──────────────────────────────────────────────────────────────
+
+function EmptyState() {
+  return (
+    <div className="flex flex-col items-center justify-center py-24 px-4 text-center">
+      <div
+        className="w-16 h-16 rounded-full flex items-center justify-center mb-5"
+        style={{ background: "rgba(211,47,47,0.08)" }}
+      >
+        <svg className="w-7 h-7" fill="none" stroke="#D32F2F" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        </svg>
+      </div>
+      <h3 className="text-xl font-bold mb-2" style={{ color: "var(--text-primary)" }}>
+        No articles yet
+      </h3>
+      <p className="text-sm" style={{ color: "var(--text-muted)" }}>
+        Check back soon — expert hair transplant insights are coming.
+      </p>
+    </div>
+  );
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
+
+export default async function BlogListPage() {
+  const blogs = await getAllBlogs();
+  const featured = blogs[0] || null;
+  const rest = blogs.slice(1);
+
+  return (
+    <div style={{ background: "var(--bg-soft)" }}>
+
+      {/* ── Hero Banner ── */}
+      <section
+        className="relative overflow-hidden"
+        style={{
+          background:
+            "linear-gradient(105deg, rgba(17,3,3,0.97) 0%, rgba(139,20,20,0.90) 40%, rgba(211,47,47,0.60) 72%, rgba(211,47,47,0.18) 100%)",
+          minHeight: "clamp(240px, 40vw, 380px)",
+        }}
+      >
+        {/* Grid texture */}
+        <div
+          className="absolute inset-0 opacity-[0.04] pointer-events-none"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+          }}
+        />
+        {/* Corner glow */}
+        <div
+          className="absolute bottom-0 right-0 w-80 h-80 pointer-events-none"
+          style={{
+            background: "radial-gradient(circle at bottom right, rgba(211,47,47,0.22) 0%, transparent 65%)",
+          }}
+        />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-14 py-16 md:py-24">
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-3 mb-6">
+            <span className="block w-8 h-px bg-white/25" />
+            <nav className="flex items-center gap-2 text-[10px] font-semibold tracking-[2.5px] uppercase text-white/45">
+              <Link href="/" className="hover:text-white/70 transition-colors">Home</Link>
+              <span className="text-white/20">/</span>
+              <span className="text-white/70">Blog</span>
+            </nav>
+          </div>
+
+          {/* Heading */}
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-3 mb-5">
+              <span className="block w-8 h-px bg-[#D32F2F]" />
+              <span className="text-[11px] font-semibold tracking-[0.22em] uppercase text-[#D32F2F]">
+                Expert Insights
+              </span>
+            </div>
+            <h1
+              className="font-black text-white leading-[1.06] tracking-tight mb-5"
+              style={{
+                fontFamily: "'Playfair Display', serif",
+                fontSize: "clamp(34px, 5.5vw, 66px)",
+              }}
+            >
+              Hair Transplant
+              <br />
+              <span className="font-bold italic text-white/55">Knowledge Hub</span>
+            </h1>
+            <p className="text-sm md:text-base text-white/55 leading-relaxed max-w-xl">
+              <span
+                className="inline-block w-1.5 h-1.5 rounded-full bg-[#D32F2F] mr-2.5 mb-0.5 align-middle"
+                style={{ boxShadow: "0 0 0 3px rgba(211,47,47,0.25)" }}
+              />
+              Expert advice on Sapphire FUE, aftercare guides, cost breakdowns and patient stories — everything you need before your procedure.
+            </p>
+
+            {/* Stats row */}
+            <div className="flex flex-wrap gap-6 mt-8">
+              {[
+                { num: `${blogs.length}+`, label: "Articles" },
+                { num: "12+", label: "Years Experience" },
+                { num: "10K+", label: "Patients Helped" },
+              ].map((s) => (
+                <div key={s.label}>
+                  <p className="text-xl font-bold text-white">{s.num}</p>
+                  <p className="text-[10px] font-medium text-white/40 tracking-wide mt-0.5 uppercase">
+                    {s.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Content ── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+
+        {!blogs.length ? (
+          <EmptyState />
+        ) : (
+          <>
+            {/* ── Featured Post ── */}
+            {featured && (
+              <div className="mb-14 md:mb-20">
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="block w-8 h-px bg-[#D32F2F]" />
+                  <span className="text-[11px] font-semibold tracking-[0.22em] uppercase text-[#D32F2F]">
+                    Featured Article
+                  </span>
+                </div>
+                <FeaturedCard blog={featured} />
+              </div>
+            )}
+
+            {/* ── All Articles ── */}
+            {rest.length > 0 && (
+              <div>
+                {/* Section header */}
+                <div className="flex items-center justify-between mb-8 gap-4 flex-wrap">
+                  <div className="flex items-center gap-3">
+                    <span className="block w-8 h-px bg-[#D32F2F]" />
+                    <h2
+                      className="text-xl sm:text-2xl font-bold"
+                      style={{ color: "var(--text-primary)" }}
+                    >
+                      All Articles
+                      <span
+                        className="ml-2 text-sm font-semibold px-2.5 py-0.5 rounded-full align-middle"
+                        style={{ background: "rgba(211,47,47,0.1)", color: "var(--primary-red)" }}
+                      >
+                        {rest.length}
+                      </span>
+                    </h2>
+                  </div>
+                </div>
+
+                {/* Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+                  {rest.map((blog) => (
+                    <BlogCard key={blog._id} blog={blog} />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* ── Bottom CTA ── */}
+            <div
+              className="mt-16 md:mt-24 rounded-2xl p-8 sm:p-12 text-center"
+              style={{
+                background: "linear-gradient(135deg, #1a0a0a 0%, #3d0f0f 50%, #D32F2F 100%)",
+              }}
+            >
+              <span
+                className="inline-block text-[10px] font-bold uppercase tracking-[0.25em] px-3 py-1.5 rounded-full mb-5"
+                style={{ background: "rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.7)" }}
+              >
+                Ryan Clinic · Delhi · Mumbai · Hyderabad
+              </span>
+              <h3
+                className="font-bold text-white mb-3 leading-tight"
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: "clamp(22px, 4vw, 38px)",
+                }}
+              >
+                Ready to Start Your
+                <br />
+                <span className="italic font-normal text-white/60">Hair Transplant Journey?</span>
+              </h3>
+              <p className="text-sm text-white/55 mb-8 max-w-md mx-auto leading-relaxed">
+                Get a free scalp analysis, exact graft count &amp; complete cost breakdown — zero obligation.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <a
+                  href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 font-semibold text-sm py-3.5 px-7 rounded-xl text-white transition-opacity hover:opacity-90 w-full sm:w-auto justify-center"
+                  style={{ background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)" }}
+                >
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+                    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.553 4.116 1.52 5.847L.057 23.12a.75.75 0 00.92.92l5.273-1.463A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.666-.523-5.18-1.43l-.372-.223-3.857 1.072 1.072-3.857-.223-.372A9.944 9.944 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
+                  </svg>
+                  Book Free Consultation
+                </a>
+                <a
+                  href="tel:+919217958539"
+                  className="inline-flex items-center gap-2 font-semibold text-sm py-3.5 px-7 rounded-xl transition-opacity hover:opacity-90 w-full sm:w-auto justify-center"
+                  style={{ background: "#D32F2F", color: "#fff" }}
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                  </svg>
+                  Call +91-9217958539
+                </a>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}

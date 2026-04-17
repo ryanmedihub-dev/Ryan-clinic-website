@@ -12,7 +12,8 @@
       "Bash(mkdir -p \"c:/dashzer/Ryan-next-project-new/src/app/\\(root\\)/refund-policy\")"
     ],
     "additionalDirectories": [
-      "c:\\dashzer\\Ryan-next-project-new\\src\\app\\(standalone)"
+      "c:\\dashzer\\Ryan-next-project-new\\src\\app\\(standalone)",
+      "c:\\dashzer\\Ryan-next-project-new\\src\\app\\api\\blog\\delete"
     ]
   }
 }

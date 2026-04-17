@@ -111,7 +111,7 @@ export default function Footer() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
           {/* Left — Brand block */}
           <div>
-            <div className="flex justify-start mb-6">
+            <div className="flex justify-start mt-22 mb-6">
               <Image
                 src={Logo}
                 alt="Ryan Clinic"

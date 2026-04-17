@@ -3,6 +3,7 @@ import Header from "@/components/layouts/Header";
 import Footer from "@/components/layouts/Footer";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import FloatingCTA from "@/components/layouts/FloatingCTA";
+import Script from "next/script";
 
 import { Outfit, DM_Sans } from "next/font/google";
 
@@ -83,6 +84,7 @@ export const metadata = {
     images: ["https://www.clinicryan.com/hair-transplant-in-delhi"],
   },
   verification: {
+    google: "PGMWuu_5SSC0Rkyao2LrsHlWiN7bPeQnNaSdY1fgURM",
     yandex: "2a66899c829e502a",
     other: {
       "msvalidate.01": "DD718F54C1640669F3FF6B86F0C3BBDF",
@@ -126,6 +128,20 @@ export default function RootLayout({ children }) {
       </head>
 
       <body className={`${dmSans.className} antialiased`}>
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-CK1LZXBKPX"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-CK1LZXBKPX');
+          `}
+        </Script>
+
         <Header />
         {children}
         <Footer />

@@ -1,15 +1,28 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback } from "react";
 import AdminHeader from "@/components/admin/adminHeader";
 import dynamic from "next/dynamic";
 import ImageUploader from "@/components/admin/ImageUploader";
+import ToastContainer from "@/components/admin/Toast";
 
 const SunEditor = dynamic(() => import("suneditor-react"), { ssr: false });
 import "suneditor/dist/css/suneditor.min.css";
 
+function useToast() {
+  const [toasts, setToasts] = useState([]);
+  const add = useCallback((type, title, message) => {
+    const id = Date.now() + Math.random();
+    setToasts((p) => [...p, { id, type, title, message }]);
+  }, []);
+  const remove = useCallback((id) => setToasts((p) => p.filter((t) => t.id !== id)), []);
+  return { toasts, remove, success: (t, m) => add("success", t, m), error: (t, m) => add("error", t, m) };
+}
+
 const Blog = () => {
   const editorRef = useRef(null);
+  const toast = useToast();
+  const [submitting, setSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     metaTitle: "",
@@ -46,38 +59,35 @@ const Blog = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const res = await fetch("/api/blog/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-
-    const data = await res.json();
-
-    if (data.status === 200) {
-      alert("Blog created successfully");
-      setFormData({
-        metaTitle: "",
-        metaDiscription: "",
-        pageTitle: "",
-        pageDiscription: "",
-        pageUrl: "",
-        pageImageUrl: "",
-        pageImageAlt: "",
-        blogTitle: "",
-        blogContent: "",
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/blog/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
-      if (editorRef.current) {
-        editorRef.current.setContents("");
+      const data = await res.json();
+      if (data.status === 200) {
+        toast.success("Blog Created!", "Your blog post was published successfully.");
+        setFormData({
+          metaTitle: "", metaDiscription: "", pageTitle: "",
+          pageDiscription: "", pageUrl: "", pageImageUrl: "",
+          pageImageAlt: "", blogTitle: "", blogContent: "",
+        });
+        if (editorRef.current) editorRef.current.setContents("");
+      } else {
+        toast.error("Creation failed", data.message || "Please check your inputs and try again.");
       }
+    } catch {
+      toast.error("Network error", "Could not reach the server. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
     <section className="p-4">
+      <ToastContainer toasts={toast.toasts} removeToast={toast.remove} />
       <AdminHeader title="/ Create Blog" />
 
       <form onSubmit={handleSubmit} className="space-y-6 px-6 mx-auto ">
@@ -239,9 +249,18 @@ const Blog = () => {
         <div className="pt-4">
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200"
+            disabled={submitting}
+            className="w-full bg-blue-600 text-white py-3 px-4 rounded-xl hover:bg-blue-700 transition duration-200 font-semibold text-sm disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            Submit
+            {submitting ? (
+              <>
+                <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+                Publishing…
+              </>
+            ) : "Publish Blog"}
           </button>
         </div>
       </form>

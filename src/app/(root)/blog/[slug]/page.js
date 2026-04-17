@@ -39,7 +39,7 @@ export default async function BlogPage({ params }) {
       />
 
       {/* Blog Content */}
-      <section className="bg-light">
+      <section>
         <div className="containerFull">
           <div className="new-pageLayout pageLayout">
             <div

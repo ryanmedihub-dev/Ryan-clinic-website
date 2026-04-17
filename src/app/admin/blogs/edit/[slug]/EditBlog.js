@@ -1,9 +1,20 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import AdminHeader from "@/components/admin/adminHeader";
 import dynamic from "next/dynamic";
 import ImageUploader from "@/components/admin/ImageUploader";
+import ToastContainer from "@/components/admin/Toast";
+
+function useToast() {
+  const [toasts, setToasts] = useState([]);
+  const add = useCallback((type, title, message) => {
+    const id = Date.now() + Math.random();
+    setToasts((p) => [...p, { id, type, title, message }]);
+  }, []);
+  const remove = useCallback((id) => setToasts((p) => p.filter((t) => t.id !== id)), []);
+  return { toasts, remove, success: (t, m) => add("success", t, m), error: (t, m) => add("error", t, m) };
+}
 
 const SunEditor = dynamic(() => import("suneditor-react"), {
   ssr: false,
@@ -31,6 +42,7 @@ const EditBlog = ({ initialData }) => {
 
   const [loading, setLoading] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const toast = useToast();
 
   // Hydrate from initialData
   useEffect(() => {
@@ -110,10 +122,10 @@ const EditBlog = ({ initialData }) => {
         throw new Error(data?.message || "Failed to update blog");
       }
 
-      alert("Blog updated successfully!");
+      toast.success("Blog Updated!", "Your changes have been saved successfully.");
     } catch (error) {
       console.error("Update error:", error);
-      alert(error.message || "Error updating blog. Please try again.");
+      toast.error("Update failed", error.message || "Error updating blog. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -132,6 +144,7 @@ const EditBlog = ({ initialData }) => {
 
   return (
     <section className="p-4">
+      <ToastContainer toasts={toast.toasts} removeToast={toast.remove} />
       <AdminHeader title="/ Edit Blog" />
 
       <form
