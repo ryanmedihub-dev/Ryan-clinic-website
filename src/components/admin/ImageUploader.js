@@ -16,20 +16,22 @@ export default function ImageUploader({ onUpload, initialImage }) {
 
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('upload_preset', 'dashzer-data');
+    formData.append('cloud_name', 'dq1tzl5ir');
 
     try {
-      const res = await fetch('/api/upload', {
+      const res = await fetch('https://api.cloudinary.com/v1_1/dq1tzl5ir/image/upload', {
         method: 'POST',
         body: formData,
       });
 
       const data = await res.json();
 
-      if (res.ok && data.url) {
-        setImageURL(data.url);
-        if (onUpload) onUpload(data.url);
+      if (res.ok && data.secure_url) {
+        setImageURL(data.secure_url);
+        if (onUpload) onUpload(data.secure_url, data.public_id);
       } else {
-        setError(data.error || 'Upload failed. Please try again.');
+        setError(data.error?.message || 'Upload failed. Please try again.');
       }
     } catch (err) {
       console.error(err);
