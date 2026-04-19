@@ -34,7 +34,7 @@ import ImageTwentySeven from '../../../../../public/uploads/images/image27.jpg'
 import ImageTwentyEight from '../../../../../public/uploads/images/image28.jpg'
 import ImageTwentyNine from '../../../../../public/uploads/images/image29.jpg'
 import ImageThirty from '../../../../../public/uploads/images/image30.jpg'
-import GalleryBanner from "../../../../../public/uploads/images/image25.jpg";
+import GalleryBanner from "../../../../../public/uploads/gallery.jpg";
 
 
 const images = [

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 
 export default function PageBanner({
@@ -13,20 +14,24 @@ export default function PageBanner({
   return (
     <section className="relative w-full h-120 md:h-132 overflow-hidden flex items-center">
 
-      {/* Background Image (Right side visible) */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: `url(${bgImage || "/images/1.jpg"})`,
-        }}
-      />
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <Image
+          src={bgImage || "/uploads/banner.jpg"}
+          alt="Banner background"
+          fill
+          className="object-contain object-right"
+          unoptimized
+          priority
+        />
+      </div>
 
       {/* LEFT RED PANEL WITH DIAGONAL CUT */}
       <div className="absolute inset-0 flex">
 
         {/* Left Gradient Area */}
         <div
-          className="w-full md:w-[70%] h-full relative"
+          className="w-full md:w-[74%] h-full relative"
           style={{
             background:
               "linear-gradient(135deg, #2b0b0b 0%, #8B1414 40%, #D32F2F 85%)",
@@ -85,7 +90,7 @@ export default function PageBanner({
       </div>
 
       {/* CENTER CIRCLE ICON */}
-      <div className="absolute left-[52%] top-1/2 -translate-y-1/2 z-20">
+      <div className="absolute left-[54.5%] top-1/2 -translate-y-1/2 z-20">
         <div className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center shadow-lg border-4 border-white/20">
           <span className="text-white text-xl">❤</span>
         </div>
@@ -93,7 +98,7 @@ export default function PageBanner({
 
       {/* RIGHT DOCTOR IMAGE (Optional overlay for better clarity) */}
       <div className="absolute right-0 top-0 h-full w-[40%] hidden md:block">
-        <div className="w-full h-full bg-gradient-to-l from-transparent to-white/10" />
+        {/* <div className="w-full h-full bg-linear-to-l from-transparent to-white/10" /> */}
       </div>
 
       {/* FLOATING STATS CARD */}

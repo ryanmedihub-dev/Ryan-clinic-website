@@ -1,6 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
+import PageBanner from "@/components/layouts/pageBanner";
 import { getAllBlogs } from "@/lib/blogData";
+import AboutBanner from "../../../../public/uploads/blog.jpg";
+
+
 
 export const metadata = {
   title: "Hair Transplant Blog | Expert Tips & Insights | Ryan Clinic",
@@ -249,87 +253,20 @@ export default async function BlogListPage() {
     <div style={{ background: "var(--bg-soft)" }}>
 
       {/* ── Hero Banner ── */}
-      <section
-        className="relative overflow-hidden"
-        style={{
-          background:
-            "linear-gradient(105deg, rgba(17,3,3,0.97) 0%, rgba(139,20,20,0.90) 40%, rgba(211,47,47,0.60) 72%, rgba(211,47,47,0.18) 100%)",
-          minHeight: "clamp(240px, 40vw, 380px)",
-        }}
-      >
-        {/* Grid texture */}
-        <div
-          className="absolute inset-0 opacity-[0.04] pointer-events-none"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
-        {/* Corner glow */}
-        <div
-          className="absolute bottom-0 right-0 w-80 h-80 pointer-events-none"
-          style={{
-            background: "radial-gradient(circle at bottom right, rgba(211,47,47,0.22) 0%, transparent 65%)",
-          }}
+      {/* <section */}
+
+
+ {/* ✅ Banner */}
+        <PageBanner
+          title="Our Blogs"
+          description="Regain your confidence with world-class Turkey's Technique hair restoration at Turkey's top-rated Ryan Clinic!"
+          bgImage={AboutBanner}
         />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-14 py-16 md:py-24">
-          {/* Breadcrumb */}
-          <div className="flex items-center gap-3 mb-6">
-            <span className="block w-8 h-px bg-white/25" />
-            <nav className="flex items-center gap-2 text-[10px] font-semibold tracking-[2.5px] uppercase text-white/45">
-              <Link href="/" className="hover:text-white/70 transition-colors">Home</Link>
-              <span className="text-white/20">/</span>
-              <span className="text-white/70">Blog</span>
-            </nav>
-          </div>
 
-          {/* Heading */}
-          <div className="max-w-2xl">
-            <div className="flex items-center gap-3 mb-5">
-              <span className="block w-8 h-px bg-[#D32F2F]" />
-              <span className="text-[11px] font-semibold tracking-[0.22em] uppercase text-[#D32F2F]">
-                Expert Insights
-              </span>
-            </div>
-            <h1
-              className="font-black text-white leading-[1.06] tracking-tight mb-5"
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: "clamp(34px, 5.5vw, 66px)",
-              }}
-            >
-              Hair Transplant
-              <br />
-              <span className="font-bold italic text-white/55">Knowledge Hub</span>
-            </h1>
-            <p className="text-sm md:text-base text-white/55 leading-relaxed max-w-xl">
-              <span
-                className="inline-block w-1.5 h-1.5 rounded-full bg-[#D32F2F] mr-2.5 mb-0.5 align-middle"
-                style={{ boxShadow: "0 0 0 3px rgba(211,47,47,0.25)" }}
-              />
-              Expert advice on Sapphire FUE, aftercare guides, cost breakdowns and patient stories — everything you need before your procedure.
-            </p>
 
-            {/* Stats row */}
-            <div className="flex flex-wrap gap-6 mt-8">
-              {[
-                { num: `${blogs.length}+`, label: "Articles" },
-                { num: "12+", label: "Years Experience" },
-                { num: "10K+", label: "Patients Helped" },
-              ].map((s) => (
-                <div key={s.label}>
-                  <p className="text-xl font-bold text-white">{s.num}</p>
-                  <p className="text-[10px] font-medium text-white/40 tracking-wide mt-0.5 uppercase">
-                    {s.label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+
+
 
       {/* ── Content ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">

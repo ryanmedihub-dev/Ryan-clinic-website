@@ -2,8 +2,6 @@ import PageBanner from "@/components/layouts/pageBanner";
 import AboutSection from "./aboutSection";
 import StepsSection from "./stepsSection";
 import ChooseSection from "./chooseSection";
-import AboutBanner from "../../../../public/uploads/lol.jpeg";
-
 const page = () => {
   return (
     <>
@@ -12,7 +10,7 @@ const page = () => {
         description="Regain your confidence with world-class
           Turkey's Technique hair restoration at Turkey's
           top-rated Ryan Clinic!"
-        bgImage="/uploads/lol.jpeg"
+        bgImage="/uploads/about.jpg"
       />
       <AboutSection />
       <StepsSection />

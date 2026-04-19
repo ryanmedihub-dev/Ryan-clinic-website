@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import AboutBanner from "../../../../public/uploads/about-banner.webp";
+import AboutBanner from "../../../../public/uploads/contact.jpg";
 
 import {
   Select,
