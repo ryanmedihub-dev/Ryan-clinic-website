@@ -13,22 +13,22 @@ export default function PageBanner({
 
   return (
     <section className="relative w-full h-120 md:h-132 overflow-hidden flex items-center">
-
       {/* Background Image */}
-      <div className="absolute inset-0">
+      {/* RIGHT SIDE IMAGE (35%) */}
+      <div className="absolute right-0 top-0 h-full w-[49%]">
         <Image
           src={bgImage || "/uploads/banner.jpg"}
           alt="Banner background"
           fill
-          className="object-contain object-right"
+          className="object-cover object-center"
           unoptimized
           priority
         />
       </div>
 
+
       {/* LEFT RED PANEL WITH DIAGONAL CUT */}
       <div className="absolute inset-0 flex">
-
         {/* Left Gradient Area */}
         <div
           className="w-full md:w-[74%] h-full relative"
@@ -38,9 +38,9 @@ export default function PageBanner({
             clipPath: "polygon(0 0, 85% 0, 70% 100%, 0% 100%)",
           }}
         >
-
           {/* Grid overlay */}
-          <div className="absolute inset-0 opacity-[0.05]"
+          <div
+            className="absolute inset-0 opacity-[0.05]"
             style={{
               backgroundImage:
                 "linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)",
@@ -50,7 +50,6 @@ export default function PageBanner({
 
           {/* Content */}
           <div className="relative md:max-w-200 z-10 px-6 md:px-16 py-20 text-white">
-
             {/* Breadcrumb */}
             <div className="flex items-center gap-3 mb-5">
               <span className="w-8 h-px bg-white/40" />
@@ -60,8 +59,10 @@ export default function PageBanner({
             </div>
 
             {/* Title */}
-            <h1 className="text-4xl md:text-6xl font-bold mb-4"
-              style={{ fontFamily: "Playfair Display, serif" }}>
+            <h1
+              className="text-4xl md:text-6xl font-bold mb-4"
+              style={{ fontFamily: "Playfair Display, serif" }}
+            >
               {title}
             </h1>
 
@@ -103,7 +104,6 @@ export default function PageBanner({
 
       {/* FLOATING STATS CARD */}
       <div className="absolute bottom-6 right-6 md:right-20 bg-white rounded-xl shadow-xl px-6 py-4 flex gap-8 z-30">
-
         <div className="text-center">
           <p className="font-bold text-lg text-gray-800">10,000+</p>
           <p className="text-xs text-gray-500">Happy Patients</p>
@@ -118,7 +118,6 @@ export default function PageBanner({
           <p className="font-bold text-lg text-gray-800">5 Star</p>
           <p className="text-xs text-gray-500">Patient Reviews</p>
         </div>
-
       </div>
     </section>
   );
