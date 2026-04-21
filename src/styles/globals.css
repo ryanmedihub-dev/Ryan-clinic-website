@@ -226,6 +226,11 @@ section {
   column-gap: 20px;
 }
 
+.new-pageLayout a{
+  color: blue;
+  font-weight: 700;
+}
+
 .new-pageLayout ul {
   padding: 0 15px;
   padding-left: 25px;
