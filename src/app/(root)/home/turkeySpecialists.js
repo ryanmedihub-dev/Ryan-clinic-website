@@ -43,7 +43,7 @@ export default function TurkeySpecialists() {
                 width={640}
                 height={480}
                 className="w-full h-80 md:h-175 object-cover"
-                priority
+                loading="lazy"
               />
               {/* Gradient overlay */}
               <div

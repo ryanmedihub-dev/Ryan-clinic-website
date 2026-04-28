@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import ResultTwo from "../../../../public/uploads/results/2-new.jpg";
 
 /* ══════════════════════════════════════════════════════
    SECTION A — Features Overview
