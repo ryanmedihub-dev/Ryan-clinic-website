@@ -24,7 +24,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://clinicryan.com"),
+  metadataBase: new URL("https://www.clinicryan.com"),
   title: "Hair Transplant in Delhi | Best Sapphire FUE Cost | Ryan Clinic",
   description:
     "Ryan Clinic offers the best hair transplant in Delhi using advanced Turkey Sapphire FUE. Certified surgeons, 95%+ graft survival & affordable cost. Call +91-9217958539. Book free consultation!",
@@ -50,9 +50,6 @@ export const metadata = {
       "max-snippet": -1,
       "max-video-preview": -1,
     },
-  },
-  alternates: {
-    canonical: "https://www.clinicryan.com/hair-transplant-in-delhi",
   },
   authors: [{ name: "Dr. Pranendra Singh, Ryan Clinic" }],
   openGraph: {
@@ -90,6 +87,15 @@ export const metadata = {
       "msvalidate.01": "DD718F54C1640669F3FF6B86F0C3BBDF",
     },
   },
+  icons: {
+    icon: [
+      { url: "/uploads/r-logo.png", type: "image/png" },
+    ],
+    apple: [
+      { url: "/uploads/r-logo.png", type: "image/png" },
+    ],
+    shortcut: "/uploads/r-logo.png",
+  },
   other: {
     "geo.region": "IN-DL",
     "geo.placename": "New Delhi",
@@ -122,8 +128,6 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-        <link rel="icon" href="/uploads/r-logo.png" />
-        <link rel="apple-touch-icon" href="/uploads/r-logo.png" />
         <SchemaMarkup />
       </head>
 

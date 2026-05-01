@@ -9,7 +9,9 @@
       "Bash(ls c:/dashzer/Ryan-next-project-new/.env*)",
       "Bash(npm install:*)",
       "Bash(mkdir -p \"c:/dashzer/Ryan-next-project-new/src/app/\\(root\\)/terms-and-conditions\")",
-      "Bash(mkdir -p \"c:/dashzer/Ryan-next-project-new/src/app/\\(root\\)/refund-policy\")"
+      "Bash(mkdir -p \"c:/dashzer/Ryan-next-project-new/src/app/\\(root\\)/refund-policy\")",
+      "Bash(Get-ChildItem -Path \"c:\\\\dashzer\\\\Ryan-next-project-new\" -Force)",
+      "Bash(Select-Object Name, FullName)"
     ],
     "additionalDirectories": [
       "c:\\dashzer\\Ryan-next-project-new\\src\\app\\(standalone)",

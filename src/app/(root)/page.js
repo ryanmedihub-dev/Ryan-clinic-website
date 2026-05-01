@@ -1,4 +1,13 @@
-export const dynamic = "force-dynamic";
+export const revalidate = 3600; // ISR: serve from cache, rebuild every hour in background
+
+export const metadata = {
+  title: "Hair Transplant in Delhi | Turkey Sapphire FUE | Ryan Clinic",
+  description:
+    "India's only Turkey Sapphire FUE clinic. Expert hair transplant in Delhi, Mumbai & Hyderabad — certified doctors, 95%+ graft survival. Book your free consultation.",
+  alternates: {
+    canonical: "https://www.clinicryan.com/",
+  },
+};
 
 import { Suspense } from "react";
 import Image from "next/image";

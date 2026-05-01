@@ -77,13 +77,13 @@ export default function PageBanner({
             </span>
           </div>
 
-          {/* Title */}
-          <h1
+          {/* Title — h2 here because the desktop layout below already has the h1; both are mutually exclusive via CSS but crawlers see both */}
+          <h2
             className="text-[34px] font-bold text-white mb-3 leading-[1.15]"
             style={{ fontFamily: "Playfair Display, serif" }}
           >
             {title}
-          </h1>
+          </h2>
 
           {/* Description */}
           <p className="text-[13px] text-white/60 mb-5 leading-relaxed max-w-[300px]">

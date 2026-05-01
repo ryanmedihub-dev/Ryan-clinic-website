@@ -2,6 +2,7 @@ export const metadata = {
   title: "Terms & Conditions | Ryan Clinic",
   description:
     "Terms and Conditions of Ryan Clinic – please read before using our services.",
+  alternates: { canonical: "https://www.clinicryan.com/terms-and-conditions" },
 };
 
 export default function TermsAndConditions() {

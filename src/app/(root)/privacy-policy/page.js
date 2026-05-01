@@ -2,6 +2,7 @@ export const metadata = {
   title: "Privacy Policy | Ryan Clinic",
   description:
     "Privacy Policy of Ryan Clinic – how we collect, use, and protect patient information.",
+  alternates: { canonical: "https://www.clinicryan.com/privacy-policy" },
 };
 
 export default function PrivacyPolicy() {

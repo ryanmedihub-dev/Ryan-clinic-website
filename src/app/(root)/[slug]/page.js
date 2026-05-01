@@ -1,5 +1,6 @@
 import Image from "next/image";
 import PageBanner from "@/components/layouts/pageBanner";
+import { sanitizeContent } from "@/lib/utils";
 import ContactForm from "@/components/pages/contactForm";
 import FAQSection from "./FAQSection";
 import PleoFeatures from "./PleoFeatures";
@@ -80,7 +81,7 @@ export default async function ServicesPage({ params }) {
               <div
                 className="w-full lg:w-2/3 prose max-w-none pageLayoutBox"
                 dangerouslySetInnerHTML={{
-                  __html: service?.metadata?.overviewData || "",
+                  __html: sanitizeContent(service?.metadata?.overviewData),
                 }}
               ></div>
               <div className="w-full lg:w-1/3 px-0 md:px-4 lg:px-6">
@@ -133,7 +134,7 @@ export default async function ServicesPage({ params }) {
                 <div
                   className="prose max-w-none pageLayoutBox md:pl-7.5"
                   dangerouslySetInnerHTML={{
-                    __html: service?.typesData?.details || "",
+                    __html: sanitizeContent(service?.typesData?.details),
                   }}
                 ></div>
               </div>
@@ -156,7 +157,7 @@ export default async function ServicesPage({ params }) {
                     <div
                       className="prose max-w-none"
                       dangerouslySetInnerHTML={{
-                        __html: service.extraFieldsData.detail1,
+                        __html: sanitizeContent(service.extraFieldsData.detail1),
                       }}
                     />
                   )}
@@ -166,7 +167,7 @@ export default async function ServicesPage({ params }) {
                     <div
                       className="prose max-w-none"
                       dangerouslySetInnerHTML={{
-                        __html: service.extraFieldsData.detail2,
+                        __html: sanitizeContent(service.extraFieldsData.detail2),
                       }}
                     />
                   )}

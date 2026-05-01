@@ -2,6 +2,7 @@ export const metadata = {
   title: "Refund Policy | Ryan Clinic",
   description:
     "Refund Policy of Ryan Clinic – understand our terms regarding payments and refunds.",
+  alternates: { canonical: "https://www.clinicryan.com/refund-policy" },
 };
 
 export default function RefundPolicy() {

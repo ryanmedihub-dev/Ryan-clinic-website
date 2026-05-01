@@ -10,6 +10,9 @@ export const metadata = {
   title: "Hair Transplant Blog | Expert Tips & Insights | Ryan Clinic",
   description:
     "Explore Ryan Clinic's expert articles on Sapphire FUE, hair transplant aftercare, cost guides, and everything you need to know before your procedure.",
+  alternates: {
+    canonical: "https://www.clinicryan.com/blog",
+  },
 };
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
