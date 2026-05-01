@@ -28,7 +28,7 @@ export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <div className="w-full">
+      <div className="w-full relative">
         {/* Desktop Banner */}
         <div className="hidden md:block">
           <Image
@@ -52,6 +52,11 @@ export default function Home() {
             className="w-full h-auto object-cover aspect-3/4 rounded-lg"
           />
         </div>
+
+        {/* SEO H1 — visually hidden, placed over banner for crawlers */}
+        <h1 className="sr-only">
+          Hair Transplant in Delhi — India&apos;s Only Turkey Sapphire FUE Clinic | Ryan Clinic
+        </h1>
       </div>
 
       <HairTransplantPage />
