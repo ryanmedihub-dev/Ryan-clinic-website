@@ -2,9 +2,6 @@
 import { DBConnection } from "./db";
 import Blog from "@/models/blog";
 
-/**
- * Get all blog posts
- */
 export const getAllBlogs = async () => {
   try {
     await DBConnection();
@@ -12,6 +9,22 @@ export const getAllBlogs = async () => {
     return JSON.parse(JSON.stringify(blogs || []));
   } catch (error) {
     console.error("getAllBlogs error:", error.message);
+    return [];
+  }
+};
+
+// Lightweight version for homepage carousel — omits large blogContent HTML field
+export const getHomepageBlogs = async () => {
+  try {
+    await DBConnection();
+    const blogs = await Blog.find({})
+      .select("pageUrl blogTitle pageTitle pageImageUrl pageImageAlt createdAt")
+      .sort({ createdAt: -1 })
+      .limit(6)
+      .lean();
+    return JSON.parse(JSON.stringify(blogs || []));
+  } catch (error) {
+    console.error("getHomepageBlogs error:", error.message);
     return [];
   }
 };

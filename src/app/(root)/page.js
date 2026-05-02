@@ -9,14 +9,12 @@ export const metadata = {
   },
 };
 
-import { Suspense } from "react";
 import Image from "next/image";
 import HairTransplantPage from "./home/homeServices";
 import TurkeySpecialists from "./home/turkeySpecialists";
 import FeaturesOverview from "./home/featuresOverview";
-import BlogContent from "./home/blogContent";
 import { SplitCTA } from "./home/splitCTA";
-import { OurResults, Testimonials, OurBranches, WhyChooseRyanClinic, FaqSection } from "./home/lazyComponents";
+import { OurResults, Testimonials, OurBranches, WhyChooseRyanClinic, FaqSection, BlogContent } from "./home/lazyComponents";
 
 import Banner from "../../../public/uploads/banner.jpg";
 import Banner2 from "../../../public/uploads/banner2.jpg";
@@ -66,9 +64,7 @@ export default function Home() {
       <SplitCTA />
       <Testimonials />
       <OurBranches />
-      <Suspense fallback={<div className="py-16" />}>
-        <BlogContent />
-      </Suspense>
+      <BlogContent />
       <FaqSection />
     </>
   );

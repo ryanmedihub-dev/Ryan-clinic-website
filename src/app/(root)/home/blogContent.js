@@ -1,9 +1,9 @@
 import React from "react";
-import { getAllBlogs } from "@/lib/blogData";
+import { getHomepageBlogs } from "@/lib/blogData";
 import BlogCarousel from "@/components/pages/blogBox";
 
 const blogContent = async () => {
-  const blogsNew = await getAllBlogs();
+  const blogsNew = await getHomepageBlogs();
 
   return <div>
 
