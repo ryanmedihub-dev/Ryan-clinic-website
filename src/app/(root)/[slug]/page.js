@@ -31,12 +31,12 @@ export async function generateMetadata({ params }) {
     description: meta?.description || service?.bannerData?.description,
     keywords: meta?.keywords || ["Hair Transplant", "Ryan Clinic"],
     alternates: {
-      canonical: `https://clinicryan.com/${slug}`,
+      canonical: `https://www.clinicryan.com/${slug}`,
     },
     openGraph: {
       title: meta?.title || service?.bannerData?.title,
       description: meta?.description || service?.bannerData?.description,
-      url: `https://clinicryan.com/${slug}`,
+      url: `https://www.clinicryan.com/${slug}`,
       siteName: "Ryan Clinic",
       images: [
         {

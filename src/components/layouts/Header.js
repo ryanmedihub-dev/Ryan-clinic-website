@@ -10,9 +10,6 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { FaWhatsapp } from "react-icons/fa";
-import confetti from "canvas-confetti";
-
 import { Button } from "@/components/ui/button";
 import Logo from "../../../public/uploads/logo-2.png";
 import ContactForm from "../pages/contactForm";
@@ -75,33 +72,22 @@ const Header = () => {
     }, 200);
   };
 
-  // 🎉 Confetti helpers
-  function fire(particleRatio, opts) {
-    confetti({
-      ...opts,
-      particleCount: Math.floor(200 * particleRatio),
-      disableForReducedMotion: true,
-    });
-  }
-
-  function confettiExplosion(origin) {
-    fire(0.25, { spread: 26, startVelocity: 55, origin });
-    fire(0.2, { spread: 60, origin });
-    fire(0.35, { spread: 100, decay: 0.91, origin });
-    fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, origin });
-    fire(0.1, { spread: 120, startVelocity: 45, origin });
-  }
-
-  // 🎉 Trigger confetti when popup opens
   useEffect(() => {
-    if (showPopup && formRef.current) {
-      const rect = formRef.current.getBoundingClientRect();
-      const origin = {
-        x: (rect.left + rect.width / 2) / window.innerWidth,
-        y: (rect.top + rect.height / 2) / window.innerHeight,
-      };
-      confettiExplosion(origin);
-    }
+    if (!showPopup || !formRef.current) return;
+    const rect = formRef.current.getBoundingClientRect();
+    const origin = {
+      x: (rect.left + rect.width / 2) / window.innerWidth,
+      y: (rect.top + rect.height / 2) / window.innerHeight,
+    };
+    import("canvas-confetti").then(({ default: confetti }) => {
+      const fire = (ratio, opts) =>
+        confetti({ ...opts, particleCount: Math.floor(200 * ratio), disableForReducedMotion: true });
+      fire(0.25, { spread: 26, startVelocity: 55, origin });
+      fire(0.2,  { spread: 60, origin });
+      fire(0.35, { spread: 100, decay: 0.91, origin });
+      fire(0.1,  { spread: 120, startVelocity: 25, decay: 0.92, origin });
+      fire(0.1,  { spread: 120, startVelocity: 45, origin });
+    });
   }, [showPopup]);
 
   return (

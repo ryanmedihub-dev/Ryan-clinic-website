@@ -7,27 +7,27 @@ import Script from "next/script";
 
 import { Outfit, DM_Sans } from "next/font/google";
 
-// ✅ Outfit (headings — slim, geometric, professional)
 const outfit = Outfit({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
+  weight: ["400", "600", "700"],
   display: "swap",
   variable: "--font-outfit",
+  preload: true,
 });
 
-// ✅ DM Sans (body — clean, slim, highly readable)
 const dmSans = DM_Sans({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500"],
   display: "swap",
   variable: "--font-dm-sans",
+  preload: true,
 });
 
 export const metadata = {
   metadataBase: new URL("https://www.clinicryan.com"),
   title: "Hair Transplant in Delhi | Best Sapphire FUE Cost | Ryan Clinic",
   description:
-    "Ryan Clinic offers the best hair transplant in Delhi using advanced Turkey Sapphire FUE. Certified surgeons, 95%+ graft survival & affordable cost. Call +91-9217958539. Book free consultation!",
+    "Ryan Clinic — India's only Turkey Sapphire FUE hair transplant clinic. Certified surgeons, 95%+ graft survival. Clinics in Delhi, Mumbai & Hyderabad.",
   keywords: [
     "hair transplant in Delhi",
     "best hair transplant in Delhi",
@@ -124,10 +124,10 @@ export default function RootLayout({ children }) {
     >
       <head>
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <link rel="preconnect" href="https://res.cloudinary.com" />
         <SchemaMarkup />
       </head>
 

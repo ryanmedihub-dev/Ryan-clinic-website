@@ -6,16 +6,15 @@ Allow: /
 # Block private/admin/form-only paths
 Disallow: /api/
 Disallow: /admin/
-Disallow: /dashboard/
 Disallow: /private/
-Disallow: /book-appointment
-Disallow: /book-consult
-Disallow: /interview-form
 Disallow: /patient-data
 Disallow: /login
 Disallow: /register
-Disallow: /feedback
 Disallow: /dummy
+Disallow: /book-appointment
+Disallow: /book-consult
+Disallow: /feedback
+Disallow: /interview-form
 
 # Block duplicate/parameter URLs
 Disallow: /*?*utm_source=
