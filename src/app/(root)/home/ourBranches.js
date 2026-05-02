@@ -7,9 +7,9 @@ import Image from "next/image";
 import "swiper/css";
 import "swiper/css/navigation";
 
-import DelhiImg from "../../../../public/uploads/Delhi.jpg";
-import MumbaiImg from "../../../../public/uploads/Mumbai.jpg";
-import HyderabadImg from "../../../../public/uploads/Hyderabad.jpg";
+import DelhiImg from "../../../../public/uploads/Delhi.webp";
+import MumbaiImg from "../../../../public/uploads/Mumbai.webp";
+import HyderabadImg from "../../../../public/uploads/Hyderabad.webp";
 
 const locations = [
   { name: "Delhi", image: DelhiImg, link: "/hair-transplant-in-delhi" },
@@ -23,7 +23,7 @@ export default function OurBranches() {
       className="relative bg-cover bg-center bg-no-repeat py-16 md:py-20 lg:py-24 overflow-hidden"
       style={{
         background:
-          "linear-gradient(rgb(0 0 0 / 82%), rgb(0 0 0 / 82%)), url(https://res.cloudinary.com/dha2ecdnn/image/upload/v1740393396/background_lvar2m.webp)",
+          "linear-gradient(rgb(0 0 0 / 82%), rgb(0 0 0 / 82%))",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
