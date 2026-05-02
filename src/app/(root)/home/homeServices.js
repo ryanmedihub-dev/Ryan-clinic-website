@@ -78,9 +78,9 @@ export default function WhyRyanSection() {
                   src={card.image}
                   alt={card.title}
                   fill
+                  loading="lazy"
                   className="object-cover"
                   sizes="(max-width: 767px) 90vw, 30vw"
-                  priority={index === 0}
                 />
 
                 {/* Overlay */}

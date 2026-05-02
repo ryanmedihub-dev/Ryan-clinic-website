@@ -123,15 +123,15 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <head>
-        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
-        <SchemaMarkup />
       </head>
 
       <body className={`${dmSans.className} antialiased`}>
+        {/* Structured data — in body for performance (keeps <head> small so LCP preload is discovered faster) */}
+        <SchemaMarkup />
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-CK1LZXBKPX"

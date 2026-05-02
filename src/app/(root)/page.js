@@ -12,13 +12,11 @@ export const metadata = {
 import { Suspense } from "react";
 import Image from "next/image";
 import HairTransplantPage from "./home/homeServices";
-import WhyChooseRyanClinic from "./home/whyChooseUs";
 import TurkeySpecialists from "./home/turkeySpecialists";
 import FeaturesOverview from "./home/featuresOverview";
 import BlogContent from "./home/blogContent";
-import FaqSection from "./home/faqSection";
 import { SplitCTA } from "./home/splitCTA";
-import { OurResults, Testimonials, OurBranches } from "./home/lazyComponents";
+import { OurResults, Testimonials, OurBranches, WhyChooseRyanClinic, FaqSection } from "./home/lazyComponents";
 
 import Banner from "../../../public/uploads/banner.jpg";
 import Banner2 from "../../../public/uploads/banner2.jpg";

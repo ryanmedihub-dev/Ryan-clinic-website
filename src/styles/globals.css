@@ -170,14 +170,6 @@ section {
   margin: 5px 10px !important;
 }
 
-.bannerBackground {
-  background: linear-gradient(rgba(0, 0, 0, 0.6)),
-    url("https://res.cloudinary.com/dq1tzl5ir/image/upload/v1751445188/video-background_gkuate_b7xmrc.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 .newBackground {
   background: linear-gradient(60deg, rgba(227, 10, 23, 0.08) 2%, rgba(227, 10, 23, 0.06)),
     url("https://res.cloudinary.com/dq1tzl5ir/image/upload/v1751445188/video-background_gkuate_b7xmrc.jpg");
