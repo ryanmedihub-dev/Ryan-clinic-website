@@ -14,8 +14,3 @@ export const FaqSection = dynamic(() => import("./faqSection"), {
   loading: () => <div className="py-12 md:py-20" />,
 });
 
-// BlogContent: ssr:false removes MongoDB fetch from SSR critical path entirely
-export const BlogContent = dynamic(() => import("./blogContent"), {
-  ssr: false,
-  loading: () => <div className="py-16" />,
-});
