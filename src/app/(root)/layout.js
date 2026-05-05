@@ -123,6 +123,7 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <head>
+        <meta name="google-site-verification" content="RmcpqkeTYROyZYT_Jid5Wzve1EbG6zwvB3yN7AwbeWQ" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
@@ -145,6 +146,7 @@ export default function RootLayout({ children }) {
             gtag('config', 'G-CK1LZXBKPX');
           `}
         </Script>
+        
 
       
         <Header />
