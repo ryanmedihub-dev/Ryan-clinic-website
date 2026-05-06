@@ -5,13 +5,13 @@ export default withAuth(
     const token = req.nextauth.token;
     const { pathname } = req.nextUrl;
 
-    // if (token && (pathname === "/login" || pathname === "/register")) {
-    //   return Response.redirect(new URL("/admin", req.url));
-    // }
+    if (token && (pathname === "/login" || pathname === "/register")) {
+      return Response.redirect(new URL("/admin", req.url));
+    }
 
-    // if (!token && pathname.startsWith("/admin")) {
-    //   return Response.redirect(new URL("/login", req.url));
-    // }
+    if (!token && pathname.startsWith("/admin")) {
+      return Response.redirect(new URL("/login", req.url));
+    }
   },
   {
     callbacks: {
