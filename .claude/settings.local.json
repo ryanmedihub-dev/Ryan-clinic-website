@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\sachi\\\\.vscode\\\\extensions\\\\\" | Where-Object { $_.Name -match \"claude\" } | Select-Object Name)",
+      "PowerShell($pkg = Get-Content \"C:\\\\Users\\\\sachi\\\\.vscode\\\\extensions\\\\anthropic.claude-code-2.1.129-win32-x64\\\\package.json\" | ConvertFrom-Json; $pkg.contributes.commands | Where-Object { $_.command -match \"openLast\" } | Format-Table)",
+      "PowerShell($pkg = Get-Content \"C:\\\\Users\\\\sachi\\\\.vscode\\\\extensions\\\\codeflow-studio.claude-code-extension-0.1.10\\\\package.json\" | ConvertFrom-Json; $pkg.contributes.menus | ConvertTo-Json -Depth 5)",
+      "PowerShell($pkg = Get-Content \"C:\\\\Users\\\\sachi\\\\.vscode\\\\extensions\\\\anthropic.claude-code-2.1.129-win32-x64\\\\package.json\" | ConvertFrom-Json; $pkg.contributes.menus | ConvertTo-Json -Depth 5)",
+      "PowerShell($pkg = Get-Content \"C:\\\\Users\\\\sachi\\\\.vscode\\\\extensions\\\\anthropic.claude-code-2.1.129-win32-x64\\\\package.json\" | ConvertFrom-Json; $pkg.activationEvents)",
+      "PowerShell($pkg = Get-Content \"C:\\\\Users\\\\sachi\\\\.vscode\\\\extensions\\\\anthropic.claude-code-2.1.129-win32-x64\\\\package.json\" | ConvertFrom-Json; Write-Output \"Main: $\\($pkg.main\\)\"; Get-ChildItem \"C:\\\\Users\\\\sachi\\\\.vscode\\\\extensions\\\\anthropic.claude-code-2.1.129-win32-x64\" | Select-Object Name)",
+      "PowerShell(claude *)",
+      "PowerShell(Get-ChildItem *)",
+      "Bash(Get-ChildItem -Path \"c:\\\\dashzer\\\\Ryan-next-project-new\" -Directory)",
+      "Bash(Select-Object Name)"
+    ]
+  }
+}
