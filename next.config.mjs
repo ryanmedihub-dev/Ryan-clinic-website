@@ -45,7 +45,7 @@ const nextConfig = {
               "img-src 'self' data: https: blob:",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' data: https://fonts.gstatic.com",
-              "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://www.google.com",
+              "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://www.google.com https://api.cloudinary.com",
               "frame-src 'self' https://www.google.com https://maps.google.com",
             ].join("; "),
           },
