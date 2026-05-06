@@ -1,11 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function ImageUploader({ onUpload, initialImage }) {
   const [imageURL, setImageURL] = useState(initialImage || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    setImageURL(initialImage || '');
+  }, [initialImage]);
 
   const handleUpload = async (e) => {
     const file = e.target.files[0];
@@ -85,6 +89,16 @@ export default function ImageUploader({ onUpload, initialImage }) {
               {imageURL}
             </a>
           </div>
+          <button
+            type="button"
+            onClick={() => { setImageURL(''); if (onUpload) onUpload('', null); }}
+            className="shrink-0 text-gray-400 hover:text-red-500 transition-colors"
+            title="Remove image"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
       )}
     </div>

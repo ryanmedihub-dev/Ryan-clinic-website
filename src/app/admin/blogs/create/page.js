@@ -175,7 +175,7 @@ const Blog = () => {
             Banner Image URL
           </label>
 
-          <ImageUploader onUpload={handleImageUpload} />
+          <ImageUploader onUpload={handleImageUpload} initialImage={formData.pageImageUrl} />
         </div>
         <div className="w-full">
           <label className="block text-sm font-semibold text-gray-700">
