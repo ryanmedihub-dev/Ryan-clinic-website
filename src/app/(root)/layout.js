@@ -110,7 +110,6 @@ export const metadata = {
     "article:modified_time": new Date().toISOString(),
     "article:publisher": "https://www.facebook.com/RyanClinic",
     "format-detection": "telephone=no",
-    googlebot: "index, follow",
     copyright: "clinicryan.com",
   },
 };

@@ -61,6 +61,12 @@ const nextConfig = {
         destination: "/:path*",
         permanent: true,
       },
+      // /results was linked from CTAs but the page lives at /gallery/images
+      {
+        source: "/results",
+        destination: "/gallery/images",
+        permanent: true,
+      },
     ];
   },
 };

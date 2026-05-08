@@ -3,26 +3,54 @@ import ContactForm from "@/components/pages/contactForm";
 import { getBlogBySlug } from "@/lib/blogData";
 import { sanitizeContent } from "@/lib/utils";
 
-// 🧠 Step 1: Dynamic Metadata Function
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const blog = await getBlogBySlug(slug);
 
+  if (!blog) {
+    return {
+      title: "Blog Not Found | Ryan Clinic",
+      robots: { index: false, follow: false },
+    };
+  }
+
   return {
-    title: blog?.metaTitle || blog?.pageTitle || blog?.blogTitle || "Hair Transplant Guide | Ryan Clinic",
-    description: blog?.metaDiscription || blog?.pageDiscription || "Expert hair transplant insights from Ryan Clinic — India's only Turkey Sapphire FUE specialists.",
+    title: blog.metaTitle || blog.pageTitle || blog.blogTitle || "Hair Transplant Guide | Ryan Clinic",
+    description: blog.metaDiscription || blog.pageDiscription || "Expert hair transplant insights from Ryan Clinic — India's only Turkey Sapphire FUE specialists.",
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
     alternates: {
       canonical: `https://www.clinicryan.com/blog/${slug}`,
     },
     openGraph: {
-      title: blog?.metaTitle || blog?.pageTitle,
-      description: blog?.metaDiscription || blog?.pageDiscription,
+      type: "article",
+      locale: "en_IN",
+      siteName: "Ryan Clinic",
+      url: `https://www.clinicryan.com/blog/${slug}`,
+      title: blog.metaTitle || blog.pageTitle,
+      description: blog.metaDiscription || blog.pageDiscription,
       images: [
         {
-          url: blog?.pageImageUrl || "/default-image.jpg",
-          alt: blog?.pageImageAlt || "Blog image",
+          url: blog.pageImageUrl || "/uploads/logo.png",
+          width: 1200,
+          height: 630,
+          alt: blog.pageImageAlt || "Hair transplant blog — Ryan Clinic",
         },
       ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: blog.metaTitle || blog.pageTitle,
+      description: blog.metaDiscription || blog.pageDiscription,
+      images: [blog.pageImageUrl || "/uploads/logo.png"],
     },
   };
 }
