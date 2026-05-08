@@ -2,6 +2,7 @@ import PageBanner from "@/components/layouts/pageBanner";
 import ContactForm from "@/components/pages/contactForm";
 import { getBlogBySlug } from "@/lib/blogData";
 import { sanitizeContent } from "@/lib/utils";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -55,10 +56,11 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// 🧠 Step 2: Actual Page Component
 export default async function BlogPage({ params }) {
   const { slug } = await params;
   const blog = await getBlogBySlug(slug);
+
+  if (!blog) notFound();
 
   return (
     <div>
