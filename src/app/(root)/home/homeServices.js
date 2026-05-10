@@ -43,7 +43,7 @@ export default function WhyRyanSection() {
         {/* ── Header ── */}
         <div className="flex flex-col md:flex-row justify-between items-start gap-4 md:gap-6 mb-6 md:mb-10">
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal text-gray-900 flex-1">
-            What makes <br /> us the best
+            What Makes <br /> Us The Best
           </h2>
           <p className="flex-1 text-gray-600 text-sm sm:text-base md:text-[17px] md:pt-6 leading-relaxed">
             At Ryan Clinic, excellence is not a promise — it&apos;s our track
