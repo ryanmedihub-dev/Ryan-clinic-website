@@ -10,7 +10,12 @@
       "PowerShell(claude *)",
       "PowerShell(Get-ChildItem *)",
       "Bash(Get-ChildItem -Path \"c:\\\\dashzer\\\\Ryan-next-project-new\" -Directory)",
-      "Bash(Select-Object Name)"
+      "Bash(Select-Object Name)",
+      "Bash(mkdir -p /home/dashzer/codes/clinicryan/src/app/\\\\\\(root\\\\\\)/doctors)",
+      "Bash(npx next *)"
+    ],
+    "additionalDirectories": [
+      "/home/dashzer/codes/clinicryan/src/app/(root)"
     ]
   }
 }

@@ -11,7 +11,7 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Logo from "../../../public/uploads/logo-2.png";
+const Logo = "/uploads/logo-2.png";
 import ContactForm from "../pages/contactForm";
 
 const Header = () => {
@@ -223,6 +223,7 @@ const Header = () => {
               width={140}
               height={80}
               className="object-contain"
+              unoptimized
             />
           </Link>
 
