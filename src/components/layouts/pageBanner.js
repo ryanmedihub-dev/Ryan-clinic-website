@@ -3,23 +3,16 @@
 import Image from "next/image";
 
 export default function PageBanner({
+  breadcrumb,
   title,
   description,
   breadcrumbLabel,
   bgImage,
 }) {
-  const crumbText = breadcrumbLabel || title || "";
-
   return (
     <header className="relative w-full overflow-hidden">
-
-      {/* ============================================================ */}
-      {/*  DESKTOP LAYOUT — hidden below md, rendered FIRST in DOM    */}
-      {/*  (keeps <h1> as the first heading crawlers encounter)        */}
-      {/* ============================================================ */}
       <div className="hidden md:block">
         <div className="relative w-full h-132 overflow-hidden flex items-center">
-
           {/* RIGHT SIDE IMAGE (49%) */}
           <div className="absolute right-0 top-0 h-full w-[49%]">
             <Image
@@ -57,12 +50,15 @@ export default function PageBanner({
                 {/* Breadcrumb */}
                 <div className="flex items-center gap-3 mb-5">
                   <span className="w-8 h-px bg-white/40" />
-                  <p className="text-xs uppercase tracking-widest text-white/60">
-                    Home / {crumbText}
+                  <p
+                    className="text-xs uppercase tracking-widest text-white/60"
+                    suppressHydrationWarning
+                  >
+                    Home / hair transplant / {breadcrumb}
                   </p>
                 </div>
 
-                {/* Title */}
+                {/* Title — single h1 lives only in desktop tree; mobile uses aria-hidden duplicate */}
                 <h1
                   className="text-6xl font-bold mb-4"
                   style={{ fontFamily: "Playfair Display, serif" }}
@@ -71,20 +67,18 @@ export default function PageBanner({
                 </h1>
 
                 {/* Description */}
-                <p className="text-base text-white/70 max-w-md mb-6">
-                  {description}
-                </p>
+                <p className="text-base text-white/70 mb-6">{description}</p>
 
                 {/* Buttons */}
                 <div className="flex gap-3">
                   <a
-                    href="#"
+                    href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20consultation%20in%20Delhi"
                     className="bg-[#D32F2F] px-5 py-3 rounded-lg text-sm font-semibold hover:bg-red-700"
                   >
                     WhatsApp Us
                   </a>
                   <a
-                    href="#"
+                    href="tel:+919217958539"
                     className="border border-white/40 px-5 py-3 rounded-lg text-sm font-semibold hover:bg-white/10"
                   >
                     Call Now
@@ -100,36 +94,26 @@ export default function PageBanner({
               <span className="text-white text-xl">❤</span>
             </div>
           </div>
-
-          {/* FLOATING STATS CARD */}
-          <div className="absolute bottom-6 right-20 bg-white rounded-xl shadow-xl px-6 py-4 flex gap-8 z-30">
-            <div className="text-center">
-              <p className="font-bold text-lg text-gray-800">10,000+</p>
-              <p className="text-xs text-gray-500">Happy Patients</p>
-            </div>
-            <div className="text-center border-l border-gray-200 pl-6">
-              <p className="font-bold text-lg text-gray-800">99%</p>
-              <p className="text-xs text-gray-500">Satisfaction Rate</p>
-            </div>
-            <div className="text-center border-l border-gray-200 pl-6">
-              <p className="font-bold text-lg text-gray-800">5 Star</p>
-              <p className="text-xs text-gray-500">Patient Reviews</p>
-            </div>
-          </div>
-
+          <div
+            className="absolute bottom-6 right-20 bg-white rounded-xl shadow-xl px-6 py-4 flex gap-8 z-30"
+            dangerouslySetInnerHTML={{
+              __html:
+                '<div class="text-center"><p class="font-bold text-lg text-gray-800">12+</p><p class="text-xs text-gray-500">Years</p></div>' +
+                '<div class="text-center border-l border-gray-200 pl-6"><p class="font-bold text-lg text-gray-800">10,000+</p><p class="text-xs text-gray-500">Procedures</p></div>' +
+                '<div class="text-center border-l border-gray-200 pl-6"><p class="font-bold text-lg text-gray-800">4.9★</p><p class="text-xs text-gray-500">Google rating</p></div>' +
+                '<div class="text-center border-l border-gray-200 pl-6"><p class="font-bold text-lg text-gray-800">0%</p><p class="text-xs text-gray-500">EMI Available</p></div>',
+            }}
+          />
         </div>
       </div>
 
-      {/* ============================================================ */}
-      {/*  MOBILE LAYOUT — full redesign, hidden on md+               */}
-      {/* ============================================================ */}
-      <div className="block md:hidden relative min-h-120 h-[80vh] max-h-155">
-
+      <div className="md:hidden relative min-h-120 h-[80vh] max-h-155">
         {/* Full-bleed background image */}
         <div className="absolute inset-0">
           <Image
             src={bgImage || "/uploads/banner.jpg"}
-            alt="Banner background"
+            alt=""
+            aria-hidden="true"
             fill
             className="object-cover object-center"
             unoptimized
@@ -137,7 +121,7 @@ export default function PageBanner({
           />
         </div>
 
-        {/* Dark red gradient overlay — transparent top, near-opaque bottom */}
+        {/* Dark red gradient overlay */}
         <div
           className="absolute inset-0"
           style={{
@@ -158,7 +142,7 @@ export default function PageBanner({
 
         {/* Left accent line */}
         <div
-          className="absolute top-0 left-0 w-[3px] h-full"
+          className="absolute top-0 left-0 w-0.75 h-full"
           style={{
             background:
               "linear-gradient(to bottom, transparent 0%, #D32F2F 25%, #D32F2F 75%, transparent 100%)",
@@ -168,45 +152,54 @@ export default function PageBanner({
         {/* Breadcrumb — top left */}
         <div className="absolute top-8 left-6 flex items-center gap-3 z-10">
           <span className="w-5 h-px bg-white/35" />
-          <p className="text-[9px] uppercase tracking-[2.5px] text-white/45">
-            Home / {crumbText}
+          <p
+            className="text-[9px] uppercase tracking-[2.5px] text-white/45"
+            suppressHydrationWarning
+          >
+            Home / Hair Transplant / {breadcrumb}
           </p>
         </div>
 
         {/* Main content — pinned to bottom */}
         <div className="absolute bottom-0 left-0 right-0 px-5 pb-6 z-10">
-
           {/* Clinic badge */}
           <div className="inline-flex items-center gap-2 bg-red-800/25 border border-red-500/35 rounded-full px-3 py-1.5 mb-4">
             <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
             <span className="text-[9px] uppercase tracking-[2px] text-red-300">
-              India's Only Turkey Sapphire FUE
+              India&apos;s Only Turkey Sapphire FUE
             </span>
           </div>
 
-          {/* Title — h2 here because the desktop layout below already has the h1; both are mutually exclusive via CSS but crawlers see both */}
-          <h2
+          {/* 
+            Use p instead of h2 to avoid duplicate heading in the DOM.
+            The h1 in the desktop section is always in the DOM (SSR),
+            so a second heading tag here triggers hydration conflicts.
+            Screen readers won't reach this on desktop (md:hidden), but
+            the SSR pass renders both trees — keep headings to one.
+          */}
+          <p
             className="text-[34px] font-bold text-white mb-3 leading-[1.15]"
             style={{ fontFamily: "Playfair Display, serif" }}
+            aria-hidden="true"
           >
             {title}
-          </h2>
+          </p>
 
           {/* Description */}
-          <p className="text-[13px] text-white/60 mb-5 leading-relaxed max-w-[300px]">
+          <p className="text-[13px] text-white/60 mb-5 leading-relaxed max-w-75">
             {description}
           </p>
 
           {/* CTA Buttons */}
           <div className="flex gap-3 mb-5">
             <a
-              href="#"
+              href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20consultation%20in%20Delhi"
               className="flex-1 text-center bg-[#D32F2F] py-3.5 rounded-xl text-[13px] font-semibold text-white active:scale-95 transition-transform"
             >
               WhatsApp Us
             </a>
-            
-            <a  href="#"
+            <a
+              href="tel:+919217958539"
               className="flex-1 text-center border border-white/25 py-3.5 rounded-xl text-[13px] font-semibold text-white active:scale-95 transition-transform"
               style={{ background: "rgba(255,255,255,0.07)" }}
             >
@@ -225,34 +218,40 @@ export default function PageBanner({
           >
             <div className="flex-1 text-center">
               <p className="font-bold text-[17px] text-white leading-none mb-0.5">
+                12+
+              </p>
+              <p className="text-[9.5px] text-white/45">Years of Experience</p>
+            </div>
+
+            <div className="w-px h-8 bg-white/15" />
+
+            <div className="flex-1 text-center">
+              <p className="font-bold text-[17px] text-white leading-none mb-0.5">
                 10,000+
               </p>
-              <p className="text-[9.5px] text-white/45">Happy Patients</p>
+              <p className="text-[9.5px] text-white/45">Procedures</p>
             </div>
 
             <div className="w-px h-8 bg-white/15" />
 
             <div className="flex-1 text-center">
               <p className="font-bold text-[17px] text-white leading-none mb-0.5">
-                99%
+                4.9★
               </p>
-              <p className="text-[9.5px] text-white/45">Satisfaction Rate</p>
+              <p className="text-[9.5px] text-white/45">Google Rating</p>
             </div>
 
             <div className="w-px h-8 bg-white/15" />
 
             <div className="flex-1 text-center">
               <p className="font-bold text-[17px] text-white leading-none mb-0.5">
-                5 Star
+                0%
               </p>
-              <p className="text-[9.5px] text-white/45">Patient Reviews</p>
+              <p className="text-[9.5px] text-white/45">EMI available</p>
             </div>
           </div>
-
         </div>
       </div>
-
-
     </header>
   );
 }

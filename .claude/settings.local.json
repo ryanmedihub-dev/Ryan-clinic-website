@@ -12,7 +12,12 @@
       "Bash(Get-ChildItem -Path \"c:\\\\dashzer\\\\Ryan-next-project-new\" -Directory)",
       "Bash(Select-Object Name)",
       "Bash(mkdir -p /home/dashzer/codes/clinicryan/src/app/\\\\\\(root\\\\\\)/doctors)",
-      "Bash(npx next *)"
+      "Bash(npx next *)",
+      "Bash(Remove-Item -Recurse -Force \"c:\\\\dashzer\\\\Ryan-next-project-new\\\\.next\" -ErrorAction SilentlyContinue)",
+      "Bash(Write-Host \"Cache cleared\")",
+      "PowerShell(Stop-Process -Name \"node\" -Force -ErrorAction SilentlyContinue)",
+      "PowerShell(Remove-Item -Recurse -Force \"c:\\\\dashzer\\\\Ryan-next-project-new\\\\.next\" -ErrorAction SilentlyContinue; Write-Host \"Done: $\\(Test-Path 'c:\\\\dashzer\\\\Ryan-next-project-new\\\\.next'\\)\")",
+      "Bash(del \"c:\\\\dashzer\\\\Ryan-next-project-new\\\\src\\\\components\\\\DevHydrationSuppressor.js\")"
     ],
     "additionalDirectories": [
       "/home/dashzer/codes/clinicryan/src/app/(root)"

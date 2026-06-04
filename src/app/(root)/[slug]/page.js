@@ -69,6 +69,7 @@ export default async function ServicesPage({ params }) {
     <>
       <div>
         <PageBanner
+          breadcrumb={service?.metadata?.pageName}
           title={service?.bannerData?.title}
           description={service?.bannerData?.description}
           bgImage={service?.bannerData?.imageurl}
