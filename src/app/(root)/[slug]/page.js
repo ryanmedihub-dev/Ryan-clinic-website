@@ -6,9 +6,17 @@ import FAQSection from "./FAQSection";
 import PleoFeatures from "./PleoFeatures";
 import OurResults from "../home/ourResults";
 import { getServiceBySlug } from "@/lib/serviceData";
-import { notFound } from "next/navigation"; // ⬅️ import this
+import { notFound } from "next/navigation";
 import Testimonials from "../home/testimonial";
 import WhyChooseRyanClinic from "../home/whyChooseUs";
+
+// ── Branch-only section imports ──────────────────────────────────────────────
+import CostSection from "@/components/pages/CostSection";
+import RecoveryTimeline from "@/components/pages/RecoveryTimeline";
+import DifferencesSection from "@/components/pages/DifferencesSection";
+import OurDoctorSection from "@/components/pages/OurDoctorSection";
+import WhyDoctorMattersSection from "@/components/pages/WhyDoctorMattersSection";
+import AreasWeServe from "@/components/pages/AreasWeServe";
 
 // 🔹 Dynamic metadata for each service page
 export async function generateMetadata({ params }) {
@@ -19,10 +27,9 @@ export async function generateMetadata({ params }) {
     return {
       title: "404 | Service Not Found - Ryan Clinic",
       description: "The requested service could not be found.",
-      robots: { index: false, follow: false }, // don’t index 404 pages
+      robots: { index: false, follow: false },
     };
   }
-
 
   const meta = service.metadata || {};
 
@@ -60,14 +67,29 @@ export default async function ServicesPage({ params }) {
   const { slug } = await params;
   const service = await getServiceBySlug(slug);
 
-  // ⬅️ If no service → trigger 404
   if (!service) {
     notFound();
   }
 
+  // ── Determine if this is a branch landing page ───────────────────────────
+  const isBranch = service?.metadata?.pageType === "branch";
+
+  // ── Extract branch/city name from metadata (e.g. "Delhi", "Mumbai", "Hyderabad")
+  // Falls back to slug-based extraction if not explicitly set
+  const branchName =
+    service?.metadata?.branchName ||
+    (slug.includes("delhi")
+      ? "Delhi"
+      : slug.includes("mumbai")
+      ? "Mumbai"
+      : slug.includes("hyderabad")
+      ? "Hyderabad"
+      : "Delhi");
+
   return (
     <>
       <div>
+        {/* ── Page Banner ─────────────────────────────────────────────────── */}
         <PageBanner
           breadcrumb={service?.metadata?.pageName}
           title={service?.bannerData?.title}
@@ -76,6 +98,7 @@ export default async function ServicesPage({ params }) {
           alt={service?.bannerData?.imagealt}
         />
 
+        {/* ── Overview + Contact Form ──────────────────────────────────────── */}
         <section className="bg-light py-8 md:py-12">
           <div className="containerFull px-4 md:px-6">
             <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
@@ -84,7 +107,7 @@ export default async function ServicesPage({ params }) {
                 dangerouslySetInnerHTML={{
                   __html: sanitizeContent(service?.metadata?.overviewData),
                 }}
-              ></div>
+              />
               <div className="w-full lg:w-1/3 px-0 md:px-4 lg:px-6">
                 <ContactForm />
               </div>
@@ -92,8 +115,13 @@ export default async function ServicesPage({ params }) {
           </div>
         </section>
 
+        {/* ── Our Results (all pages) ──────────────────────────────────────── */}
         <OurResults />
 
+        {/* ── Cost Section — branch pages only ────────────────────────────── */}
+        {isBranch && <CostSection city={branchName} />}
+
+        {/* ── Types / Images + Details ─────────────────────────────────────── */}
         <section className="py-8 md:py-12 h-fit">
           <div className="containerFull px-4 md:px-6">
             <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
@@ -108,7 +136,6 @@ export default async function ServicesPage({ params }) {
                       className="object-cover"
                     />
                   </div>
-
                   <div className="grid grid-cols-1 md:grid-rows-2 gap-4 md:gap-6">
                     <div className="relative rounded-xl h-48 overflow-hidden shadow-md">
                       <Image
@@ -137,18 +164,26 @@ export default async function ServicesPage({ params }) {
                   dangerouslySetInnerHTML={{
                     __html: sanitizeContent(service?.typesData?.details),
                   }}
-                ></div>
+                />
               </div>
             </div>
           </div>
         </section>
 
+        {/* ── Recovery Timeline — branch pages only ───────────────────────── */}
+        {isBranch && <RecoveryTimeline />}
+
+        {/* ── PleoFeatures / Benefits (all pages) ─────────────────────────── */}
         <PleoFeatures
           features={service?.benefitsData?.component}
           title={service?.benefitsData?.title}
           description={service?.benefitsData?.description}
         />
 
+        {/* ── Differences Section — branch pages only ──────────────────────── */}
+        {isBranch && <DifferencesSection />}
+
+        {/* ── Extra Fields (all pages, if present) ────────────────────────── */}
         {service?.extraFieldsData?.length > 0 && (
           <section className="py-8 md:py-12">
             <div className="containerFull px-4 md:px-6">
@@ -178,9 +213,22 @@ export default async function ServicesPage({ params }) {
           </section>
         )}
 
+        {/* ── Our Doctor Section — branch pages only ───────────────────────── */}
+        {isBranch && <OurDoctorSection city={branchName} />}
+
+        {/* ── Why Choose Ryan Clinic (all pages) ──────────────────────────── */}
         <WhyChooseRyanClinic />
 
+        {/* ── Why Doctor Matters — branch pages only ───────────────────────── */}
+        {isBranch && <WhyDoctorMattersSection />}
+
+        {/* ── Testimonials (all pages) ────────────────────────────────────── */}
         <Testimonials />
+
+        {/* ── Areas We Serve — branch pages only ──────────────────────────── */}
+        {isBranch && <AreasWeServe city={branchName} branch={branchName} />}
+
+        {/* ── FAQ Section (all pages) ──────────────────────────────────────── */}
         <FAQSection faqs={service?.faq} />
       </div>
     </>

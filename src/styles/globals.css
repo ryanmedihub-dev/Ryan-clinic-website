@@ -451,6 +451,11 @@ section {
   background: var(--text-primary);
 }
 
+.pageLayoutBox td{
+  border: 1px solid !important;
+  padding: 10px;
+}
+
 .swiper-pagination-fraction,
 .swiper-pagination-custom,
 .swiper-horizontal > .swiper-pagination-bullets,

@@ -34,7 +34,7 @@ const serviceSchema = new mongoose.Schema(
       pageType: {
         type: String,
         default: "transplant",
-        enum: ["transplant", "surgery", "treatment"],
+        enum: ["transplant", "surgery", "treatment" , "branch"],
       },
       description: String,
       pageurl: {

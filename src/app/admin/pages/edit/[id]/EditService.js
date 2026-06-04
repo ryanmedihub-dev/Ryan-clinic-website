@@ -379,6 +379,7 @@ export default function EditService({ initialData }) {
                   <option value="transplant">Transplant</option>
                   <option value="surgery">Surgery</option>
                   <option value="treatment">Treatment</option>
+                  <option value="branch">Branch</option>
                 </select>
               </div>
 
