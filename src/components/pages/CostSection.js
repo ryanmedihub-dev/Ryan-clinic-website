@@ -249,7 +249,7 @@ export default function CostSection({ city = "Delhi" }) {
         </div>
 
         {/* CTA */}
-        <div className="bg-[#D32F2F] rounded-[32px] p-8 md:p-12 text-center text-white">
+        {/* <div className="bg-[#D32F2F] rounded-[32px] p-8 md:p-12 text-center text-white">
           <h3 className="text-3xl md:text-4xl font-bold mb-4">
             Get Your Exact Hair Transplant Cost
           </h3>
@@ -276,7 +276,7 @@ export default function CostSection({ city = "Delhi" }) {
               Full Cost Breakdown
             </a>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

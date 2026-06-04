@@ -81,10 +81,10 @@ export default async function ServicesPage({ params }) {
     (slug.includes("delhi")
       ? "Delhi"
       : slug.includes("mumbai")
-      ? "Mumbai"
-      : slug.includes("hyderabad")
-      ? "Hyderabad"
-      : "Delhi");
+        ? "Mumbai"
+        : slug.includes("hyderabad")
+          ? "Hyderabad"
+          : "Delhi");
 
   return (
     <>
@@ -118,9 +118,6 @@ export default async function ServicesPage({ params }) {
         {/* ── Our Results (all pages) ──────────────────────────────────────── */}
         <OurResults />
 
-        {/* ── Cost Section — branch pages only ────────────────────────────── */}
-        {isBranch && <CostSection city={branchName} />}
-
         {/* ── Types / Images + Details ─────────────────────────────────────── */}
         <section className="py-8 md:py-12 h-fit">
           <div className="containerFull px-4 md:px-6">
@@ -130,7 +127,9 @@ export default async function ServicesPage({ params }) {
                   <div className="relative rounded-xl h-48 md:h-60 lg:h-full overflow-hidden shadow-md">
                     <Image
                       src={service?.typesData?.images[0]?.url}
-                      alt={service?.typesData?.images[0]?.alt || "Service image"}
+                      alt={
+                        service?.typesData?.images[0]?.alt || "Service image"
+                      }
                       fill
                       unoptimized
                       className="object-cover"
@@ -140,7 +139,9 @@ export default async function ServicesPage({ params }) {
                     <div className="relative rounded-xl h-48 overflow-hidden shadow-md">
                       <Image
                         src={service?.typesData?.images[1]?.url}
-                        alt={service?.typesData?.images[1]?.alt || "Service image"}
+                        alt={
+                          service?.typesData?.images[1]?.alt || "Service image"
+                        }
                         fill
                         unoptimized
                         className="object-cover"
@@ -149,7 +150,9 @@ export default async function ServicesPage({ params }) {
                     <div className="relative rounded-xl h-48 overflow-hidden shadow-md">
                       <Image
                         src={service?.typesData?.images[2]?.url}
-                        alt={service?.typesData?.images[2]?.alt || "Service image"}
+                        alt={
+                          service?.typesData?.images[2]?.alt || "Service image"
+                        }
                         fill
                         unoptimized
                         className="object-cover"
@@ -170,6 +173,9 @@ export default async function ServicesPage({ params }) {
           </div>
         </section>
 
+        {/* ── Cost Section — branch pages only ────────────────────────────── */}
+        {isBranch && <CostSection city={branchName} />}
+
         {/* ── Recovery Timeline — branch pages only ───────────────────────── */}
         {isBranch && <RecoveryTimeline />}
 
@@ -179,9 +185,6 @@ export default async function ServicesPage({ params }) {
           title={service?.benefitsData?.title}
           description={service?.benefitsData?.description}
         />
-
-        {/* ── Differences Section — branch pages only ──────────────────────── */}
-        {isBranch && <DifferencesSection />}
 
         {/* ── Extra Fields (all pages, if present) ────────────────────────── */}
         {service?.extraFieldsData?.length > 0 && (
@@ -193,7 +196,9 @@ export default async function ServicesPage({ params }) {
                     <div
                       className="prose max-w-none"
                       dangerouslySetInnerHTML={{
-                        __html: sanitizeContent(service.extraFieldsData.detail1),
+                        __html: sanitizeContent(
+                          service.extraFieldsData.detail1,
+                        ),
                       }}
                     />
                   )}
@@ -203,7 +208,9 @@ export default async function ServicesPage({ params }) {
                     <div
                       className="prose max-w-none"
                       dangerouslySetInnerHTML={{
-                        __html: sanitizeContent(service.extraFieldsData.detail2),
+                        __html: sanitizeContent(
+                          service.extraFieldsData.detail2,
+                        ),
                       }}
                     />
                   )}
@@ -215,6 +222,9 @@ export default async function ServicesPage({ params }) {
 
         {/* ── Our Doctor Section — branch pages only ───────────────────────── */}
         {isBranch && <OurDoctorSection city={branchName} />}
+
+        {/* ── Differences Section — branch pages only ──────────────────────── */}
+        {isBranch && <DifferencesSection />}
 
         {/* ── Why Choose Ryan Clinic (all pages) ──────────────────────────── */}
         <WhyChooseRyanClinic />
