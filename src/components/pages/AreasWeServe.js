@@ -121,24 +121,24 @@ export default function AreasWeServe({ city = "Delhi", branch = "Delhi" }) {
                 {data.areas.map((area, i) => (
                   <div
                     key={area}
-                    className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-colors ${
+                    className={`flex items-center gap-2 px-3 py-2.5 rounded-lg border transition-colors ${
                       i % 5 === 0
                         ? "bg-red-50 border-red-100 text-[#D32F2F]"
-                        : "bg-gray-50 border-gray-100 text-gray-600"
+                        : "bg-gray-50 border-gray-100 text-gray-700 hover:bg-red-50 hover:border-red-100 hover:text-[#D32F2F]"
                     }`}
                   >
                     <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${i % 5 === 0 ? "bg-[#D32F2F]" : "bg-gray-300"}`} />
-                    <span className="text-[12px] font-medium truncate">{area}</span>
+                    <span className="text-xs font-medium truncate">{area}</span>
                   </div>
                 ))}
               </div>
 
               {/* Footer */}
-              <div className="px-5 py-3 flex items-start gap-2 border-t border-gray-100 bg-gray-50">
+              <div className="px-5 py-3.5 flex items-start gap-2 border-t border-gray-100 bg-gray-50">
                 <svg className="w-3.5 h-3.5 shrink-0 mt-0.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
                 </svg>
-                <p className="text-[11px] text-gray-400 leading-relaxed">
+                <p className="text-xs text-gray-400 leading-relaxed">
                   Don't see your area? Call us — we welcome patients from anywhere across India and NRI patients worldwide.
                 </p>
               </div>
@@ -206,14 +206,14 @@ export default function AreasWeServe({ city = "Delhi", branch = "Delhi" }) {
                       {item.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{item.label}</p>
-                      <p className="text-[13px] text-gray-700 leading-snug">{item.value}</p>
+                      <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 mb-0.5">{item.label}</p>
+                      <p className="text-sm text-gray-700 leading-snug">{item.value}</p>
                       {item.link && (
                         <a
                           href={item.link}
                           target={item.link.startsWith("http") ? "_blank" : undefined}
                           rel={item.link.startsWith("http") ? "noreferrer" : undefined}
-                          className="text-[11.5px] font-semibold text-[#D32F2F] mt-1 inline-block hover:underline"
+                          className="text-xs font-semibold text-[#D32F2F] mt-1 inline-block hover:underline"
                         >
                           {item.linkText}
                         </a>

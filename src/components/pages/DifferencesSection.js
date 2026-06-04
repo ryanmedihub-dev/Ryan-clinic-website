@@ -52,55 +52,55 @@ export default function DifferencesSection() {
         <div className="hidden md:block bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm mb-8">
           {/* Column headers */}
           <div className="grid grid-cols-4 border-b border-gray-100">
-            <div className="px-6 py-4 bg-gray-50 flex items-center">
-              <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-gray-400">Feature</span>
+            <div className="px-5 py-4 bg-gray-50 flex items-center">
+              <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Feature</span>
             </div>
 
             {/* FUT */}
-            <div className="px-6 py-4 border-l border-gray-100">
+            <div className="px-5 py-4 border-l border-gray-100">
               <p className="text-sm font-bold text-gray-900 mb-0.5">FUT</p>
-              <p className="text-[11px] text-gray-400">Strip Method</p>
+              <p className="text-xs text-gray-400">Strip Method</p>
             </div>
 
             {/* Standard FUE */}
-            <div className="px-6 py-4 border-l border-gray-100">
+            <div className="px-5 py-4 border-l border-gray-100">
               <p className="text-sm font-bold text-gray-900 mb-0.5">Standard FUE</p>
-              <p className="text-[11px] text-gray-400">Steel Punch Method</p>
+              <p className="text-xs text-gray-400">Steel Punch Method</p>
             </div>
 
             {/* Sapphire FUE — highlighted */}
-            <div className="px-6 py-4 border-l border-red-100 relative" style={{ background: "rgba(211,47,47,0.03)" }}>
+            <div className="px-5 py-4 border-l border-red-100 relative" style={{ background: "rgba(211,47,47,0.03)" }}>
               <div className="absolute top-0 inset-x-0 h-0.5 bg-[#D32F2F]" />
               <div className="flex items-center gap-2 mb-0.5">
                 <p className="text-sm font-bold text-[#D32F2F]">Sapphire FUE</p>
-                <span className="text-[8px] font-black px-1.5 py-0.5 rounded bg-[#D32F2F] text-white uppercase tracking-wide">Best</span>
+                <span className="text-[9px] font-black px-1.5 py-0.5 rounded bg-[#D32F2F] text-white uppercase tracking-wide">Best</span>
               </div>
-              <p className="text-[11px] text-gray-400">Ryan Clinic · Original Choi Pen</p>
+              <p className="text-xs text-gray-400">Ryan Clinic · Original Choi Pen</p>
             </div>
           </div>
 
           {/* Rows */}
           {features.map((row, i) => (
             <div key={i} className="grid grid-cols-4 border-t border-gray-50">
-              <div className={`px-6 py-4 flex items-center ${i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}`}>
+              <div className={`px-5 py-3.5 flex items-center ${i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}`}>
                 <span className="text-sm font-semibold text-gray-700">{row.label}</span>
               </div>
 
-              <div className={`px-6 py-4 flex items-center border-l border-gray-100 ${i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}`}>
-                <span className={`text-[13px] leading-snug ${row.fut.bad ? "text-amber-700" : "text-gray-600"}`}>
+              <div className={`px-5 py-3.5 flex items-center border-l border-gray-100 ${i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}`}>
+                <span className={`text-sm leading-snug ${row.fut.bad ? "text-amber-700" : "text-gray-600"}`}>
                   {row.fut.value}
                 </span>
               </div>
 
-              <div className={`px-6 py-4 flex items-center border-l border-gray-100 ${i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}`}>
-                <span className="text-[13px] leading-snug text-blue-700">{row.fue.value}</span>
+              <div className={`px-5 py-3.5 flex items-center border-l border-gray-100 ${i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}`}>
+                <span className="text-sm leading-snug text-blue-700">{row.fue.value}</span>
               </div>
 
               <div
-                className="px-6 py-4 flex items-center border-l border-red-100"
+                className="px-5 py-3.5 flex items-center border-l border-red-100"
                 style={{ background: i % 2 === 0 ? "rgba(211,47,47,0.025)" : "rgba(211,47,47,0.045)" }}
               >
-                <span className="text-[13px] font-semibold text-[#D32F2F] leading-snug">{row.sapphire.value}</span>
+                <span className="text-sm font-semibold text-[#D32F2F] leading-snug">{row.sapphire.value}</span>
               </div>
             </div>
           ))}
@@ -126,8 +126,8 @@ export default function DifferencesSection() {
                   className="flex items-start justify-between px-5 py-3 border-t border-red-50"
                   style={{ background: i % 2 === 0 ? "#fff" : "rgba(211,47,47,0.02)" }}
                 >
-                  <span className="text-[12px] font-semibold text-gray-500 w-28 shrink-0">{row.label}</span>
-                  <span className="text-[13px] font-semibold text-[#D32F2F] text-right leading-snug">{row.sapphire.value}</span>
+                  <span className="text-xs font-semibold text-gray-500 w-28 shrink-0">{row.label}</span>
+                  <span className="text-sm font-semibold text-[#D32F2F] text-right leading-snug">{row.sapphire.value}</span>
                 </div>
               ))}
             </div>
@@ -141,7 +141,7 @@ export default function DifferencesSection() {
             <div key={tech.title} className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
               <div className="px-5 py-3.5 bg-gray-50 border-b border-gray-100">
                 <p className="text-sm font-bold text-gray-900">{tech.title}</p>
-                <p className="text-[11px] text-gray-400">{tech.sub}</p>
+                <p className="text-xs text-gray-400">{tech.sub}</p>
               </div>
               {features.slice(0, 6).map((row, i) => (
                 <div
@@ -149,8 +149,8 @@ export default function DifferencesSection() {
                   className="flex items-start justify-between px-5 py-2.5 border-t border-gray-50"
                   style={{ background: i % 2 === 0 ? "#fff" : "#fafafa" }}
                 >
-                  <span className="text-[11px] text-gray-400 w-28 shrink-0">{row.label}</span>
-                  <span className={`text-[12px] text-right leading-snug ${tech.textColor}`}>
+                  <span className="text-xs text-gray-400 w-28 shrink-0">{row.label}</span>
+                  <span className={`text-sm text-right leading-snug ${tech.textColor}`}>
                     {row[tech.key].value}
                   </span>
                 </div>

@@ -107,32 +107,20 @@ export default function WhyChooseUs() {
               ))}
             </div>
 
-            {/* Image panel placeholder */}
-            <div className="relative bg-red-900 rounded-2xl overflow-hidden h-60 sm:h-80 flex items-end">
-              {/* linear overlay */}
-              <div className="absolute inset-0 bg-linear-to-br from-red-200 to-red-300" />
-              {/* Decorative lines */}
-              <div
-                className="absolute inset-0 opacity-50"
-                style={{
-                  backgroundImage:
-                    'url("uploads/one.jpg")',
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
+            {/* Clinic image */}
+            <div className="relative rounded-2xl overflow-hidden h-60 sm:h-72 shadow-sm border border-gray-100">
+              <img
+                src="/uploads/gallery.jpg"
+                alt="Ryan Clinic — Doctor-Led Hair Transplant"
+                className="w-full h-full object-cover object-top"
               />
-              {/* Bottom text */}
-              <div className="relative z-10 p-6 w-full">
-                <p className="text-black/40 text-[10px] font-semibold uppercase tracking-[0.2em] mb-1">
-                  Clinic / Doctor Image
-                </p>
-                <p className="text-black text-bold text-sm leading-snug max-w-xs">
-                  We understand that hair loss can significantly impact your
-                  confidence.
-                </p>
+              <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 55%)" }} />
+              <div className="absolute inset-y-0 left-0 w-1 bg-[#D32F2F]" />
+              <div className="absolute bottom-0 inset-x-0 p-5">
+                <span className="block w-6 h-0.5 mb-2 rounded-full bg-yellow-400/80" />
+                <p className="text-sm font-bold text-white leading-snug">India's Only Turkey Sapphire FUE Clinic</p>
+                <p className="text-[11px] text-white/55 mt-0.5">Delhi · Mumbai · Hyderabad</p>
               </div>
-              {/* Red accent bar */}
-              <div className="absolute top-0 left-0 w-1 h-full bg-[#D32F2F]" />
             </div>
           </div>
 

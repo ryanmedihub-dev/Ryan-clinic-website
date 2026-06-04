@@ -57,13 +57,6 @@ export default function CostSection({ city = "Delhi" }) {
     "Number of Grafts",
   ];
 
-  const trustItems = [
-    "Doctor Performed Surgery",
-    "0% EMI Available",
-    "Free Scalp Analysis",
-    "Transparent Pricing",
-  ];
-
   return (
     <section className="py-20 lg:py-28 bg-[#F7F5F2]">
       <div className="containerFull px-4 md:px-6">
@@ -101,12 +94,12 @@ export default function CostSection({ city = "Delhi" }) {
           {stats.map((item) => (
             <div
               key={item.label}
-              className="bg-gradient-to-br from-white to-red-50 border border-red-100 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all"
+              className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all group"
             >
-              <h3 className="text-3xl font-bold text-gray-900">
+              <h3 className="text-3xl font-bold text-gray-900 group-hover:text-[#D32F2F] transition-colors">
                 {item.value}
               </h3>
-              <p className="text-sm text-gray-500 mt-2">{item.label}</p>
+              <p className="text-sm text-gray-500 mt-1.5">{item.label}</p>
             </div>
           ))}
         </div>
@@ -253,18 +246,6 @@ export default function CostSection({ city = "Delhi" }) {
               </p>
             </div>
           </div>
-        </div>
-
-        {/* Trust Strip */}
-        <div className="grid md:grid-cols-4 gap-4 mb-14">
-          {trustItems.map((item) => (
-            <div
-              key={item}
-              className="bg-white border border-gray-100 rounded-2xl p-5 text-center font-medium text-gray-700 shadow-sm"
-            >
-              ✓ {item}
-            </div>
-          ))}
         </div>
 
         {/* CTA */}
