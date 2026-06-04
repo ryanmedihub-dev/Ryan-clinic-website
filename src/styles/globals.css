@@ -451,7 +451,14 @@ section {
   background: var(--text-primary);
 }
 
-.pageLayoutBox td{
+
+.pageLayoutBox table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.pageLayoutBox td , .pageLayoutBox th{
   border: 1px solid !important;
   padding: 10px;
 }
