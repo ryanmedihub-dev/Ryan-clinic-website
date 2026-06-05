@@ -1,282 +1,226 @@
-// CostSection.js
-// Premium Hair Transplant Pricing Section
-// Usage: <CostSection city="Delhi" />
+import { Playfair_Display, DM_Sans } from "next/font/google";
 
-export default function CostSection({ city = "Delhi" }) {
-  const pricingData = [
-    {
-      grafts: "1,000 – 1,500",
-      norwood: "NW 2–3",
-      cost: "₹40,000 – ₹1,00,000",
-      best: "Hairline / Temple Restoration",
-    },
-    {
-      grafts: "1,500 – 2,500",
-      norwood: "NW 3–4",
-      cost: "₹75,000 – ₹1,75,000",
-      best: "Most Common Male Pattern",
-      featured: true,
-    },
-    {
-      grafts: "2,500 – 3,500",
-      norwood: "NW 4–5",
-      cost: "₹1,20,000 – ₹2,50,000",
-      best: "Frontal + Crown Coverage",
-    },
-    {
-      grafts: "3,500 – 5,000+",
-      norwood: "NW 6–7",
-      cost: "₹2,00,000 – ₹3,50,000+",
-      best: "Advanced Baldness Cases",
-    },
-  ];
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  style: ["normal", "italic"],
+});
+const dmSans = DM_Sans({ subsets: ["latin"], weight: ["300", "400", "500"] });
 
-  const stats = [
-    {
-      value: "₹40",
-      label: "Starting Per Graft",
-    },
-    {
-      value: "₹40K",
-      label: "Starting Procedure",
-    },
-    {
-      value: "0%",
-      label: "EMI Available",
-    },
-    {
-      value: "Free",
-      label: "Scalp Analysis",
-    },
-  ];
+const PRICING = [
+  {
+    num: "01",
+    grafts: "Up to 1,000 Grafts",
+    min: "Rs. 30,000/-",
+    max: "Rs. 40,000/-",
+    time: "4–5 hrs",
+  },
+  {
+    num: "02",
+    grafts: "1,000 – 1,500 Grafts",
+    min: "Rs. 40,000/-",
+    max: "Rs. 52,500/-",
+    time: "5 hrs",
+  },
+  {
+    num: "03",
+    grafts: "1,500 – 2,000 Grafts",
+    min: "Rs. 55,000/-",
+    max: "Rs. 70,000/-",
+    time: "6 hrs",
+  },
+  {
+    num: "04",
+    grafts: "2,000 – 2,500 Grafts",
+    min: "Rs. 73,000/-",
+    max: "Rs. 87,500/-",
+    time: "7 hrs",
+  },
+  {
+    num: "05",
+    grafts: "2,500 – 3,000 Grafts",
+    min: "Rs. 90,000/-",
+    max: "Rs. 1,05,000/-",
+    time: "8 hrs",
+  },
+  {
+    num: "06",
+    grafts: "3,000 – 3,500 Grafts",
+    min: "Rs. 95,000/-",
+    max: "Rs. 1,15,000/-",
+    time: "9 hrs",
+  },
+  {
+    num: "07",
+    grafts: "3,500 – 4,000 Grafts",
+    min: "Rs. 1,25,000/-",
+    max: "Rs. 1,45,000/-",
+    time: "9–10 hrs",
+  },
+];
 
-  const factors = [
-    "Baldness Stage",
-    "Required Density",
-    "Donor Area Quality",
-    "Number of Grafts",
-  ];
-
+function TimePill({ time, featured }) {
   return (
-    <section className="py-20 lg:py-28 bg-[#F7F5F2]">
-      <div className="containerFull px-4 md:px-6">
-        {/* Section Label */}
-        <div className="flex items-center gap-3 mb-6">
-          <span className="w-10 h-[2px] bg-[#D32F2F]" />
-          <span className="text-[#D32F2F] uppercase tracking-[0.25em] text-xs font-bold">
-            Transparent Pricing
-          </span>
-        </div>
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11.5px] font-medium ${
+        featured ? "bg-white/10 text-white/70" : "bg-[#F2EDE7] text-[#5a4e44]"
+      }`}
+    >
+      <span
+        className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+          featured ? "bg-white/40" : "bg-[#c9b99f]"
+        }`}
+      />
+      {time}
+    </span>
+  );
+}
 
-        {/* Header */}
-        <div className="max-w-4xl mb-12">
-          <div className="inline-flex items-center gap-2 bg-red-50 border border-red-100 rounded-full px-4 py-2 mb-5">
-            <span className="w-2 h-2 bg-[#D32F2F] rounded-full" />
-            <span className="text-sm font-medium text-[#D32F2F]">
-              Free Consultation Included
-            </span>
-          </div>
+function PriceCard({ item }) {
+  const { num, grafts, min, max, time, featured } = item;
+  return (
+    <div
+      className="relative p-6 transition-colors hover:bg-[#1e1838] hover:text-white bg-red-50 ease-in-out duration-300"
+    >
+      {featured && (
+        <span className="absolute top-4 right-4 bg-[#e30a17] text-white text-[8px] font-bold tracking-[0.18em] uppercase px-2.5 py-1 rounded-full">
+          Most Popular
+        </span>
+      )}
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-            Hair Transplant Pricing
-            <span className="block text-[#D32F2F]">in {city}</span>
-          </h2>
+      <p
+        className={`text-[10px] font-medium tracking-[0.15em] mb-1.5 ${featured ? "text-white/35" : "text-[#c9b99f]"}`}
+      >
+        {num}
+      </p>
 
-          <p className="mt-5 text-gray-600 text-lg max-w-2xl leading-relaxed">
-            Transparent pricing with no hidden charges. Get your exact graft
-            requirement and treatment cost after a free scalp analysis with our
-            specialists.
+      <p
+        className={`font-semibold text-[15px] leading-snug mb-4 ${playfair.className} text-[#1a1430]}`}
+      >
+        {grafts}
+      </p>
+
+      <div className="flex items-end justify-between gap-3">
+        <div>
+          <p
+            className={`text-[20px] font-bold leading-none ${playfair.className} ${featured ? "text-[#FFB3B3]" : "text-[#e30a17]"}`}
+          >
+            {max}
+          </p>
+          <p
+            className={`text-[11px] mt-1 ${featured ? "text-white/30" : "text-[#c0b8b0]"}`}
+          >
+            from {min}
           </p>
         </div>
+        <TimePill time={time} featured={featured} />
+      </div>
+    </div>
+  );
+}
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-          {stats.map((item) => (
-            <div
-              key={item.label}
-              className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all group"
-            >
-              <h3 className="text-3xl font-bold text-gray-900 group-hover:text-[#D32F2F] transition-colors">
-                {item.value}
-              </h3>
-              <p className="text-sm text-gray-500 mt-1.5">{item.label}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Featured Package */}
-        <div className="bg-white rounded-[32px] border border-red-100 shadow-lg overflow-hidden mb-14">
-          <div className="bg-[#D32F2F] px-6 py-3">
-            <span className="text-white uppercase tracking-widest text-xs font-bold">
-              Most Popular Package
+export default function CostSection({ city = "Delhi" }) {
+  return (
+    <section className={` py-20 lg:py-24 ${dmSans.className}`}>
+      <div className="containerFull px-6 md:px-8">
+        <div className="max-w-full mx-auto">
+          {/* Top strip */}
+          <div className="flex items-center gap-0 mb-10">
+            <span className="flex-1 h-px bg-gradient-to-r from-[#e30a17] to-transparent" />
+            <span className="text-[9.5px] font-semibold tracking-[0.35em] uppercase text-[#e30a17] px-5 whitespace-nowrap">
+              Sapphire FUE &nbsp;·&nbsp; Original Choi Pen &nbsp;·&nbsp; Turkey
+              Technique
             </span>
+            <span className="flex-1 h-px bg-gradient-to-l from-[#e30a17] to-transparent" />
           </div>
 
-          <div className="p-8 lg:p-10">
-            <div className="grid lg:grid-cols-2 gap-10 items-center">
-              <div>
-                <h3 className="text-4xl font-bold text-gray-900 mb-3">
-                  1,500 – 2,500 Grafts
-                </h3>
-
-                <p className="text-5xl font-extrabold text-[#D32F2F] mb-5">
-                  ₹75K – ₹1.75L
-                </p>
-
-                <p className="text-gray-600 text-lg">
-                  Ideal for most male hair transplant cases involving hairline
-                  reconstruction and density enhancement.
-                </p>
-              </div>
-
-              <div>
-                <div className="space-y-4">
-                  {[
-                    "Natural Hairline Design",
-                    "Density Improvement",
-                    "Doctor-Led Procedure",
-                    "Free Scalp Analysis",
-                    "0% EMI Available",
-                  ].map((item) => (
-                    <div
-                      key={item}
-                      className="flex items-center gap-3"
-                    >
-                      <div className="w-6 h-6 rounded-full bg-red-50 flex items-center justify-center">
-                        <span className="text-[#D32F2F] text-sm">✓</span>
-                      </div>
-                      <span className="text-gray-700">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Cost Factors */}
-        <div className="mb-14">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">
-            What Determines Your Cost?
-          </h3>
-
-          <div className="grid md:grid-cols-4 gap-4">
-            {factors.map((factor) => (
-              <div
-                key={factor}
-                className="bg-white border border-gray-100 rounded-2xl p-5 text-center shadow-sm"
-              >
-                <p className="font-semibold text-gray-800">{factor}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Pricing Cards */}
-        <div className="mb-14">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">
-            Pricing Breakdown
-          </h3>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {pricingData.map((item, index) => (
-              <div
-                key={index}
-                className={`rounded-3xl p-6 border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
-                  item.featured
-                    ? "bg-white border-[#D32F2F] shadow-md"
-                    : "bg-white border-gray-100"
-                }`}
-              >
-                {item.featured && (
-                  <span className="inline-flex bg-[#D32F2F] text-white px-3 py-1 rounded-full text-xs font-bold uppercase mb-4">
-                    Most Common
-                  </span>
-                )}
-
-                <div className="flex justify-between items-start mb-5">
-                  <div>
-                    <p className="text-xs uppercase tracking-wider text-gray-400 mb-1">
-                      Graft Count
-                    </p>
-                    <h4 className="text-2xl font-bold text-gray-900">
-                      {item.grafts}
-                    </h4>
-                  </div>
-
-                  <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
-                    {item.norwood}
-                  </span>
-                </div>
-
-                <div className="mb-4">
-                  <p className="text-xs uppercase tracking-wider text-gray-400 mb-1">
-                    Estimated Cost
-                  </p>
-                  <p className="text-3xl font-bold text-[#D32F2F]">
-                    {item.cost}
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-gray-100">
-                  <p className="text-gray-600">{item.best}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Warning Box */}
-        <div className="bg-amber-50 border border-amber-200 rounded-3xl p-6 mb-14">
-          <div className="flex gap-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center shrink-0">
-              ⚠️
-            </div>
-
+          {/* Hero row */}
+          <div className="flex items-end justify-between gap-8 mb-12 flex-wrap">
             <div>
-              <h4 className="font-bold text-amber-900 mb-2">
-                Beware of Extremely Cheap Quotes
-              </h4>
+              <h2
+                className={`${playfair.className} text-[clamp(2rem,4vw,2.8rem)] font-bold text-[#1a1430] leading-[1.15]`}
+              >
+                Hair Transplant Cost 
+                {/* <br /> */}
+                <em className="text-[#e30a17]"> in {city}</em>
+              </h2>
+              <p className="text-[15px]  text-[#9a9287] leading-[1.8] mt-4">
+               Hair transplant cost in Delhi at Ryan Clinic starts from ₹40,000 and typically ranges up to ₹3,50,000, depending on graft count and technique (about ₹40–₹120 per graft for doctor-led Sapphire FUE). Your exact cost is confirmed after a free scalp analysis. 0% EMI is available.
+              </p>
+            </div>
+            {/* <div className="bg-[#1a1430] text-[#F4F1EC] text-center px-6 py-3 rounded-sm shrink-0">
+              <span className="text-[10px] font-medium tracking-[0.2em] uppercase block">
+                Free Consultation
+              </span>
+              <span
+                className={`${playfair.className} text-white text-[22px] font-bold leading-tight block mt-0.5`}
+              >
+                ₹0
+              </span>
+            </div> */}
+          </div>
 
-              <p className="text-amber-800 leading-relaxed">
-                Prices as low as ₹15–25 per graft often indicate
-                technician-performed procedures. A hair transplant is permanent,
-                so always verify that a qualified surgeon is directly involved
-                in your treatment.
+          {/* Card grid */}
+          <div className="grid grid-cols-3 gap-[2px] bg-[#d8d1c7] rounded-2xl overflow-hidden mb-6">
+            {PRICING.map((item) => (
+              <PriceCard key={item.num} item={item} />
+            ))}
+
+            {/* PRP — full width */}
+            <div className="col-span-2 bg-red-50  transition-colors p-6">
+              <div className="flex items-center justify-between gap-4 flex-wrap">
+                <div>
+                  <p className="text-[14px] font-medium tracking-[0.15em] text-[#c9b99f] mb-1">
+                    Add-on Treatment
+                  </p>
+                  <p
+                    className={`${playfair.className} text-[22px] font-semibold text-[#6b6059] italic`}
+                  >
+                    PRP Therapy per Session
+                  </p>
+                </div>
+                <div className="flex items-center gap-5">
+                  <div className="text-right">
+                    <p
+                      className={`${playfair.className} text-[20px] font-bold text-[#b87d3a] leading-none`}
+                    >
+                      Rs. 8,000/-
+                    </p>
+                    <p className="text-[11px] text-[#c0b8b0] mt-1">
+                      from Rs. 4,000/-
+                    </p>
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 bg-[#EDE9E3] rounded-full px-3 py-1.5 text-[11.5px] font-medium text-[#5a4e44]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#c9b99f] shrink-0" />
+                    1 hr
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Warning */}
+          <div className="flex gap-4 items-start bg-white border border-[#f0d99a] border-l-[3px] border-l-[#f0a500] rounded-xl px-5 py-4">
+            <span className="text-xl shrink-0 mt-0.5">⚠️</span>
+            <div>
+              <p className="text-[12.5px] font-semibold text-[#7a5c0a] mb-1">
+                Beware of extremely cheap quotes
+              </p>
+              <p className="text-[12px] text-[#9c7a25] leading-[1.7] m-0">
+                ₹15–25 per graft usually signals technician-led surgery. A hair transplant is permanent — and a poor one is very hard to fix. Always confirm a qualified doctor performs your surgery before booking on price alone.
               </p>
             </div>
           </div>
-        </div>
 
-        {/* CTA */}
-        {/* <div className="bg-[#D32F2F] rounded-[32px] p-8 md:p-12 text-center text-white">
-          <h3 className="text-3xl md:text-4xl font-bold mb-4">
-            Get Your Exact Hair Transplant Cost
-          </h3>
-
-          <p className="text-red-100 text-lg max-w-2xl mx-auto mb-8">
-            Receive a free scalp analysis, personalized graft estimate, and
-            complete treatment plan with no hidden charges.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href={`https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20free%20scalp%20analysis%20in%20${city}`}
-              target="_blank"
-              rel="noreferrer"
-              className="bg-white text-[#D32F2F] px-8 py-4 rounded-xl font-bold hover:scale-105 transition-transform"
-            >
-              WhatsApp Consultation
-            </a>
-
-            <a
-              href="/hair-transplant-cost-in-delhi/"
-              className="border border-white/40 text-white px-8 py-4 rounded-xl font-semibold hover:bg-white/10 transition"
-            >
-              Full Cost Breakdown
-            </a>
+          {/* Footnote */}
+          <div className="flex items-center gap-2.5 mt-5">
+            <span className="w-6 h-px bg-[#c9b99f]" />
+            <p className="text-[14px] text-[#b8b0a5] tracking-[0.02em]">
+              Prices are indicative. Final cost confirmed after your free scalp
+              assessment with our surgeon.
+            </p>
           </div>
-        </div> */}
+        </div>
       </div>
     </section>
   );

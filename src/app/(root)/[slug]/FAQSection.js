@@ -13,11 +13,9 @@ export default function FAQSection({ faqs = [] }) {
   };
 
   return (
-    <section className="bg-light py-8 md:py-12">
+    <div className="bg-light py-16">
       <div className="containerFull px-4 md:px-6">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-          
-          {/* FAQ Content */}
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
           <div className="order-2 lg:order-1">
             <h2 className="text-2xl md:text-3xl font-bold mb-6 underline underline-offset-4">
               Frequently Asked Questions
@@ -35,7 +33,6 @@ export default function FAQSection({ faqs = [] }) {
                       <h3 className="font-semibold text-sm md:text-base">
                         {faq.question}
                       </h3>
-
                       <span className="text-lg md:text-xl shrink-0">
                         {openIndex === index ? "▾" : "▸"}
                       </span>
@@ -54,25 +51,24 @@ export default function FAQSection({ faqs = [] }) {
             </div>
           </div>
 
-          {/* Sticky Image */}
-          <div className="order-1 lg:order-2 self-start">
-            <div className="lg:sticky lg:top-24">
+          {/* Sticky Image — right col */}
+          <div className="order-1 lg:order-2">
+            <div className="sticky top-40">
               {!imgError && (
                 <Image
                   src={Faq}
                   width={800}
                   height={1200}
                   alt="FAQ Illustration"
-                  className="w-full h-[400px] md:h-[550px] lg:h-[85vh] object-cover rounded-2xl shadow-lg"
+                  className="w-full h-250 md:h-162.5 lg:h-[95vh] object-cover rounded-2xl shadow-lg"
                   onError={() => setImgError(true)}
                   priority
                 />
               )}
             </div>
           </div>
-
         </div>
       </div>
-    </section>
+    </div>
   );
 }

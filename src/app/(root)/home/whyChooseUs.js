@@ -1,39 +1,31 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 
 /* ══════════════════════════════════════════════════════
-   SECTION A — Features Overview
-══════════════════════════════════════════════════════ */
-/* ══════════════════════════════════════════════════════
-   SECTION B — Why Choose Us  (premium redesign)
+   WHY CHOOSE US
 ══════════════════════════════════════════════════════ */
 
 const whyItems = [
   {
-    title: "India's Only Turkey Sapphire FUE Clinic",
-    body: "Ryan Clinic is the exclusive provider of Turkey's authentic Sapphire FUE with the original Choi Pen in India. The same procedure that made Turkey the world's hair transplant capital — delivering sharper sapphire-tipped blades, less scalp trauma, faster healing, and dramatically higher graft survival. No other clinic in India offers this. Now available in Delhi, Mumbai & Hyderabad.",
+    title: "100% Doctor-Led Surgery — Never Technicians",
+    body: "This is the most important thing to verify at any Delhi clinic. At Ryan Clinic, every surgical step — extraction, channel creation, and implantation — is performed by a certified hair transplant doctor in Delhi. We never hand any part of your surgery to a technician. Technician-led surgery is a leading cause of poor survival and unnatural hairlines across India — and it's exactly what we refuse to do.",
   },
   {
     title: "90%+ Graft Survival Rate",
-    body: "The original Choi Pen minimizes the time grafts spend outside the body during implantation. Combined with our proprietary graft preservation protocol and sapphire blade precision, Ryan Clinic consistently achieves 90%+ graft survival rate — far above the industry average of 60–70%. More surviving grafts means denser, fuller, and more permanent results.",
+    body: "Using the original Choi Pen and a careful graft-preservation protocol, our grafts spend minimal time outside the body. The result is a graft survival rate of 90%+ — well above the Indian industry average of roughly 60–70%. Higher graft survival means denser, fuller, and more natural-looking hair.",
   },
   {
-    title: "100% Doctor-Led Surgery — No Technicians",
-    body: "At Ryan Clinic, every single surgical step — graft extraction, channel creation, and implantation — is performed exclusively by certified doctors. We never allow technicians to perform any surgical procedure. This is rare across Indian clinics, and it is the single biggest reason our hair transplant results in Delhi, Mumbai, and Hyderabad are consistently superior.",
+    title: "Sterile, Surgical-Grade Operating Theatre",
+    body: "Every procedure is performed in a sterile operating theatre with single-use, surgical-grade instruments while following recognised safety standards. Patient safety, hygiene, and precision remain at the heart of every procedure we perform.",
   },
   {
-    title: "Completely Pain-Free Procedure",
-    body: "Our Sapphire FUE uses micro-instruments of just 0.7–0.9mm diameter. Combined with premium local anaesthesia, the hair transplant procedure is virtually pain-free from start to finish. Most patients watch movies, listen to music, or nap comfortably throughout the 6–8 hour surgery. Zero general anaesthesia. Zero hospital admission.",
+    title: "Transparent Pricing & 0% EMI",
+    body: "Your complete cost — based on your exact graft count after a free scalp analysis — is confirmed before you commit. No hidden charges. Hair transplant procedures start from ₹40,000, with 0% EMI available on both 6 and 12-month plans.",
   },
   {
-    title: "Natural-Looking, Undetectable Results",
-    body: "Every graft at Ryan Clinic is placed with precise control over angle, depth, and direction — mimicking the exact natural hair growth pattern unique to each patient. The result is hair that grows, waves, and parts exactly like it always did. After a Ryan Clinic hair transplant, even your barber won't know. That is our standard — not our promise.",
-  },
-  {
-    title: "Transparent Pricing + 0% EMI Available",
-    body: "Hair transplant at Ryan Clinic starts from ₹35,000. Your complete cost — based on exact graft count after free scalp analysis — is confirmed before you commit to anything. No hidden charges. No surprise bills. We offer 0% EMI on 6 and 12-month plans via HDFC, ICICI, and Axis Bank. Affordable hair transplant in Delhi, Mumbai & Hyderabad without compromising on quality.",
+    title: "18-Month Follow-Up Support",
+    body: "Ryan Clinic provides free follow-up consultations for 18 months after your procedure. Our WhatsApp support team is available 7 days a week to answer your questions, monitor progress, and help ensure the best possible outcome from your hair transplant.",
   },
   {
     title: "Fastest Recovery — Back to Work in 5–7 Days",
@@ -53,13 +45,11 @@ const whyItems = [
   },
 ];
 
-
-
 export default function WhyChooseUs() {
   const [open, setOpen] = useState(0);
 
   return (
-    <section className=" py-16 md:py-24">
+    <section className="py-16 md:py-24 bg-[#fff5ec]">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section top label */}
         <div className="flex items-center gap-3 mb-4 md:mb-8">
@@ -73,25 +63,27 @@ export default function WhyChooseUs() {
           {/* ── Left panel ── */}
           <div className="lg:sticky lg:top-28">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-[1.1] tracking-tight mb-5">
-              Here's Why
+              Why Ryan Clinic Is The
               <br />
-              <span className="text-[#D32F2F]">10,000+ Patients</span>
+              <span className="text-[#D32F2F]">
+                Best Hair Transplant
+              </span>
               <br />
-              Choose Ryan Clinic
+              Clinic In Delhi
             </h2>
+
             <p className="text-gray-500 text-sm md:text-[15px] leading-relaxed mb-8 max-w-md">
-              Ryan Clinic stands out as the ultimate choice in hair restoration
-              — combining Turkey's finest technique with 12+ years of
-              India-specific expertise.
+              Among the many options for a hair transplant in Delhi, here's what
+              makes Ryan Clinic the choice of 10,000+ patients.
             </p>
 
             {/* Stats grid */}
             <div className="grid grid-cols-2 gap-3 mb-8">
               {[
+                { num: "10,000+", label: "Patients Treated" },
                 { num: "90%+", label: "Graft Survival Rate" },
-                { num: "12+", label: "Years of Excellence" },
-                { num: "0%", label: "EMI Available" },
-                { num: "4.9★", label: "Google Rating" },
+                { num: "₹40,000", label: "Starting Price" },
+                { num: "18 Months", label: "Follow-Up Support" },
               ].map((s) => (
                 <div
                   key={s.label}
@@ -111,20 +103,33 @@ export default function WhyChooseUs() {
             <div className="relative rounded-2xl overflow-hidden h-60 sm:h-72 shadow-sm border border-gray-100">
               <img
                 src="/uploads/gallery.jpg"
-                alt="Ryan Clinic — Doctor-Led Hair Transplant"
+                alt="Ryan Clinic Hair Transplant Delhi"
                 className="w-full h-full object-cover object-top"
               />
-              <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 55%)" }} />
+
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 55%)",
+                }}
+              />
+
               <div className="absolute inset-y-0 left-0 w-1 bg-[#D32F2F]" />
+
               <div className="absolute bottom-0 inset-x-0 p-5">
                 <span className="block w-6 h-0.5 mb-2 rounded-full bg-yellow-400/80" />
-                <p className="text-sm font-bold text-white leading-snug">India's Only Turkey Sapphire FUE Clinic</p>
-                <p className="text-[11px] text-white/55 mt-0.5">Delhi · Mumbai · Hyderabad</p>
+                <p className="text-sm font-bold text-white leading-snug">
+                  Trusted By 10,000+ Patients
+                </p>
+                <p className="text-[11px] text-white/55 mt-0.5">
+                  Delhi Hair Transplant Specialists
+                </p>
               </div>
             </div>
           </div>
 
-          {/* ── Right panel — numbered accordion ── */}
+          {/* ── Right panel ── */}
           <div>
             <div className="divide-y divide-gray-100">
               {whyItems.map((item, i) => (
@@ -133,7 +138,6 @@ export default function WhyChooseUs() {
                     onClick={() => setOpen(open === i ? null : i)}
                     className="w-full flex items-start gap-5 py-6 text-left group"
                   >
-                    {/* Number */}
                     <span
                       className={`text-xs font-semibold tracking-[0.15em] shrink-0 pt-0.5 transition-colors duration-200 ${
                         open === i
@@ -144,7 +148,6 @@ export default function WhyChooseUs() {
                       0{i + 1}
                     </span>
 
-                    {/* Title + toggle */}
                     <div className="flex-1 flex items-center justify-between gap-4 min-w-0">
                       <span
                         className={`font-semibold text-sm md:text-base leading-snug tracking-tight transition-colors duration-200 ${
@@ -155,6 +158,7 @@ export default function WhyChooseUs() {
                       >
                         {item.title}
                       </span>
+
                       <span
                         className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 border transition-all duration-200 ${
                           open === i
@@ -170,7 +174,9 @@ export default function WhyChooseUs() {
                           strokeWidth={2}
                           style={{
                             transform:
-                              open === i ? "rotate(45deg)" : "rotate(0deg)",
+                              open === i
+                                ? "rotate(45deg)"
+                                : "rotate(0deg)",
                           }}
                         >
                           <path
@@ -183,10 +189,11 @@ export default function WhyChooseUs() {
                     </div>
                   </button>
 
-                  {/* Body */}
                   <div
                     className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                      open === i ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
+                      open === i
+                        ? "max-h-60 opacity-100"
+                        : "max-h-0 opacity-0"
                     }`}
                   >
                     <p className="pl-10 pb-6 text-xs md:text-sm text-gray-500 leading-relaxed">
@@ -201,29 +208,52 @@ export default function WhyChooseUs() {
             <div className="mt-8 pt-8 border-t border-gray-100">
               <div className="flex flex-wrap gap-3">
                 <a
-                  href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi, I want a free hair transplant consultation"
+                  href="https://api.whatsapp.com/send?phone=919217958539&text=Hi,%20I%20want%20a%20free%20scalp%20analysis%20in%20Delhi"
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-3 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-4 px-7 text-sm tracking-wide transition-colors rounded-xl justify-center"
                 >
-                  Book Free Consultation
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                  Book Your Free Scalp Analysis
+
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+                    />
                   </svg>
                 </a>
+
                 <a
                   href="tel:+919217958539"
                   className="inline-flex items-center gap-3 border border-gray-200 hover:border-[#D32F2F] text-gray-600 hover:text-[#D32F2F] font-semibold py-4 px-7 text-sm tracking-wide transition-all rounded-xl justify-center"
                 >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
+                    />
                   </svg>
                   Call Now
                 </a>
               </div>
+
               <p className="text-[11px] text-gray-400 mt-3">
-                Free scalp analysis · Graft count · Full cost breakdown — zero
-                obligation.
+                Free scalp analysis · Personalized graft count · Transparent
+                pricing · No obligation.
               </p>
             </div>
           </div>

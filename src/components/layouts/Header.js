@@ -198,17 +198,18 @@ const Header = () => {
       </header>
 
       {/* Mobile Sidebar */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-109 lg:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
       <div
-        className={`fixed inset-0 z-110 lg:hidden transform transition-transform duration-300 ${
+        className={`fixed top-0 left-0 w-72 h-full bg-primary text-white shadow-lg p-6 z-110 overflow-y-auto lg:hidden transition-transform duration-300 ${
           mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div
-          className="fixed inset-0 bg-black/50"
-          onClick={() => setMobileMenuOpen(false)}
-        ></div>
-
-        <div className="fixed top-0 left-0 w-72 h-full bg-primary text-white shadow-lg p-6 z-50 overflow-y-auto">
           <button
             onClick={() => setMobileMenuOpen(false)}
             className="absolute top-6 right-4 text-white"
@@ -287,7 +288,6 @@ const Header = () => {
             </Button>
           </div>
         </div>
-      </div>
 
       {/* Popup Modal */}
       {showPopup && (

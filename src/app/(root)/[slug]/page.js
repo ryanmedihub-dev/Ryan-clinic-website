@@ -99,7 +99,7 @@ export default async function ServicesPage({ params }) {
         />
 
         {/* ── Overview + Contact Form ──────────────────────────────────────── */}
-        <section className="bg-light py-8 md:py-12">
+        <section className=" py-8 md:py-12">
           <div className="containerFull px-4 md:px-6">
             <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
               <div
@@ -173,11 +173,17 @@ export default async function ServicesPage({ params }) {
           </div>
         </section>
 
+        {/* ── Why Choose Ryan Clinic (all pages) ──────────────────────────── */}
+        <WhyChooseRyanClinic />
+
         {/* ── Cost Section — branch pages only ────────────────────────────── */}
         {isBranch && <CostSection city={branchName} />}
 
-        {/* ── Recovery Timeline — branch pages only ───────────────────────── */}
-        {isBranch && <RecoveryTimeline />}
+        {/* ── Our Doctor Section — branch pages only ───────────────────────── */}
+        {isBranch && <OurDoctorSection city={branchName} />}
+
+        {/* ── Differences Section — branch pages only ──────────────────────── */}
+        {isBranch && <DifferencesSection />}
 
         {/* ── PleoFeatures / Benefits (all pages) ─────────────────────────── */}
         <PleoFeatures
@@ -185,6 +191,12 @@ export default async function ServicesPage({ params }) {
           title={service?.benefitsData?.title}
           description={service?.benefitsData?.description}
         />
+
+        {/* ── Why Doctor Matters — branch pages only ───────────────────────── */}
+        {isBranch && <WhyDoctorMattersSection />}
+
+        {/* ── Recovery Timeline — branch pages only ───────────────────────── */}
+        {/* {isBranch && <RecoveryTimeline />} */}
 
         {/* ── Extra Fields (all pages, if present) ────────────────────────── */}
         {service?.extraFieldsData?.length > 0 && (
@@ -219,18 +231,6 @@ export default async function ServicesPage({ params }) {
             </div>
           </section>
         )}
-
-        {/* ── Our Doctor Section — branch pages only ───────────────────────── */}
-        {isBranch && <OurDoctorSection city={branchName} />}
-
-        {/* ── Differences Section — branch pages only ──────────────────────── */}
-        {isBranch && <DifferencesSection />}
-
-        {/* ── Why Choose Ryan Clinic (all pages) ──────────────────────────── */}
-        <WhyChooseRyanClinic />
-
-        {/* ── Why Doctor Matters — branch pages only ───────────────────────── */}
-        {isBranch && <WhyDoctorMattersSection />}
 
         {/* ── Areas We Serve — branch pages only ──────────────────────────── */}
         {isBranch && <AreasWeServe city={branchName} branch={branchName} />}

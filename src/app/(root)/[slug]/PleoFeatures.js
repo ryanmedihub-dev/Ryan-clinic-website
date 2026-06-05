@@ -3,7 +3,7 @@ import React from "react";
 
 const PleoFeatures = ({ features = [], title, description }) => {
   return (
-    <section className="bg-light py-8 md:py-12">
+    <section className=" py-8 md:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 md:mb-16">
           <h4 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3">
