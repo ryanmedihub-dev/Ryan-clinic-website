@@ -232,11 +232,11 @@ export default async function ServicesPage({ params }) {
         {/* ── Why Doctor Matters — branch pages only ───────────────────────── */}
         {isBranch && <WhyDoctorMattersSection />}
 
-        {/* ── Testimonials (all pages) ────────────────────────────────────── */}
-        <Testimonials />
-
         {/* ── Areas We Serve — branch pages only ──────────────────────────── */}
         {isBranch && <AreasWeServe city={branchName} branch={branchName} />}
+
+        {/* ── Testimonials (all pages) ────────────────────────────────────── */}
+        <Testimonials />
 
         {/* ── FAQ Section (all pages) ──────────────────────────────────────── */}
         <FAQSection faqs={service?.faq} />
