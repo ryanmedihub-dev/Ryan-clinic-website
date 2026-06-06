@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
-import { ChevronDown, Phone, Calendar, Menu, X } from "lucide-react";
+import { ChevronDown, Phone, Calendar, Menu, X, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ContactForm from "../pages/contactForm";
 import { getAllServices } from "@/lib/serviceData";
@@ -25,6 +25,7 @@ const Header = () => {
       const toNav = (s) => ({
         name: s.metadata.pageName,
         href: `/${s.metadata.pageurl}`,
+        description: s.metadata.description || "",
       });
       setTransplantPages(services.filter((s) => s.metadata?.pageType === "transplant").map(toNav));
       setTreatmentPages(services.filter((s) => s.metadata?.pageType === "treatment").map(toNav));
@@ -32,22 +33,23 @@ const Header = () => {
     });
   }, []);
 
+  const cardColors = [
+    "bg-rose-50 hover:bg-rose-100 border-rose-100",
+    "bg-slate-100 hover:bg-slate-200 border-slate-200",
+  ];
+
   const navItems = [
     { name: "Home", href: "/" },
     { name: "About us", href: "/about" },
     {
-      name: "Hair Transplant",
-      href: "/fue-hair-transplant",
-      hasDropdown: true,
-      key: "hairTransplant",
-      dropdownItems: transplantPages,
-    },
-    {
-      name: "Treatments",
+      name: "Services",
       href: "#",
       hasDropdown: true,
-      key: "treatments",
-      dropdownItems: treatmentPages,
+      key: "services",
+      sections: [
+        { label: "Hair Transplant", items: transplantPages },
+        { label: "Treatments", items: treatmentPages },
+      ],
     },
     ...(branchPages.length > 0
       ? [
@@ -60,6 +62,7 @@ const Header = () => {
           },
         ]
       : []),
+    { name: "Cost", href: "/hair-transplant-cost-in-delhi" },
     { name: "Gallery", href: "/gallery/images" },
     { name: "Contact us", href: "/contact" },
   ];
@@ -125,29 +128,103 @@ const Header = () => {
                   >
                     {item.hasDropdown ? (
                       <div className="relative">
-                        <button className="flex items-center px-4 py-2">
+                        <button className="flex items-center px-4 py-2 whitespace-nowrap">
                           {item.name}
-                          <ChevronDown className="ml-1 h-4 w-4" />
+                          <ChevronDown
+                            className={`ml-1 h-4 w-4 transition-transform duration-200 ${
+                              openDropdown === item.key ? "rotate-180" : ""
+                            }`}
+                          />
                         </button>
+
+                        {/* Dropdown Panel */}
                         <div
-                          className={`absolute top-9 left-0 z-50 w-60 bg-primary rounded-sm shadow-lg transition-all duration-200 ease-in-out ${
+                          className={`absolute top-full left-1/2 -translate-x-1/2 z-50 mt-1 bg-white rounded-xl shadow-2xl border border-gray-100 transition-all duration-200 ease-in-out ${
                             openDropdown === item.key
                               ? "opacity-100 visible translate-y-0"
-                              : "opacity-0 invisible translate-y-1"
+                              : "opacity-0 invisible -translate-y-2"
                           }`}
+                          style={{ width: "560px" }}
                         >
-                          <ul className="py-1">
-                            {item.dropdownItems.map((dropdownItem) => (
-                              <li key={dropdownItem.href}>
-                                <Link
-                                  href={dropdownItem.href}
-                                  className="block px-4 py-2 text-md font-semibold text-white hover:bg-gray-700"
-                                >
-                                  {dropdownItem.name}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
+                          {item.sections ? (
+                            /* Sectioned layout — Services */
+                            <div
+                              className="p-4 overflow-y-auto"
+                              style={{ maxHeight: "70vh" }}
+                            >
+                              {item.sections.map((section, sIdx) => (
+                                section.items.length > 0 && (
+                                  <div key={section.label} className={sIdx > 0 ? "mt-5" : ""}>
+                                    {/* Section label */}
+                                    <div className="flex items-center gap-2 mb-3">
+                                      <span className="text-xs font-bold uppercase tracking-widest text-gray-400">
+                                        {section.label}
+                                      </span>
+                                      <div className="flex-1 h-px bg-gray-100" />
+                                    </div>
+                                    {/* 2-column card grid */}
+                                    <div className="grid grid-cols-2 gap-2">
+                                      {section.items.map((si, idx) => (
+                                        <Link
+                                          key={si.href}
+                                          href={si.href}
+                                          className={`flex flex-col justify-between p-3 rounded-lg border transition-colors duration-150 group/card ${
+                                            cardColors[idx % 2]
+                                          }`}
+                                        >
+                                          <h3 className="font-bold text-gray-800 text-sm leading-tight">
+                                            {si.name}
+                                          </h3>
+                                          {si.description && (
+                                            <p className="text-gray-400 text-xs mt-1.5 leading-relaxed line-clamp-2">
+                                              {si.description}
+                                            </p>
+                                          )}
+                                          <div className="flex justify-end mt-2">
+                                            <ArrowRight className="h-3.5 w-3.5 text-gray-300 group-hover/card:text-gray-600 transition-colors" />
+                                          </div>
+                                        </Link>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )
+                              ))}
+                            </div>
+                          ) : (
+                            /* Simple card grid — Branches */
+                            <div
+                              className="p-4 overflow-y-auto"
+                              style={{ maxHeight: "70vh" }}
+                            >
+                              <div
+                                className={`grid gap-2 ${
+                                  item.dropdownItems.length > 2 ? "grid-cols-2" : "grid-cols-1"
+                                }`}
+                              >
+                                {item.dropdownItems.map((di, idx) => (
+                                  <Link
+                                    key={di.href}
+                                    href={di.href}
+                                    className={`flex flex-col justify-between p-3 rounded-lg border transition-colors duration-150 group/card ${
+                                      cardColors[idx % 2]
+                                    }`}
+                                  >
+                                    <h3 className="font-bold text-gray-800 text-sm leading-tight">
+                                      {di.name}
+                                    </h3>
+                                    {di.description && (
+                                      <p className="text-gray-400 text-xs mt-1.5 leading-relaxed line-clamp-2">
+                                        {di.description}
+                                      </p>
+                                    )}
+                                    <div className="flex justify-end mt-2">
+                                      <ArrowRight className="h-3.5 w-3.5 text-gray-300 group-hover/card:text-gray-600 transition-colors" />
+                                    </div>
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </div>
                     ) : (
@@ -229,21 +306,52 @@ const Header = () => {
           <ul className="space-y-4">
             {navItems.map((item) => (
               <li key={item.key || item.name}>
-                {item.hasDropdown ? (
+                {item.sections ? (
+                  /* Sectioned mobile accordion */
+                  <details className="group">
+                    <summary className="flex items-center justify-between cursor-pointer font-semibold hover:text-amber-300">
+                      {item.name}
+                      <ChevronDown className="h-4 w-4 ml-2" />
+                    </summary>
+                    <div className="pl-4 mt-2 space-y-4">
+                      {item.sections.map((section) => (
+                        <div key={section.label}>
+                          <p className="text-xs font-bold uppercase tracking-widest text-white/40 mb-1">
+                            {section.label}
+                          </p>
+                          <ul className="space-y-1">
+                            {section.items.map((si) => (
+                              <li key={si.href}>
+                                <Link
+                                  href={si.href}
+                                  className="block py-1 hover:text-amber-300 text-sm"
+                                  onClick={() => setMobileMenuOpen(false)}
+                                >
+                                  {si.name}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  </details>
+                ) : item.hasDropdown ? (
+                  /* Simple mobile accordion */
                   <details className="group">
                     <summary className="flex items-center justify-between cursor-pointer font-semibold hover:text-amber-300">
                       {item.name}
                       <ChevronDown className="h-4 w-4 ml-2" />
                     </summary>
                     <ul className="pl-4 mt-2 space-y-2">
-                      {item.dropdownItems.map((dropdownItem) => (
-                        <li key={dropdownItem.href}>
+                      {item.dropdownItems.map((di) => (
+                        <li key={di.href}>
                           <Link
-                            href={dropdownItem.href}
-                            className="block py-1 hover:text-amber-300"
+                            href={di.href}
+                            className="block py-1 hover:text-amber-300 text-sm"
                             onClick={() => setMobileMenuOpen(false)}
                           >
-                            {dropdownItem.name}
+                            {di.name}
                           </Link>
                         </li>
                       ))}

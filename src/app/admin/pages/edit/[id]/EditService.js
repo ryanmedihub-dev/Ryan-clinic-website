@@ -553,7 +553,7 @@ export default function EditService({ initialData }) {
               </h2>
               <p className="text-gray-600">Detailed overview of your service</p>
             </div>
-            <div className="min-h-[200px]">
+            <div className="min-h-50">
               <Editor
                 value={formData.overviewContent || ""}
                 onChange={(val) => handleEditorChange("overviewContent", val)}
@@ -575,7 +575,7 @@ export default function EditService({ initialData }) {
               </p>
             </div>
             <div className="space-y-8">
-              <div className="min-h-[200px]">
+              <div className="min-h-50">
                 <Editor
                   value={formData.typesDetails || ""}
                   onChange={(val) => handleEditorChange("typesDetails", val)}
