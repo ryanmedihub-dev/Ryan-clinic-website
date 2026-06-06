@@ -6,7 +6,6 @@ import { useState, useRef, useEffect } from "react";
 import { ChevronDown, Phone, Calendar, Menu, X, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ContactForm from "../pages/contactForm";
-import { getAllServices } from "@/lib/serviceData";
 
 const Logo = "/uploads/logo-2.png";
 
@@ -21,16 +20,23 @@ const Header = () => {
   const [branchPages, setBranchPages] = useState([]);
 
   useEffect(() => {
-    getAllServices().then((services) => {
-      const toNav = (s) => ({
-        name: s.metadata.pageName,
-        href: `/${s.metadata.pageurl}`,
-        description: s.metadata.description || "",
-      });
-      setTransplantPages(services.filter((s) => s.metadata?.pageType === "transplant").map(toNav));
-      setTreatmentPages(services.filter((s) => s.metadata?.pageType === "treatment").map(toNav));
-      setBranchPages(services.filter((s) => s.metadata?.pageType === "branch").map(toNav));
-    });
+    fetch("/api/service/get-service", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        const services = result.data || [];
+        const toNav = (s) => ({
+          name: s.metadata.pageName,
+          href: `/${s.metadata.pageurl}`,
+          description: s.metadata.description || "",
+        });
+        setTransplantPages(services.filter((s) => s.metadata?.pageType === "transplant").map(toNav));
+        setTreatmentPages(services.filter((s) => s.metadata?.pageType === "treatment").map(toNav));
+        setBranchPages(services.filter((s) => s.metadata?.pageType === "branch").map(toNav));
+      })
+      .catch((err) => console.error("Header services fetch error:", err));
   }, []);
 
   const cardColors = [
