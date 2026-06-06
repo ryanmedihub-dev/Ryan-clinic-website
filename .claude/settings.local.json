@@ -17,7 +17,10 @@
       "Bash(Write-Host \"Cache cleared\")",
       "PowerShell(Stop-Process -Name \"node\" -Force -ErrorAction SilentlyContinue)",
       "PowerShell(Remove-Item -Recurse -Force \"c:\\\\dashzer\\\\Ryan-next-project-new\\\\.next\" -ErrorAction SilentlyContinue; Write-Host \"Done: $\\(Test-Path 'c:\\\\dashzer\\\\Ryan-next-project-new\\\\.next'\\)\")",
-      "Bash(del \"c:\\\\dashzer\\\\Ryan-next-project-new\\\\src\\\\components\\\\DevHydrationSuppressor.js\")"
+      "Bash(del \"c:\\\\dashzer\\\\Ryan-next-project-new\\\\src\\\\components\\\\DevHydrationSuppressor.js\")",
+      "Bash(findstr \"tailwind\")",
+      "Bash(dir \"c:\\\\dashzer\\\\Ryan-next-project-new\\\\public\\\\uploads\" /b)",
+      "Bash(findstr /i \"hair banner\")"
     ],
     "additionalDirectories": [
       "/home/dashzer/codes/clinicryan/src/app/(root)"

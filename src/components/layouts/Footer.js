@@ -1,4 +1,9 @@
-import { FaFacebookF, FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaYoutube,
+  FaWhatsapp,
+} from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "../../../public/uploads/logo-2.png";
@@ -16,19 +21,25 @@ const services = [
   { label: "Alopecia Treatment", href: "/alopecia-treatments" },
 ];
 
+const locations = [
+  {label : "Delhi" , href: "hair-transplant-in-delhi"},
+]
+
 const quickLinks = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
   { label: "Our Gallery", href: "/gallery/images" },
   { label: "Our Videos", href: "/gallery/images" },
   { label: "Blog", href: "/blog" },
+  { label: "Cost", href: "/cost" },
   { label: "Contact Us", href: "/contact" },
 ];
 
 const branches = [
   {
     city: "Delhi",
-    address: "CD 163, Block CD, Dakshini Pitampura, Pitampura, New Delhi – 110034",
+    address:
+      "CD 163, Block CD, Dakshini Pitampura, Pitampura, New Delhi – 110034",
     phone: "+91-9217958539",
   },
   {
@@ -122,12 +133,15 @@ export default function Footer() {
               />
             </div>
 
-            <p className="text-sm leading-relaxed mb-8" style={{ color: "#9ca3af" }}>
+            <p
+              className="text-sm leading-relaxed mb-8"
+              style={{ color: "#9ca3af" }}
+            >
               Ryan Clinic is India's premier hair transplant centre, exclusively
               specialising in Turkey Sapphire FUE — the same technique that made
-              Turkey the world's hair transplant capital. Certified doctors, 95%+
-              graft survival, and transparent pricing across Delhi, Mumbai &amp;
-              Hyderabad.
+              Turkey the world's hair transplant capital. Certified doctors,
+              95%+ graft survival, and transparent pricing across Delhi, Mumbai
+              &amp; Hyderabad.
             </p>
 
             {/* Trust badges */}
@@ -152,7 +166,10 @@ export default function Footer() {
                   >
                     {s.num}
                   </span>
-                  <span className="text-[10px] mt-0.5" style={{ color: "#6b7280" }}>
+                  <span
+                    className="text-[10px] mt-0.5"
+                    style={{ color: "#6b7280" }}
+                  >
                     {s.label}
                   </span>
                 </div>
@@ -218,39 +235,7 @@ export default function Footer() {
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16"
         style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
       >
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
-          {/* Services */}
-          <div>
-            <div className="flex items-center gap-3 mb-5">
-              <span
-                className="block w-1 h-5 rounded-full"
-                style={{ background: "var(--primary-red)" }}
-              />
-              <h4 className="font-bold text-white text-base uppercase tracking-wider">
-                Our Services
-              </h4>
-            </div>
-            <ul className="space-y-2.5">
-              {services.map((s) => (
-                <li key={s.label}>
-                  <Link
-                    href={s.href}
-                    className="flex items-center gap-2 text-sm transition-colors group"
-                    style={{ color: "#6b7280" }}
-                  >
-                    <span
-                      className="w-1 h-1 rounded-full shrink-0 transition-colors group-hover:bg-red-500"
-                      style={{ background: "#374151" }}
-                    />
-                    <span className="group-hover:text-white transition-colors">
-                      {s.label}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-14">
           {/* Quick Links */}
           <div>
             <div className="flex items-center gap-3 mb-5">
@@ -283,6 +268,70 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Services */}
+          <div>
+            <div className="flex items-center gap-3 mb-5">
+              <span
+                className="block w-1 h-5 rounded-full"
+                style={{ background: "var(--primary-red)" }}
+              />
+              <h4 className="font-bold text-white text-base uppercase tracking-wider">
+                Our Services
+              </h4>
+            </div>
+            <ul className="space-y-2.5">
+              {services.map((s) => (
+                <li key={s.label}>
+                  <Link
+                    href={s.href}
+                    className="flex items-center gap-2 text-sm transition-colors group"
+                    style={{ color: "#6b7280" }}
+                  >
+                    <span
+                      className="w-1 h-1 rounded-full shrink-0 transition-colors group-hover:bg-red-500"
+                      style={{ background: "#374151" }}
+                    />
+                    <span className="group-hover:text-white transition-colors">
+                      {s.label}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Branches */}
+          <div>
+            <div className="flex items-center gap-3 mb-5">
+              <span
+                className="block w-1 h-5 rounded-full"
+                style={{ background: "var(--primary-red)" }}
+              />
+              <h4 className="font-bold text-white text-base uppercase tracking-wider">
+                Our Branches
+              </h4>
+            </div>
+            <ul className="space-y-2.5">
+              {locations.map((s) => (
+                <li key={s.label}>
+                  <Link
+                    href={s.href}
+                    className="flex items-center gap-2 text-sm transition-colors group"
+                    style={{ color: "#6b7280" }}
+                  >
+                    <span
+                      className="w-1 h-1 rounded-full shrink-0 transition-colors group-hover:bg-red-500"
+                      style={{ background: "#374151" }}
+                    />
+                    <span className="group-hover:text-white transition-colors">
+                      {s.label}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {/* Contact */}
           <div>
             <div className="flex items-center gap-3 mb-5">
@@ -296,7 +345,10 @@ export default function Footer() {
             </div>
             <ul className="space-y-4">
               <li>
-                <p className="text-[11px] font-semibold uppercase tracking-widest mb-1" style={{ color: "#6b7280" }}>
+                <p
+                  className="text-[11px] font-semibold uppercase tracking-widest mb-1"
+                  style={{ color: "#6b7280" }}
+                >
                   Phone
                 </p>
                 <a
@@ -308,7 +360,10 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <p className="text-[11px] font-semibold uppercase tracking-widest mb-1" style={{ color: "#6b7280" }}>
+                <p
+                  className="text-[11px] font-semibold uppercase tracking-widest mb-1"
+                  style={{ color: "#6b7280" }}
+                >
                   Email
                 </p>
                 <a
@@ -320,7 +375,10 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <p className="text-[11px] font-semibold uppercase tracking-widest mb-1" style={{ color: "#6b7280" }}>
+                <p
+                  className="text-[11px] font-semibold uppercase tracking-widest mb-1"
+                  style={{ color: "#6b7280" }}
+                >
                   Hours
                 </p>
                 <p className="text-sm" style={{ color: "#9ca3af" }}>
@@ -393,7 +451,10 @@ export default function Footer() {
                 </svg>
                 <h5 className="font-bold text-white text-sm">{b.city}</h5>
               </div>
-              <p className="text-xs leading-relaxed mb-3" style={{ color: "#6b7280" }}>
+              <p
+                className="text-xs leading-relaxed mb-3"
+                style={{ color: "#6b7280" }}
+              >
                 {b.address}
               </p>
               <a
@@ -422,16 +483,22 @@ export default function Footer() {
       </div>
 
       {/* ── Copyright bar ── */}
-      <div style={{ background: "#080808" }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-center sm:text-left" style={{ color: "#4b5563" }}>
-            © 2025 Ryan Clinic — All Rights Reserved.{" "}
-            <span style={{ color: "#6b7280" }}>clinicryan.com</span>
-          </p>
-          <p className="text-xs text-center sm:text-right" style={{ color: "#4b5563" }}>
-            India's only Turkey Sapphire FUE Hair Transplant Clinic
-          </p>
-        </div>
+      <div style={{ background: "#080808" }} className="pb-4">
+        <p className="text-xs text-center mt-3" style={{ color: "#4b5563" }}>
+          <strong>Medical disclaimer:</strong> This page is for general
+          information and does not replace a personal medical consultation.
+          Results vary between individuals.
+          <br /> Please consult a qualified hair transplant surgeon to assess
+          your suitability. [Link to full medical disclaimer + privacy
+          policy.]{" "}
+        </p>
+        <p className="text-xs text-center mt-2" style={{ color: "#4b5563" }}>
+          India's only Turkey Sapphire FUE Hair Transplant Clinic
+        </p>
+        <p className="text-xs text-center mt-2" style={{ color: "#4b5563" }}>
+          © 2025 Ryan Clinic — All Rights Reserved.{" "}
+          <span style={{ color: "#6b7280" }}>clinicryan.com</span>
+        </p>
       </div>
     </footer>
   );

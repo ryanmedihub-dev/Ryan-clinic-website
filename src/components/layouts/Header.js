@@ -3,16 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
-import {
-  ChevronDown,
-  Phone,
-  Calendar,
-  Menu,
-  X,
-} from "lucide-react";
+import { ChevronDown, Phone, Calendar, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-const Logo = "/uploads/logo-2.png";
 import ContactForm from "../pages/contactForm";
+import { getAllServices } from "@/lib/serviceData";
+
+const Logo = "/uploads/logo-2.png";
 
 const Header = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
@@ -20,6 +16,21 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const formRef = useRef(null);
+  const [transplantPages, setTransplantPages] = useState([]);
+  const [treatmentPages, setTreatmentPages] = useState([]);
+  const [branchPages, setBranchPages] = useState([]);
+
+  useEffect(() => {
+    getAllServices().then((services) => {
+      const toNav = (s) => ({
+        name: s.metadata.pageName,
+        href: `/${s.metadata.pageurl}`,
+      });
+      setTransplantPages(services.filter((s) => s.metadata?.pageType === "transplant").map(toNav));
+      setTreatmentPages(services.filter((s) => s.metadata?.pageType === "treatment").map(toNav));
+      setBranchPages(services.filter((s) => s.metadata?.pageType === "branch").map(toNav));
+    });
+  }, []);
 
   const navItems = [
     { name: "Home", href: "/" },
@@ -29,32 +40,27 @@ const Header = () => {
       href: "/fue-hair-transplant",
       hasDropdown: true,
       key: "hairTransplant",
-      dropdownItems: [
-        { name: "Sapphire FUE", href: "/fue-hair-transplant" },
-        { name: "Hairline Transplant", href: "/hairline-transplant" },
-        { name: "Beard Transplant", href: "/beard-transplant" },
-        { name: "Female Hair Transplant", href: "/female-hair-transplant" },
-        { name: "Eyebrow Transplant", href: "/eyebrow-transplant" },
-        { name: "Hair Transplant In Delhi", href: "/hair-transplant-in-delhi" },
-        { name: "Hair Transplant In Mumbai", href: "/hair-transplant-in-mumbai" },
-        { name: "Hair Transplant In Hyderabad", href: "/hair-transplant-in-hyderabad" },
-      ],
+      dropdownItems: transplantPages,
     },
     {
       name: "Treatments",
-      href: "/prp-treatment",
+      href: "#",
       hasDropdown: true,
       key: "treatments",
-      dropdownItems: [
-        { name: "PRP Treatment", href: "/prp-treatment" },
-        { name: "Chemical Skin Peels", href: "/chemical-skin-peels" },
-        { name: "Alopecia Treatment", href: "/alopecia-treatments" },
-      ],
+      dropdownItems: treatmentPages,
     },
-    {
-      name: "Gallery",
-      href: "/gallery/images",
-    },
+    ...(branchPages.length > 0
+      ? [
+          {
+            name: "Branches",
+            href: "#",
+            hasDropdown: true,
+            key: "branches",
+            dropdownItems: branchPages,
+          },
+        ]
+      : []),
+    { name: "Gallery", href: "/gallery/images" },
     { name: "Contact us", href: "/contact" },
   ];
 
@@ -83,10 +89,10 @@ const Header = () => {
       const fire = (ratio, opts) =>
         confetti({ ...opts, particleCount: Math.floor(200 * ratio), disableForReducedMotion: true });
       fire(0.25, { spread: 26, startVelocity: 55, origin });
-      fire(0.2,  { spread: 60, origin });
+      fire(0.2, { spread: 60, origin });
       fire(0.35, { spread: 100, decay: 0.91, origin });
-      fire(0.1,  { spread: 120, startVelocity: 25, decay: 0.92, origin });
-      fire(0.1,  { spread: 120, startVelocity: 45, origin });
+      fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, origin });
+      fire(0.1, { spread: 120, startVelocity: 45, origin });
     });
   }, [showPopup]);
 
@@ -114,9 +120,7 @@ const Header = () => {
                   <li
                     className="font-semibold relative group"
                     key={item.key || item.name}
-                    onMouseEnter={() =>
-                      item.hasDropdown && handleMouseEnter(item.key)
-                    }
+                    onMouseEnter={() => item.hasDropdown && handleMouseEnter(item.key)}
                     onMouseLeave={handleMouseLeave}
                   >
                     {item.hasDropdown ? (
@@ -125,7 +129,6 @@ const Header = () => {
                           {item.name}
                           <ChevronDown className="ml-1 h-4 w-4" />
                         </button>
-
                         <div
                           className={`absolute top-9 left-0 z-50 w-60 bg-primary rounded-sm shadow-lg transition-all duration-200 ease-in-out ${
                             openDropdown === item.key
@@ -148,10 +151,7 @@ const Header = () => {
                         </div>
                       </div>
                     ) : (
-                      <Link
-                        href={item.href}
-                        className="block px-4 py-2 hover:text-amber-300"
-                      >
+                      <Link href={item.href} className="block px-4 py-2 hover:text-amber-300">
                         {item.name}
                       </Link>
                     )}
@@ -187,17 +187,13 @@ const Header = () => {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-md hover:bg-gray-700"
             >
-              {mobileMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Sidebar */}
+      {/* Mobile Overlay */}
       {mobileMenuOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-109 lg:hidden"
@@ -205,89 +201,87 @@ const Header = () => {
         />
       )}
 
+      {/* Mobile Sidebar */}
       <div
         className={`fixed top-0 left-0 w-72 h-full bg-primary text-white shadow-lg p-6 z-110 overflow-y-auto lg:hidden transition-transform duration-300 ${
           mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-          <button
-            onClick={() => setMobileMenuOpen(false)}
-            className="absolute top-6 right-4 text-white"
-          >
-            <X className="h-6 w-6" />
-          </button>
+        <button
+          onClick={() => setMobileMenuOpen(false)}
+          className="absolute top-6 right-4 text-white"
+        >
+          <X className="h-6 w-6" />
+        </button>
 
-          <Link href="/" className="block mb-8">
-            <Image
-              src={Logo}
-              alt="Ryan Clinic"
-              width={140}
-              height={80}
-              className="object-contain"
-              unoptimized
-            />
-          </Link>
+        <Link href="/" className="block mb-8">
+          <Image
+            src={Logo}
+            alt="Ryan Clinic"
+            width={140}
+            height={80}
+            className="object-contain"
+            unoptimized
+          />
+        </Link>
 
-          <nav>
-            <ul className="space-y-4">
-              {navItems.map((item) => (
-                <li key={item.key || item.name}>
-                  {item.hasDropdown ? (
-                    <details className="group">
-                      <summary className="flex items-center justify-between cursor-pointer font-semibold hover:text-amber-300">
-                        {item.name}
-                        <ChevronDown className="h-4 w-4 ml-2" />
-                      </summary>
-                      <ul className="pl-4 mt-2 space-y-2">
-                        {item.dropdownItems.map((dropdownItem) => (
-                          <li key={dropdownItem.href}>
-                            <Link
-                              href={dropdownItem.href}
-                              className="block py-1 hover:text-amber-300"
-                              onClick={() => setMobileMenuOpen(false)}
-                            >
-                              {dropdownItem.name}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </details>
-                  ) : (
-                    <Link
-                      href={item.href}
-                      className="block font-semibold hover:text-amber-300"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
+        <nav>
+          <ul className="space-y-4">
+            {navItems.map((item) => (
+              <li key={item.key || item.name}>
+                {item.hasDropdown ? (
+                  <details className="group">
+                    <summary className="flex items-center justify-between cursor-pointer font-semibold hover:text-amber-300">
                       {item.name}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </nav>
+                      <ChevronDown className="h-4 w-4 ml-2" />
+                    </summary>
+                    <ul className="pl-4 mt-2 space-y-2">
+                      {item.dropdownItems.map((dropdownItem) => (
+                        <li key={dropdownItem.href}>
+                          <Link
+                            href={dropdownItem.href}
+                            className="block py-1 hover:text-amber-300"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            {dropdownItem.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className="block font-semibold hover:text-amber-300"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-          <div className="mt-8 flex flex-col gap-3">
-            <Button
-              asChild
-              className="bg-white text-black hover:bg-black hover:text-white"
-            >
-              <Link href="tel:+919217958539">
-                <Phone className="h-4 w-4" />
-                <span>Call us</span>
-              </Link>
-            </Button>
-            <Button
-              onClick={() => {
-                setShowPopup(true);
-                setMobileMenuOpen(false);
-              }}
-              className="bg-white text-black hover:bg-black hover:text-white"
-            >
-              <Calendar className="h-4 w-4" />
-              <span>Book appointment</span>
-            </Button>
-          </div>
+        <div className="mt-8 flex flex-col gap-3">
+          <Button asChild className="bg-white text-black hover:bg-black hover:text-white">
+            <Link href="tel:+919217958539">
+              <Phone className="h-4 w-4" />
+              <span>Call us</span>
+            </Link>
+          </Button>
+          <Button
+            onClick={() => {
+              setShowPopup(true);
+              setMobileMenuOpen(false);
+            }}
+            className="bg-white text-black hover:bg-black hover:text-white"
+          >
+            <Calendar className="h-4 w-4" />
+            <span>Book appointment</span>
+          </Button>
         </div>
+      </div>
 
       {/* Popup Modal */}
       {showPopup && (
@@ -302,13 +296,10 @@ const Header = () => {
             >
               <X className="h-8 w-8" />
             </button>
-
             <ContactForm />
           </div>
         </div>
       )}
-
-     
     </>
   );
 };

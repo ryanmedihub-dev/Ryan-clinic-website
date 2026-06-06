@@ -126,12 +126,12 @@ export default function CostSection({ city = "Delhi" }) {
         <div className="max-w-full mx-auto">
           {/* Top strip */}
           <div className="flex items-center gap-0 mb-10">
-            <span className="flex-1 h-px bg-gradient-to-r from-[#e30a17] to-transparent" />
+            <span className="flex-1 h-px bg-linear-to-r from-[#e30a17] to-transparent" />
             <span className="text-[9.5px] font-semibold tracking-[0.35em] uppercase text-[#e30a17] px-5 whitespace-nowrap">
               Sapphire FUE &nbsp;·&nbsp; Original Choi Pen &nbsp;·&nbsp; Turkey
               Technique
             </span>
-            <span className="flex-1 h-px bg-gradient-to-l from-[#e30a17] to-transparent" />
+            <span className="flex-1 h-px bg-linear-to-l from-[#e30a17] to-transparent" />
           </div>
 
           {/* Hero row */}
@@ -161,7 +161,7 @@ export default function CostSection({ city = "Delhi" }) {
           </div>
 
           {/* Card grid */}
-          <div className="grid grid-cols-3 gap-[2px] bg-[#d8d1c7] rounded-2xl overflow-hidden mb-6">
+          <div className="grid grid-cols-3 gap-0.5 bg-[#d8d1c7] rounded-2xl overflow-hidden mb-6">
             {PRICING.map((item) => (
               <PriceCard key={item.num} item={item} />
             ))}
