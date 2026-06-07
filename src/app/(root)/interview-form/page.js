@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 // ── HR list synced with DB ─────────────────────────────────────────────────────
 const HR_LIST = [
   { name: "Hr Muskan",        _id: "69bd264a9777c5b4424121d9" },
-  { name: "Hr Pratibha Mehto",_id: "69bd26169777c5b4424121cd" },
+  { name: "Hr Priya",_id: "69bd26169777c5b4424121cd" },
   { name: "Hr Simran Kaur",   _id: "69bd25df9777c5b4424121c1" },
   { name: "Hr Tulsi",         _id: "69bd26769777c5b4424121e7" },
   { name: "Other",            _id: "69bd3e186706eb9cf318ffc9" },
