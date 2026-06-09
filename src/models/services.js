@@ -6,7 +6,7 @@ const serviceSchema = new mongoose.Schema(
       title: String,
       description: String,
       imageurl: String,
-      imagealt: String, 
+      imagealt: String,
     },
     benefitsData: {
       title: String,
@@ -34,7 +34,7 @@ const serviceSchema = new mongoose.Schema(
       pageType: {
         type: String,
         default: "transplant",
-        enum: ["transplant", "surgery", "treatment" , "branch"],
+        enum: ["transplant", "surgery", "treatment", "branch"],
       },
       description: String,
       pageurl: {
@@ -44,7 +44,8 @@ const serviceSchema = new mongoose.Schema(
       },
       title: String,
       overviewData: String,
-      keywords: [String], // ✅ multiple keywords
+      keywords: [String],
+      branchName: String,
     },
     typesData: {
       details: String,
@@ -55,6 +56,14 @@ const serviceSchema = new mongoose.Schema(
         },
       ],
     },
+    pageSections: [
+      {
+        key: { type: String },
+        enabled: { type: Boolean, default: true },
+        order: { type: Number },
+        data: { type: mongoose.Schema.Types.Mixed, default: {} },
+      },
+    ],
   },
   {
     timestamps: true,

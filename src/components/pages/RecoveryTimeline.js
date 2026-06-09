@@ -1,7 +1,8 @@
 // RecoveryTimeline.js
-// Usage: <RecoveryTimeline />
+// Usage: <RecoveryTimeline phases={[{period,phase,color,progress,points:[],tip}]} />
+// Icons are built-in and cycle by index; all text fields can be overridden from DB.
 
-const timeline = [
+const DEFAULT_TIMELINE = [
   {
     period: "Day 1 – 10",
     phase: "Initial Healing",
@@ -94,7 +95,10 @@ const timeline = [
   },
 ];
 
-export default function RecoveryTimeline() {
+export default function RecoveryTimeline({ phases }) {
+  const timeline = phases?.length
+    ? phases.map((p, i) => ({ ...p, icon: DEFAULT_TIMELINE[i % DEFAULT_TIMELINE.length].icon }))
+    : DEFAULT_TIMELINE;
   return (
     <section className="py-20 bg-white">
       <div className="containerFull px-4 md:px-6">

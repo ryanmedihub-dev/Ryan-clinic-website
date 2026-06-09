@@ -119,7 +119,10 @@ function PriceCard({ item }) {
   );
 }
 
-export default function CostSection({ city = "Delhi" }) {
+export default function CostSection({ city = "Delhi", pricing, sectionTitle, sectionDescription }) {
+  const PRICING_DATA = pricing?.length ? pricing : PRICING;
+  const title = sectionTitle || "Hair Transplant Cost";
+  const description = sectionDescription || `Hair transplant cost in ${city} at Ryan Clinic starts from ₹40,000 and typically ranges up to ₹3,50,000, depending on graft count and technique (about ₹40–₹120 per graft for doctor-led Sapphire FUE). Your exact cost is confirmed after a free scalp analysis. 0% EMI is available.`;
   return (
     <section className={` py-20 lg:py-24 ${dmSans.className}`}>
       <div className="containerFull px-6 md:px-8">
@@ -140,12 +143,11 @@ export default function CostSection({ city = "Delhi" }) {
               <h2
                 className={`${playfair.className} text-[clamp(2rem,4vw,2.8rem)] font-bold text-[#1a1430] leading-[1.15]`}
               >
-                Hair Transplant Cost 
-                {/* <br /> */}
+                {title}
                 <em className="text-[#e30a17]"> in {city}</em>
               </h2>
               <p className="text-[15px]  text-[#9a9287] leading-[1.8] mt-4">
-               Hair transplant cost in Delhi at Ryan Clinic starts from ₹40,000 and typically ranges up to ₹3,50,000, depending on graft count and technique (about ₹40–₹120 per graft for doctor-led Sapphire FUE). Your exact cost is confirmed after a free scalp analysis. 0% EMI is available.
+                {description}
               </p>
             </div>
             {/* <div className="bg-[#1a1430] text-[#F4F1EC] text-center px-6 py-3 rounded-sm shrink-0">
@@ -162,7 +164,7 @@ export default function CostSection({ city = "Delhi" }) {
 
           {/* Card grid */}
           <div className="grid grid-cols-3 gap-0.5 bg-[#d8d1c7] rounded-2xl overflow-hidden mb-6">
-            {PRICING.map((item) => (
+            {PRICING_DATA.map((item) => (
               <PriceCard key={item.num} item={item} />
             ))}
 

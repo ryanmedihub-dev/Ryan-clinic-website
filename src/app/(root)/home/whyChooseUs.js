@@ -6,47 +6,50 @@ import { useState } from "react";
    WHY CHOOSE US
 ══════════════════════════════════════════════════════ */
 
-const whyItems = [
-  {
-    title: "100% Doctor-Led Surgery — Never Technicians",
-    body: "This is the most important thing to verify at any Delhi clinic. At Ryan Clinic, every surgical step — extraction, channel creation, and implantation — is performed by a certified hair transplant doctor in Delhi. We never hand any part of your surgery to a technician. Technician-led surgery is a leading cause of poor survival and unnatural hairlines across India — and it's exactly what we refuse to do.",
-  },
-  {
-    title: "90%+ Graft Survival Rate",
-    body: "Using the original Choi Pen and a careful graft-preservation protocol, our grafts spend minimal time outside the body. The result is a graft survival rate of 90%+ — well above the Indian industry average of roughly 60–70%. Higher graft survival means denser, fuller, and more natural-looking hair.",
-  },
-  {
-    title: "Sterile, Surgical-Grade Operating Theatre",
-    body: "Every procedure is performed in a sterile operating theatre with single-use, surgical-grade instruments while following recognised safety standards. Patient safety, hygiene, and precision remain at the heart of every procedure we perform.",
-  },
-  {
-    title: "Transparent Pricing & 0% EMI",
-    body: "Your complete cost — based on your exact graft count after a free scalp analysis — is confirmed before you commit. No hidden charges. Hair transplant procedures start from ₹40,000, with 0% EMI available on both 6 and 12-month plans.",
-  },
-  {
-    title: "18-Month Follow-Up Support",
-    body: "Ryan Clinic provides free follow-up consultations for 18 months after your procedure. Our WhatsApp support team is available 7 days a week to answer your questions, monitor progress, and help ensure the best possible outcome from your hair transplant.",
-  },
-  {
-    title: "Fastest Recovery — Back to Work in 5–7 Days",
-    body: "Ryan Clinic's Sapphire FUE technique creates smaller, more precise recipient channels than traditional steel-blade FUE. This means significantly less tissue trauma, less swelling, and faster scalp healing. Most patients return to desk work within 5–7 days. Strenuous activity resumes at 3 weeks. Full, permanent results are visible at 12–18 months post-procedure.",
-  },
-  {
-    title: "Lifetime Follow-Up Support",
-    body: "Our relationship with you does not end at discharge. Ryan Clinic provides free follow-up consultations for 18 months post-procedure across all three branches — Delhi, Mumbai, and Hyderabad. Our dedicated WhatsApp support team is available 7 days a week to answer every recovery question, track your growth progress, and ensure your results are everything you expected.",
-  },
-  {
-    title: "Trusted by Celebrities, Influencers & NRI Patients",
-    body: "Ryan Clinic has been trusted by Bollywood actors, Instagram influencers, and public figures for their personal hair restoration journeys. Patients from the UK, Dubai, USA, Canada, and Australia choose Ryan Clinic because Turkey-quality Sapphire FUE results at Indian prices is an opportunity available nowhere else. Over 10,000 successful procedures across Delhi, Mumbai & Hyderabad speak for themselves.",
-  },
-  {
-    title: "Sterile OT Standards & NABH-Compliant Facility",
-    body: "Every hair transplant at Ryan Clinic is performed in a fully sterile, NABH-compliant operation theatre. All instruments are single-use and surgical-grade. Our clinical protocols meet international OT hygiene standards — the same standards applied in Turkey's leading hair transplant centres. Your safety is not a checkbox at Ryan Clinic. It is the foundation everything else is built on.",
-  },
-];
+function getWhyItems(city) {
+  return [
+    {
+      title: "100% Doctor-Led Surgery — Never Technicians",
+      body: `This is the most important thing to verify at any ${city} clinic. At Ryan Clinic, every surgical step — extraction, channel creation, and implantation — is performed by a certified hair transplant doctor in ${city}. We never hand any part of your surgery to a technician. Technician-led surgery is a leading cause of poor survival and unnatural hairlines across India — and it's exactly what we refuse to do.`,
+    },
+    {
+      title: "90%+ Graft Survival Rate",
+      body: "Using the original Choi Pen and a careful graft-preservation protocol, our grafts spend minimal time outside the body. The result is a graft survival rate of 90%+ — well above the Indian industry average of roughly 60–70%. Higher graft survival means denser, fuller, and more natural-looking hair.",
+    },
+    {
+      title: "Sterile, Surgical-Grade Operating Theatre",
+      body: "Every procedure is performed in a sterile operating theatre with single-use, surgical-grade instruments while following recognised safety standards. Patient safety, hygiene, and precision remain at the heart of every procedure we perform.",
+    },
+    {
+      title: "Transparent Pricing & 0% EMI",
+      body: "Your complete cost — based on your exact graft count after a free scalp analysis — is confirmed before you commit. No hidden charges. Hair transplant procedures start from ₹40,000, with 0% EMI available on both 6 and 12-month plans.",
+    },
+    {
+      title: "18-Month Follow-Up Support",
+      body: "Ryan Clinic provides free follow-up consultations for 18 months after your procedure. Our WhatsApp support team is available 7 days a week to answer your questions, monitor progress, and help ensure the best possible outcome from your hair transplant.",
+    },
+    {
+      title: "Fastest Recovery — Back to Work in 5–7 Days",
+      body: "Ryan Clinic's Sapphire FUE technique creates smaller, more precise recipient channels than traditional steel-blade FUE. This means significantly less tissue trauma, less swelling, and faster scalp healing. Most patients return to desk work within 5–7 days. Strenuous activity resumes at 3 weeks. Full, permanent results are visible at 12–18 months post-procedure.",
+    },
+    {
+      title: "Lifetime Follow-Up Support",
+      body: `Our relationship with you does not end at discharge. Ryan Clinic provides free follow-up consultations for 18 months post-procedure across all our branches. Our dedicated WhatsApp support team is available 7 days a week to answer every recovery question, track your growth progress, and ensure your results are everything you expected.`,
+    },
+    {
+      title: "Trusted by Celebrities, Influencers & NRI Patients",
+      body: `Ryan Clinic has been trusted by Bollywood actors, Instagram influencers, and public figures for their personal hair restoration journeys. Patients from the UK, Dubai, USA, Canada, and Australia choose Ryan Clinic because Turkey-quality Sapphire FUE results at Indian prices is an opportunity available nowhere else. Over 10,000 successful procedures across India speak for themselves.`,
+    },
+    {
+      title: "Sterile OT Standards & NABH-Compliant Facility",
+      body: "Every hair transplant at Ryan Clinic is performed in a fully sterile, NABH-compliant operation theatre. All instruments are single-use and surgical-grade. Our clinical protocols meet international OT hygiene standards — the same standards applied in Turkey's leading hair transplant centres. Your safety is not a checkbox at Ryan Clinic. It is the foundation everything else is built on.",
+    },
+  ];
+}
 
-export default function WhyChooseUs() {
+export default function WhyChooseUs({ city = "Delhi" }) {
   const [open, setOpen] = useState(0);
+  const whyItems = getWhyItems(city);
 
   return (
     <section className="py-16 md:py-24 bg-[#fff5ec]">
@@ -69,11 +72,11 @@ export default function WhyChooseUs() {
                 Best Hair Transplant
               </span>
               <br />
-              Clinic In Delhi
+              Clinic In {city}
             </h2>
 
             <p className="text-gray-500 text-sm md:text-[15px] leading-relaxed mb-8 max-w-md">
-              Among the many options for a hair transplant in Delhi, here's what
+              Among the many options for a hair transplant in {city}, here's what
               makes Ryan Clinic the choice of 10,000+ patients.
             </p>
 
@@ -103,7 +106,7 @@ export default function WhyChooseUs() {
             <div className="relative rounded-2xl overflow-hidden h-60 sm:h-72 shadow-sm border border-gray-100">
               <img
                 src="/uploads/gallery.jpg"
-                alt="Ryan Clinic Hair Transplant Delhi"
+                alt={`Ryan Clinic Hair Transplant ${city}`}
                 className="w-full h-full object-cover object-top"
               />
 
@@ -123,7 +126,7 @@ export default function WhyChooseUs() {
                   Trusted By 10,000+ Patients
                 </p>
                 <p className="text-[11px] text-white/55 mt-0.5">
-                  Delhi Hair Transplant Specialists
+                  {city} Hair Transplant Specialists
                 </p>
               </div>
             </div>
@@ -208,7 +211,7 @@ export default function WhyChooseUs() {
             <div className="mt-8 pt-8 border-t border-gray-100">
               <div className="flex flex-wrap gap-3">
                 <a
-                  href="https://api.whatsapp.com/send?phone=919217958539&text=Hi,%20I%20want%20a%20free%20scalp%20analysis%20in%20Delhi"
+                  href={`https://api.whatsapp.com/send?phone=919217958539&text=Hi,%20I%20want%20a%20free%20scalp%20analysis%20in%20${encodeURIComponent(city)}`}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-3 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-4 px-7 text-sm tracking-wide transition-colors rounded-xl justify-center"

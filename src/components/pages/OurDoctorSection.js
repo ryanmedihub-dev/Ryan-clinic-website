@@ -1,35 +1,49 @@
 // OurDoctorSection.js
-// Usage: <OurDoctorSection city="Delhi" />
+// Usage: <OurDoctorSection city="Delhi" doctor={{ name, title, image, stats, bioLines, qualifications, certifications, specializations }} />
 
-export default function OurDoctorSection({ city = "Delhi" }) {
-  const qualifications = [
-    { degree: "MBBS", institute: "AIIMS, New Delhi" },
-    { degree: "MS – General Surgery", institute: "PGIMER, Chandigarh" },
-    { degree: "Fellowship – Hair Restoration", institute: "Istanbul, Turkey" },
-  ];
+const DEFAULT_QUALIFICATIONS = [
+  { degree: "MBBS", institute: "AIIMS, New Delhi" },
+  { degree: "MS – General Surgery", institute: "PGIMER, Chandigarh" },
+  { degree: "Fellowship – Hair Restoration", institute: "Istanbul, Turkey" },
+];
 
-  const certifications = [
-    "Turkey Sapphire FUE Certification — Istanbul Hair Institute",
-    "NABH-Certified Operating Surgeon",
-    "ISHRS Member — International Society of Hair Restoration Surgery",
-    "Best Hair Transplant Surgeon — India 2022 & 2023",
-  ];
+const DEFAULT_CERTIFICATIONS = [
+  "Turkey Sapphire FUE Certification — Istanbul Hair Institute",
+  "NABH-Certified Operating Surgeon",
+  "ISHRS Member — International Society of Hair Restoration Surgery",
+  "Best Hair Transplant Surgeon — India 2022 & 2023",
+];
 
-  const stats = [
-    { num: "12+", label: "Years of Experience" },
-    { num: "10,000+", label: "Procedures Done" },
-    { num: "95%+", label: "Graft Survival" },
-    { num: "4.9★", label: "Google Rating" },
-  ];
+const DEFAULT_STATS = [
+  { num: "12+", label: "Years of Experience" },
+  { num: "10,000+", label: "Procedures Done" },
+  { num: "95%+", label: "Graft Survival" },
+  { num: "4.9★", label: "Google Rating" },
+];
 
-  const specializations = [
-    "Turkey Sapphire FUE",
-    "DHI Choi Pen",
-    "Hairline Design",
-    "Crown Restoration",
-    "High-Density FUE",
-    "Female Hair Loss",
-  ];
+const DEFAULT_SPECIALIZATIONS = [
+  "Turkey Sapphire FUE",
+  "DHI Choi Pen",
+  "Hairline Design",
+  "Crown Restoration",
+  "High-Density FUE",
+  "Female Hair Loss",
+];
+
+export default function OurDoctorSection({ city = "Delhi", doctor }) {
+  const name = doctor?.name || "Dr. Pranendra Singh";
+  const doctorTitle = doctor?.title || "Medical Director & Chief Surgeon";
+  const image = doctor?.image || "/uploads/gallery.jpg";
+  const stats = doctor?.stats?.length ? doctor.stats : DEFAULT_STATS;
+  const bioLines = doctor?.bioLines?.length
+    ? doctor.bioLines
+    : [
+        `Your hair transplant in ${city} is led by Dr. Pranendra Singh, founder of Ryan Clinic and India's foremost authority on Turkey's Sapphire FUE technique. Trained directly under Turkey's leading specialists in Istanbul, Dr. Singh personally performs every surgical step and has overseen 10,000+ successful procedures across Delhi, Mumbai, and Hyderabad.`,
+        `His commitment is simple: every patient receives world-class Turkey-certified care, with a doctor at every stage of surgery — never a technician.`,
+      ];
+  const qualifications = doctor?.qualifications?.length ? doctor.qualifications : DEFAULT_QUALIFICATIONS;
+  const certifications = doctor?.certifications?.length ? doctor.certifications : DEFAULT_CERTIFICATIONS;
+  const specializations = doctor?.specializations?.length ? doctor.specializations : DEFAULT_SPECIALIZATIONS;
 
   return (
     <section className="py-20 bg-white">
@@ -56,8 +70,8 @@ export default function OurDoctorSection({ city = "Delhi" }) {
             {/* Photo card */}
             <div className="relative rounded-2xl overflow-hidden mb-5 aspect-4/5 shadow-lg">
               <img
-                src="/uploads/gallery.jpg"
-                alt={`Dr. Pranendra Singh — hair transplant surgeon in ${city}`}
+                src={image}
+                alt={`${name} — hair transplant surgeon in ${city}`}
                 className="w-full h-full object-cover object-top"
               />
               <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 55%)" }} />
@@ -76,8 +90,8 @@ export default function OurDoctorSection({ city = "Delhi" }) {
               {/* Identity */}
               <div className="absolute bottom-0 inset-x-0 p-5">
                 <span className="block w-8 h-0.5 mb-2 rounded-full bg-yellow-400/80" />
-                <h3 className="text-xl font-bold text-white leading-tight">Dr. Pranendra Singh</h3>
-                <p className="text-[12px] text-white/55 mt-0.5">Medical Director & Chief Surgeon</p>
+                <h3 className="text-xl font-bold text-white leading-tight">{name}</h3>
+                <p className="text-[12px] text-white/55 mt-0.5">{doctorTitle}</p>
               </div>
             </div>
 
@@ -97,18 +111,11 @@ export default function OurDoctorSection({ city = "Delhi" }) {
 
             {/* Bio */}
             <div className="bg-[#F7F5F2] rounded-2xl p-5 md:p-6">
-              <p className="text-[15px] text-gray-700 leading-[1.85] mb-4">
-                Your hair transplant in {city} is led by{" "}
-                <strong className="text-gray-900">Dr. Pranendra Singh</strong>, founder of Ryan Clinic
-                and India's foremost authority on Turkey's Sapphire FUE technique. Trained directly
-                under Turkey's leading specialists in Istanbul, Dr. Singh personally performs every
-                surgical step and has overseen 10,000+ successful procedures across Delhi, Mumbai,
-                and Hyderabad.
-              </p>
-              <p className="text-[15px] text-gray-700 leading-[1.85]">
-                His commitment is simple: every patient receives world-class Turkey-certified care,
-                with a doctor at every stage of surgery — never a technician.
-              </p>
+              {bioLines.map((line, i) => (
+                <p key={i} className={`text-[15px] text-gray-700 leading-[1.85] ${i < bioLines.length - 1 ? "mb-4" : ""}`}>
+                  {line}
+                </p>
+              ))}
             </div>
 
             {/* Education */}
@@ -186,7 +193,7 @@ export default function OurDoctorSection({ city = "Delhi" }) {
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z" />
                   <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.553 4.116 1.52 5.847L.057 23.12a.75.75 0 00.92.92l5.273-1.463A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.666-.523-5.18-1.43l-.372-.223-3.857 1.072 1.072-3.857-.223-.372A9.944 9.944 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
                 </svg>
-                Book Consultation with Dr. Pranendra Singh
+                Book Consultation with {name}
               </a>
               <a
                 href="/about/dr-pranendra-singh/"

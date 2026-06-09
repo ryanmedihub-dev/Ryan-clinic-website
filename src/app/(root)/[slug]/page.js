@@ -9,8 +9,6 @@ import { getServiceBySlug } from "@/lib/serviceData";
 import { notFound } from "next/navigation";
 import Testimonials from "../home/testimonial";
 import WhyChooseRyanClinic from "../home/whyChooseUs";
-
-// ── Branch-only section imports ──────────────────────────────────────────────
 import CostSection from "@/components/pages/CostSection";
 import RecoveryTimeline from "@/components/pages/RecoveryTimeline";
 import DifferencesSection from "@/components/pages/DifferencesSection";
@@ -18,7 +16,6 @@ import OurDoctorSection from "@/components/pages/OurDoctorSection";
 import WhyDoctorMattersSection from "@/components/pages/WhyDoctorMattersSection";
 import AreasWeServe from "@/components/pages/AreasWeServe";
 
-// 🔹 Dynamic metadata for each service page
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const service = await getServiceBySlug(slug);
@@ -63,43 +60,32 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function ServicesPage({ params }) {
-  const { slug } = await params;
-  const service = await getServiceBySlug(slug);
+// Default section order/visibility — used when service.pageSections is not set.
+function getDefaultSections(pageType) {
+  const isBranch = pageType === "branch";
+  return [
+    { key: "overview",           enabled: true,     order: 0,  data: {} },
+    { key: "ourResults",         enabled: true,     order: 1,  data: {} },
+    { key: "typesSection",       enabled: true,     order: 2,  data: {} },
+    { key: "whyChooseUs",        enabled: true,     order: 3,  data: {} },
+    { key: "costSection",        enabled: isBranch, order: 4,  data: {} },
+    { key: "ourDoctor",          enabled: isBranch, order: 5,  data: {} },
+    { key: "differencesSection", enabled: isBranch, order: 6,  data: {} },
+    { key: "pleoFeatures",       enabled: true,     order: 7,  data: {} },
+    { key: "whyDoctorMatters",   enabled: isBranch, order: 8,  data: {} },
+    { key: "recoveryTimeline",   enabled: false,    order: 9,  data: {} },
+    { key: "extraFields",        enabled: true,     order: 10, data: {} },
+    { key: "areasWeServe",       enabled: isBranch, order: 11, data: {} },
+    { key: "testimonials",       enabled: true,     order: 12, data: {} },
+    { key: "faq",                enabled: true,     order: 13, data: {} },
+  ];
+}
 
-  if (!service) {
-    notFound();
-  }
-
-  // ── Determine if this is a branch landing page ───────────────────────────
-  const isBranch = service?.metadata?.pageType === "branch";
-
-  // ── Extract branch/city name from metadata (e.g. "Delhi", "Mumbai", "Hyderabad")
-  // Falls back to slug-based extraction if not explicitly set
-  const branchName =
-    service?.metadata?.branchName ||
-    (slug.includes("delhi")
-      ? "Delhi"
-      : slug.includes("mumbai")
-        ? "Mumbai"
-        : slug.includes("hyderabad")
-          ? "Hyderabad"
-          : "Delhi");
-
-  return (
-    <>
-      <div>
-        {/* ── Page Banner ─────────────────────────────────────────────────── */}
-        <PageBanner
-          breadcrumb={service?.metadata?.pageName}
-          title={service?.bannerData?.title}
-          description={service?.bannerData?.description}
-          bgImage={service?.bannerData?.imageurl}
-          alt={service?.bannerData?.imagealt}
-        />
-
-        {/* ── Overview + Contact Form ──────────────────────────────────────── */}
-        <section className=" py-8 md:py-12">
+function renderSection(key, d, service, branchName) {
+  switch (key) {
+    case "overview":
+      return (
+        <section key="overview" className="py-8 md:py-12">
           <div className="containerFull px-4 md:px-6">
             <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
               <div
@@ -114,12 +100,14 @@ export default async function ServicesPage({ params }) {
             </div>
           </div>
         </section>
+      );
 
-        {/* ── Our Results (all pages) ──────────────────────────────────────── */}
-        <OurResults />
+    case "ourResults":
+      return <OurResults key="ourResults" />;
 
-        {/* ── Types / Images + Details ─────────────────────────────────────── */}
-        <section className="py-8 md:py-12 h-fit">
+    case "typesSection":
+      return (
+        <section key="typesSection" className="py-8 md:py-12 h-fit">
           <div className="containerFull px-4 md:px-6">
             <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
               <div className="w-full lg:w-5/12">
@@ -127,9 +115,7 @@ export default async function ServicesPage({ params }) {
                   <div className="relative rounded-xl h-48 md:h-60 lg:h-full overflow-hidden shadow-md">
                     <Image
                       src={service?.typesData?.images[0]?.url}
-                      alt={
-                        service?.typesData?.images[0]?.alt || "Service image"
-                      }
+                      alt={service?.typesData?.images[0]?.alt || "Service image"}
                       fill
                       unoptimized
                       className="object-cover"
@@ -139,9 +125,7 @@ export default async function ServicesPage({ params }) {
                     <div className="relative rounded-xl h-48 overflow-hidden shadow-md">
                       <Image
                         src={service?.typesData?.images[1]?.url}
-                        alt={
-                          service?.typesData?.images[1]?.alt || "Service image"
-                        }
+                        alt={service?.typesData?.images[1]?.alt || "Service image"}
                         fill
                         unoptimized
                         className="object-cover"
@@ -150,9 +134,7 @@ export default async function ServicesPage({ params }) {
                     <div className="relative rounded-xl h-48 overflow-hidden shadow-md">
                       <Image
                         src={service?.typesData?.images[2]?.url}
-                        alt={
-                          service?.typesData?.images[2]?.alt || "Service image"
-                        }
+                        alt={service?.typesData?.images[2]?.alt || "Service image"}
                         fill
                         unoptimized
                         className="object-cover"
@@ -172,74 +154,154 @@ export default async function ServicesPage({ params }) {
             </div>
           </div>
         </section>
+      );
 
-        {/* ── Why Choose Ryan Clinic (all pages) ──────────────────────────── */}
-        <WhyChooseRyanClinic />
+    case "whyChooseUs":
+      return <WhyChooseRyanClinic key="whyChooseUs" city={d.city || branchName} />;
 
-        {/* ── Cost Section — branch pages only ────────────────────────────── */}
-        {isBranch && <CostSection city={branchName} />}
+    case "costSection":
+      return (
+        <CostSection
+          key="costSection"
+          city={d.city || branchName}
+          pricing={d.pricing}
+          sectionTitle={d.sectionTitle}
+          sectionDescription={d.sectionDescription}
+        />
+      );
 
-        {/* ── Our Doctor Section — branch pages only ───────────────────────── */}
-        {isBranch && <OurDoctorSection city={branchName} />}
+    case "ourDoctor":
+      return (
+        <OurDoctorSection
+          key="ourDoctor"
+          city={d.city || branchName}
+          doctor={d.doctor}
+        />
+      );
 
-        {/* ── Differences Section — branch pages only ──────────────────────── */}
-        {isBranch && <DifferencesSection />}
+    case "differencesSection":
+      return (
+        <DifferencesSection
+          key="differencesSection"
+          features={d.features}
+        />
+      );
 
-        {/* ── PleoFeatures / Benefits (all pages) ─────────────────────────── */}
+    case "pleoFeatures":
+      return (
         <PleoFeatures
+          key="pleoFeatures"
           features={service?.benefitsData?.component}
           title={service?.benefitsData?.title}
           description={service?.benefitsData?.description}
         />
+      );
 
-        {/* ── Why Doctor Matters — branch pages only ───────────────────────── */}
-        {isBranch && <WhyDoctorMattersSection />}
+    case "whyDoctorMatters":
+      return (
+        <WhyDoctorMattersSection
+          key="whyDoctorMatters"
+          risks={d.risks}
+          comparison={d.comparison}
+        />
+      );
 
-        {/* ── Recovery Timeline — branch pages only ───────────────────────── */}
-        {/* {isBranch && <RecoveryTimeline />} */}
+    case "recoveryTimeline":
+      return <RecoveryTimeline key="recoveryTimeline" phases={d.phases} />;
 
-        {/* ── Extra Fields (all pages, if present) ────────────────────────── */}
-        {service?.extraFieldsData?.length > 0 && (
-          <section className="py-8 md:py-12">
-            <div className="containerFull px-4 md:px-6">
-              <div className="flex flex-col md:flex-row">
-                <div className="w-full md:w-1/2 px-0 md:px-4 lg:px-8 border-r-0 md:border-r border-gray-200 md:pr-8">
-                  {service?.extraFieldsData?.detail1 && (
-                    <div
-                      className="prose max-w-none"
-                      dangerouslySetInnerHTML={{
-                        __html: sanitizeContent(
-                          service.extraFieldsData.detail1,
-                        ),
-                      }}
-                    />
-                  )}
-                </div>
-                <div className="w-full md:w-1/2 px-0 md:px-4 lg:px-8 mt-6 md:mt-0 md:pl-8">
-                  {service?.extraFieldsData?.detail2 && (
-                    <div
-                      className="prose max-w-none"
-                      dangerouslySetInnerHTML={{
-                        __html: sanitizeContent(
-                          service.extraFieldsData.detail2,
-                        ),
-                      }}
-                    />
-                  )}
-                </div>
+    case "extraFields": {
+      const detail1 = service?.extraFields?.detail1;
+      const detail2 = service?.extraFields?.detail2;
+      if (!detail1 && !detail2) return null;
+      return (
+        <section key="extraFields" className="py-8 md:py-12">
+          <div className="containerFull px-4 md:px-6">
+            <div className="flex flex-col md:flex-row">
+              <div className="w-full md:w-1/2 px-0 md:px-4 lg:px-8 border-r-0 md:border-r border-gray-200 md:pr-8">
+                {detail1 && (
+                  <div
+                    className="prose max-w-none"
+                    dangerouslySetInnerHTML={{ __html: sanitizeContent(detail1) }}
+                  />
+                )}
+              </div>
+              <div className="w-full md:w-1/2 px-0 md:px-4 lg:px-8 mt-6 md:mt-0 md:pl-8">
+                {detail2 && (
+                  <div
+                    className="prose max-w-none"
+                    dangerouslySetInnerHTML={{ __html: sanitizeContent(detail2) }}
+                  />
+                )}
               </div>
             </div>
-          </section>
+          </div>
+        </section>
+      );
+    }
+
+    case "areasWeServe":
+      return (
+        <AreasWeServe
+          key="areasWeServe"
+          city={d.city || branchName}
+          branch={d.branch || branchName}
+          branchData={d.branchData}
+        />
+      );
+
+    case "testimonials":
+      return <Testimonials key="testimonials" />;
+
+    case "faq":
+      return <FAQSection key="faq" faqs={service?.faq} />;
+
+    default:
+      return null;
+  }
+}
+
+export default async function ServicesPage({ params }) {
+  const { slug } = await params;
+  const service = await getServiceBySlug(slug);
+
+  if (!service) {
+    notFound();
+  }
+
+  const branchName = (() => {
+    if (service?.metadata?.branchName) return service.metadata.branchName;
+    const match = slug.match(/^hair-transplant-in-(.+)$/);
+    if (match) {
+      return match[1]
+        .split("-")
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(" ");
+    }
+    return "Delhi";
+  })();
+
+  const sections = (
+    service?.pageSections?.length
+      ? service.pageSections
+      : getDefaultSections(service?.metadata?.pageType)
+  )
+    .filter((s) => s.enabled)
+    .sort((a, b) => a.order - b.order);
+
+  return (
+    <>
+      <div>
+        <PageBanner
+          breadcrumb={service?.metadata?.pageName}
+          title={service?.bannerData?.title}
+          description={service?.bannerData?.description}
+          bgImage={service?.bannerData?.imageurl}
+          alt={service?.bannerData?.imagealt}
+        />
+
+        {sections.map((section) =>
+          renderSection(section.key, section.data || {}, service, branchName)
         )}
-
-        {/* ── Areas We Serve — branch pages only ──────────────────────────── */}
-        {isBranch && <AreasWeServe city={branchName} branch={branchName} />}
-
-        {/* ── Testimonials (all pages) ────────────────────────────────────── */}
-        <Testimonials />
-
-        {/* ── FAQ Section (all pages) ──────────────────────────────────────── */}
-        <FAQSection faqs={service?.faq} />
       </div>
     </>
   );

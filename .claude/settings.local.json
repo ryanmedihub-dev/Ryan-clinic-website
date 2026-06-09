@@ -20,7 +20,9 @@
       "Bash(del \"c:\\\\dashzer\\\\Ryan-next-project-new\\\\src\\\\components\\\\DevHydrationSuppressor.js\")",
       "Bash(findstr \"tailwind\")",
       "Bash(dir \"c:\\\\dashzer\\\\Ryan-next-project-new\\\\public\\\\uploads\" /b)",
-      "Bash(findstr /i \"hair banner\")"
+      "Bash(findstr /i \"hair banner\")",
+      "Bash(grep -E \"\\\\.\\(js|jsx|ts|tsx\\)$\")",
+      "Bash(findstr slug *)"
     ],
     "additionalDirectories": [
       "/home/dashzer/codes/clinicryan/src/app/(root)"

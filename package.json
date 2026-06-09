@@ -6,7 +6,17 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "branch:export": "node --env-file=.env.local scripts/export-branches.mjs",
+    "branch:export:all": "node --env-file=.env.local scripts/export-branches.mjs --all",
+    "branch:import": "node --env-file=.env.local scripts/seed-page-sections.mjs --from-file",
+    "branch:import:dry": "node --env-file=.env.local scripts/seed-page-sections.mjs --from-file --dry-run",
+    "seed:sections": "node --env-file=.env.local scripts/seed-page-sections.mjs",
+    "seed:sections:all": "node --env-file=.env.local scripts/seed-page-sections.mjs --all",
+    "seed:sections:force": "node --env-file=.env.local scripts/seed-page-sections.mjs --force",
+    "seed:sections:all:force": "node --env-file=.env.local scripts/seed-page-sections.mjs --all --force",
+    "seed:cities": "node --env-file=.env.local scripts/seed-branch-cities.mjs",
+    "seed:cities:dry": "node --env-file=.env.local scripts/seed-branch-cities.mjs --dry-run"
   },
   "dependencies": {
     "@radix-ui/react-select": "^2.2.5",

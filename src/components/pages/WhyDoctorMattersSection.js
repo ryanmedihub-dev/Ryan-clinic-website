@@ -1,66 +1,27 @@
 // WhyDoctorMattersSection.js
-// Usage: <WhyDoctorMattersSection />
+// Usage: <WhyDoctorMattersSection risks={[{number,title,body,type:'check'|'warn'}]} comparison={[{aspect,doctorLed,techLed}]} />
+// Icons are derived from the `type` field; all text fields can come from DB.
 
-const risks = [
-  {
-    number: "01",
-    title: "Confirm who operates",
-    body: "Always verify that a qualified, registered hair transplant doctor performs your surgery — not a technician. At Ryan Clinic, every step — extraction, channel creation, and implantation — is done exclusively by a certified doctor.",
-    type: "check",
-    icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-      </svg>
-    ),
-  },
-  {
-    number: "02",
-    title: "Beware of ₹15–25 per graft quotes",
-    body: "Very low per-graft pricing almost always signals technician-led, rushed work. A hair transplant is permanent — and a poor result is very hard to correct. Never book on price alone without verifying the surgeon.",
-    type: "warn",
-    icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-      </svg>
-    ),
-  },
-  {
-    number: "03",
-    title: "Check for a sterile facility",
-    body: "Confirm single-use, surgical-grade instruments and a properly maintained operating theatre. Poor hygiene and reused tools are avoidable risks. Ryan Clinic operates in a NABH-compliant, fully sterile OT — always.",
-    type: "check",
-    icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-      </svg>
-    ),
-  },
-  {
-    number: "04",
-    title: "Expect realistic survival figures",
-    body: "Be wary of any clinic claiming '100% guaranteed' graft survival. Ryan Clinic achieves 90%+ graft survival — one of the highest in India — but we'll never mislead you with impossible promises.",
-    type: "warn",
-    icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-      </svg>
-    ),
-  },
-  {
-    number: "05",
-    title: "Review genuine before/after cases",
-    body: "Ask for real, consented patient cases — not stock photos. Ryan Clinic's 500+ verified Google reviews and 10,000+ documented procedures are available for you to inspect before booking.",
-    type: "check",
-    icon: (
-      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    ),
-  },
+const CHECK_ICON = (
+  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+  </svg>
+);
+const WARN_ICON = (
+  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+  </svg>
+);
+
+const DEFAULT_RISKS = [
+  { number: "01", title: "Confirm who operates", body: "Always verify that a qualified, registered hair transplant doctor performs your surgery — not a technician. At Ryan Clinic, every step — extraction, channel creation, and implantation — is done exclusively by a certified doctor.", type: "check", icon: CHECK_ICON },
+  { number: "02", title: "Beware of ₹15–25 per graft quotes", body: "Very low per-graft pricing almost always signals technician-led, rushed work. A hair transplant is permanent — and a poor result is very hard to correct. Never book on price alone without verifying the surgeon.", type: "warn", icon: WARN_ICON },
+  { number: "03", title: "Check for a sterile facility", body: "Confirm single-use, surgical-grade instruments and a properly maintained operating theatre. Poor hygiene and reused tools are avoidable risks. Ryan Clinic operates in a NABH-compliant, fully sterile OT — always.", type: "check", icon: CHECK_ICON },
+  { number: "04", title: "Expect realistic survival figures", body: "Be wary of any clinic claiming '100% guaranteed' graft survival. Ryan Clinic achieves 90%+ graft survival — one of the highest in India — but we'll never mislead you with impossible promises.", type: "warn", icon: WARN_ICON },
+  { number: "05", title: "Review genuine before/after cases", body: "Ask for real, consented patient cases — not stock photos. Ryan Clinic's 500+ verified Google reviews and 10,000+ documented procedures are available for you to inspect before booking.", type: "check", icon: CHECK_ICON },
 ];
 
-const comparison = [
+const DEFAULT_COMPARISON = [
   { aspect: "Who operates",    doctorLed: "Certified doctor at every step",          techLed: "Technician performs extraction + implant" },
   { aspect: "Graft survival",  doctorLed: "90%+ (Ryan Clinic standard)",             techLed: "Often 50–70% — rushed, less precise" },
   { aspect: "Naturalness",     doctorLed: "Precise angle, depth & direction",        techLed: "Variable — uneven, patchy results" },
@@ -69,7 +30,11 @@ const comparison = [
   { aspect: "Price signal",    doctorLed: "₹40–₹120 per graft (transparent)",        techLed: "₹15–25 per graft (corner-cutting)" },
 ];
 
-export default function WhyDoctorMattersSection() {
+export default function WhyDoctorMattersSection({ risks: risksOverride, comparison: comparisonOverride }) {
+  const risks = risksOverride?.length
+    ? risksOverride.map((r) => ({ ...r, icon: r.type === "warn" ? WARN_ICON : CHECK_ICON }))
+    : DEFAULT_RISKS;
+  const comparison = comparisonOverride?.length ? comparisonOverride : DEFAULT_COMPARISON;
   return (
     <section className="py-20 bg-[#F7F5F2]">
       <div className="containerFull px-4 md:px-6">

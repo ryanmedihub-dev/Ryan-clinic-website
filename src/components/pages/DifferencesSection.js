@@ -1,7 +1,7 @@
 // DifferencesSection.js
-// Usage: <DifferencesSection />
+// Usage: <DifferencesSection features={[{label, fut:{value,bad?}, fue:{value}, sapphire:{value}}]} />
 
-const features = [
+const DEFAULT_FEATURES = [
   { label: "Scarring",       fut: { value: "Linear donor scar", bad: true },      fue: { value: "Tiny dot scars only" },          sapphire: { value: "Tiny dots + finer channels" } },
   { label: "Healing Speed",  fut: { value: "Slowest (stitches)", bad: true },      fue: { value: "Faster — no stitches" },          sapphire: { value: "Fastest — sapphire precision" } },
   { label: "Naturalness",    fut: { value: "Good" },                                fue: { value: "Very Good" },                     sapphire: { value: "Most natural / undetectable" } },
@@ -12,7 +12,8 @@ const features = [
   { label: "Best For",       fut: { value: "Very large / budget cases" },           fue: { value: "Most patients" },                 sapphire: { value: "Best result + fast recovery" } },
 ];
 
-export default function DifferencesSection() {
+export default function DifferencesSection({ features: featuresOverride }) {
+  const features = featuresOverride?.length ? featuresOverride : DEFAULT_FEATURES;
   return (
     <section className="py-20 bg-[#F7F5F2]">
       <div className="containerFull px-4 md:px-6">
