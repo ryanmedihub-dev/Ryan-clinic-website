@@ -90,7 +90,7 @@ export default function WhyDoctorMattersSection({ risks: risksOverride, comparis
                     <span className={`text-[10px] font-black tracking-[0.15em] shrink-0 ${item.type === "warn" ? "text-amber-600" : "text-[#D32F2F]"}`}>
                       {item.number}
                     </span>
-                    <h3 className="font-bold text-sm text-gray-900 leading-snug">{item.title}</h3>
+                    <p className="font-bold text-sm text-gray-900 leading-snug">{item.title}</p>
                   </div>
                   <p className="text-[13px] text-gray-500 leading-relaxed">{item.body}</p>
                 </div>

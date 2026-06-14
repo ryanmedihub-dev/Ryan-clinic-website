@@ -6,12 +6,12 @@ const PleoFeatures = ({ features = [], title, description }) => {
     <section className=" py-8 md:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 md:mb-16">
-          <h4 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3">
             {title}
-          </h4>
-          <h5 className="text-base sm:text-lg md:text-lg font-medium text-gray-600 max-w-2xl mx-auto px-4 sm:px-0">
+          </h2>
+          <p className="text-base sm:text-md md:text-md font-medium text-gray-600 max-w-2xl mx-auto px-4 sm:px-0">
             {description}
-          </h5>
+          </p>
           <div className="mt-4 w-24 h-1 bg-gray-200 mx-auto"></div>
         </div>
 
@@ -27,9 +27,9 @@ const PleoFeatures = ({ features = [], title, description }) => {
                   {feature.icon && feature.icon}
                 </div>
                 <div className="sm:flex-1">
-                  <h6 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
                     {feature.title}
-                  </h6>
+                  </h3>
                   <p className="text-sm sm:text-base text-gray-600">{feature.description}</p>
                 </div>
               </div>

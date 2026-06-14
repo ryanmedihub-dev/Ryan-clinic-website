@@ -64,20 +64,20 @@ export async function generateMetadata({ params }) {
 function getDefaultSections(pageType) {
   const isBranch = pageType === "branch";
   return [
-    { key: "overview",           enabled: true,     order: 0,  data: {} },
-    { key: "ourResults",         enabled: true,     order: 1,  data: {} },
-    { key: "typesSection",       enabled: true,     order: 2,  data: {} },
-    { key: "whyChooseUs",        enabled: true,     order: 3,  data: {} },
-    { key: "costSection",        enabled: isBranch, order: 4,  data: {} },
-    { key: "ourDoctor",          enabled: isBranch, order: 5,  data: {} },
-    { key: "differencesSection", enabled: isBranch, order: 6,  data: {} },
-    { key: "pleoFeatures",       enabled: true,     order: 7,  data: {} },
-    { key: "whyDoctorMatters",   enabled: isBranch, order: 8,  data: {} },
-    { key: "recoveryTimeline",   enabled: false,    order: 9,  data: {} },
-    { key: "extraFields",        enabled: true,     order: 10, data: {} },
-    { key: "areasWeServe",       enabled: isBranch, order: 11, data: {} },
-    { key: "testimonials",       enabled: true,     order: 12, data: {} },
-    { key: "faq",                enabled: true,     order: 13, data: {} },
+    { key: "overview", enabled: true, order: 0, data: {} },
+    { key: "ourResults", enabled: true, order: 1, data: {} },
+    { key: "typesSection", enabled: true, order: 2, data: {} },
+    { key: "whyChooseUs", enabled: true, order: 3, data: {} },
+    { key: "costSection", enabled: isBranch, order: 4, data: {} },
+    { key: "ourDoctor", enabled: isBranch, order: 5, data: {} },
+    { key: "differencesSection", enabled: isBranch, order: 6, data: {} },
+    { key: "pleoFeatures", enabled: true, order: 7, data: {} },
+    { key: "whyDoctorMatters", enabled: isBranch, order: 8, data: {} },
+    { key: "recoveryTimeline", enabled: false, order: 9, data: {} },
+    { key: "extraFields", enabled: true, order: 10, data: {} },
+    { key: "areasWeServe", enabled: isBranch, order: 11, data: {} },
+    { key: "testimonials", enabled: true, order: 12, data: {} },
+    { key: "faq", enabled: true, order: 13, data: {} },
   ];
 }
 
@@ -103,7 +103,7 @@ function renderSection(key, d, service, branchName) {
       );
 
     case "ourResults":
-      return <OurResults key="ourResults" />;
+      return <OurResults key="ourResults" city={d.city || branchName} />;
 
     case "typesSection":
       return (
@@ -115,7 +115,9 @@ function renderSection(key, d, service, branchName) {
                   <div className="relative rounded-xl h-48 md:h-60 lg:h-full overflow-hidden shadow-md">
                     <Image
                       src={service?.typesData?.images[0]?.url}
-                      alt={service?.typesData?.images[0]?.alt || "Service image"}
+                      alt={
+                        service?.typesData?.images[0]?.alt || "Service image"
+                      }
                       fill
                       unoptimized
                       className="object-cover"
@@ -125,7 +127,9 @@ function renderSection(key, d, service, branchName) {
                     <div className="relative rounded-xl h-48 overflow-hidden shadow-md">
                       <Image
                         src={service?.typesData?.images[1]?.url}
-                        alt={service?.typesData?.images[1]?.alt || "Service image"}
+                        alt={
+                          service?.typesData?.images[1]?.alt || "Service image"
+                        }
                         fill
                         unoptimized
                         className="object-cover"
@@ -134,7 +138,9 @@ function renderSection(key, d, service, branchName) {
                     <div className="relative rounded-xl h-48 overflow-hidden shadow-md">
                       <Image
                         src={service?.typesData?.images[2]?.url}
-                        alt={service?.typesData?.images[2]?.alt || "Service image"}
+                        alt={
+                          service?.typesData?.images[2]?.alt || "Service image"
+                        }
                         fill
                         unoptimized
                         className="object-cover"
@@ -157,7 +163,9 @@ function renderSection(key, d, service, branchName) {
       );
 
     case "whyChooseUs":
-      return <WhyChooseRyanClinic key="whyChooseUs" city={d.city || branchName} />;
+      return (
+        <WhyChooseRyanClinic key="whyChooseUs" city={d.city || branchName} />
+      );
 
     case "costSection":
       return (
@@ -181,10 +189,7 @@ function renderSection(key, d, service, branchName) {
 
     case "differencesSection":
       return (
-        <DifferencesSection
-          key="differencesSection"
-          features={d.features}
-        />
+        <DifferencesSection key="differencesSection" features={d.features} />
       );
 
     case "pleoFeatures":
@@ -221,7 +226,9 @@ function renderSection(key, d, service, branchName) {
                 {detail1 && (
                   <div
                     className="prose max-w-none"
-                    dangerouslySetInnerHTML={{ __html: sanitizeContent(detail1) }}
+                    dangerouslySetInnerHTML={{
+                      __html: sanitizeContent(detail1),
+                    }}
                   />
                 )}
               </div>
@@ -229,7 +236,9 @@ function renderSection(key, d, service, branchName) {
                 {detail2 && (
                   <div
                     className="prose max-w-none"
-                    dangerouslySetInnerHTML={{ __html: sanitizeContent(detail2) }}
+                    dangerouslySetInnerHTML={{
+                      __html: sanitizeContent(detail2),
+                    }}
                   />
                 )}
               </div>
@@ -300,7 +309,7 @@ export default async function ServicesPage({ params }) {
         />
 
         {sections.map((section) =>
-          renderSection(section.key, section.data || {}, service, branchName)
+          renderSection(section.key, section.data || {}, service, branchName),
         )}
       </div>
     </>

@@ -148,8 +148,8 @@ export default function Testimonials() {
             className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4"
             style={{ color: "var(--text-primary)" }}
           >
-            Loved by{" "}
-            <span style={{ color: "var(--primary-red)" }}>Thousands</span>
+            Celebrity Results & {" "}
+            <span style={{ color: "var(--primary-red)" }}>Reviews</span>
           </h2>
 
           <p

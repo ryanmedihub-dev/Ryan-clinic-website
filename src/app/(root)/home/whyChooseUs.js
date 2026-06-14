@@ -66,12 +66,13 @@ export default function WhyChooseUs({ city = "Delhi" }) {
           {/* ── Left panel ── */}
           <div className="lg:sticky lg:top-28">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-[1.1] tracking-tight mb-5">
-              Why Ryan Clinic Is The
+              Why Ryan Clinic Is 
               <br />
               <span className="text-[#D32F2F]">
-                Best Hair Transplant
-              </span>
+               The Best Hair Transplant 
               <br />
+               Clinic
+              </span>
               Clinic In {city}
             </h2>
 

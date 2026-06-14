@@ -51,19 +51,6 @@ const BRANCHES = {
       "Yelahanka", "Bannerghatta Road",
     ],
   },
-  // Legacy spelling alias
-  Banglore: {
-    address: "Contour Cosmetic Clinic, 2nd Floor, Lakshmidevi Complex, 80 Ft Road, BTM Layout, Bengaluru – 560076",
-    mapUrl: "https://maps.google.com/?q=Contour+Cosmetic+Clinic+BTM+Layout+Bangalore",
-    phone: "+91-9217958539",
-    hours: "Mon – Sat: 9:00 AM – 7:00 PM",
-    metro: "BTM Layout / Silk Board",
-    areas: [
-      "BTM Layout", "Koramangala", "Jayanagar", "JP Nagar", "Marathahalli",
-      "Whitefield", "Electronic City", "HSR Layout", "Indiranagar", "MG Road",
-      "Yelahanka", "Bannerghatta Road",
-    ],
-  },
   Chennai: {
     address: "No.1, 3rd Floor, SS Avenue 43, Rajiv Gandhi Salai, Padur, Chennai – 603103",
     mapUrl: "https://maps.google.com/?q=Ryan+Clinic+Padur+Chennai",

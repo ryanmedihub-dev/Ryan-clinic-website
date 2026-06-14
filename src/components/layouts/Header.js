@@ -178,9 +178,9 @@ const Header = () => {
                                             cardColors[idx % 2]
                                           }`}
                                         >
-                                          <h3 className="font-bold text-gray-800 text-sm leading-tight">
+                                          <h4 className="font-bold text-gray-800 text-sm leading-tight">
                                             {si.name}
-                                          </h3>
+                                          </h4>
                                           {si.description && (
                                             <p className="text-gray-400 text-xs mt-1.5 leading-relaxed line-clamp-2">
                                               {si.description}
@@ -215,9 +215,9 @@ const Header = () => {
                                       cardColors[idx % 2]
                                     }`}
                                   >
-                                    <h3 className="font-bold text-gray-800 text-sm leading-tight">
+                                    <h4 className="font-bold text-gray-800 text-sm leading-tight">
                                       {di.name}
-                                    </h3>
+                                    </h4>
                                     {di.description && (
                                       <p className="text-gray-400 text-xs mt-1.5 leading-relaxed line-clamp-2">
                                         {di.description}

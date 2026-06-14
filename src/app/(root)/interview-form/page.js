@@ -135,11 +135,11 @@ export default function InterviewForm() {
   const getHrName = (id) => HR_LIST.find((hr) => hr._id === id)?.name || "Not provided";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold text-gray-800 mb-3 bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-700">
+          <h1 className="text-4xl font-bold text-gray-800 mb-3 bg-clip-text bg-linear-to-r from-blue-600 to-indigo-700">
             Candidate Interview Form
           </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">

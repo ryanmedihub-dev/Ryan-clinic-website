@@ -22,8 +22,15 @@ const services = [
 ];
 
 const locations = [
-  {label : "Delhi" , href: "hair-transplant-in-delhi"},
-]
+  { label: "Bangalore", href: "hair-transplant-in-bangalore" },
+  { label: "Chennai", href: "hair-transplant-in-chennai" },
+  { label: "Kolkata", href: "hair-transplant-in-kolkata" },
+  { label: "Pune", href: "hair-transplant-in-pune" },
+  { label: "Ahmedabad", href: "hair-transplant-in-ahmedabad" },
+  { label: "Lucknow", href: "hair-transplant-in-lucknow" },
+  { label: "Jammu", href: "hair-transplant-in-jammu" },
+  { label: "Patna", href: "hair-transplant-in-patna" },
+];
 
 const quickLinks = [
   { label: "Home", href: "/" },
@@ -243,9 +250,9 @@ export default function Footer() {
                 className="block w-1 h-5 rounded-full"
                 style={{ background: "var(--primary-red)" }}
               />
-              <h4 className="font-bold text-white text-base uppercase tracking-wider">
+              <h5 className="font-bold text-white text-base uppercase tracking-wider">
                 Quick Links
-              </h4>
+              </h5>
             </div>
             <ul className="space-y-2.5">
               {quickLinks.map((l) => (
@@ -275,9 +282,9 @@ export default function Footer() {
                 className="block w-1 h-5 rounded-full"
                 style={{ background: "var(--primary-red)" }}
               />
-              <h4 className="font-bold text-white text-base uppercase tracking-wider">
+              <h5 className="font-bold text-white text-base uppercase tracking-wider">
                 Our Services
-              </h4>
+              </h5>
             </div>
             <ul className="space-y-2.5">
               {services.map((s) => (
@@ -307,9 +314,9 @@ export default function Footer() {
                 className="block w-1 h-5 rounded-full"
                 style={{ background: "var(--primary-red)" }}
               />
-              <h4 className="font-bold text-white text-base uppercase tracking-wider">
+              <h5 className="font-bold text-white text-base uppercase tracking-wider">
                 Our Branches
-              </h4>
+              </h5>
             </div>
             <ul className="space-y-2.5">
               {locations.map((s) => (
@@ -339,9 +346,9 @@ export default function Footer() {
                 className="block w-1 h-5 rounded-full"
                 style={{ background: "var(--primary-red)" }}
               />
-              <h4 className="font-bold text-white text-base uppercase tracking-wider">
+              <h5 className="font-bold text-white text-base uppercase tracking-wider">
                 Contact Us
-              </h4>
+              </h5>
             </div>
             <ul className="space-y-4">
               <li>
@@ -412,9 +419,9 @@ export default function Footer() {
             className="block w-1 h-5 rounded-full"
             style={{ background: "var(--primary-red)" }}
           />
-          <h4 className="font-bold text-white text-base uppercase tracking-wider">
-            Our Branches
-          </h4>
+          <h5 className="font-bold text-white text-base uppercase tracking-wider">
+            Our Address
+          </h5>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -449,7 +456,7 @@ export default function Footer() {
                     d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
                   />
                 </svg>
-                <h5 className="font-bold text-white text-sm">{b.city}</h5>
+                <h6 className="font-bold text-white text-sm">{b.city}</h6>
               </div>
               <p
                 className="text-xs leading-relaxed mb-3"

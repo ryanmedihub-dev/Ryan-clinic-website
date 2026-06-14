@@ -120,7 +120,7 @@ function TileContent({ index, showInfo, grafts }) {
   );
 }
 
-export default function OurResults() {
+export default function OurResults({ city = "Delhi" }) {
   const [sectionRef, inView] = useInView(0.1);
 
   return (
@@ -327,7 +327,7 @@ export default function OurResults() {
         {/* Heading */}
         <div className="text-center px-4 mb-6">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-2">
-            Ryan&apos;s Results
+            Hair Transplant Results in &apos; ${city}
           </h2>
           <p className="max-w-2xl mx-auto text-gray-500 text-xs sm:text-sm leading-relaxed">
             Our results aren&apos;t just great — they&apos;re{" "}

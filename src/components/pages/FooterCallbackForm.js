@@ -69,9 +69,9 @@ export default function FooterCallbackForm() {
             Free Consultation
           </span>
         </div>
-        <h2 className="text-xl sm:text-2xl font-bold text-white leading-snug">
+        <h5 className="text-xl sm:text-2xl font-bold text-white leading-snug">
           Request a Callback
-        </h2>
+        </h5>
         <p className="text-xs mt-1.5" style={{ color: "#6b7280" }}>
           Our hair restoration expert will call you within 24 hours.
         </p>

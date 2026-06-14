@@ -71,9 +71,9 @@ export default function ContactForm() {
   return (
     <div className="md:bg-white md:rounded-lg shadow-new stickyItem">
       <div className="md:p-6 p-3 md:py-8">
-        <h2 className="md:text-[24px] text-xl font-semibold underline mb-5 text-center">
+        <p className="md:text-[24px] text-xl font-semibold underline mb-5 text-center">
           Book Your Free Consult Now!
-        </h2>
+        </p>
 
         <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
           <div className="grid grid-flow-col gap-4">
