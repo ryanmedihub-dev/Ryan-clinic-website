@@ -75,12 +75,6 @@ export default function LoginPage() {
             placeholder="Submit"
           />
 
-          <p className="mt-2 text-sm text-center text-gray-600">
-            Don't have an account?{" "}
-            <a href="/register" className="text-blue-600 hover:underline">
-              Sign In
-            </a>
-          </p>
         </form>
       </div>
     </div>

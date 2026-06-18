@@ -6,8 +6,8 @@ export default withAuth(
     const token = req.nextauth.token;
     const { pathname } = req.nextUrl;
 
-    // Redirect already-logged-in users away from auth pages
-    if (token && (pathname === "/login" || pathname === "/register")) {
+    // Redirect already-logged-in users away from the login page
+    if (token && pathname === "/login") {
       return NextResponse.redirect(new URL("/admin", req.url));
     }
 
@@ -34,7 +34,6 @@ export const config = {
   matcher: [
     "/admin/:path*",
     "/login",
-    "/register",
     "/api/blog/:path*",
     "/api/service/:path*",
     "/api/sliders/:path*",
