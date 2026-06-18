@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
 import { withDB } from "@/lib/withDB";
 import Services from "@/models/services";
+import { requireAdmin } from "@/lib/requireAdmin";
 
-const handler = async () => {
+const handler = async (req) => {
+  const authError = await requireAdmin();
+  if (authError) return authError;
+
   try {
     // Update all docs missing metadata.keywords
     const result = await Services.updateMany(

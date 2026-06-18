@@ -1,8 +1,12 @@
 import { DBConnection } from "@/lib/db";
 import User from "@/models/user";
 import bcrypt from "bcryptjs";
+import { requireAdmin } from "@/lib/requireAdmin";
 
 export async function POST(req) {
+  const authError = await requireAdmin();
+  if (authError) return authError;
+
   try {
     const { name, email, password } = await req.json();
 

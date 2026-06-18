@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
 import Blog from "@/models/blog";
 import { withDB } from "@/lib/withDB";
+import { requireAdmin } from "@/lib/requireAdmin";
 
 export const DELETE = withDB(async (req, { params }) => {
+  const authError = await requireAdmin();
+  if (authError) return authError;
+
   try {
     const { id } = await params;
 

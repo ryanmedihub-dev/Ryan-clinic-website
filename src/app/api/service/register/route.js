@@ -1,9 +1,13 @@
 // app/api/register/route.js (for App Router)
 
-import Service from '@/models/services'; 
-import { withDB } from '@/lib/withDB'; 
+import Service from '@/models/services';
+import { withDB } from '@/lib/withDB';
+import { requireAdmin } from "@/lib/requireAdmin";
 
 async function registerHandler(request) {
+  const authError = await requireAdmin();
+  if (authError) return authError;
+
   try {
     const data = await request.json();
     

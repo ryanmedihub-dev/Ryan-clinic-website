@@ -71,7 +71,6 @@ export default function WhyChooseUs({ city = "Delhi" }) {
               <span className="text-[#D32F2F]">
                The Best Hair Transplant 
               <br />
-               Clinic
               </span>
               Clinic In {city}
             </h2>

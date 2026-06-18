@@ -19,8 +19,11 @@ export default function LoginPage() {
 
     if (!res?.error) {
       router.push("/admin");
-    } else {
+    } else if (res.error === "CredentialsSignin") {
       setErrorMsg("Invalid email or password.");
+    } else {
+      // Lockout message from the server (e.g. "Too many failed attempts...")
+      setErrorMsg(res.error);
     }
   };
 

@@ -1,6 +1,7 @@
 import Sliders from "@/models/sliders";
 import { NextResponse } from "next/server";
 import { withDB } from "@/lib/withDB";
+import { requireAdmin } from "@/lib/requireAdmin";
 
 
 const isValidType = (type) => {
@@ -26,6 +27,9 @@ const getAllSliders = async () => {
 
 
 const createSlider = async (req) => {
+  const authError = await requireAdmin();
+  if (authError) return authError;
+
   try {
     const { type, data } = await req.json();
 
@@ -63,6 +67,9 @@ const createSlider = async (req) => {
 
 
 const updateSlider = async (req) => {
+  const authError = await requireAdmin();
+  if (authError) return authError;
+
   try {
     const { searchParams } = new URL(req.url);
     const type = searchParams.get('type');
@@ -103,6 +110,9 @@ const updateSlider = async (req) => {
 
 
 const deleteSlider = async (req) => {
+  const authError = await requireAdmin();
+  if (authError) return authError;
+
   try {
     const { searchParams } = new URL(req.url);
     const type = searchParams.get('type');

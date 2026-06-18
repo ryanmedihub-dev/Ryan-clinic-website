@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
 import Blog from "@/models/blog";
 import { withDB } from "@/lib/withDB";
+import { requireAdmin } from "@/lib/requireAdmin";
 
 export const PUT = withDB(async (req, { params }) => {
+  const authError = await requireAdmin();
+  if (authError) return authError;
+
   try {
     const { id } = await params;
     const body = await req.json();
@@ -14,15 +18,35 @@ export const PUT = withDB(async (req, { params }) => {
       );
     }
 
+    const {
+      metaTitle,
+      metaDiscription,
+      pageUrl,
+      pageTitle,
+      pageDiscription,
+      pageImageUrl,
+      pageImageAlt,
+      blogTitle,
+      blogContent,
+    } = body;
+
     const updatedBlog = await Blog.findByIdAndUpdate(
       id,
-      { 
-        ...body,
-        updatedAt: new Date() 
+      {
+        metaTitle,
+        metaDiscription,
+        pageUrl,
+        pageTitle,
+        pageDiscription,
+        pageImageUrl,
+        pageImageAlt,
+        blogTitle,
+        blogContent,
+        updatedAt: new Date(),
       },
-      { 
+      {
         new: true,
-        runValidators: true 
+        runValidators: true
       }
     );
 

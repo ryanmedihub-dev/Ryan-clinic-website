@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
 import { withDB } from "@/lib/withDB";
 import Blog from "@/models/blog";
+import { requireAdmin } from "@/lib/requireAdmin";
 
 const handler = async (req) => {
+  const authError = await requireAdmin();
+  if (authError) return authError;
+
   const body = await req.json();
 
   const {
