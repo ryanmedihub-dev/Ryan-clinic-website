@@ -22,7 +22,8 @@
       "Bash(dir \"c:\\\\dashzer\\\\Ryan-next-project-new\\\\public\\\\uploads\" /b)",
       "Bash(findstr /i \"hair banner\")",
       "Bash(grep -E \"\\\\.\\(js|jsx|ts|tsx\\)$\")",
-      "Bash(findstr slug *)"
+      "Bash(findstr slug *)",
+      "Bash(Remove-Item \"c:\\\\dashzer\\\\Ryan-next-project-new\\\\src\\\\middleware.js\")"
     ],
     "additionalDirectories": [
       "/home/dashzer/codes/clinicryan/src/app/(root)"
