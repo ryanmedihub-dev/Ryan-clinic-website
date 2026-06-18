@@ -18,8 +18,10 @@ export default withAuth(
       return NextResponse.redirect(loginUrl);
     }
 
-    // Block unauthenticated access to admin API routes → return 401
-    if (!token) {
+    // Block unauthenticated writes to admin API routes → return 401
+    // GET is intentionally allowed so public pages can still fetch content
+    const isWrite = ["POST", "PUT", "PATCH", "DELETE"].includes(req.method);
+    if (!token && isWrite) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
   },
