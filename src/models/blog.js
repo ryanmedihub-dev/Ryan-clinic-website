@@ -37,12 +37,7 @@ const blogSchema = new mongoose.Schema({
   blogContent: {
     type: String,
     required: true,
-    minlength: 20,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+}, { timestamps: true });
 
 export default mongoose.models.Blog || mongoose.model("Blog", blogSchema);

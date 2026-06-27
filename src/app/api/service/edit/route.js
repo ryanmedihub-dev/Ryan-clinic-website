@@ -4,7 +4,7 @@ import { withDB } from "@/lib/withDB";
 import Services from "@/models/services";
 import { requireAdmin } from "@/lib/requireAdmin";
 
-export async function handler(request) {
+async function handler(request) {
   const authError = await requireAdmin();
   if (authError) return authError;
 
