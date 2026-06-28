@@ -12,7 +12,7 @@ export default function PageBanner({
   return (
     <header className="relative w-full overflow-hidden">
       <div className="hidden md:block">
-        <div className="relative w-full h-132 overflow-hidden flex items-center">
+        <div className="relative w-full h-145 overflow-hidden flex items-center">
           {/* RIGHT SIDE IMAGE (49%) */}
           <div className="absolute right-0 top-0 h-full w-[49%]">
             <Image

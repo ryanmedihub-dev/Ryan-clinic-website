@@ -295,7 +295,7 @@ section {
   font-weight: bold;
 }
 .new-pageLayout h2 {
-  font-size: 1.75rem;
+  font-size: 2rem;
   line-height: 1.3;
   font-weight: bold;
   /* color: var(--primary-red); */
@@ -307,7 +307,7 @@ section {
   margin-top: 25px;
 }
 .new-pageLayout h5 {
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   line-height: 1.4;
 }
 .new-pageLayout h6 {
