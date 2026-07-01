@@ -44,7 +44,8 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net https://api.whatsapp.com",
+              // 'unsafe-eval' is required by React/Turbopack in dev mode for stack trace reconstruction
+              `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''} https://www.googletagmanager.com https://connect.facebook.net https://api.whatsapp.com`,
               "img-src 'self' data: https: blob:",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' data: https://fonts.gstatic.com",
@@ -64,10 +65,10 @@ const nextConfig = {
         destination: "/:path*",
         permanent: true,
       },
-      // /results was linked from CTAs but the page lives at /gallery/images
+      // /results was linked from CTAs but the page lives at /hair-transplant-results-before-after-gallery
       {
         source: "/results",
-        destination: "/gallery/images",
+        destination: "/hair-transplant-results-before-after-gallery",
         permanent: true,
       },
     ];

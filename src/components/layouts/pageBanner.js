@@ -8,6 +8,7 @@ export default function PageBanner({
   description,
   breadcrumbLabel,
   bgImage,
+  hideBadge = false,
 }) {
   return (
     <header className="relative w-full overflow-hidden">
@@ -163,12 +164,14 @@ export default function PageBanner({
         {/* Main content — pinned to bottom */}
         <div className="absolute bottom-0 left-0 right-0 px-5 pb-6 z-10">
           {/* Clinic badge */}
-          <div className="inline-flex items-center gap-2 bg-red-800/25 border border-red-500/35 rounded-full px-3 py-1.5 mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
-            <span className="text-[9px] uppercase tracking-[2px] text-red-300">
-              India&apos;s Only Turkey Sapphire FUE
-            </span>
-          </div>
+          {!hideBadge && (
+            <div className="inline-flex items-center gap-2 bg-red-800/25 border border-red-500/35 rounded-full px-3 py-1.5 mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
+              <span className="text-[9px] uppercase tracking-[2px] text-red-300">
+                India&apos;s Only Turkey Sapphire FUE
+              </span>
+            </div>
+          )}
 
           {/* 
             Use p instead of h2 to avoid duplicate heading in the DOM.

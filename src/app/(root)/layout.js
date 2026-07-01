@@ -129,7 +129,7 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://res.cloudinary.com" />
       </head>
 
-      <body className={`${dmSans.className} antialiased`}>
+      <body className={`${dmSans.className} antialiased`} suppressHydrationWarning>
         {/* Structured data — in body for performance (keeps <head> small so LCP preload is discovered faster) */}
         <SchemaMarkup />
         {/* Google Analytics */}
