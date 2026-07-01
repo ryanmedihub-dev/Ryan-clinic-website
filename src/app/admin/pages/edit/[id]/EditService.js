@@ -246,43 +246,6 @@ export default function EditService({ initialData }) {
     }
   };
 
-  const formatDataForAPI = (data) => {
-    return {
-      bannerData: {
-        title: data.bannerTitle,
-        description: data.bannerDescription,
-        imageurl: data.bannerImage,
-        imagealt: data.bannerAlt,
-      },
-      benefitsData: {
-        title: data.benefitsTitle,
-        description: data.benefitsDescription,
-        component: data.benefitComponents,
-      },
-      extraFields: {
-        detail1: data.extraDetail1,
-        detail2: data.extraDetail2,
-      },
-      faq: data.faqs,
-      metadata: {
-        pageName: data.pageName,
-        pageType: data.pageType,
-        description: data.description,
-        pageurl: data.pageUrl,
-        title: data.serviceTitle,
-        overviewData: data.overviewContent,
-        keywords: data.keywords,
-      },
-      typesData: {
-        details: data.typesDetails,
-        images: data.typeImages.map((img) => ({
-          url: img.url || "",
-          alt: img.alt || "",
-        })),
-      },
-    };
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) {

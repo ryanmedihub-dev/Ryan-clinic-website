@@ -42,12 +42,8 @@ export const PUT = withDB(async (req, { params }) => {
         pageImageAlt,
         blogTitle,
         blogContent,
-        updatedAt: new Date(),
       },
-      {
-        new: true,
-        runValidators: true
-      }
+      { new: true }
     );
 
     if (!updatedBlog) {
