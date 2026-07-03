@@ -5,154 +5,25 @@ import Image from "next/image";
 import Link from "next/link";
 import PageBanner from "@/components/layouts/pageBanner";
 import {
-  Sparkles,
   MapPin,
   ShieldCheck,
   ChevronLeft,
   ChevronRight,
   X,
-  Calendar,
   Layers,
   Maximize2,
   MessageSquare,
   Users,
   Camera,
-  Layers3,
-  Flame,
-  Info
 } from "lucide-react";
 
-// Import all images
 import ImageOne from '../../../../public/uploads/images/image1.jpg';
-import ImageTwo from '../../../../public/uploads/images/image2.jpg';
-import ImageThree from '../../../../public/uploads/images/image3.jpg';
-import ImageFour from '../../../../public/uploads/images/image4.jpg';
-import ImageFive from '../../../../public/uploads/images/image5.jpg';
-import ImageSix from '../../../../public/uploads/images/image6.jpg';
-import ImageSeven from '../../../../public/uploads/images/image7.jpg';
-import ImageEight from '../../../../public/uploads/images/image8.jpg';
-import ImageNine from '../../../../public/uploads/images/image9.jpg';
-import ImageTen from '../../../../public/uploads/images/image10.jpg';
-import ImageEleven from '../../../../public/uploads/images/image11.jpg';
-import ImageTwelve from '../../../../public/uploads/images/image12.jpg';
-import ImageThirteen from '../../../../public/uploads/images/image13.jpg';
-import ImageFourteen from '../../../../public/uploads/images/image14.jpg';
-import ImageFifteen from '../../../../public/uploads/images/image15.jpg';
-import ImageSixteen from '../../../../public/uploads/images/image16.jpg';
-import ImageSeventeen from '../../../../public/uploads/images/image17.jpg';
-import ImageEighteen from '../../../../public/uploads/images/image18.jpg';
-import ImageNineteen from '../../../../public/uploads/images/image19.jpg';
-import ImageTwenty from '../../../../public/uploads/images/image20.jpg';
-import ImageTwentyOne from '../../../../public/uploads/images/image21.jpg';
-import ImageTwentyTwo from '../../../../public/uploads/images/image22.jpg';
-import ImageTwentyThree from '../../../../public/uploads/images/image23.jpg';
-import ImageTwentyFour from '../../../../public/uploads/images/image24.jpg';
-import ImageTwentyFive from '../../../../public/uploads/images/image25.jpg';
-import ImageTwentySix from '../../../../public/uploads/images/image26.jpg';
-import ImageTwentySeven from '../../../../public/uploads/images/image27.jpg';
-import ImageTwentyEight from '../../../../public/uploads/images/image28.jpg';
-import ImageTwentyNine from '../../../../public/uploads/images/image29.jpg';
-import ImageThirty from '../../../../public/uploads/images/image30.jpg';
 import GalleryBanner from "../../../../public/uploads/gallery.jpg";
 
-// Detail mappings for 30 patient cases grouped exactly according to categories and requirements
-const byGraftCount = [
-  {
-    group: "2000–2500 Grafts",
-    subtitle: "Norwood 2–3 — hairline & temples",
-    images: [
-      { id: 1, src: ImageOne, caption: "Sapphire FUE · 2,200 grafts · Norwood 3 · 12 months post-procedure", alt: "2200 grafts Sapphire FUE hair transplant before and after, 12 months", category: "Delhi" },
-      { id: 2, src: ImageTwo, caption: "FUE · 2,000 grafts · Norwood 2 · 10 months post-procedure", alt: "2000 grafts FUE hair transplant before and after, 10 months", category: "Delhi" },
-      { id: 3, src: ImageThree, caption: "Sapphire FUE · 2,400 grafts · Norwood 3 · 14 months post-procedure", alt: "2400 grafts Sapphire FUE hair transplant before and after, 14 months", category: "Delhi" }
-    ]
-  },
-  {
-    group: "3000–3500 Grafts",
-    subtitle: "Norwood 3–4 — frontal & mid-scalp",
-    images: [
-      { id: 4, src: ImageFour, caption: "Sapphire FUE · 3,200 grafts · Norwood 4 · 12 months post-procedure", alt: "3200 grafts Sapphire FUE hair transplant before and after, 12 months", category: "Delhi" },
-      { id: 5, src: ImageFive, caption: "FUE · 3,000 grafts · Norwood 3 · 15 months post-procedure", alt: "3000 grafts FUE hair transplant before and after, 15 months", category: "Delhi" },
-      { id: 6, src: ImageSix, caption: "Sapphire FUE · 3,500 grafts · Norwood 4 · 18 months post-procedure", alt: "3500 grafts Sapphire FUE hair transplant before and after, 18 months", category: "Delhi" }
-    ]
-  },
-  {
-    group: "4000+ Grafts",
-    subtitle: "Norwood 4–6 — advanced / crown coverage",
-    images: [
-      { id: 7, src: ImageSeven, caption: "Sapphire FUE · 4,200 grafts · Norwood 5 · 18 months post-procedure", alt: "4200 grafts Sapphire FUE hair transplant before and after, 18 months", category: "Delhi" },
-      { id: 8, src: ImageEight, caption: "FUE · 4,500 grafts · Norwood 6 · 2-Session · 18 months post-procedure", alt: "4500 grafts FUE hair transplant before and after advanced, 18 months", category: "Delhi" },
-      { id: 9, src: ImageNine, caption: "Sapphire FUE · 4,000 grafts · Norwood 4 (Crown) · 14 months post-procedure", alt: "4000 grafts Sapphire FUE crown hair transplant before and after, 14 months", category: "Delhi" }
-    ]
-  }
-];
 
-const byTechnique = [
-  {
-    technique: "Sapphire FUE Before & After",
-    images: [
-      { id: 10, src: ImageTen, caption: "Sapphire FUE · 2,600 grafts · Norwood 3 · 11 months post-procedure", alt: "Sapphire FUE hair transplant before and after results", category: "Delhi" },
-      { id: 11, src: ImageEleven, caption: "Sapphire FUE · 2,300 grafts · Norwood 2 · 12 months post-procedure", alt: "Sapphire FUE hair transplant before and after results", category: "Mumbai" }
-    ]
-  },
-  {
-    technique: "FUE Before & After",
-    images: [
-      { id: 12, src: ImageTwelve, caption: "FUE · 2,100 grafts · Norwood 2 · 12 months post-procedure", alt: "FUE hair transplant before and after results", category: "Mumbai" },
-      { id: 13, src: ImageThirteen, caption: "FUE · 3,100 grafts · Norwood 3 · 15 months post-procedure", alt: "FUE hair transplant before and after results", category: "Mumbai" }
-    ]
-  },
-  {
-    technique: "Beard Transplant Before & After",
-    images: [
-      { id: 14, src: ImageFourteen, caption: "FUE Beard · 2,500 grafts · Beard Fill · 10 months post-procedure", alt: "beard transplant before and after results", category: "Mumbai" }
-    ]
-  },
-  {
-    technique: "Female Hair Transplant Before & After",
-    images: [
-      { id: 15, src: ImageFifteen, caption: "Female FUE · 2,200 grafts · Hairline Fill · 14 months post-procedure", alt: "female hair transplant before and after, hairline", category: "Mumbai" }
-    ]
-  }
-];
-
-// Flat array of all images (Delhi, Mumbai, Hyderabad cities) for the full search/filter gallery
-const allCases = [
-  { id: 1, src: ImageOne, category: "Delhi", grafts: "2,200 Grafts", technique: "Sapphire FUE", timeline: "12 Months", title: "Frontal Hairline & Temples Restoration" },
-  { id: 2, src: ImageTwo, category: "Delhi", grafts: "2,000 Grafts", technique: "FUE", timeline: "10 Months", title: "Symmetric Temple Reconstruction" },
-  { id: 3, src: ImageThree, category: "Delhi", grafts: "2,400 Grafts", technique: "Sapphire FUE", timeline: "14 Months", title: "Norwood Grade 3 Recession Repair" },
-  { id: 4, src: ImageFour, category: "Delhi", grafts: "3,200 Grafts", technique: "Sapphire FUE", timeline: "12 Months", title: "Frontal Third Density Enhancement" },
-  { id: 5, src: ImageFive, category: "Delhi", grafts: "3,000 Grafts", technique: "FUE", timeline: "15 Months", title: "Mid-Scalp & Crown Density Boost" },
-  { id: 6, src: ImageSix, category: "Delhi", grafts: "3,500 Grafts", technique: "Sapphire FUE", timeline: "18 Months", title: "Advanced Frontal Recessional Fill" },
-  { id: 7, src: ImageSeven, category: "Delhi", grafts: "4,200 Grafts", technique: "Sapphire FUE", timeline: "18 Months", title: "Norwood Grade 5 Mega-Graft Restoration" },
-  { id: 8, src: ImageEight, category: "Delhi", grafts: "4,500 Grafts", technique: "FUE (2-Sessions)", timeline: "18 Months", title: "Extensive Crown & Hairline Coverage" },
-  { id: 9, src: ImageNine, category: "Delhi", grafts: "4,000 Grafts", technique: "Sapphire FUE", timeline: "14 Months", title: "Complete Vertex & Crown Coverage" },
-  { id: 10, src: ImageTen, category: "Delhi", grafts: "2,600 Grafts", technique: "Sapphire FUE", timeline: "11 Months", title: "Natural Hairline Lowering & Balancing" },
-  { id: 11, src: ImageEleven, category: "Mumbai", grafts: "2,300 Grafts", technique: "Sapphire FUE", timeline: "12 Months", title: "High Density Frontal Hairline Creation" },
-  { id: 12, src: ImageTwelve, category: "Mumbai", grafts: "2,100 Grafts", technique: "FUE", timeline: "12 Months", title: "Symmetrical Receding Temples Fill" },
-  { id: 13, src: ImageThirteen, category: "Mumbai", grafts: "3,100 Grafts", technique: "Sapphire FUE", timeline: "15 Months", title: "Norwood Grade 3a Frontal Reconstruction" },
-  { id: 14, src: ImageFourteen, category: "Mumbai", grafts: "2,500 Grafts", technique: "FUE Beard", timeline: "10 Months", title: "Patchy Beard Reconstruction & Fill" },
-  { id: 15, src: ImageFifteen, category: "Mumbai", grafts: "2,200 Grafts", technique: "Female FUE", timeline: "14 Months", title: "Female Pattern Hairline Correction" },
-  { id: 16, src: ImageSixteen, category: "Mumbai", grafts: "3,300 Grafts", technique: "Sapphire FUE", timeline: "12 Months", title: "Extended Frontal Zone Density Boost" },
-  { id: 17, src: ImageSeventeen, category: "Mumbai", grafts: "2,800 Grafts", technique: "Sapphire FUE", timeline: "16 Months", title: "Asymmetrical Hairline Alignment" },
-  { id: 18, src: ImageEighteen, category: "Mumbai", grafts: "3,400 Grafts", technique: "FUE", timeline: "18 Months", title: "Diffuse Mid-Scalp Thinning Density" },
-  { id: 19, src: ImageNineteen, category: "Mumbai", grafts: "4,100 Grafts", technique: "Sapphire FUE", timeline: "14 Months", title: "Vertex & Crown Norwood Grade 4 Repair" },
-  { id: 20, src: ImageTwenty, category: "Mumbai", grafts: "2,700 Grafts", technique: "Sapphire FUE", timeline: "12 Months", title: "Dense Pack Hairline Reconstruction" },
-  { id: 21, src: ImageTwentyOne, category: "Hyderabad", grafts: "2,200 Grafts", technique: "Sapphire FUE", timeline: "12 Months", title: "Slight Norwood Grade 2 Hairline Fix" },
-  { id: 22, src: ImageTwentyTwo, category: "Hyderabad", grafts: "3,000 Grafts", technique: "FUE", timeline: "12 Months", title: "Frontal Recess Reconstruction & Fill" },
-  { id: 23, src: ImageTwentyThree, category: "Hyderabad", grafts: "3,200 Grafts", technique: "Sapphire FUE", timeline: "14 Months", title: "Norwood 3 Frontal & Vertex Fill" },
-  { id: 24, src: ImageTwentyFour, category: "Hyderabad", grafts: "2,400 Grafts", technique: "FUE", timeline: "10 Months", title: "Temples & Mid-Scalp Density Boost" },
-  { id: 25, src: ImageTwentyFive, category: "Hyderabad", grafts: "4,300 Grafts", technique: "Sapphire FUE", timeline: "18 Months", title: "Severe Norwood 5 Mega-Graft Fill" },
-  { id: 26, src: ImageTwentySix, category: "Hyderabad", grafts: "3,500 Grafts", technique: "Sapphire FUE", timeline: "15 Months", title: "Frontal Third Density Reconstruction" },
-  { id: 27, src: ImageTwentySeven, category: "Hyderabad", grafts: "2,900 Grafts", technique: "FUE", timeline: "12 Months", title: "Natural Frontal Hairline Recess Fill" },
-  { id: 28, src: ImageTwentyEight, category: "Hyderabad", grafts: "3,800 Grafts", technique: "Sapphire FUE", timeline: "16 Months", title: "Full Top & Crown Coverage Restoration" },
-  { id: 29, src: ImageTwentyNine, category: "Hyderabad", grafts: "2,500 Grafts", technique: "Sapphire FUE", timeline: "13 Months", title: "Dense Pack Hairline Lowering Case" },
-  { id: 30, src: ImageThirty, category: "Hyderabad", grafts: "4,500 Grafts", technique: "FUE", timeline: "18 Months", title: "Advanced Norwood 6 Crown & Hairline" }
-];
-
-const cities = ["All", "Delhi", "Mumbai", "Hyderabad"];
 
 // Interactive Hover-to-Reveal Before/After Image Slider
-function BeforeAfterSlider({ src, alt, className = "" }) {
+function BeforeAfterSlider({ src, afterSrc, alt, className = "" }) {
   const [sliderVal, setSliderVal] = useState(50);
   const [isTouchDragging, setIsTouchDragging] = useState(false);
   const containerRef = useRef(null);
@@ -191,6 +62,9 @@ function BeforeAfterSlider({ src, alt, className = "" }) {
     };
   }, [isTouchDragging]);
 
+  const beforeSrc = src;
+  const resolvedAfterSrc = afterSrc || src;
+
   return (
     <div
       ref={containerRef}
@@ -205,13 +79,14 @@ function BeforeAfterSlider({ src, alt, className = "" }) {
           clipPath: `polygon(0 0, ${sliderVal}% 0, ${sliderVal}% 100%, 0 100%)`
         }}
       >
-        <div className="absolute top-0 left-0 w-[200%] h-full">
+        <div className="absolute top-0 left-0 w-full h-full">
           <Image
-            src={src}
+            src={beforeSrc}
             alt={alt}
             fill
-            className="object-cover object-left"
+            className="object-cover"
             sizes="(max-width: 1024px) 100vw, 800px"
+            unoptimized={typeof beforeSrc === "string"}
           />
         </div>
       </div>
@@ -223,13 +98,14 @@ function BeforeAfterSlider({ src, alt, className = "" }) {
           clipPath: `polygon(${sliderVal}% 0, 100% 0, 100% 100%, ${sliderVal}% 100%)`
         }}
       >
-        <div className="absolute top-0 right-0 w-[200%] h-full">
+        <div className="absolute top-0 right-0 w-full h-full">
           <Image
-            src={src}
+            src={resolvedAfterSrc}
             alt={alt}
             fill
-            className="object-cover object-right"
+            className="object-cover"
             sizes="(max-width: 1024px) 100vw, 800px"
+            unoptimized={typeof resolvedAfterSrc === "string"}
           />
         </div>
       </div>
@@ -258,6 +134,7 @@ function SectionLabel({ label }) {
 }
 
 function ImageCard({ src, alt, caption, onClick }) {
+  const isUrl = typeof src === "string";
   return (
     <div
       onClick={onClick}
@@ -270,6 +147,7 @@ function ImageCard({ src, alt, caption, onClick }) {
           fill
           className="object-cover transform group-hover:scale-105 transition-transform duration-700"
           sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+          unoptimized={isUrl}
         />
         <div className="absolute inset-0 bg-black/20 opacity-10 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
           <div className="px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-white/25 backdrop-blur-md text-white border border-white/40 shadow-md text-xs font-bold flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -352,11 +230,54 @@ export default function GalleryPageClient() {
   const [lightboxImages, setLightboxImages] = useState([]);
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const [openFaq, setOpenFaq] = useState(null);
+  const [gallery, setGallery] = useState(null);
+  const [galleryLoading, setGalleryLoading] = useState(true);
+  const [galleryError, setGalleryError] = useState(false);
+
+  useEffect(() => {
+    const fetchGallery = async () => {
+      try {
+        const response = await fetch("/api/gallery/get");
+        const data = await response.json();
+        if (response.ok && data.gallery) {
+          setGallery(data.gallery);
+        } else {
+          setGalleryError(true);
+        }
+      } catch {
+        setGalleryError(true);
+      } finally {
+        setGalleryLoading(false);
+      }
+    };
+    fetchGallery();
+  }, []);
+
+  // Build flat case list and city list dynamically from MongoDB data
+  const allDynamicCases = gallery?.gallerySection
+    ? gallery.gallerySection.flatMap((section, sIdx) =>
+        (section.cases || []).map((patient, pIdx) => ({
+          id: `${sIdx}-${pIdx}`,
+          src: patient.cardImage || patient.beforeImage,
+          beforeImage: patient.beforeImage,
+          afterImage: patient.afterImage,
+          alt: patient.altImage || section.title,
+          caption: [patient.techniqueUsed, patient.graftCount ? `${patient.graftCount} grafts` : null, patient.timeline].filter(Boolean).join(" · "),
+          title: section.title,
+          grafts: patient.graftCount ? `${patient.graftCount} Grafts` : "",
+          technique: patient.techniqueUsed || "",
+          timeline: patient.timeline || "",
+          category: patient.clinicLocation || "",
+        }))
+      )
+    : [];
+
+  const dynamicCities = ["All", ...Array.from(new Set(allDynamicCases.map((c) => c.category).filter(Boolean)))];
 
   const filteredCityImages =
     selectedCity === "All"
-      ? allCases
-      : allCases.filter((img) => img.category === selectedCity);
+      ? allDynamicCases
+      : allDynamicCases.filter((img) => img.category === selectedCity);
 
   const handleOpenLightbox = (list, index) => {
     setLightboxImages(list);
@@ -373,7 +294,6 @@ export default function GalleryPageClient() {
 
   const activeCase = lightboxIndex !== null ? lightboxImages[lightboxIndex] : null;
 
-  // Pre-filled WhatsApp link based on the selected case
   const getWhatsAppLink = (c) => {
     if (!c) return "https://api.whatsapp.com/send?phone=+919217958539";
     const titleText = c.title || c.caption || "Case Detail";
@@ -381,14 +301,39 @@ export default function GalleryPageClient() {
     return `https://api.whatsapp.com/send?phone=+919217958539&text=${encodeURIComponent(text)}`;
   };
 
+  if (galleryLoading) {
+    return (
+      <div className="bg-[#FAF9F6] min-h-screen">
+        <div className="h-64 bg-stone-200 animate-pulse" />
+        <div className="container mx-auto px-4 py-16 max-w-7xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-stone-200 animate-pulse rounded-2xl h-64" />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (galleryError || !gallery) {
+    return (
+      <div className="bg-[#FAF9F6] min-h-screen flex items-center justify-center">
+        <p className="text-gray-400 text-sm">Gallery content is currently unavailable.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-[#FAF9F6] min-h-screen text-[#D32F2F]">
 
       <PageBanner
-        title="Our Gallery"
-        description="Explore real hair transplant before and after results from Ryan Clinic and see how our doctor-led FUE and Sapphire FUE procedures have helped patients achieve natural-looking hairlines, improved density, and renewed confidence."
-        bgImage={GalleryBanner}
+        title={gallery.banner?.title || "Our Gallery"}
+        description={gallery.banner?.description || ""}
+        bgImage={gallery.banner?.bannerImage || GalleryBanner}
+        bgImageAlt={gallery.banner?.bannerAltImage || "Gallery banner"}
         hideBadge={true}
+        breadcrumb="Gallery"
       />
 
       {/* Trust & Methodology Strip */}
@@ -434,11 +379,15 @@ export default function GalleryPageClient() {
             <div>
               <SectionLabel label="Real Patient Results" />
               <h1 className="text-2xl  sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-4 md:mb-6 break-words">
-                Hair Transplant Before & After —{" "}
-                <span className="text-[#D32F2F]">Real Patient Results Gallery</span>
+                {gallery.heroSection?.title || (
+                  <>
+                    Hair Transplant Before &amp; After —{" "}
+                    <span className="text-[#D32F2F]">Real Patient Results Gallery</span>
+                  </>
+                )}
               </h1>
               <p className="text-gray-600  text-sm sm:text-base leading-relaxed mb-3 md:mb-4">
-                Real, unedited hair transplant before and after results from patients at Ryan Clinic. Every transformation below is a genuine, consented case — photographed in consistent lighting, labelled with the technique, graft count, and timeline, so you can judge the results honestly.
+                {gallery.heroSection?.description || "Real, unedited hair transplant before and after results from patients at Ryan Clinic."}
               </p>
               <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-5 md:mb-6">
                 These are doctor-led Sapphire FUE and FUE hair transplants, shown across a range of graft counts and hair-loss grades. Results develop gradually — most patients see early growth at 3–4 months and final density at 12–18 months.
@@ -476,8 +425,9 @@ export default function GalleryPageClient() {
             <div className="bg-white rounded-3xl p-4 md:p-5 border border-stone-200/60 shadow-sm">
               <span className="text-[10px] font-bold text-red-600 uppercase tracking-widest bg-red-50 px-2 py-0.5 rounded inline-block mb-3">Interactive Compare</span>
               <BeforeAfterSlider
-                src={ImageOne}
-                alt="Hair transplant before and after results gallery — Ryan Clinic"
+                src={gallery.heroSection?.beforeImage || ImageOne}
+                afterSrc={gallery.heroSection?.afterImage || null}
+                alt={gallery.heroSection?.altImage || "Hair transplant before and after results gallery — Ryan Clinic"}
                 className="w-full h-64 sm:h-80 md:h-96 rounded-2xl"
               />
               <p className="text-xs text-gray-500 mt-3 text-center">Case #1: Hover/drag to compare Before vs 12 Months post-op FUE results</p>
@@ -519,7 +469,7 @@ export default function GalleryPageClient() {
         </div>
       </section>
 
-      {/* Section: Hair Transplant Before & After — By Graft Count */}
+      {/* Section: Hair Transplant Before & After — By Graft Count / Dynamic Gallery Sections */}
       <section className="py-12 md:py-20">
         <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
           <div className="text-center mb-16">
@@ -532,31 +482,64 @@ export default function GalleryPageClient() {
             </p>
           </div>
 
-          <div className="space-y-16">
-            {byGraftCount.map((graftSec) => (
-              <div key={graftSec.group} className="border-b border-stone-200/60 pb-12 last:border-0 last:pb-0">
-                <div className="mb-6">
-                  <h3 className="text-xl font-bold text-gray-900">{graftSec.group}</h3>
-                  <p className="text-xs text-red-600 font-semibold tracking-wider uppercase mt-1">({graftSec.subtitle})</p>
-                </div>
+          {gallery.gallerySection && gallery.gallerySection.length > 0 ? (
+            <div className="space-y-16">
+              {gallery.gallerySection.map((section, sIdx) => {
+                const sectionCases = (section.cases || []).map((patient, pIdx) => ({
+                  id: `${sIdx}-${pIdx}`,
+                  src: patient.cardImage || patient.beforeImage,
+                  beforeImage: patient.beforeImage,
+                  afterImage: patient.afterImage,
+                  alt: patient.altImage || section.title,
+                  caption: [
+                    patient.techniqueUsed,
+                    patient.graftCount ? `${patient.graftCount} grafts` : null,
+                    patient.timeline,
+                  ].filter(Boolean).join(" · "),
+                  title: section.title,
+                  grafts: patient.graftCount ? `${patient.graftCount} Grafts` : "",
+                  technique: patient.techniqueUsed || "",
+                  timeline: patient.timeline || "",
+                  category: patient.clinicLocation || "",
+                }));
+                return (
+                  <div key={sIdx} className="border-b border-stone-200/60 pb-12 last:border-0 last:pb-0">
+                    <div className="mb-6">
+                      <h3 className="text-xl font-bold text-gray-900">{section.title}</h3>
+                      {section.subTitle && (
+                        <p className="text-xs text-red-600 font-semibold tracking-wider uppercase mt-1">({section.subTitle})</p>
+                      )}
+                    </div>
+                    {sectionCases.length > 0 ? (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                        {sectionCases.map((img, index) => (
+                          <ImageCard
+                            key={img.id}
+                            src={img.src}
+                            alt={img.alt}
+                            caption={img.caption}
+                            onClick={() => handleOpenLightbox(sectionCases, index)}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-gray-400 text-sm">No cases in this section yet.</p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="text-gray-400 text-sm text-center py-12">No gallery sections have been added yet.</p>
+          )}
+        </div>
+      </section>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                  {graftSec.images.map((img, index) => (
-                    <ImageCard
-                      key={img.id}
-                      src={img.src}
-                      alt={img.alt}
-                      caption={img.caption}
-                      onClick={() => handleOpenLightbox(graftSec.images, index)}
-                    />
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
+      {/* Section: CTA Strip */}
+      <section className="py-12 md:py-20">
+        <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
           {/* CTA Strip */}
-          <div className="bg-[#D32F2F] rounded-3xl p-6 sm:p-8 md:p-10 flex flex-col sm:flex-row items-center justify-between gap-5 md:gap-6 mt-10 md:mt-16 text-white">
+          <div className="bg-[#D32F2F] rounded-3xl p-6 sm:p-8 md:p-10 flex flex-col sm:flex-row items-center justify-between gap-5 md:gap-6 mt-0 text-white">
             <div className="text-center sm:text-left">
               <h3 className="text-base sm:text-lg md:text-xl font-extrabold">See What's Possible for You — Free Analysis</h3>
               <p className="text-xs text-white/70 mt-1">Get an expert medical evaluation on your required graft count based on your photos.</p>
@@ -573,53 +556,53 @@ export default function GalleryPageClient() {
         </div>
       </section>
 
-      {/* Section: Before & After by Technique */}
-      <section className="bg-stone-100/60 border-y border-stone-200/80 py-12 md:py-20">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="text-center mb-16">
-            <SectionLabel label="Surgery Methods" />
-            <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight mt-2">
-              Before & After by Technique
+      {/* Section: Complete Gallery Grid by Cities */}
+      <section className="py-12 md:py-20 bg-white border-y border-stone-200/80">
+        <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+          <div className="text-center mb-10 md:mb-16">
+            <SectionLabel label="City Wise Results" />
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mt-2">
+              Before &amp; After Results by City
             </h2>
             <p className="text-gray-500 text-sm max-w-2xl mx-auto mt-3">
-              Explore how clinical results vary across Sapphire FUE, FUE, beard grafts, and female hairline restorations.
+              View hair transplant success stories across our prime clinic locations. Filter results by city to see local patient transformations.
             </p>
+
+            {/* City Filter Buttons */}
+            <div className="flex flex-wrap justify-center gap-3 mt-8">
+              {dynamicCities.map((city) => (
+                <button
+                  key={city}
+                  onClick={() => setSelectedCity(city)}
+                  className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold border transition-all duration-300 ${
+                    selectedCity === city
+                      ? "bg-[#D32F2F] border-[#D32F2F] text-white shadow-md scale-105"
+                      : "bg-stone-50 border-stone-200 text-gray-700 hover:bg-red-50 hover:text-[#D32F2F] hover:border-red-200"
+                  }`}
+                >
+                  {city}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div className="space-y-16">
-            {byTechnique.map((techSec) => (
-              <div key={techSec.technique}>
-                <div className="mb-6">
-                  <h3 className="text-lg font-bold text-gray-900">{techSec.technique}</h3>
-                  {techSec.technique.includes("FUE Before") && !techSec.technique.includes("Sapphire") && (
-                    <p className="text-[11px] text-gray-500 mt-1">
-                      Link: see our{" "}
-                      <Link href="/fue-hair-transplant" className="text-red-600 underline font-semibold">
-                        full FUE hair transplant page
-                      </Link>{" "}
-                      when live.
-                    </p>
-                  )}
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                  {techSec.images.map((img, index) => (
-                    <ImageCard
-                      key={img.id}
-                      src={img.src}
-                      alt={img.alt}
-                      caption={img.caption}
-                      onClick={() => handleOpenLightbox(techSec.images, index)}
-                    />
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+          {filteredCityImages.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+              {filteredCityImages.map((img, index) => (
+                <ImageCard
+                  key={img.id}
+                  src={img.src}
+                  alt={img.alt}
+                  caption={img.caption}
+                  onClick={() => handleOpenLightbox(filteredCityImages, index)}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-400 text-sm text-center py-12">No patient cases found for the selected city.</p>
+          )}
         </div>
       </section>
-
-      {/* Section: Complete Gallery Grid by Cities */}
 
 
       {/* Section: The Hair Transplant Growth Timeline — What to Expect */}
@@ -711,38 +694,13 @@ export default function GalleryPageClient() {
           </div>
 
           <div className="space-y-4">
-            {[
-              {
-                q: "Are these hair transplant before and after photos real?",
-                a: "Yes. Every before and after photo in this gallery is a real, consented patient treated at Ryan Clinic — no stock images, AI, or edited photos. Each is shown in consistent lighting and labelled with the technique, graft count, and timeline."
-              },
-              {
-                q: "When will I see my hair transplant results?",
-                a: "New growth usually begins at 3–4 months, noticeable density develops by 6–9 months, and final mature results appear at 12–18 months. The \"after\" photos in this gallery mostly show results at 12 months or later."
-              },
-              {
-                q: "Are hair transplant results permanent?",
-                a: "Yes. Transplanted follicles are taken from the DHT-resistant donor area, so they resist pattern baldness and grow permanently. Existing native hair can still thin over time, so ongoing maintenance may be advised."
-              },
-              {
-                q: "Do hair transplant results look natural?",
-                a: "Yes, when the surgeon controls the angle, depth, direction, and density to match your natural growth pattern. A natural, age-appropriate hairline — rather than an artificially low one — is the goal, and is what these results demonstrate."
-              },
-              {
-                q: "How many grafts will I need for results like these?",
-                a: "Graft count depends on your degree of hair loss (Norwood grade): roughly 2,000–2,500 for hairline and temples, 3,000–3,500 for frontal and mid-scalp, and 4,000+ for advanced or crown coverage. A free scalp analysis confirms your exact number."
-              },
-              {
-                q: "Can women achieve these hair transplant results?",
-                a: "Yes. Women with female-pattern thinning, traction alopecia, or a high hairline can achieve natural results, with discreet no-shave options available. A scalp assessment confirms suitability and graft requirements."
-              }
-            ].map((faq, i) => (
+            {(gallery.faqSection || []).map((faq, i) => (
               <div key={i} className="border border-stone-200/80 rounded-2xl overflow-hidden bg-[#FAF9F6]">
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full text-left flex items-center justify-between px-4 py-4 md:px-6 md:py-5 bg-white hover:bg-stone-50 transition-colors font-bold text-gray-900 text-sm md:text-base cursor-pointer gap-3"
                 >
-                  <h3>{faq.q}</h3>
+                  <h3>{faq.question}</h3>
                   <span
                     className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-white text-lg font-bold transition-transform duration-300"
                     style={{ background: "#D32F2F", transform: openFaq === i ? "rotate(45deg)" : "rotate(0deg)" }}
@@ -752,7 +710,7 @@ export default function GalleryPageClient() {
                 </button>
                 {openFaq === i && (
                   <div className="px-6 pb-5 pt-2 bg-white">
-                    <p className="text-xs sm:text-sm text-gray-500 leading-relaxed font-medium">{faq.a}</p>
+                    <p className="text-xs sm:text-sm text-gray-500 leading-relaxed font-medium">{faq.answer}</p>
                   </div>
                 )}
               </div>
@@ -819,7 +777,8 @@ export default function GalleryPageClient() {
             <div className="md:col-span-8 bg-stone-950 flex items-stretch justify-center relative min-h-[200px] md:min-h-0 h-[42vh] md:h-auto">
 
               <BeforeAfterSlider
-                src={activeCase.src}
+                src={activeCase.beforeImage || activeCase.src}
+                afterSrc={activeCase.afterImage || null}
                 alt={activeCase.title || activeCase.alt}
                 className="w-full h-full"
               />

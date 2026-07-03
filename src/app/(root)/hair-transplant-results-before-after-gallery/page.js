@@ -1,6 +1,9 @@
 import GalleryPageClient from "./GalleryPageClient";
 
-export const metadata = {
+import { DBConnection } from "@/lib/db";
+import Gallery from "@/models/gallery";
+
+const defaultMetadata = {
   title: "Hair Transplant Before & After Results Gallery | Ryan Clinic",
   description:
     "Real, unedited hair transplant before and after photos at Ryan Clinic. See FUE & Sapphire FUE results by graft count and timeline. Doctor-led, natural results.",
@@ -21,6 +24,23 @@ export const metadata = {
       "https://www.clinicryan.com/hair-transplant-results-before-after-gallery/",
   },
 };
+
+export async function generateMetadata() {
+  try {
+    await DBConnection();
+    const gallery = await Gallery.findOne();
+    if (gallery && gallery.seo) {
+      return {
+        ...defaultMetadata,
+        title: gallery.seo.metaTitle || defaultMetadata.title,
+        description: gallery.seo.metaDescription || defaultMetadata.description,
+      };
+    }
+  } catch (error) {
+    console.error("Error generating metadata dynamically:", error);
+  }
+  return defaultMetadata;
+}
 
 const faqSchema = {
   "@context": "https://schema.org",

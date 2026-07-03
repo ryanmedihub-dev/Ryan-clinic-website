@@ -15,9 +15,9 @@ const handler = async (req) => {
 
 
 
-        const { seo, banner, heroSection, gallerySection } = body;
+        const { seo, banner, heroSection, gallerySection, faqSection } = body;
 
-        if (!seo || !banner || !heroSection || !gallerySection) {
+        if (!seo || !banner || !heroSection || !gallerySection || !faqSection) {
             return NextResponse.json(
                 {
                     message: "Please provide all required gallery data.",
@@ -45,6 +45,7 @@ const handler = async (req) => {
         gallery.banner = banner;
         gallery.heroSection = heroSection;
         gallery.gallerySection = gallerySection;
+        gallery.faqSection = faqSection;
 
         await gallery.save();
 

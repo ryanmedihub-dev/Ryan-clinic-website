@@ -13,8 +13,8 @@ function getWhyItems(city) {
       body: `This is the most important thing to verify at any ${city} clinic. At Ryan Clinic, every surgical step — extraction, channel creation, and implantation — is performed by a certified hair transplant doctor in ${city}. We never hand any part of your surgery to a technician. Technician-led surgery is a leading cause of poor survival and unnatural hairlines across India — and it's exactly what we refuse to do.`,
     },
     {
-      title: "90%+ Graft Survival Rate",
-      body: "Using the original Choi Pen and a careful graft-preservation protocol, our grafts spend minimal time outside the body. The result is a graft survival rate of 90%+ — well above the Indian industry average of roughly 60–70%. Higher graft survival means denser, fuller, and more natural-looking hair.",
+      title: "95%+ Graft Survival Rate",
+      body: "Using the original Choi Pen and a careful graft-preservation protocol, our grafts spend minimal time outside the body. The result is a graft survival rate of 95%+ — well above the Indian industry average of roughly 60–70%. Higher graft survival means denser, fuller, and more natural-looking hair.",
     },
     {
       title: "Sterile, Surgical-Grade Operating Theatre",
@@ -66,11 +66,11 @@ export default function WhyChooseUs({ city = "Delhi" }) {
           {/* ── Left panel ── */}
           <div className="lg:sticky lg:top-28">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-[1.1] tracking-tight mb-5">
-              Why Ryan Clinic Is 
+              Why Ryan Clinic Is
               <br />
               <span className="text-[#D32F2F]">
-               The Best Hair Transplant 
-              <br />
+                The Best Hair Transplant
+                <br />
               </span>
               Clinic In {city}
             </h2>
@@ -84,7 +84,7 @@ export default function WhyChooseUs({ city = "Delhi" }) {
             <div className="grid grid-cols-2 gap-3 mb-8">
               {[
                 { num: "10,000+", label: "Patients Treated" },
-                { num: "90%+", label: "Graft Survival Rate" },
+                { num: "95%+", label: "Graft Survival Rate" },
                 { num: "₹40,000", label: "Starting Price" },
                 { num: "18 Months", label: "Follow-Up Support" },
               ].map((s) => (
@@ -142,32 +142,29 @@ export default function WhyChooseUs({ city = "Delhi" }) {
                     className="w-full flex items-start gap-5 py-6 text-left group"
                   >
                     <span
-                      className={`text-xs font-semibold tracking-[0.15em] shrink-0 pt-0.5 transition-colors duration-200 ${
-                        open === i
-                          ? "text-[#D32F2F]"
-                          : "text-gray-600 group-hover:text-[#D32F2F]"
-                      }`}
+                      className={`text-xs font-semibold tracking-[0.15em] shrink-0 pt-0.5 transition-colors duration-200 ${open === i
+                        ? "text-[#D32F2F]"
+                        : "text-gray-600 group-hover:text-[#D32F2F]"
+                        }`}
                     >
                       0{i + 1}
                     </span>
 
                     <div className="flex-1 flex items-center justify-between gap-4 min-w-0">
                       <span
-                        className={`font-semibold text-sm md:text-base leading-snug tracking-tight transition-colors duration-200 ${
-                          open === i
-                            ? "text-gray-900"
-                            : "text-gray-700 group-hover:text-gray-900"
-                        }`}
+                        className={`font-semibold text-sm md:text-base leading-snug tracking-tight transition-colors duration-200 ${open === i
+                          ? "text-gray-900"
+                          : "text-gray-700 group-hover:text-gray-900"
+                          }`}
                       >
                         {item.title}
                       </span>
 
                       <span
-                        className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 border transition-all duration-200 ${
-                          open === i
-                            ? "bg-[#D32F2F] border-[#D32F2F] text-white"
-                            : "border-gray-200 text-gray-400 group-hover:border-gray-400"
-                        }`}
+                        className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 border transition-all duration-200 ${open === i
+                          ? "bg-[#D32F2F] border-[#D32F2F] text-white"
+                          : "border-gray-200 text-gray-400 group-hover:border-gray-400"
+                          }`}
                       >
                         <svg
                           className="w-3 h-3 transition-transform duration-200"
@@ -193,11 +190,10 @@ export default function WhyChooseUs({ city = "Delhi" }) {
                   </button>
 
                   <div
-                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                      open === i
-                        ? "max-h-60 opacity-100"
-                        : "max-h-0 opacity-0"
-                    }`}
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${open === i
+                      ? "max-h-60 opacity-100"
+                      : "max-h-0 opacity-0"
+                      }`}
                   >
                     <p className="pl-10 pb-6 text-xs md:text-sm text-gray-500 leading-relaxed">
                       {item.body}
