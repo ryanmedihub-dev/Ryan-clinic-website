@@ -135,6 +135,20 @@ const gallerySchema = new mongoose.Schema({
         }
 
     ],
+    faqSection: [
+        {
+            question: {
+                type: String,
+                required: true,
+                trim: true,
+            },
+            answer: {
+                type: String,
+                required: true,
+                trim: true,
+            }
+        }
+    ]
 
 
 

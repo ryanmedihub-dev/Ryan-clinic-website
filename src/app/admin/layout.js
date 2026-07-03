@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/styles/globals.css";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   NotebookText,
@@ -17,6 +18,7 @@ import {
   ChevronDown,
   ExternalLink,
   X,
+  Image,
 } from "lucide-react";
 
 
@@ -41,6 +43,32 @@ export default function RootLayout({ children }) {
 function LayoutWrapper({ children }) {
   const [activeTab, setActiveTab] = useState("Dashboard");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (!pathname) return;
+    if (pathname === "/admin" || pathname === "/admin/") {
+      setActiveTab("Dashboard");
+    } else if (pathname.startsWith("/admin/pages")) {
+      setActiveTab("Pages");
+    } else if (pathname.startsWith("/admin/services")) {
+      setActiveTab("Services");
+    } else if (pathname.startsWith("/admin/customer")) {
+      setActiveTab("Customer");
+    } else if (pathname.startsWith("/admin/component")) {
+      setActiveTab("Components");
+    } else if (pathname.startsWith("/admin/gallery")) {
+      setActiveTab("Gallery");
+    } else if (pathname.startsWith("/admin/help")) {
+      setActiveTab("Help");
+    } else if (pathname.startsWith("/admin/blogs/create")) {
+      setActiveTab("Create Blog");
+    } else if (pathname.startsWith("/admin/blogs/view")) {
+      setActiveTab("View Blogs");
+    } else if (pathname.startsWith("/admin/blogs")) {
+      setActiveTab("Blogs");
+    }
+  }, [pathname]);
 
   const menuItems = [
     { name: "Dashboard", icon: LayoutDashboard, href: "/admin/" },
@@ -56,6 +84,7 @@ function LayoutWrapper({ children }) {
         { name: "View Blogs", icon: Eye, href: "/admin/blogs/view" },
       ],
     },
+    { name: "Gallery", icon: Image, href: "/admin/gallery" },
   ];
 
   const MenuItem = ({ item, isActive, onClick }) => {

@@ -16,10 +16,11 @@ const handler = async (req) => {
             banner,
             heroSection,
             gallerySection,
+            faqSection,
         } = body;
 
         // Validate Required Sections
-        if (!seo || !banner || !heroSection || !gallerySection) {
+        if (!seo || !banner || !heroSection || !gallerySection || !faqSection) {
             return NextResponse.json(
                 {
                     message: "Please provide all required gallery data.",
