@@ -35,8 +35,8 @@ const locations = [
 const quickLinks = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
-  { label: "Our Gallery", href: "/gallery/images" },
-  { label: "Our Videos", href: "/gallery/images" },
+  { label: "Our Gallery", href: "/hair-transplant-results-before-after-gallery" },
+  { label: "Our Videos", href: "/hair-transplant-results-before-after-gallery" },
   { label: "Blog", href: "/blog" },
   { label: "Cost", href: "/cost" },
   { label: "Contact Us", href: "/contact" },

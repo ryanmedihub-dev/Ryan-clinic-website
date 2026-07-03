@@ -59,17 +59,17 @@ const Header = () => {
     },
     ...(branchPages.length > 0
       ? [
-          {
-            name: "Branches",
-            href: "#",
-            hasDropdown: true,
-            key: "branches",
-            dropdownItems: branchPages,
-          },
-        ]
+        {
+          name: "Branches",
+          href: "#",
+          hasDropdown: true,
+          key: "branches",
+          dropdownItems: branchPages,
+        },
+      ]
       : []),
     { name: "Cost", href: "/hair-transplant-cost-in-delhi" },
-    { name: "Gallery", href: "/gallery/images" },
+    { name: "Gallery", href: "/hair-transplant-results-before-after-gallery" },
     { name: "Contact us", href: "/contact" },
   ];
 
@@ -137,19 +137,17 @@ const Header = () => {
                         <button className="flex items-center px-4 py-2 whitespace-nowrap">
                           {item.name}
                           <ChevronDown
-                            className={`ml-1 h-4 w-4 transition-transform duration-200 ${
-                              openDropdown === item.key ? "rotate-180" : ""
-                            }`}
+                            className={`ml-1 h-4 w-4 transition-transform duration-200 ${openDropdown === item.key ? "rotate-180" : ""
+                              }`}
                           />
                         </button>
 
                         {/* Dropdown Panel */}
                         <div
-                          className={`absolute top-full left-1/2 -translate-x-1/2 z-50 mt-1 bg-white rounded-xl shadow-2xl border border-gray-100 transition-all duration-200 ease-in-out ${
-                            openDropdown === item.key
+                          className={`absolute top-full left-1/2 -translate-x-1/2 z-50 mt-1 bg-white rounded-xl shadow-2xl border border-gray-100 transition-all duration-200 ease-in-out ${openDropdown === item.key
                               ? "opacity-100 visible translate-y-0"
                               : "opacity-0 invisible -translate-y-2"
-                          }`}
+                            }`}
                           style={{ width: "560px" }}
                         >
                           {item.sections ? (
@@ -174,9 +172,8 @@ const Header = () => {
                                         <Link
                                           key={si.href}
                                           href={si.href}
-                                          className={`flex flex-col justify-between p-3 rounded-lg border transition-colors duration-150 group/card ${
-                                            cardColors[idx % 2]
-                                          }`}
+                                          className={`flex flex-col justify-between p-3 rounded-lg border transition-colors duration-150 group/card ${cardColors[idx % 2]
+                                            }`}
                                         >
                                           <h4 className="font-bold text-gray-800 text-sm leading-tight">
                                             {si.name}
@@ -203,17 +200,15 @@ const Header = () => {
                               style={{ maxHeight: "70vh" }}
                             >
                               <div
-                                className={`grid gap-2 ${
-                                  item.dropdownItems.length > 2 ? "grid-cols-2" : "grid-cols-1"
-                                }`}
+                                className={`grid gap-2 ${item.dropdownItems.length > 2 ? "grid-cols-2" : "grid-cols-1"
+                                  }`}
                               >
                                 {item.dropdownItems.map((di, idx) => (
                                   <Link
                                     key={di.href}
                                     href={di.href}
-                                    className={`flex flex-col justify-between p-3 rounded-lg border transition-colors duration-150 group/card ${
-                                      cardColors[idx % 2]
-                                    }`}
+                                    className={`flex flex-col justify-between p-3 rounded-lg border transition-colors duration-150 group/card ${cardColors[idx % 2]
+                                      }`}
                                   >
                                     <h4 className="font-bold text-gray-800 text-sm leading-tight">
                                       {di.name}
@@ -286,9 +281,8 @@ const Header = () => {
 
       {/* Mobile Sidebar */}
       <div
-        className={`fixed top-0 left-0 w-72 h-full bg-primary text-white shadow-lg p-6 z-110 overflow-y-auto lg:hidden transition-transform duration-300 ${
-          mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed top-0 left-0 w-72 h-full bg-primary text-white shadow-lg p-6 z-110 overflow-y-auto lg:hidden transition-transform duration-300 ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         <button
           onClick={() => setMobileMenuOpen(false)}

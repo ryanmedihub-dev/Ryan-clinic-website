@@ -22,7 +22,7 @@ import {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <title>Ryan Clinic Admin</title>
         <meta charSet="UTF-8" />
@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
         <link rel="icon" href="/uploads/r-logo.png" />
       </head>
 
-      <body>
+      <body suppressHydrationWarning>
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
@@ -65,11 +65,10 @@ function LayoutWrapper({ children }) {
     return (
       <div className="group relative">
         <div
-          className={`w-full flex items-center justify-between gap-3 px-4 py-3 text-left rounded-lg transition-all duration-200 cursor-pointer ${
-            isActive === item.name
+          className={`w-full flex items-center justify-between gap-3 px-4 py-3 text-left rounded-lg transition-all duration-200 cursor-pointer ${isActive === item.name
               ? "bg-blue-500 text-white shadow-lg shadow-blue-500/25"
               : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-          }`}
+            }`}
         >
           <Link
             href={item.href || "#"}
@@ -97,11 +96,10 @@ function LayoutWrapper({ children }) {
                   key={child.name}
                   href={child.href}
                   onClick={() => onClick(child.name)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm ${
-                    isActive === child.name
+                  className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm ${isActive === child.name
                       ? "bg-blue-100 text-blue-700"
                       : "text-gray-600 hover:underline pb-2 hover:text-gray-900"
-                  }`}
+                    }`}
                 >
                   {ChildIcon && <ChildIcon size={16} />}{" "}
                   {/* Only show icon if exists */}
@@ -127,11 +125,10 @@ function LayoutWrapper({ children }) {
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out lg:sticky lg:top-0 lg:h-screen lg:transform-none ${
-          isMobileMenuOpen
+        className={`fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out lg:sticky lg:top-0 lg:h-screen lg:transform-none ${isMobileMenuOpen
             ? "translate-x-0"
             : "-translate-x-full lg:translate-x-0"
-        }`}
+          }`}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
