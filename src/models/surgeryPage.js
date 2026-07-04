@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 
 
+
+
 const seoSchema = new mongoose.Schema(
     {
         metaTitle: {
@@ -313,6 +315,18 @@ const doctorsSectionSchema = new mongoose.Schema(
 
 const surgeryPageSchema = new mongoose.Schema(
     {
+        slug: {
+            type: String,
+            required: true,
+            unique: true,
+            trim: true,
+        },
+
+        pageName: {
+            type: String,
+            required: true,
+            trim: true,
+        },
         seo: seoSchema,
 
         banner: bannerSchema,
