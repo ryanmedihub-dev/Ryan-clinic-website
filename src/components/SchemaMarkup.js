@@ -29,7 +29,7 @@ export default function SchemaMarkup() {
             contactPoint: [
               {
                 "@type": "ContactPoint",
-                telephone: "+91-9217958539",
+                telephone: "+91-9911111247",
                 contactType: "customer service",
                 areaServed: "IN",
                 availableLanguage: ["English", "Hindi"],
@@ -43,7 +43,7 @@ export default function SchemaMarkup() {
               },
             ],
             email: "clinicryanofficial@gmail.com",
-            telephone: "+91-9217958539",
+            telephone: "+91-9911111247",
             sameAs: [
               "https://www.youtube.com/@RyanTranplant",
               "https://www.instagram.com/ryan_clinic",
@@ -78,7 +78,7 @@ export default function SchemaMarkup() {
             name: "Ryan Clinic — Delhi",
             image: "https://www.clinicryan.com/uploads/logo-2.png",
             url: "https://www.clinicryan.com/hair-transplant-in-delhi",
-            telephone: "+91-9217958539",
+            telephone: "+91-9911111247",
             email: "clinicryanofficial@gmail.com",
             priceRange: "₹₹",
             currenciesAccepted: "INR",
@@ -137,7 +137,7 @@ export default function SchemaMarkup() {
             name: "Ryan Clinic — Mumbai",
             image: "https://www.clinicryan.com/uploads/logo-2.png",
             url: "https://www.clinicryan.com/hair-transplant-in-mumbai",
-            telephone: "+91-9217958539",
+            telephone: "+91-9911111247",
             email: "clinicryanofficial@gmail.com",
             priceRange: "₹₹",
             currenciesAccepted: "INR",
@@ -195,7 +195,7 @@ export default function SchemaMarkup() {
             name: "Ryan Clinic — Hyderabad",
             image: "https://www.clinicryan.com/uploads/logo-2.png",
             url: "https://www.clinicryan.com/hair-transplant-in-hyderabad",
-            telephone: "+91-9217958539",
+            telephone: "+91-9911111247",
             email: "clinicryanofficial@gmail.com",
             priceRange: "₹₹",
             currenciesAccepted: "INR",
@@ -452,7 +452,7 @@ export default function SchemaMarkup() {
             name: "Ryan Clinic",
             url: "https://www.clinicryan.com",
             image: "https://www.clinicryan.com/uploads/logo-2.png",
-            telephone: "+91-9217958539",
+            telephone: "+91-9911111247",
             address: {
               "@type": "PostalAddress",
               streetAddress: "CD 163, Block CD, Dakshini Pitampura, Pitampura",

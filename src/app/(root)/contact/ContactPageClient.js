@@ -131,7 +131,7 @@ export default function ContactUs() {
                   </div>
                   <div>
                     <h3 className="text-sm font-bold mb-0.5" style={{ color: "var(--text-primary)" }}>Phone</h3>
-                    <a href="tel:+919217958539" className="text-sm font-semibold" style={{ color: "var(--accent-gold)" }}>+91-9217958539</a>
+                    <a href="tel:+919911111247" className="text-sm font-semibold" style={{ color: "var(--accent-gold)" }}>+91-9911111247</a>
                   </div>
                 </div>
 

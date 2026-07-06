@@ -397,7 +397,7 @@ const AreasWeServeEditor = memo(({ value, onChange }) => {
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className={LC}>Phone</label>
-          <input type="text" className={FC} value={bd.phone || ""} onChange={e => setBranch("phone", e.target.value)} placeholder="+91-9217958539" />
+          <input type="text" className={FC} value={bd.phone || ""} onChange={e => setBranch("phone", e.target.value)} placeholder="+91-9911111247" />
         </div>
         <div>
           <label className={LC}>Hours</label>
@@ -443,7 +443,7 @@ const ALL_SECTIONS = [
   { key: "whyDoctorMatters",   label: "Why Doctor Matters",             hasData: true,  dataHelp: '{"risks":[{"number":"01","title":"Confirm who operates","body":"Body text","type":"check"}],"comparison":[{"aspect":"Who operates","doctorLed":"Certified doctor","techLed":"Technician"}]}' },
   { key: "recoveryTimeline",   label: "Recovery Timeline",              hasData: true,  dataHelp: '{"phases":[{"period":"Day 1–10","phase":"Initial Healing","color":"#D32F2F","progress":15,"points":["Point 1"],"tip":"Tip text"}]}' },
   { key: "extraFields",        label: "Additional Fields (Detail 1 & 2)", hasData: false },
-  { key: "areasWeServe",       label: "Areas We Serve",                 hasData: true,  dataHelp: '{"city":"Delhi","branch":"Delhi","branchData":{"address":"Full address","mapUrl":"https://maps.google.com/?q=...","phone":"+91-9217958539","hours":"Mon–Sun: 9AM–7PM","metro":"Metro Station","areas":["Area 1","Area 2"]}}' },
+  { key: "areasWeServe",       label: "Areas We Serve",                 hasData: true,  dataHelp: '{"city":"Delhi","branch":"Delhi","branchData":{"address":"Full address","mapUrl":"https://maps.google.com/?q=...","phone":"+91-9911111247","hours":"Mon–Sun: 9AM–7PM","metro":"Metro Station","areas":["Area 1","Area 2"]}}' },
   { key: "testimonials",       label: "Testimonials",                   hasData: false },
   { key: "faq",                label: "FAQ Section",                    hasData: false },
 ];

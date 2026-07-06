@@ -55,7 +55,7 @@ export const metadata = {
 
 const WA =
   "https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20book%20a%20consultation%20for%20hair%20transplant%20surgery%20in%20Delhi";
-const TEL = "tel:+919217958539";
+const TEL = "tel:+919911111247";
 
 const HERO_STATS = [
   { val: "10,000+", label: "Procedures Completed" },
@@ -145,7 +145,7 @@ const FAQS = [
   { q: "Can women have hair transplant surgery?", a: "Yes — suitable women with pattern thinning, a high hairline, or traction alopecia, with no-shave options. A careful diagnosis comes first." },
   { q: "How much does hair transplant surgery cost in Delhi?", a: "It's priced per graft and depends mainly on graft count and technique. Ryan Clinic's pricing starts from ₹40,000, with 0% EMI; your exact price is confirmed after a free scalp analysis." },
   { q: "Do I need to shave my head for the surgery?", a: "Not always — THI enables no-shave or partial-shave surgery. Your surgeon advises based on the area and graft count." },
-  { q: "How do I book my surgery consultation?", a: "Call or WhatsApp +91-9217958539, or use the booking form. You'll get a scalp analysis, graft count, and cost breakdown with no obligation." },
+  { q: "How do I book my surgery consultation?", a: "Call or WhatsApp +91-9911111247, or use the booking form. You'll get a scalp analysis, graft count, and cost breakdown with no obligation." },
 ];
 
 // ─── structured data ──────────────────────────────────────────────────────────
@@ -198,7 +198,7 @@ function CTAButtons({ primary = "Book Free Scalp Analysis", center = false }) {
         href={TEL}
         className="inline-flex items-center justify-center gap-2 border border-gray-200 hover:border-[#D32F2F] text-gray-700 hover:text-[#D32F2F] font-semibold py-3.5 px-6 text-sm tracking-wide transition-all rounded-xl"
       >
-        Call +91-9217958539
+        Call +91-9911111247
       </a>
     </div>
   );
@@ -684,7 +684,7 @@ export default function HairTransplantSurgeryDelhi() {
                   <tbody>
                     {[
                       ["Address", "CD 163, Block CD, Dakshini Pitampura, New Delhi – 110034"],
-                      ["Phone", "+91-9217958539"],
+                      ["Phone", "+91-9911111247"],
                       ["Hours", "Monday – Sunday, 9:00 AM – 7:00 PM"],
                       ["Metro", "Kohat Enclave / Pitampura Metro Station (Red Line)"],
                       ["Parking", "Service lane parking directly in front of the clinic"],
@@ -729,7 +729,7 @@ export default function HairTransplantSurgeryDelhi() {
 
               <ul className="space-y-4 mb-8">
                 {[
-                  { icon: "📞", label: "Call Now", href: TEL, text: "+91-9217958539" },
+                  { icon: "📞", label: "Call Now", href: TEL, text: "+91-9911111247" },
                   { icon: "💬", label: "WhatsApp", href: WA, text: "Chat directly for fastest reply", ext: true },
                   { icon: "📅", label: "Request Callback", href: "/book-consult", text: "Use our online booking form" },
                 ].map((item, i) => (

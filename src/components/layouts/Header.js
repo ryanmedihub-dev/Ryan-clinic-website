@@ -244,7 +244,7 @@ const Header = () => {
                 asChild
                 className="md:h-9 h-8 bg-white text-black hover:bg-black hover:text-white"
               >
-                <Link href="tel:+919217958539">
+                <Link href="tel:+919911111247">
                   <Phone className="h-4 w-4" />
                   <span>Call us</span>
                 </Link>
@@ -373,7 +373,7 @@ const Header = () => {
 
         <div className="mt-8 flex flex-col gap-3">
           <Button asChild className="bg-white text-black hover:bg-black hover:text-white">
-            <Link href="tel:+919217958539">
+            <Link href="tel:+919911111247">
               <Phone className="h-4 w-4" />
               <span>Call us</span>
             </Link>

@@ -47,19 +47,19 @@ const branches = [
     city: "Delhi",
     address:
       "CD 163, Block CD, Dakshini Pitampura, Pitampura, New Delhi – 110034",
-    phone: "+91-9217958539",
+    phone: "+91-9911111247",
   },
   {
     city: "Mumbai",
     address:
       "MHADA 4 Bungalow, 168, Phase D, SV Patel Nagar, Andheri West, Mumbai – 400053",
-    phone: "+91-9217958539",
+    phone: "+91-9911111247",
   },
   {
     city: "Hyderabad",
     address:
       "2nd Floor, 8-2, 316/A/6/A, Road No. 14, Above SBI Bank, Banjara Hills, Hyderabad – 500034",
-    phone: "+91-9217958539",
+    phone: "+91-9911111247",
   },
 ];
 
@@ -359,11 +359,11 @@ export default function Footer() {
                   Phone
                 </p>
                 <a
-                  href="tel:+919217958539"
+                  href="tel:+919911111247"
                   className="text-sm font-medium text-white hover:underline"
                   style={{ color: "var(--accent-gold)" }}
                 >
-                  +91-9217958539
+                  +91-9911111247
                 </a>
               </li>
               <li>
