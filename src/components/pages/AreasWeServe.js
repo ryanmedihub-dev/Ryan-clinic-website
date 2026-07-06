@@ -5,7 +5,7 @@ const BRANCHES = {
   Delhi: {
     address: "CD 163, Block CD, Dakshini Pitampura, New Delhi – 110034",
     mapUrl: "https://maps.google.com/?q=Ryan+Clinic+Pitampura+Delhi",
-    phone: "+91-9217958539",
+    phone: "+91-9911111247",
     hours: "Mon – Sun: 9:00 AM – 7:00 PM",
     metro: "Kohat Enclave / Pitampura Metro Station",
     areas: [
@@ -18,7 +18,7 @@ const BRANCHES = {
   Mumbai: {
     address: "MHADA 4 Bungalow, 168, Phase D, SV Patel Nagar, Andheri West, Mumbai – 400053",
     mapUrl: "https://maps.google.com/?q=Ryan+Clinic+Andheri+Mumbai",
-    phone: "+91-9217958539",
+    phone: "+91-9911111247",
     hours: "Mon – Sat: 9:00 AM – 7:00 PM",
     metro: "Andheri Metro Station",
     areas: [
@@ -30,7 +30,7 @@ const BRANCHES = {
   Hyderabad: {
     address: "2nd Floor, 8-2, 316/A/6/A, Road No. 14, Banjara Hills, Hyderabad – 500034",
     mapUrl: "https://maps.google.com/?q=Ryan+Clinic+Banjara+Hills+Hyderabad",
-    phone: "+91-9217958539",
+    phone: "+91-9911111247",
     hours: "Mon – Sat: 9:00 AM – 7:00 PM",
     metro: "Jubilee Hills / Banjara Hills",
     areas: [
@@ -42,7 +42,7 @@ const BRANCHES = {
   Bangalore: {
     address: "Contour Cosmetic Clinic, 2nd Floor, Lakshmidevi Complex, 80 Ft Road, BTM Layout, Bengaluru – 560076",
     mapUrl: "https://maps.google.com/?q=Contour+Cosmetic+Clinic+BTM+Layout+Bangalore",
-    phone: "+91-9217958539",
+    phone: "+91-9911111247",
     hours: "Mon – Sat: 9:00 AM – 7:00 PM",
     metro: "BTM Layout / Silk Board",
     areas: [
@@ -54,7 +54,7 @@ const BRANCHES = {
   Chennai: {
     address: "No.1, 3rd Floor, SS Avenue 43, Rajiv Gandhi Salai, Padur, Chennai – 603103",
     mapUrl: "https://maps.google.com/?q=Ryan+Clinic+Padur+Chennai",
-    phone: "+91-9217958539",
+    phone: "+91-9911111247",
     hours: "Mon – Sat: 9:00 AM – 7:00 PM",
     metro: "Padur / Old Mahabalipuram Road",
     areas: [
@@ -66,7 +66,7 @@ const BRANCHES = {
   Pune: {
     address: "Baner, Pune – 411045",
     mapUrl: "https://maps.google.com/?q=Ryan+Clinic+Baner+Pune",
-    phone: "+91-9217958539",
+    phone: "+91-9911111247",
     hours: "Mon – Sat: 9:00 AM – 7:00 PM",
     metro: "Baner / Balewadi",
     areas: [
@@ -78,7 +78,7 @@ const BRANCHES = {
   Kolkata: {
     address: "Salt Lake, Kolkata – 700091",
     mapUrl: "https://maps.google.com/?q=Ryan+Clinic+Salt+Lake+Kolkata",
-    phone: "+91-9217958539",
+    phone: "+91-9911111247",
     hours: "Mon – Sat: 9:00 AM – 7:00 PM",
     metro: "Salt Lake / Karunamoyee Metro Station",
     areas: [
@@ -90,7 +90,7 @@ const BRANCHES = {
   Ahmedabad: {
     address: "SG Highway, Ahmedabad – 380054",
     mapUrl: "https://maps.google.com/?q=Ryan+Clinic+SG+Highway+Ahmedabad",
-    phone: "+91-9217958539",
+    phone: "+91-9911111247",
     hours: "Mon – Sat: 9:00 AM – 7:00 PM",
     metro: "Ahmedabad BRTS / SG Highway",
     areas: [
@@ -102,7 +102,7 @@ const BRANCHES = {
   Lucknow: {
     address: "Gomti Nagar, Lucknow – 226010",
     mapUrl: "https://maps.google.com/?q=Ryan+Clinic+Gomti+Nagar+Lucknow",
-    phone: "+91-9217958539",
+    phone: "+91-9911111247",
     hours: "Mon – Sat: 9:00 AM – 7:00 PM",
     metro: "Gomti Nagar / Hazratganj",
     areas: [
@@ -114,7 +114,7 @@ const BRANCHES = {
   Jammu: {
     address: "Hall 207 2A, South Block, Bahu Plaza, Jammu – 180012",
     mapUrl: "https://maps.google.com/?q=Emphoria+Skin+Hair+Clinic+Bahu+Plaza+Jammu",
-    phone: "+91-9217958539",
+    phone: "+91-9911111247",
     hours: "Mon – Sat: 9:00 AM – 6:00 PM",
     metro: "Bahu Plaza / Residency Road",
     areas: [
@@ -126,7 +126,7 @@ const BRANCHES = {
   Patna: {
     address: "Boring Road, Patna – 800001",
     mapUrl: "https://maps.google.com/?q=Ryan+Clinic+Boring+Road+Patna",
-    phone: "+91-9217958539",
+    phone: "+91-9911111247",
     hours: "Mon – Sat: 9:00 AM – 7:00 PM",
     metro: "Boring Road / Bailey Road",
     areas: [

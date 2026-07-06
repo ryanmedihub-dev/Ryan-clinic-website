@@ -5,7 +5,7 @@ import FAQCostSection from "./FAQCostSection";
 export const metadata = {
   title: "Hair Transplant Cost in Delhi 2026 | Per Graft Price",
   description:
-    "Hair transplant cost in Delhi: ₹40,000–₹3,50,000 (₹40–₹120/graft). Transparent doctor-led pricing, 0% EMI, free scalp analysis. Call +91-9217958539.",
+    "Hair transplant cost in Delhi: ₹40,000–₹3,50,000 (₹40–₹120/graft). Transparent doctor-led pricing, 0% EMI, free scalp analysis. Call +91-9911111247.",
   keywords: [
     "hair transplant cost in delhi",
     "hair transplant price in delhi",
@@ -53,7 +53,7 @@ export const metadata = {
 
 const WA =
   "https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20know%20the%20exact%20hair%20transplant%20cost%20in%20Delhi";
-const TEL = "tel:+919217958539";
+const TEL = "tel:+919911111247";
 
 const HERO_STATS = [
   { val: "₹40–₹120", label: "Per graft (doctor-led Sapphire FUE)" },
@@ -190,7 +190,7 @@ function CTAButtons({ primary = "Get Free Cost Estimate", center = false }) {
         href={TEL}
         className="inline-flex items-center justify-center gap-2 border border-gray-200 hover:border-[#D32F2F] text-gray-700 hover:text-[#D32F2F] font-semibold py-3.5 px-6 text-sm tracking-wide transition-all rounded-xl"
       >
-        Call +91-9217958539
+        Call +91-9911111247
       </a>
     </div>
   );

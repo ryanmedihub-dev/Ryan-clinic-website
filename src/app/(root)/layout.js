@@ -59,7 +59,7 @@ export const metadata = {
     siteName: "Ryan Clinic",
     title: "Best Hair Transplant in Delhi - Sapphire FUE Cost | Ryan Clinic",
     description:
-      "Ryan Clinic offers advanced Turkey Sapphire FUE hair transplant in Delhi. Certified surgeons, 95%+ graft survival & transparent pricing. Call +91-9217958539",
+      "Ryan Clinic offers advanced Turkey Sapphire FUE hair transplant in Delhi. Certified surgeons, 95%+ graft survival & transparent pricing. Call +91-9911111247",
     images: [
       {
         url: "https://www.clinicryan.com/uploads/1757745417011-1752733322451-Hair%20Transplant%204.jpg",
@@ -77,7 +77,7 @@ export const metadata = {
     creator: "@ryan_clinic",
     title: "Best Hair Transplant in Delhi - Sapphire FUE | Ryan Clinic",
     description:
-      "Advanced Turkey Sapphire FUE hair transplant in Delhi. Certified surgeons & best cost. Call +91-9217958539.",
+      "Advanced Turkey Sapphire FUE hair transplant in Delhi. Certified surgeons & best cost. Call +91-9911111247.",
     images: ["https://www.clinicryan.com/hair-transplant-in-delhi"],
   },
   verification: {

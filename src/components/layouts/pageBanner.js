@@ -79,7 +79,7 @@ export default function PageBanner({
                     WhatsApp Us
                   </a>
                   <a
-                    href="tel:+919217958539"
+                    href="tel:+919911111247"
                     className="border border-white/40 px-5 py-3 rounded-lg text-sm font-semibold hover:bg-white/10"
                   >
                     Call Now
@@ -202,7 +202,7 @@ export default function PageBanner({
               WhatsApp Us
             </a>
             <a
-              href="tel:+919217958539"
+              href="tel:+919911111247"
               className="flex-1 text-center border border-white/25 py-3.5 rounded-xl text-[13px] font-semibold text-white active:scale-95 transition-transform"
               style={{ background: "rgba(255,255,255,0.07)" }}
             >

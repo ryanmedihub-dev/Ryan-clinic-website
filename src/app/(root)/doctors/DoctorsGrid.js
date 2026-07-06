@@ -549,11 +549,11 @@ export default function DoctorsGrid() {
           All doctors are NMC-registered &amp; certification-verified · Free scalp analysis with every
           consultation ·{" "}
           <a
-            href="tel:+919217958539"
+            href="tel:+919911111247"
             className="font-bold transition-opacity hover:opacity-75"
             style={{ color: "var(--primary-red)" }}
           >
-            +91-9217958539
+            +91-9911111247
           </a>
         </p>
       </div>

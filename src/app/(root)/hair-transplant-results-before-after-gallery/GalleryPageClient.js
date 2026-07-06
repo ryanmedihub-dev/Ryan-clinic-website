@@ -189,7 +189,7 @@ export function LeadForm() {
         alert("⚠️ " + (data.message || "Something went wrong. Please call us directly."));
       }
     } catch {
-      alert("❌ Server error. Please call +91-9217958539.");
+      alert("❌ Server error. Please call +91-9911111247.");
     } finally {
       setLoading(false);
     }
@@ -413,7 +413,7 @@ export default function GalleryPageClient() {
                   Get Your Free Scalp Analysis
                 </a>
                 <a
-                  href="tel:+919217958539"
+                  href="tel:+919911111247"
                   className="inline-flex items-center gap-2 px-5 py-3 md:px-6 md:py-3.5 rounded-xl border border-red-600/30 hover:border-red-600 text-red-600 font-bold text-sm bg-white hover:bg-red-50/30 transition-colors"
                 >
                   Call Now

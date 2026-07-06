@@ -230,7 +230,7 @@ export default function WhyChooseUs({ city = "Delhi" }) {
                 </a>
 
                 <a
-                  href="tel:+919217958539"
+                  href="tel:+919911111247"
                   className="inline-flex items-center gap-3 border border-gray-200 hover:border-[#D32F2F] text-gray-600 hover:text-[#D32F2F] font-semibold py-4 px-7 text-sm tracking-wide transition-all rounded-xl justify-center"
                 >
                   <svg
