@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from "react";
 import { ChevronDown, Phone, Calendar, Menu, X, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ContactForm from "../pages/contactForm";
+import useTrackCTA from "@/lib/useTrackCTA";
 
 const Logo = "/uploads/logo-2.png";
 
@@ -18,13 +19,17 @@ const Header = () => {
   const [transplantPages, setTransplantPages] = useState([]);
   const [treatmentPages, setTreatmentPages] = useState([]);
   const [branchPages, setBranchPages] = useState([]);
+  const trackCTA = useTrackCTA();
 
   useEffect(() => {
     fetch("/api/service/get-service", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
+        return res.json();
+      })
       .then((result) => {
         const services = result.data || [];
         const toNav = (s) => ({
@@ -115,8 +120,9 @@ const Header = () => {
               src={Logo}
               alt="Ryan Clinic"
               width={160}
-              height={160}
-              className="w-28 md:w-40 h-auto object-contain"
+              height={40}
+              className="w-28 md:w-40 object-contain"
+              style={{ height: "auto" }}
               unoptimized
             />
           </Link>
@@ -244,13 +250,19 @@ const Header = () => {
                 asChild
                 className="md:h-9 h-8 bg-white text-black hover:bg-black hover:text-white"
               >
-                <Link href="tel:+919911111247">
+                <Link
+                  href="tel:+919911111247"
+                  onClick={() => trackCTA({ type: "call", ctaName: "Header Call", buttonLocation: "Header" })}
+                >
                   <Phone className="h-4 w-4" />
                   <span>Call us</span>
                 </Link>
               </Button>
               <Button
-                onClick={() => setShowPopup(true)}
+                onClick={() => {
+                  trackCTA({ type: "whatsapp", ctaName: "Header Book Appointment", buttonLocation: "Header" });
+                  setShowPopup(true);
+                }}
                 className="md:h-9 h-8 bg-white text-black hover:bg-black hover:text-white"
               >
                 <Calendar className="h-4 w-4" />
@@ -296,8 +308,9 @@ const Header = () => {
             src={Logo}
             alt="Ryan Clinic"
             width={140}
-            height={80}
+            height={35}
             className="object-contain"
+            style={{ height: "auto" }}
             unoptimized
           />
         </Link>
@@ -373,13 +386,17 @@ const Header = () => {
 
         <div className="mt-8 flex flex-col gap-3">
           <Button asChild className="bg-white text-black hover:bg-black hover:text-white">
-            <Link href="tel:+919911111247">
+            <Link
+              href="tel:+919911111247"
+              onClick={() => trackCTA({ type: "call", ctaName: "Header Call", buttonLocation: "Header" })}
+            >
               <Phone className="h-4 w-4" />
               <span>Call us</span>
             </Link>
           </Button>
           <Button
             onClick={() => {
+              trackCTA({ type: "whatsapp", ctaName: "Header Book Appointment", buttonLocation: "Header" });
               setShowPopup(true);
               setMobileMenuOpen(false);
             }}

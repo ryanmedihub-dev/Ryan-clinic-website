@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import useTrackCTA from "@/lib/useTrackCTA";
 
 const faqs = [
   {
@@ -47,6 +48,7 @@ const faqs = [
 
 export default function FaqSection() {
   const [open, setOpen] = useState(null);
+  const trackCTA = useTrackCTA();
 
   return (
     <section className="py-16 md:py-24" style={{ background: "var(--bg-main)" }}>
@@ -129,6 +131,7 @@ export default function FaqSection() {
               rel="noreferrer"
               className="inline-flex items-center gap-2 font-semibold text-sm py-3.5 px-7 rounded-xl text-white w-full justify-center transition-opacity hover:opacity-90"
               style={{ background: "var(--primary-red)" }}
+              onClick={() => trackCTA({ type: "whatsapp", ctaName: "FAQ Ask A Doctor", buttonLocation: "FAQ Section" })}
             >
               Ask a Doctor — Free
               <svg
@@ -272,6 +275,7 @@ export default function FaqSection() {
                 rel="noreferrer"
                 className="font-semibold underline"
                 style={{ color: "var(--primary-red)" }}
+                onClick={() => trackCTA({ type: "whatsapp", ctaName: "FAQ Chat With Doctor", buttonLocation: "FAQ Section" })}
               >
                 Chat with our doctor on WhatsApp →
               </a>

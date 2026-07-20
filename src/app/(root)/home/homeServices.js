@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import useTrackCTA from "@/lib/useTrackCTA";
 import Service1 from "../../../../public/uploads/service-one.jpg";
 import Service2 from "../../../../public/uploads/service-two.jpg";
 import Service3 from "../../../../public/uploads/service-three.jpg";
@@ -35,6 +36,7 @@ const cards = [
 
 export default function WhyRyanSection() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const trackCTA = useTrackCTA();
 
   return (
     <section className="bg-[#fff5ec] py-10 md:py-16">
@@ -146,7 +148,14 @@ export default function WhyRyanSection() {
                       href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi, I visited your website. Please guide me with the best treatment."
                       target="_blank"
                       rel="noreferrer"
-                      onClick={(e) => e.stopPropagation()}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        trackCTA({
+                          type: "whatsapp",
+                          ctaName: `Home Service: ${card.title}`,
+                          buttonLocation: "Home Services Section"
+                        });
+                      }}
                       className="inline-flex items-center gap-2 text-[10px] sm:text-[11px] font-bold tracking-widest uppercase px-3 sm:px-4 py-2 bg-[#FFC107] text-black transition-all duration-300 hover:bg-yellow-400 active:scale-95"
                     >
                       Book Free Consult →

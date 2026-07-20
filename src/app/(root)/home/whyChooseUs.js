@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import useTrackCTA from "@/lib/useTrackCTA";
 
 /* ══════════════════════════════════════════════════════
    WHY CHOOSE US
@@ -50,6 +51,7 @@ function getWhyItems(city) {
 export default function WhyChooseUs({ city = "Delhi" }) {
   const [open, setOpen] = useState(0);
   const whyItems = getWhyItems(city);
+  const trackCTA = useTrackCTA();
 
   return (
     <section className="py-16 md:py-24 bg-[#fff5ec]">
@@ -211,6 +213,7 @@ export default function WhyChooseUs({ city = "Delhi" }) {
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-3 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-4 px-7 text-sm tracking-wide transition-colors rounded-xl justify-center"
+                  onClick={() => trackCTA({ type: "whatsapp", ctaName: "Why Choose Us Book Consultation", buttonLocation: "Why Choose Us Section" })}
                 >
                   Book Your Free Scalp Analysis
 
@@ -232,6 +235,7 @@ export default function WhyChooseUs({ city = "Delhi" }) {
                 <a
                   href="tel:+919911111247"
                   className="inline-flex items-center gap-3 border border-gray-200 hover:border-[#D32F2F] text-gray-600 hover:text-[#D32F2F] font-semibold py-4 px-7 text-sm tracking-wide transition-all rounded-xl justify-center"
+                  onClick={() => trackCTA({ type: "call", ctaName: "Why Choose Us Call Now", buttonLocation: "Why Choose Us Section" })}
                 >
                   <svg
                     className="w-4 h-4"

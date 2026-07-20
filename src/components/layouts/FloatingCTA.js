@@ -1,10 +1,15 @@
 "use client";
 
+import useTrackCTA from "@/lib/useTrackCTA";
+
 const WA_URL =
   "https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation";
+
 const CALL_URL = "tel:+919911111247";
 
 export default function FloatingCTA() {
+  const trackCTA = useTrackCTA();
+
   return (
     <div className="fixed bottom-6 right-4 z-50 flex flex-col gap-3 items-end">
       {/* WhatsApp */}
@@ -18,6 +23,17 @@ export default function FloatingCTA() {
           background: "#16a34a",
           padding: "12px",
           boxShadow: "0 4px 20px rgba(22,163,74,0.45)",
+        }}
+        onClick={() => {
+          try {
+            trackCTA({
+              type: "whatsapp",
+              ctaName: "Floating WhatsApp",
+              buttonLocation: "Floating CTA",
+            });
+          } catch (err) {
+            console.error(err);
+          }
         }}
       >
         {/* Pulse ring */}
@@ -56,6 +72,17 @@ export default function FloatingCTA() {
           background: "#D32F2F",
           padding: "12px",
           boxShadow: "0 4px 20px rgba(211,47,47,0.45)",
+        }}
+        onClick={() => {
+          try {
+            trackCTA({
+              type: "call",
+              ctaName: "Floating Call",
+              buttonLocation: "Floating CTA",
+            });
+          } catch (err) {
+            console.error(err);
+          }
         }}
       >
         <svg

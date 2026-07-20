@@ -1,5 +1,8 @@
+"use client";
+
 // DifferencesSection.js
 // Usage: <DifferencesSection features={[{label, fut:{value,bad?}, fue:{value}, sapphire:{value}}]} />
+import useTrackCTA from "@/lib/useTrackCTA";
 
 const DEFAULT_FEATURES = [
   { label: "Scarring",       fut: { value: "Linear donor scar", bad: true },      fue: { value: "Tiny dot scars only" },          sapphire: { value: "Tiny dots + finer channels" } },
@@ -13,6 +16,7 @@ const DEFAULT_FEATURES = [
 ];
 
 export default function DifferencesSection({ features: featuresOverride }) {
+  const trackCTA = useTrackCTA();
   const features = featuresOverride?.length ? featuresOverride : DEFAULT_FEATURES;
   return (
     <section className="py-20 bg-[#F7F5F2]">
@@ -184,6 +188,7 @@ export default function DifferencesSection({ features: featuresOverride }) {
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-3 px-6 text-sm tracking-wide transition-colors rounded-xl"
+            onClick={() => trackCTA({ type: "whatsapp", ctaName: "Differences Which Technique", buttonLocation: "Differences Section" })}
           >
             Which Is Right for Me? →
           </a>

@@ -5,8 +5,8 @@ import { requireAdmin } from "@/lib/requireAdmin";
 
 const handler = async (req) => {
     try {
-        //const authError = await requireAdmin();
-        //if (authError) return authError;
+        const authError = await requireAdmin();
+        if (authError) return authError;
 
         const { searchParams } = new URL(req.url);
 
@@ -22,9 +22,15 @@ const handler = async (req) => {
             );
         }
 
+        const normalizedSlug = slug
+            .toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, "")
+            .replace(/\s+/g, "-");
+
         const surgeryPage = await SurgeryPageModel.findOne({
-            slug: slug.toLowerCase().trim(),
-        });
+            slug: normalizedSlug,
+        }).lean();
 
         if (!surgeryPage) {
             return NextResponse.json(

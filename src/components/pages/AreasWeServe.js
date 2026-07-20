@@ -1,5 +1,8 @@
+"use client";
+
 // AreasWeServe.js
 // Usage: <AreasWeServe city="Delhi" branch="Delhi" />
+import useTrackCTA from "@/lib/useTrackCTA";
 
 const BRANCHES = {
   Delhi: {
@@ -138,6 +141,7 @@ const BRANCHES = {
 };
 
 export default function AreasWeServe({ city = "Delhi", branch = "Delhi", branchData }) {
+  const trackCTA = useTrackCTA();
   const data = branchData || BRANCHES[branch] || BRANCHES.Delhi;
   const otherBranches = Object.keys(BRANCHES).filter((b) => b !== branch);
 
@@ -411,6 +415,11 @@ export default function AreasWeServe({ city = "Delhi", branch = "Delhi", branchD
                               : undefined
                           }
                           className="text-xs font-semibold text-[#D32F2F] mt-1 inline-block hover:underline"
+                          onClick={() => trackCTA({
+                            type: item.link.startsWith("tel:") ? "call" : "whatsapp",
+                            ctaName: `Areas We Serve ${item.label}`,
+                            buttonLocation: "Areas We Serve Section"
+                          })}
                         >
                           {item.linkText}
                         </a>

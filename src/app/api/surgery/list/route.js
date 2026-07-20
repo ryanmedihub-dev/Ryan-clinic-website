@@ -5,15 +5,18 @@ import { requireAdmin } from "@/lib/requireAdmin";
 
 const handler = async () => {
     try {
-        // const authError = await requireAdmin();
-        // if (authError) return authError;
+        const authError = await requireAdmin();
+        if (authError) return authError;
 
         const surgeryPages = await SurgeryPageModel.find()
-            .select("pageName slug createdAt updatedAt")
-            .sort({ createdAt: -1 });
+            .select("city pageName slug status createdAt updatedAt")
+            .sort({ createdAt: -1 })
+            .lean();
 
         return NextResponse.json(
             {
+                success: true,
+                total: surgeryPages.length,
                 surgeryPages,
             },
             {
@@ -23,7 +26,8 @@ const handler = async () => {
     } catch (error) {
         return NextResponse.json(
             {
-                message: error.message,
+                success: false,
+                message: error.message
             },
             {
                 status: 500,
