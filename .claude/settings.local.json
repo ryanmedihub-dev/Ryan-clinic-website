@@ -26,7 +26,8 @@
       "Bash(Remove-Item \"c:\\\\dashzer\\\\Ryan-next-project-new\\\\src\\\\middleware.js\")",
       "Bash(xargs grep -l \"requireAdmin\\\\|withDB\")",
       "PowerShell(cd c:\\\\Ryan-next-project-new; $env:PATH += \";C:\\\\Program Files\\\\nodejs\\\\node_modules\\\\.bin\"; node_modules\\\\.bin\\\\next dev --turbopack 2>&1 | Select-Object -First 30)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(git status *)"
     ],
     "additionalDirectories": [
       "/home/dashzer/codes/clinicryan/src/app/(root)"

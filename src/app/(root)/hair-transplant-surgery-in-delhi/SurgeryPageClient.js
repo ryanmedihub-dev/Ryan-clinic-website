@@ -454,7 +454,21 @@ export default function SurgeryPageClient({ city }) {
                   {row.icon}
                 </div>
                 <h3 className="text-2xl md:text-3xl font-bold text-[#302658] mb-4">{row.title}</h3>
-                <p className      {/* ── 4. Safety Section ─────────────────────────────────────────── */}
+                <p className="text-gray-500 text-base leading-relaxed mb-6">{row.desc}</p>
+                <ul className="space-y-2.5">
+                  {row.points.map((point, j) => (
+                    <li key={j} className="flex items-center gap-2.5 text-sm text-[#302658] font-medium">
+                      <CheckCircle2 className="w-4 h-4 text-[#e30a17] shrink-0" /> {point}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── 4. Safety Section ─────────────────────────────────────────── */}
       <section className="bg-white py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
@@ -519,20 +533,6 @@ export default function SurgeryPageClient({ city }) {
                 </p>
               </div>
             </Reveal>
-          </div>
-        </div>
-      </section>ronment" },
-                      { val: "Zero", label: "Reused or shared surgical blades" },
-                    ].map((item, i) => (
-                      <div key={i} className="flex items-center gap-4 py-4">
-                        <span className="text-2xl font-extrabold text-[#e30a17] w-16 shrink-0">{item.val}</span>
-                        <span className="text-gray-300 text-sm font-medium leading-snug">{item.label}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </Reveal>
-            </div>
           </div>
         </div>
       </section>
