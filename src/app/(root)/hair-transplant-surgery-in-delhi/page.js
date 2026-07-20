@@ -1,13 +1,4 @@
-import PageBanner from "@/components/layouts/pageBanner";
-import ContactForm from "@/components/pages/contactForm";
-import FAQSection from "./FAQSection";
-import {
-  AnimatedStatsGrid,
-  AnimatedCard,
-  Reveal,
-  RevealSection,
-  RevealList,
-} from "./AnimatedPage";
+import SurgeryPageClient from "./SurgeryPageClient";
 
 export const metadata = {
   title: "Best Hair Transplant Surgery in Delhi | Ryan Clinic",
@@ -51,6 +42,10 @@ export const metadata = {
   },
 };
 
+<<<<<<< HEAD
+export default function HairTransplantSurgeryDelhiPage() {
+  return <SurgeryPageClient city="Delhi" />;
+=======
 // ─── constants ────────────────────────────────────────────────────────────────
 
 const WA =
@@ -783,4 +778,5 @@ export default function HairTransplantSurgeryDelhi() {
       </div>
     </>
   );
+>>>>>>> a2e76a1cbcb8d33f7f093c9a8d0908ca548f00d1
 }

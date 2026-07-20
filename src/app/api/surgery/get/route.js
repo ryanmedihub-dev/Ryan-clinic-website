@@ -3,12 +3,28 @@ import { withDB } from "@/lib/withDB";
 import SurgeryPageModel from "@/models/surgeryPage";
 import { requireAdmin } from "@/lib/requireAdmin";
 
-const handler = async () => {   
+const handler = async (req) => {
     try {
-        // const authError = await requireAdmin();
-        // if (authError) return authError;
+        //const authError = await requireAdmin();
+        //if (authError) return authError;
 
-        const surgeryPage = await SurgeryPageModel.findOne();
+        const { searchParams } = new URL(req.url);
+
+        const slug = searchParams.get("slug");
+        if (!slug) {
+            return NextResponse.json(
+                {
+                    message: "Slug is required.",
+                },
+                {
+                    status: 400,
+                }
+            );
+        }
+
+        const surgeryPage = await SurgeryPageModel.findOne({
+            slug: slug.toLowerCase().trim(),
+        });
 
         if (!surgeryPage) {
             return NextResponse.json(

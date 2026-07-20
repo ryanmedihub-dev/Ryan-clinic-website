@@ -50,7 +50,20 @@ const handler = async (req) => {
             );
         }
 
-        const surgeryPage = await SurgeryPageModel.findOne();
+        const { searchParams } = new URL(req.url);
+
+        const slug = searchParams.get("slug");
+
+        if (!slug) {
+            return NextResponse.json(
+                { message: "Slug is required." },
+                { status: 400 }
+            );
+        }
+
+        const surgeryPage = await SurgeryPageModel.findOne({
+            slug: slug.toLowerCase().trim(),
+        });
         if (!surgeryPage) {
             return NextResponse.json(
                 {

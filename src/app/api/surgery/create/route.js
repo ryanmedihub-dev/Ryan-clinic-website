@@ -12,6 +12,8 @@ const handler = async (req) => {
         const body = await req.json();
 
         const {
+            pageName,
+            slug,
             seo,
             banner,
             stats,
@@ -26,6 +28,8 @@ const handler = async (req) => {
 
         // Validate Required Sections
         if (
+            !pageName ||
+            !slug ||
             !seo ||
             !banner ||
             !stats ||
@@ -47,8 +51,12 @@ const handler = async (req) => {
             );
         }
 
+        const normalizedSlug = slug.toLowerCase().trim();
+
         // Check Existing Surgery Page
-        const existingSurgeryPage = await SurgeryPageModel.findOne();
+        const existingSurgeryPage = await SurgeryPageModel.findOne({
+            slug: normalizedSlug,
+        });
 
         if (existingSurgeryPage) {
             return NextResponse.json(
@@ -63,6 +71,8 @@ const handler = async (req) => {
 
         // Create Surgery Page
         const surgeryPageDoc = new SurgeryPageModel({
+            pageName,
+            slug: normalizedSlug,
             seo,
             banner,
             stats,
