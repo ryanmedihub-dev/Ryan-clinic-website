@@ -363,3 +363,5 @@ export default async function BlogListPage() {
     </div>
   );
 }
+
+
