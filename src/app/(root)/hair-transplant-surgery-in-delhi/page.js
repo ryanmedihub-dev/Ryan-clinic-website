@@ -54,26 +54,15 @@ export async function generateMetadata() {
     title: seo.metaTitle || "Hair Transplant Surgery in Delhi | Ryan Clinic",
     description:
       seo.metaDescription ||
-<<<<<<< HEAD
-      "Safe, minimally-invasive hair transplant surgery in Delhi performed by certified doctors. What it involves, safety, recovery and cost.",
-=======
       "Doctor-led FUE & THI hair transplant surgery in Delhi. Safe, minimally-invasive procedures in a sterile OT. Free consultation.",
->>>>>>> 0f61d6d9c3c20f81f3afadb3caba16e1e1982df6
     keywords: keywordsArr,
     alternates: seo.canonicalUrl
       ? { canonical: seo.canonicalUrl }
       : { canonical: "https://www.clinicryan.com/hair-transplant-surgery-in-delhi/" },
     robots: robotsMeta,
     openGraph: {
-<<<<<<< HEAD
-      title: seo.metaTitle || "Hair Transplant Surgery in Delhi — Doctor-Led FUE & THI | Ryan Clinic",
-      description:
-        seo.metaDescription ||
-        "Safe, minimally-invasive hair transplant surgery in Delhi performed by certified doctors. What it involves, safety, recovery and cost.",
-=======
       title: seo.metaTitle || "Hair Transplant Surgery in Delhi | Ryan Clinic",
       description: seo.metaDescription || "",
->>>>>>> 0f61d6d9c3c20f81f3afadb3caba16e1e1982df6
       url: seo.canonicalUrl || "https://www.clinicryan.com/hair-transplant-surgery-in-delhi/",
       siteName: "Ryan Clinic",
       locale: "en_IN",
@@ -89,24 +78,13 @@ export async function generateMetadata() {
     },
     twitter: {
       card: "summary_large_image",
-<<<<<<< HEAD
-      title: seo.metaTitle || "Hair Transplant Surgery in Delhi — Doctor-Led FUE & THI | Ryan Clinic",
-      description:
-        seo.metaDescription ||
-        "Safe, minimally-invasive hair transplant surgery in Delhi performed by certified doctors. What it involves, safety, recovery and cost.",
-=======
       title: seo.metaTitle || "Hair Transplant Surgery in Delhi | Ryan Clinic",
       description: seo.metaDescription || "",
->>>>>>> 0f61d6d9c3c20f81f3afadb3caba16e1e1982df6
       images: [ogImageUrl],
     },
   };
 }
 
-<<<<<<< HEAD
-export default function HairTransplantSurgeryDelhiPage() {
-  return <SurgeryPageClient city="Delhi" />;
-=======
 export default async function HairTransplantSurgeryDelhiPage() {
   const page = await fetchSurgeryPage();
 
@@ -115,5 +93,4 @@ export default async function HairTransplantSurgeryDelhiPage() {
   }
 
   return <SurgeryPageClient data={page} />;
->>>>>>> 0f61d6d9c3c20f81f3afadb3caba16e1e1982df6
 }

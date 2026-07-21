@@ -607,35 +607,12 @@ export default function SurgeryPageClient({ data }) {
                 </div>
 
               </div>
-
-<<<<<<< HEAD
-              {/* Content side */}
-              <div className="lg:w-[55%] bg-white p-10 flex flex-col justify-center">
-                <div className="w-14 h-14 rounded-2xl bg-red-50 text-[#e30a17] flex items-center justify-center mb-6">
-                  {row.icon}
-                </div>
-                <h3 className="text-2xl md:text-3xl font-bold text-[#302658] mb-4">{row.title}</h3>
-                <p className="text-gray-500 text-base leading-relaxed mb-6">{row.desc}</p>
-                <ul className="space-y-2.5">
-                  {row.points.map((point, j) => (
-                    <li key={j} className="flex items-center gap-2.5 text-sm text-[#302658] font-medium">
-                      <CheckCircle2 className="w-4 h-4 text-[#e30a17] shrink-0" /> {point}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          ))}
+            ))
+          }
         </div>
       </section>
 
       {/* ── 4. Safety Section ─────────────────────────────────────────── */}
-=======
-            ))
-          }
-        </div>
-      </section>      {/* ── 4. Safety Section ─────────────────────────────────────────── */}
->>>>>>> 0f61d6d9c3c20f81f3afadb3caba16e1e1982df6
       <section className="bg-white py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
@@ -701,20 +678,6 @@ export default function SurgeryPageClient({ data }) {
           </div>
 
           {/* Full-width Patient Transparency Note */}
-<<<<<<< HEAD
-          <div className="mt-10">
-            <Reveal>
-              <div className="flex items-start gap-4 border-l-4 border-[#e30a17] bg-[#FFF8F8] rounded-r-2xl p-5">
-                <Lightbulb className="w-5 h-5 shrink-0 mt-0.5 text-[#e30a17]" />
-                <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-                  <strong className="font-bold text-[#302658]">Patient Transparency Note:</strong> Any minor surgery carries minor temporary risks. A reliable medical facility will guide you through them honestly rather than promising impossible &ldquo;zero-risk&rdquo; guarantees.
-                </p>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-=======
           {rightBoxNotice && (
             <div className="mt-10">
               <Reveal>
@@ -730,7 +693,6 @@ export default function SurgeryPageClient({ data }) {
           )}
         </div >
       </section >
->>>>>>> 0f61d6d9c3c20f81f3afadb3caba16e1e1982df6
 
       {/* ── 5. Surgical Methodologies ─────────────────────────────────── */}
       < section className="bg-white py-16 md:py-24" >
