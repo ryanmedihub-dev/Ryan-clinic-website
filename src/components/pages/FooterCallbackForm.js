@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import useTrackCTA from "@/lib/useTrackCTA";
 
 export default function FooterCallbackForm() {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ export default function FooterCallbackForm() {
     source: "Main Website",
   });
   const [loading, setLoading] = useState(false);
+  const trackCTA = useTrackCTA();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,6 +31,11 @@ export default function FooterCallbackForm() {
       });
       const data = await res.json();
       if (data.success) {
+        trackCTA({
+          type: "form",
+          ctaName: "Footer Callback Form Submission",
+          buttonLocation: "Footer Callback Form",
+        });
         alert("We'll call you back shortly!");
         setFormData((prev) => ({ ...prev, name: "", email: "", phone: "" }));
       } else {

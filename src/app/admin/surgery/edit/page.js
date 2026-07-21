@@ -8,20 +8,56 @@ import ToastContainer from "@/components/admin/Toast";
 import dynamic from "next/dynamic";
 import "suneditor/dist/css/suneditor.min.css";
 
+const sunEditorOptions = {
+    height: "400px",
+    buttonList: [
+        ["undo", "redo"],
+        ["font", "fontSize", "formatBlock"],
+        ["bold", "underline", "italic", "strike", "subscript", "superscript"],
+        ["fontColor", "hiliteColor"],
+        ["align", "horizontalRule", "list", "table"],
+        ["link", "image", "video"],
+        ["fullScreen", "showBlocks", "codeView"],
+        ["preview", "print"],
+    ],
+    defaultStyle: "font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size:16px;",
+    imageUploadUrl: "/api/upload",
+};
+
 const SunEditor = dynamic(() => import("suneditor-react"), { ssr: false });
+
+// ─── CTA BLOCK — module-level so React never unmounts it on re-renders ─────────────
+function CTABlock({ label, value, onChange }) {
+    return (
+        <div className="border rounded-xl p-5 bg-gray-50 space-y-3 mt-4">
+            <h5 className="text-sm font-semibold text-gray-700">{label}</h5>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700">Button Text</label>
+                    <input type="text" value={value?.text || ""} onChange={(e) => onChange("text", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Book Consultation" />
+                </div>
+                <div>
+                    <label className="block text-sm font-semibold text-gray-700">Button Link</label>
+                    <input type="text" value={value?.link || ""} onChange={(e) => onChange("link", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. /book-now" />
+                </div>
+            </div>
+            <div className="flex items-center gap-2">
+                <input type="checkbox" checked={!!value?.external} onChange={(e) => onChange("external", e.target.checked)} className="w-4 h-4" />
+                <label className="text-sm text-gray-600">Open in new tab (External URL)</label>
+            </div>
+        </div>
+    );
+}
 
 function useToast() {
     const [toasts, setToasts] = useState([]);
-
     const add = useCallback((type, title, message) => {
         const id = Date.now() + Math.random();
         setToasts((prev) => [...prev, { id, type, title, message }]);
     }, []);
-
     const remove = useCallback((id) => {
         setToasts((prev) => prev.filter((t) => t.id !== id));
     }, []);
-
     return {
         toasts,
         remove,
@@ -31,63 +67,125 @@ function useToast() {
 }
 
 const initialState = {
-    pageName: "",
-    slug: "",
-
+    city: "",
+    status: "draft",
     seo: {
         metaTitle: "",
         metaDescription: "",
         keywords: "",
+        canonicalUrl: "",
+        robots: "index,follow",
+        openGraphImage: { image: "", imageAlt: "" },
     },
-
-    banner: {
+    hero: {
+        breadcrumb: "",
         title: "",
         description: "",
-        image: "",
-        imageAlt: "",
+        heroImage: { image: "", imageAlt: "" },
+        stats: [],
+        whatsappText: { text: "", link: "", external: false },
+        callText: { text: "", link: "", external: false },
     },
-
-    stats: [],
-
     introduction: {
+        smallHeading: "",
         title: "",
         description: "",
+        highlightBoxText: "",
+        mainImage: { image: "", imageAlt: "" },
+        floatingImage: { image: "", imageAlt: "" },
+        bottomStats: [],
+        primaryCTA: { text: "", link: "", external: false },
+        secondaryCTA: { text: "", link: "", external: false },
     },
-
     procedureScience: {
-        title: "",
+        mainHeading: "",
         description: "",
         cards: [],
     },
-
     safety: {
-        title: "",
+        heading: "",
         description: "",
-        cards: [],
+        safetyCards: [],
+        rightSideHighlightBox: {
+            smallHeading: "",
+            title: "",
+            description: "",
+            metrics: [],
+            bottomNotice: "",
+        },
     },
-
     techniques: {
-        title: "",
+        heading: "",
         description: "",
         techniques: [],
+        bottomCTABlock: {
+            heading: "",
+            description: "",
+            primaryCTA: { text: "", link: "", external: false },
+            secondaryCTA: { text: "", link: "", external: false },
+        },
     },
-
-    recovery: {
-        title: "",
+    qualityBenchmarks: {
+        heading: "",
         description: "",
-        cards: [],
+        benchmarkCards: [],
     },
-
+    procedureTimeline: {
+        heading: "",
+        description: "",
+        timelineSteps: [],
+        bottomHighlightMessage: "",
+    },
+    recoveryTimeline: {
+        heading: "",
+        description: "",
+        leftHighlightCard: {
+            icon: "",
+            title: "",
+            description: "",
+            statistics: [],
+        },
+        recoveryStages: [],
+    },
     doctors: {
-        title: "",
+        heading: "",
         description: "",
         doctors: [],
+        topButtonText: "",
     },
-
+    pricing: {
+        heading: "",
+        description: "",
+        warningText: "",
+        pricingStats: [],
+        ctaTextWhatsApp: { text: "", link: "", external: false },
+        ctaTextCall: { text: "", link: "", external: false },
+        ctaTextGuide: { text: "", link: "", external: false },
+    },
+    visitClinic: {
+        heading: "",
+        description: "",
+        informationCards: [],
+        buttonText: { text: "", link: "", external: false },
+    },
+    consultation: {
+        leftSide: {
+            heading: "",
+            description: "",
+            contactCards: [],
+        },
+        consultationFormConfig: {
+            title: "",
+            servicesDropdown: [],
+            submitButtonText: { text: "", link: "", external: false },
+        },
+    },
     faq: {
-        title: "",
-        subtitle: "",
+        heading: "",
+        description: "",
+        stats: [],
         faqs: [],
+        ctaButtonText: { text: "", link: "", external: false },
     },
 };
 
@@ -107,19 +205,42 @@ function EditSurgeryForm() {
             setLoading(true);
             const response = await fetch(`/api/surgery/get?slug=${slug}`);
             const data = await response.json();
-
             if (response.ok && data.surgeryPage) {
-                const surgeryData = data.surgeryPage;
-
-                if (!surgeryData.faq) surgeryData.faq = initialState.faq;
-                if (!surgeryData.faq.faqs) surgeryData.faq.faqs = [];
-                if (!surgeryData.stats) surgeryData.stats = [];
-                if (!surgeryData.procedureScience)
-                    surgeryData.procedureScience = initialState.procedureScience;
-                if (!surgeryData.procedureScience.cards)
-                    surgeryData.procedureScience.cards = [];
-
-                setFormData(surgeryData);
+                const d = data.surgeryPage;
+                // Merge with initialState to ensure all fields exist
+                setFormData({
+                    ...initialState,
+                    ...d,
+                    seo: { ...initialState.seo, ...(d.seo || {}) },
+                    hero: { ...initialState.hero, ...(d.hero || {}), stats: d.hero?.stats || [] },
+                    introduction: { ...initialState.introduction, ...(d.introduction || {}), bottomStats: d.introduction?.bottomStats || [] },
+                    procedureScience: { ...initialState.procedureScience, ...(d.procedureScience || {}), cards: d.procedureScience?.cards || [] },
+                    safety: {
+                        ...initialState.safety, ...(d.safety || {}),
+                        safetyCards: d.safety?.safetyCards || [],
+                        rightSideHighlightBox: { ...initialState.safety.rightSideHighlightBox, ...(d.safety?.rightSideHighlightBox || {}), metrics: d.safety?.rightSideHighlightBox?.metrics || [] }
+                    },
+                    techniques: {
+                        ...initialState.techniques, ...(d.techniques || {}),
+                        techniques: d.techniques?.techniques || [],
+                        bottomCTABlock: { ...initialState.techniques.bottomCTABlock, ...(d.techniques?.bottomCTABlock || {}) }
+                    },
+                    qualityBenchmarks: { ...initialState.qualityBenchmarks, ...(d.qualityBenchmarks || {}), benchmarkCards: d.qualityBenchmarks?.benchmarkCards || [] },
+                    procedureTimeline: { ...initialState.procedureTimeline, ...(d.procedureTimeline || {}), timelineSteps: d.procedureTimeline?.timelineSteps || [] },
+                    recoveryTimeline: {
+                        ...initialState.recoveryTimeline, ...(d.recoveryTimeline || {}),
+                        recoveryStages: d.recoveryTimeline?.recoveryStages || [],
+                        leftHighlightCard: { ...initialState.recoveryTimeline.leftHighlightCard, ...(d.recoveryTimeline?.leftHighlightCard || {}), statistics: d.recoveryTimeline?.leftHighlightCard?.statistics || [] }
+                    },
+                    doctors: { ...initialState.doctors, ...(d.doctors || {}), doctors: d.doctors?.doctors || [] },
+                    pricing: { ...initialState.pricing, ...(d.pricing || {}), pricingStats: d.pricing?.pricingStats || [] },
+                    visitClinic: { ...initialState.visitClinic, ...(d.visitClinic || {}), informationCards: d.visitClinic?.informationCards || [] },
+                    consultation: {
+                        leftSide: { ...initialState.consultation.leftSide, ...(d.consultation?.leftSide || {}), contactCards: d.consultation?.leftSide?.contactCards || [] },
+                        consultationFormConfig: { ...initialState.consultation.consultationFormConfig, ...(d.consultation?.consultationFormConfig || {}), servicesDropdown: d.consultation?.consultationFormConfig?.servicesDropdown || [] }
+                    },
+                    faq: { ...initialState.faq, ...(d.faq || {}), stats: d.faq?.stats || [], faqs: d.faq?.faqs || [] },
+                });
             } else {
                 toast.error("Error", data.message || "Surgery Page NOT Found");
             }
@@ -129,391 +250,83 @@ function EditSurgeryForm() {
         } finally {
             setLoading(false);
         }
-    }, [slug, toast]);
+    }, [slug]);
 
     useEffect(() => {
         fetchSurgeryPage();
     }, [fetchSurgeryPage]);
 
+    // ─── STATE HELPERS ────────────────────────────────────────────────────────
     const handleNestedChange = (section, field, value) => {
-        setFormData((prev) => ({
-            ...prev,
-            [section]: {
-                ...prev[section],
-                [field]: value,
-            },
-        }));
+        setFormData((prev) => ({ ...prev, [section]: { ...prev[section], [field]: value } }));
     };
 
-    const handleBannerUpload = (url) => {
-        handleNestedChange("banner", "image", url);
+    const handleDeepChange = (section, subSection, field, value) => {
+        setFormData((prev) => ({ ...prev, [section]: { ...prev[section], [subSection]: { ...prev[section][subSection], [field]: value } } }));
     };
 
-    const addStat = () => {
-        setFormData((prev) => ({
-            ...prev,
-            stats: [
-                ...prev.stats,
-                { value: "", label: "" },
-            ],
-        }));
+    const handleTopLevelChange = (field, value) => {
+        setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
-    const deleteStat = (index) => {
-        const confirmDelete = window.confirm(
-            "Are you sure you want to delete this stat?"
-        );
-        if (!confirmDelete) return;
-
-        setFormData((prev) => ({
-            ...prev,
-            stats: prev.stats.filter((_, i) => i !== index),
-        }));
+    const addToArray = (section, field, newItem) => {
+        setFormData((prev) => ({ ...prev, [section]: { ...prev[section], [field]: [...(prev[section][field] || []), newItem] } }));
     };
 
-    const handleStatChange = (index, field, value) => {
+    const deleteFromArray = (section, field, index) => {
+        setFormData((prev) => ({ ...prev, [section]: { ...prev[section], [field]: prev[section][field].filter((_, i) => i !== index) } }));
+    };
+
+    const updateArrayItem = (section, field, index, itemField, value) => {
         setFormData((prev) => {
-            const updatedStats = [...prev.stats];
-            updatedStats[index] = { ...updatedStats[index], [field]: value };
-            return { ...prev, stats: updatedStats };
+            const arr = [...prev[section][field]];
+            arr[index] = { ...arr[index], [itemField]: value };
+            return { ...prev, [section]: { ...prev[section], [field]: arr } };
         });
     };
 
-    const addProcedureCard = () => {
-        setFormData((prev) => ({
-            ...prev,
-            procedureScience: {
-                ...prev.procedureScience,
-                cards: [
-                    ...prev.procedureScience.cards,
-                    { title: "", description: "" },
-                ],
-            },
-        }));
-    };
-
-    const deleteProcedureCard = (index) => {
-        const confirmDelete = window.confirm(
-            "Are you sure you want to delete this card?"
-        );
-        if (!confirmDelete) return;
-
-        setFormData((prev) => ({
-            ...prev,
-            procedureScience: {
-                ...prev.procedureScience,
-                cards: prev.procedureScience.cards.filter((_, i) => i !== index),
-            },
-        }));
-    };
-
-    const handleProcedureCardChange = (index, field, value) => {
+    const addNestedItem = (section, field, index, subField, newItem) => {
         setFormData((prev) => {
-            const updatedCards = [...prev.procedureScience.cards];
-            updatedCards[index] = { ...updatedCards[index], [field]: value };
-            return {
-                ...prev,
-                procedureScience: {
-                    ...prev.procedureScience,
-                    cards: updatedCards,
-                },
-            };
+            const arr = [...prev[section][field]];
+            arr[index] = { ...arr[index], [subField]: [...(arr[index][subField] || []), newItem] };
+            return { ...prev, [section]: { ...prev[section], [field]: arr } };
         });
     };
 
-    const addFaq = () => {
-        setFormData((prev) => ({
-            ...prev,
-            faq: {
-                ...prev.faq,
-                faqs: [
-                    ...prev.faq.faqs,
-                    { question: "", answer: "" },
-                ],
-            },
-        }));
-    };
-
-    const deleteFaq = (faqIndex) => {
-        const confirmDelete = window.confirm(
-            "Are you sure you want to delete this FAQ?"
-        );
-        if (!confirmDelete) return;
-
-        setFormData((prev) => ({
-            ...prev,
-            faq: {
-                ...prev.faq,
-                faqs: (prev.faq.faqs || []).filter((_, index) => index !== faqIndex),
-            },
-        }));
-    };
-
-    const handleFaqChange = (index, field, value) => {
+    const deleteNestedItem = (section, field, index, subField, subIndex) => {
         setFormData((prev) => {
-            const updatedFaqs = [...(prev.faq.faqs || [])];
-            updatedFaqs[index] = { ...updatedFaqs[index], [field]: value };
-            return {
-                ...prev,
-                faq: { ...prev.faq, faqs: updatedFaqs },
-            };
+            const arr = [...prev[section][field]];
+            arr[index] = { ...arr[index], [subField]: arr[index][subField].filter((_, i) => i !== subIndex) };
+            return { ...prev, [section]: { ...prev[section], [field]: arr } };
         });
     };
 
-    const addSafetyCard = () => {
-        setFormData((prev) => ({
-            ...prev,
-            safety: {
-                ...prev.safety,
-                cards: [
-                    ...prev.safety.cards,
-                    {
-                        title: "",
-                        description: "",
-                    },
-                ],
-            },
-        }));
-    };
-
-    const deleteSafetyCard = (index) => {
-        const confirmDelete = window.confirm(
-            "Are you sure you want to delete this safety card?"
-        );
-        if (!confirmDelete) return;
-
-        setFormData((prev) => ({
-            ...prev,
-            safety: {
-                ...prev.safety,
-                cards: prev.safety.cards.filter((_, i) => i !== index),
-            },
-        }));
-    };
-
-    const handleSafetyCardChange = (index, field, value) => {
+    const updateNestedItem = (section, field, index, subField, subIndex, value) => {
         setFormData((prev) => {
-            const updatedCards = [...prev.safety.cards];
-            updatedCards[index] = {
-                ...updatedCards[index],
-                [field]: value,
-            };
-            return {
-                ...prev,
-                safety: {
-                    ...prev.safety,
-                    cards: updatedCards,
-                },
-            };
+            const arr = [...prev[section][field]];
+            const subArr = [...(arr[index][subField] || [])];
+            subArr[subIndex] = value;
+            arr[index] = { ...arr[index], [subField]: subArr };
+            return { ...prev, [section]: { ...prev[section], [field]: arr } };
         });
     };
 
-    const addTechnique = () => {
-        setFormData((prev) => ({
-            ...prev,
-            techniques: {
-                ...prev.techniques,
-                techniques: [
-                    ...prev.techniques.techniques,
-                    { title: "", badge: "", description: "" },
-                ],
-            },
-        }));
-    };
-
-    const deleteTechnique = (index) => {
-        const confirmDelete = window.confirm(
-            "Are you sure you want to delete this technique?"
-        );
-        if (!confirmDelete) return;
-
-        setFormData((prev) => ({
-            ...prev,
-            techniques: {
-                ...prev.techniques,
-                techniques: prev.techniques.techniques.filter((_, i) => i !== index),
-            },
-        }));
-    };
-
-    const handleTechniqueChange = (index, field, value) => {
-        setFormData((prev) => {
-            const updatedTechniques = [...prev.techniques.techniques];
-            updatedTechniques[index] = { ...updatedTechniques[index], [field]: value };
-            return {
-                ...prev,
-                techniques: {
-                    ...prev.techniques,
-                    techniques: updatedTechniques,
-                },
-            };
-        });
-    };
-
-    const addRecoveryCard = () => {
-        setFormData((prev) => ({
-            ...prev,
-            recovery: {
-                ...prev.recovery,
-                cards: [
-                    ...prev.recovery.cards,
-                    { timeline: "", title: "", description: "" },
-                ],
-            },
-        }));
-    };
-
-    const deleteRecoveryCard = (index) => {
-        const confirmDelete = window.confirm(
-            "Are you sure you want to delete this recovery card?"
-        );
-        if (!confirmDelete) return;
-
-        setFormData((prev) => ({
-            ...prev,
-            recovery: {
-                ...prev.recovery,
-                cards: prev.recovery.cards.filter((_, i) => i !== index),
-            },
-        }));
-    };
-
-    const handleRecoveryCardChange = (index, field, value) => {
-        setFormData((prev) => {
-            const updatedCards = [...prev.recovery.cards];
-            updatedCards[index] = { ...updatedCards[index], [field]: value };
-            return {
-                ...prev,
-                recovery: {
-                    ...prev.recovery,
-                    cards: updatedCards,
-                },
-            };
-        });
-    };
-
-    const addDoctor = () => {
-        setFormData((prev) => ({
-            ...prev,
-            doctors: {
-                ...prev.doctors,
-                doctors: [
-                    ...prev.doctors.doctors,
-                    { name: "", designation: "", image: "", imageAlt: "", qualifications: [] },
-                ],
-            },
-        }));
-    };
-
-    const deleteDoctor = (index) => {
-        const confirmDelete = window.confirm(
-            "Are you sure you want to delete this doctor?"
-        );
-        if (!confirmDelete) return;
-
-        setFormData((prev) => ({
-            ...prev,
-            doctors: {
-                ...prev.doctors,
-                doctors: prev.doctors.doctors.filter((_, i) => i !== index),
-            },
-        }));
-    };
-
-    const handleDoctorChange = (index, field, value) => {
-        setFormData((prev) => {
-            const updatedDoctors = [...prev.doctors.doctors];
-            updatedDoctors[index] = { ...updatedDoctors[index], [field]: value };
-            return {
-                ...prev,
-                doctors: {
-                    ...prev.doctors,
-                    doctors: updatedDoctors,
-                },
-            };
-        });
-    };
-
-    const addQualification = (doctorIndex) => {
-        setFormData((prev) => {
-            const updatedDoctors = [...prev.doctors.doctors];
-            updatedDoctors[doctorIndex] = {
-                ...updatedDoctors[doctorIndex],
-                qualifications: [...(updatedDoctors[doctorIndex].qualifications || []), ""],
-            };
-            return {
-                ...prev,
-                doctors: {
-                    ...prev.doctors,
-                    doctors: updatedDoctors,
-                },
-            };
-        });
-    };
-
-    const deleteQualification = (doctorIndex, qualificationIndex) => {
-        const confirmDelete = window.confirm(
-            "Are you sure you want to delete this qualification?"
-        );
-        if (!confirmDelete) return;
-
-        setFormData((prev) => {
-            const updatedDoctors = [...prev.doctors.doctors];
-            updatedDoctors[doctorIndex] = {
-                ...updatedDoctors[doctorIndex],
-                qualifications: (updatedDoctors[doctorIndex].qualifications || []).filter(
-                    (_, i) => i !== qualificationIndex
-                ),
-            };
-            return {
-                ...prev,
-                doctors: {
-                    ...prev.doctors,
-                    doctors: updatedDoctors,
-                },
-            };
-        });
-    };
-
-    const handleQualificationChange = (doctorIndex, qualificationIndex, value) => {
-        setFormData((prev) => {
-            const updatedDoctors = [...prev.doctors.doctors];
-            const updatedQualifications = [...(updatedDoctors[doctorIndex].qualifications || [])];
-            updatedQualifications[qualificationIndex] = value;
-            updatedDoctors[doctorIndex] = {
-                ...updatedDoctors[doctorIndex],
-                qualifications: updatedQualifications,
-            };
-            return {
-                ...prev,
-                doctors: {
-                    ...prev.doctors,
-                    doctors: updatedDoctors,
-                },
-            };
-        });
-    };
-
+    // ─── SUBMIT ───────────────────────────────────────────────────────────────
     const handleSubmit = async (e) => {
         e.preventDefault();
         setSubmitting(true);
-
         try {
             const response = await fetch(`/api/surgery/update?slug=${slug}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData),
             });
-
             const data = await response.json();
-
             if (response.ok) {
-                toast.success("Success", data.message);
-                setTimeout(() => {
-                    router.push("/admin/surgery");
-                }, 1500);
+                toast.success("Success", data.message || "Surgery page updated successfully.");
+                setTimeout(() => router.push("/admin/surgery"), 1500);
             } else {
-                toast.error("Error", data.message);
+                toast.error("Error", data.message || "Something went wrong.");
             }
         } catch (error) {
             console.error(error);
@@ -522,6 +335,7 @@ function EditSurgeryForm() {
             setSubmitting(false);
         }
     };
+
 
     if (loading) {
         return (
@@ -532,1069 +346,582 @@ function EditSurgeryForm() {
     }
 
     return (
-        <section className="p-4">
+        <section className="pb-24">
             <ToastContainer toasts={toast.toasts} removeToast={toast.remove} />
-
             <AdminHeader title={`/ Edit Surgery Page: ${formData.pageName}`} />
 
             <form onSubmit={handleSubmit} className="space-y-6 px-6 mx-auto">
 
-                {/* Page Details */}
-                <h3 className="text-2xl font-bold underline mb-5">
-                    Page Details
-                </h3>
-
+                {/* ─── GENERAL INFO ────────────────────────────────── */}
+                <h3 className="text-2xl font-bold underline mb-5">General Info</h3>
                 <div className="flex gap-6 flex-col md:flex-row">
-
                     <div className="w-full">
                         <label className="block text-sm font-semibold text-gray-700">
-                            Page Name
+                            City *
                         </label>
+
                         <input
                             type="text"
-                            value={formData.pageName}
+                            value={formData.city}
                             onChange={(e) =>
-                                setFormData((prev) => ({
-                                    ...prev,
-                                    pageName: e.target.value,
-                                }))
+                                handleTopLevelChange("city", e.target.value)
                             }
                             className="w-full mt-2 p-2 border rounded-md"
-                            placeholder="Hair Transplant Delhi"
+                            placeholder="e.g. Delhi"
                             required
                         />
                     </div>
-
-                    <div className="w-full">
-                        <label className="block text-sm font-semibold text-gray-700">
-                            Slug
-                        </label>
-                        <input
-                            type="text"
-                            value={formData.slug}
-                            onChange={(e) =>
-                                setFormData((prev) => ({
-                                    ...prev,
-                                    slug: e.target.value
-                                        .toLowerCase()
-                                        .replace(/\s+/g, "-"),
-                                }))
-                            }
-                            className="w-full mt-2 p-2 border rounded-md"
-                            placeholder="hair-transplant-delhi"
-                            required
-                            disabled
-                        />
-                    </div>
-
                 </div>
 
-                {/* SEO Section */}
-                <h3 className="text-2xl font-bold underline mb-5">
-                    Meta Details
-                </h3>
-
+                {/* ─── SEO SECTION ─────────────────────────────────── */}
+                <h3 className="text-2xl font-bold underline mt-10 mb-5">Meta Details</h3>
                 <div className="flex gap-6 flex-col md:flex-row">
-
                     <div className="w-full">
-                        <label className="block text-sm font-semibold text-gray-700">
-                            Meta Title
-                        </label>
-                        <input
-                            type="text"
-                            value={formData.seo.metaTitle}
-                            onChange={(e) =>
-                                handleNestedChange("seo", "metaTitle", e.target.value)
-                            }
-                            className="w-full mt-2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500 text-md"
-                            placeholder="Enter Meta Title"
-                            required
-                        />
+                        <label className="block text-sm font-semibold text-gray-700">Meta Title</label>
+                        <input type="text" value={formData.seo.metaTitle} onChange={(e) => handleNestedChange("seo", "metaTitle", e.target.value)} className="w-full mt-2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="Enter Meta Title" required />
                     </div>
-
                     <div className="w-full">
-                        <label className="block text-sm font-semibold text-gray-700">
-                            Meta Description
-                        </label>
-                        <textarea
-                            rows={4}
-                            value={formData.seo.metaDescription}
-                            onChange={(e) =>
-                                handleNestedChange("seo", "metaDescription", e.target.value)
-                            }
-                            className="w-full mt-2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500 text-md"
-                            placeholder="Enter Meta Description"
-                            required
-                        />
+                        <label className="block text-sm font-semibold text-gray-700">Meta Description</label>
+                        <textarea rows={4} value={formData.seo.metaDescription} onChange={(e) => handleNestedChange("seo", "metaDescription", e.target.value)} className="w-full mt-2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="Enter Meta Description" required />
                     </div>
+                </div>
+                <div className="flex gap-6 flex-col md:flex-row">
+                    <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Keywords</label><input type="text" value={formData.seo.keywords} onChange={(e) => handleNestedChange("seo", "keywords", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="hair transplant, FUE..." /></div>
+                    <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Canonical URL</label><input type="text" value={formData.seo.canonicalUrl} onChange={(e) => handleNestedChange("seo", "canonicalUrl", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="https://..." /></div>
+                    <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Robots</label><input type="text" value={formData.seo.robots} onChange={(e) => handleNestedChange("seo", "robots", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="index,follow" /></div>
+                </div>
+                <div className="mt-4">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">OG Share Image</label>
+                    <ImageUploader initialImage={formData.seo.openGraphImage?.image} onUpload={(url) => handleNestedChange("seo", "openGraphImage", { ...formData.seo.openGraphImage, image: url })} />
+                    <input type="text" value={formData.seo.openGraphImage?.imageAlt || ""} onChange={(e) => handleNestedChange("seo", "openGraphImage", { ...formData.seo.openGraphImage, imageAlt: e.target.value })} className="w-full mt-2 p-2 border rounded-md" placeholder="OG Image Alt Text" />
+                </div>
 
-                    <div className="w-full">
-                        <label className="block text-sm font-semibold text-gray-700">
-                            Keywords
-                        </label>
-                        <input
-                            type="text"
-                            value={formData.seo.keywords}
-                            onChange={(e) =>
-                                handleNestedChange("seo", "keywords", e.target.value)
-                            }
-                            className="w-full mt-2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500 text-md"
-                            placeholder="Enter SEO Keywords"
-                        />
+                {/* ─── HERO SECTION ────────────────────────────────── */}
+                <h3 className="text-2xl font-bold underline mt-10 mb-5">Hero Section</h3>
+                <div className="space-y-4">
+                    <div className="flex gap-4 flex-col md:flex-row">
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Breadcrumb</label><input type="text" value={formData.hero.breadcrumb} onChange={(e) => handleNestedChange("hero", "breadcrumb", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Home > Surgeries > Hair Transplant" /></div>
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Hero Title</label><input type="text" value={formData.hero.title} onChange={(e) => handleNestedChange("hero", "title", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Advanced Hair Transplant" /></div>
                     </div>
-
-                </div>
-
-                {/* Banner Section */}
-                <h3 className="text-2xl font-bold underline mt-10 mb-5">
-                    Banner Section
-                </h3>
-
-                <div className="w-full">
-                    <label className="block text-sm font-semibold text-gray-700">
-                        Banner Title
-                    </label>
-                    <input
-                        type="text"
-                        value={formData.banner.title}
-                        onChange={(e) =>
-                            handleNestedChange("banner", "title", e.target.value)
-                        }
-                        className="w-full mt-2 p-2 border rounded-md"
-                        placeholder="Enter Banner Title"
-                    />
-                </div>
-
-                <div className="w-full">
-                    <label className="block text-sm font-semibold text-gray-700">
-                        Banner Description
-                    </label>
-                    <textarea
-                        rows={4}
-                        value={formData.banner.description}
-                        onChange={(e) =>
-                            handleNestedChange("banner", "description", e.target.value)
-                        }
-                        className="w-full mt-2 p-2 border rounded-md"
-                        placeholder="Enter Banner Description"
-                    />
-                </div>
-
-                <div className="mt-6">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Banner Image
-                    </label>
-                    <ImageUploader
-                        initialImage={formData.banner.image}
-                        onUpload={handleBannerUpload}
-                    />
-                </div>
-
-                <div className="w-full">
-                    <label className="block text-sm font-semibold text-gray-700">
-                        Banner Image Alt
-                    </label>
-                    <input
-                        type="text"
-                        value={formData.banner.imageAlt}
-                        onChange={(e) =>
-                            handleNestedChange("banner", "imageAlt", e.target.value)
-                        }
-                        className="w-full mt-2 p-2 border rounded-md"
-                        placeholder="Enter Banner Image Alt"
-                    />
-                </div>
-
-                {/* Stats Section */}
-                <h3 className="text-2xl font-bold underline mt-10 mb-5">
-                    Stats Section
-                </h3>
-                <button
-                    type="button"
-                    onClick={addStat}
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-6"
-                >
-                    + Add Stat
-                </button>
-
-                {(!formData.stats || formData.stats.length === 0) ? (
-                    <div className="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center">
-                        <h4 className="text-xl font-semibold text-gray-600">
-                            No Stats Added
-                        </h4>
-                        <p className="text-gray-500 mt-2">
-                            Click &quot;+ Add Stat&quot; to create your first statistic.
-                        </p>
+                    <div><label className="block text-sm font-semibold text-gray-700">Hero Description</label><textarea rows={3} value={formData.hero.description} onChange={(e) => handleNestedChange("hero", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Enter Hero Description" /></div>
+                    <div className="mt-4">
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Hero Banner Image</label>
+                        <ImageUploader initialImage={formData.hero.heroImage?.image} onUpload={(url) => handleNestedChange("hero", "heroImage", { ...formData.hero.heroImage, image: url })} />
+                        <input type="text" value={formData.hero.heroImage?.imageAlt || ""} onChange={(e) => handleNestedChange("hero", "heroImage", { ...formData.hero.heroImage, imageAlt: e.target.value })} className="w-full mt-2 p-2 border rounded-md" placeholder="Hero Image Alt Text" />
                     </div>
-                ) : (
-                    <div className="space-y-6 mt-6">
-                        {formData.stats.map((stat, index) => (
-                            <div
-                                key={index}
-                                className="border rounded-xl p-6 bg-white shadow-sm space-y-4"
-                            >
-                                <div className="flex justify-between items-center">
-                                    <h4 className="text-lg font-semibold">
-                                        Stat {index + 1}
-                                    </h4>
-                                    <button
-                                        type="button"
-                                        onClick={() => deleteStat(index)}
-                                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
-                                    >
-                                        Delete Stat
-                                    </button>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold">
-                                        Value
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={stat.value}
-                                        onChange={(e) =>
-                                            handleStatChange(index, "value", e.target.value)
-                                        }
-                                        className="w-full mt-2 p-2 border rounded-md"
-                                        placeholder="98%"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold">
-                                        Label
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={stat.label}
-                                        onChange={(e) =>
-                                            handleStatChange(index, "label", e.target.value)
-                                        }
-                                        className="w-full mt-2 p-2 border rounded-md"
-                                        placeholder="Success Rate"
-                                    />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-
-                {/* Introduction Section */}
-                <h3 className="text-2xl font-bold underline mt-10 mb-5">
-                    Introduction Section
-                </h3>
-
-                <div className="w-full">
-                    <label className="block text-sm font-semibold text-gray-700">
-                        Introduction Title
-                    </label>
-                    <input
-                        type="text"
-                        value={formData.introduction.title}
-                        onChange={(e) =>
-                            handleNestedChange("introduction", "title", e.target.value)
-                        }
-                        className="w-full mt-2 p-2 border rounded-md"
-                        placeholder="Enter Introduction Title"
-                    />
-                </div>
-
-                <div className="mt-6">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Introduction Description
-                    </label>
-                    <SunEditor
-                        setContents={formData.introduction.description}
-                        onChange={(content) =>
-                            handleNestedChange("introduction", "description", content)
-                        }
-                        setOptions={{
-                            height: "400px",
-                            buttonList: [
-                                ["undo", "redo"],
-                                ["font", "fontSize", "formatBlock"],
-                                [
-                                    "bold",
-                                    "underline",
-                                    "italic",
-                                    "strike",
-                                    "subscript",
-                                    "superscript",
-                                ],
-                                ["fontColor", "hiliteColor"],
-                                ["align", "horizontalRule", "list", "table"],
-                                ["link", "image", "video"],
-                                ["fullScreen", "showBlocks", "codeView"],
-                                ["preview", "print"],
-                            ],
-                            defaultStyle:
-                                "font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size:16px;",
-                            imageUploadUrl: "/api/upload",
-                        }}
-                    />
-                </div>
-
-                {/* Procedure Science Section */}
-                <h3 className="text-2xl font-bold underline mt-10 mb-5">
-                    Procedure Science Section
-                </h3>
-
-                <div className="w-full">
-                    <label className="block text-sm font-semibold text-gray-700">
-                        Section Title
-                    </label>
-                    <input
-                        type="text"
-                        value={formData.procedureScience.title}
-                        onChange={(e) =>
-                            handleNestedChange("procedureScience", "title", e.target.value)
-                        }
-                        className="w-full mt-2 p-2 border rounded-md"
-                        placeholder="Enter Section Title"
-                    />
-                </div>
-
-                <div className="w-full">
-                    <label className="block text-sm font-semibold text-gray-700">
-                        Section Description
-                    </label>
-                    <textarea
-                        rows={3}
-                        value={formData.procedureScience.description}
-                        onChange={(e) =>
-                            handleNestedChange("procedureScience", "description", e.target.value)
-                        }
-                        className="w-full mt-2 p-2 border rounded-md"
-                        placeholder="Enter Section Description"
-                    />
-                </div>
-
-                <button
-                    type="button"
-                    onClick={addProcedureCard}
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-6"
-                >
-                    + Add Procedure Card
-                </button>
-
-                {(!formData.procedureScience.cards || formData.procedureScience.cards.length === 0) ? (
-                    <div className="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center">
-                        <h4 className="text-xl font-semibold text-gray-600">
-                            No Cards Added
-                        </h4>
-                        <p className="text-gray-500 mt-2">
-                            Click &quot;+ Add Procedure Card&quot; to create your first card.
-                        </p>
-                    </div>
-                ) : (
-                    <div className="space-y-6 mt-6">
-                        {formData.procedureScience.cards.map((card, index) => (
-                            <div
-                                key={index}
-                                className="border rounded-xl p-6 bg-white shadow-sm space-y-4"
-                            >
-                                <div className="flex justify-between items-center">
-                                    <h4 className="text-lg font-semibold">
-                                        Card {index + 1}
-                                    </h4>
-                                    <button
-                                        type="button"
-                                        onClick={() => deleteProcedureCard(index)}
-                                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
-                                    >
-                                        Delete Card
-                                    </button>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold">
-                                        Card Title
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={card.title}
-                                        onChange={(e) =>
-                                            handleProcedureCardChange(index, "title", e.target.value)
-                                        }
-                                        className="w-full mt-2 p-2 border rounded-md"
-                                        placeholder="Enter Card Title"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold">
-                                        Card Description
-                                    </label>
-                                    <textarea
-                                        rows={3}
-                                        value={card.description}
-                                        onChange={(e) =>
-                                            handleProcedureCardChange(index, "description", e.target.value)
-                                        }
-                                        className="w-full mt-2 p-2 border rounded-md"
-                                        placeholder="Enter Card Description"
-                                    />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-
-                {/* Safety Section */}
-                <h3 className="text-2xl font-bold underline mt-10 mb-5">
-                    Safety Section
-                </h3>
-
-                <div className="w-full">
-                    <label className="block text-sm font-semibold text-gray-700">
-                        Safety Title
-                    </label>
-                    <input
-                        type="text"
-                        value={formData.safety.title}
-                        onChange={(e) =>
-                            handleNestedChange("safety", "title", e.target.value)
-                        }
-                        className="w-full mt-2 p-2 border rounded-md"
-                        placeholder="Enter Safety Section Title"
-                    />
-                </div>
-
-                <div className="w-full">
-                    <label className="block text-sm font-semibold text-gray-700">
-                        Safety Description
-                    </label>
-                    <textarea
-                        rows={3}
-                        value={formData.safety.description}
-                        onChange={(e) =>
-                            handleNestedChange("safety", "description", e.target.value)
-                        }
-                        className="w-full mt-2 p-2 border rounded-md"
-                        placeholder="Enter Safety Section Description"
-                    />
-                </div>
-
-                <button
-                    type="button"
-                    onClick={addSafetyCard}
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-6"
-                >
-                    + Add Safety Card
-                </button>
-
-                {(!formData.safety.cards || formData.safety.cards.length === 0) ? (
-                    <div className="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center">
-                        <h4 className="text-xl font-semibold text-gray-600">
-                            No Safety Cards Added
-                        </h4>
-                        <p className="text-gray-500 mt-2">
-                            Click &quot;+ Add Safety Card&quot; to create your first safety card.
-                        </p>
-                    </div>
-                ) : (
-                    <div className="space-y-6 mt-6">
-                        {formData.safety.cards.map((card, index) => (
-                            <div
-                                key={index}
-                                className="border rounded-xl p-6 bg-white shadow-sm space-y-4"
-                            >
-                                <div className="flex justify-between items-center">
-                                    <h4 className="text-lg font-semibold">
-                                        Safety Card {index + 1}
-                                    </h4>
-                                    <button
-                                        type="button"
-                                        onClick={() => deleteSafetyCard(index)}
-                                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
-                                    >
-                                        Delete Safety Card
-                                    </button>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold">
-                                        Card Title
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={card.title}
-                                        onChange={(e) =>
-                                            handleSafetyCardChange(index, "title", e.target.value)
-                                        }
-                                        className="w-full mt-2 p-2 border rounded-md"
-                                        placeholder="Enter Card Title"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold">
-                                        Card Description
-                                    </label>
-                                    <textarea
-                                        rows={3}
-                                        value={card.description}
-                                        onChange={(e) =>
-                                            handleSafetyCardChange(index, "description", e.target.value)
-                                        }
-                                        className="w-full mt-2 p-2 border rounded-md"
-                                        placeholder="Enter Card Description"
-                                    />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-
-                {/* Techniques Section */}
-                <h3 className="text-2xl font-bold underline mt-10 mb-5">
-                    Techniques Section
-                </h3>
-
-                <div className="w-full">
-                    <label className="block text-sm font-semibold text-gray-700">
-                        Section Title
-                    </label>
-                    <input
-                        type="text"
-                        value={formData.techniques.title}
-                        onChange={(e) =>
-                            handleNestedChange("techniques", "title", e.target.value)
-                        }
-                        className="w-full mt-2 p-2 border rounded-md"
-                        placeholder="Enter Techniques Section Title"
-                    />
-                </div>
-
-                <div className="w-full">
-                    <label className="block text-sm font-semibold text-gray-700">
-                        Section Description
-                    </label>
-                    <textarea
-                        rows={3}
-                        value={formData.techniques.description}
-                        onChange={(e) =>
-                            handleNestedChange("techniques", "description", e.target.value)
-                        }
-                        className="w-full mt-2 p-2 border rounded-md"
-                        placeholder="Enter Techniques Section Description"
-                    />
-                </div>
-
-                <button
-                    type="button"
-                    onClick={addTechnique}
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-6"
-                >
-                    + Add Technique
-                </button>
-
-                {(!formData.techniques.techniques || formData.techniques.techniques.length === 0) ? (
-                    <div className="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center">
-                        <h4 className="text-xl font-semibold text-gray-600">
-                            No Techniques Added
-                        </h4>
-                        <p className="text-gray-500 mt-2">
-                            Click &quot;+ Add Technique&quot; to create your first technique.
-                        </p>
-                    </div>
-                ) : (
-                    <div className="space-y-6 mt-6">
-                        {formData.techniques.techniques.map((tech, index) => (
-                            <div
-                                key={index}
-                                className="border rounded-xl p-6 bg-white shadow-sm space-y-4"
-                            >
-                                <div className="flex justify-between items-center">
-                                    <h4 className="text-lg font-semibold">
-                                        Technique {index + 1}
-                                    </h4>
-                                    <button
-                                        type="button"
-                                        onClick={() => deleteTechnique(index)}
-                                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
-                                    >
-                                        Delete Technique
-                                    </button>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold">
-                                        Technique Title
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={tech.title}
-                                        onChange={(e) =>
-                                            handleTechniqueChange(index, "title", e.target.value)
-                                        }
-                                        className="w-full mt-2 p-2 border rounded-md"
-                                        placeholder="Enter Technique Title"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold">
-                                        Badge
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={tech.badge}
-                                        onChange={(e) =>
-                                            handleTechniqueChange(index, "badge", e.target.value)
-                                        }
-                                        className="w-full mt-2 p-2 border rounded-md"
-                                        placeholder="e.g. Advanced, Popular"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold mb-2">
-                                        Description (Rich Text)
-                                    </label>
-                                    <SunEditor
-                                        setContents={tech.description}
-                                        onChange={(content) =>
-                                            handleTechniqueChange(index, "description", content)
-                                        }
-                                        setOptions={{
-                                            height: "400px",
-                                            buttonList: [
-                                                ["undo", "redo"],
-                                                ["font", "fontSize", "formatBlock"],
-                                                [
-                                                    "bold",
-                                                    "underline",
-                                                    "italic",
-                                                    "strike",
-                                                    "subscript",
-                                                    "superscript",
-                                                ],
-                                                ["fontColor", "hiliteColor"],
-                                                ["align", "horizontalRule", "list", "table"],
-                                                ["link", "image", "video"],
-                                                ["fullScreen", "showBlocks", "codeView"],
-                                                ["preview", "print"],
-                                            ],
-                                            defaultStyle:
-                                                "font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size:16px;",
-                                            imageUploadUrl: "/api/upload",
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-
-                {/* Recovery Section */}
-                <h3 className="text-2xl font-bold underline mt-10 mb-5">
-                    Recovery Section
-                </h3>
-
-                <div className="w-full">
-                    <label className="block text-sm font-semibold text-gray-700">
-                        Recovery Title
-                    </label>
-                    <input
-                        type="text"
-                        value={formData.recovery.title}
-                        onChange={(e) =>
-                            handleNestedChange("recovery", "title", e.target.value)
-                        }
-                        className="w-full mt-2 p-2 border rounded-md"
-                        placeholder="Enter Recovery Section Title"
-                    />
-                </div>
-
-                <div className="w-full">
-                    <label className="block text-sm font-semibold text-gray-700">
-                        Recovery Description
-                    </label>
-                    <textarea
-                        rows={3}
-                        value={formData.recovery.description}
-                        onChange={(e) =>
-                            handleNestedChange("recovery", "description", e.target.value)
-                        }
-                        className="w-full mt-2 p-2 border rounded-md"
-                        placeholder="Enter Recovery Section Description"
-                    />
-                </div>
-
-                <button
-                    type="button"
-                    onClick={addRecoveryCard}
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-6"
-                >
-                    + Add Recovery Card
-                </button>
-
-                {(!formData.recovery.cards || formData.recovery.cards.length === 0) ? (
-                    <div className="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center">
-                        <h4 className="text-xl font-semibold text-gray-600">
-                            No Recovery Cards Added
-                        </h4>
-                        <p className="text-gray-500 mt-2">
-                            Click &quot;+ Add Recovery Card&quot; to create your first recovery card.
-                        </p>
-                    </div>
-                ) : (
-                    <div className="space-y-6 mt-6">
-                        {formData.recovery.cards.map((card, index) => (
-                            <div
-                                key={index}
-                                className="border rounded-xl p-6 bg-white shadow-sm space-y-4"
-                            >
-                                <div className="flex justify-between items-center">
-                                    <h4 className="text-lg font-semibold">
-                                        Recovery Card {index + 1}
-                                    </h4>
-                                    <button
-                                        type="button"
-                                        onClick={() => deleteRecoveryCard(index)}
-                                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
-                                    >
-                                        Delete Recovery Card
-                                    </button>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold">
-                                        Timeline
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={card.timeline}
-                                        onChange={(e) =>
-                                            handleRecoveryCardChange(index, "timeline", e.target.value)
-                                        }
-                                        className="w-full mt-2 p-2 border rounded-md"
-                                        placeholder="e.g. Day 1, Week 2, Month 6"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold">
-                                        Card Title
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={card.title}
-                                        onChange={(e) =>
-                                            handleRecoveryCardChange(index, "title", e.target.value)
-                                        }
-                                        className="w-full mt-2 p-2 border rounded-md"
-                                        placeholder="Enter Card Title"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold mb-2">
-                                        Description (Rich Text)
-                                    </label>
-                                    <SunEditor
-                                        setContents={card.description}
-                                        onChange={(content) =>
-                                            handleRecoveryCardChange(index, "description", content)
-                                        }
-                                        setOptions={{
-                                            height: "400px",
-                                            buttonList: [
-                                                ["undo", "redo"],
-                                                ["font", "fontSize", "formatBlock"],
-                                                [
-                                                    "bold",
-                                                    "underline",
-                                                    "italic",
-                                                    "strike",
-                                                    "subscript",
-                                                    "superscript",
-                                                ],
-                                                ["fontColor", "hiliteColor"],
-                                                ["align", "horizontalRule", "list", "table"],
-                                                ["link", "image", "video"],
-                                                ["fullScreen", "showBlocks", "codeView"],
-                                                ["preview", "print"],
-                                            ],
-                                            defaultStyle:
-                                                "font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size:16px;",
-                                            imageUploadUrl: "/api/upload",
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-
-                {/* Doctors Section */}
-                <h3 className="text-2xl font-bold underline mt-10 mb-5">
-                    Doctors Section
-                </h3>
-
-                <div className="w-full">
-                    <label className="block text-sm font-semibold text-gray-700">
-                        Section Title
-                    </label>
-                    <input
-                        type="text"
-                        value={formData.doctors.title}
-                        onChange={(e) =>
-                            handleNestedChange("doctors", "title", e.target.value)
-                        }
-                        className="w-full mt-2 p-2 border rounded-md"
-                        placeholder="Enter Doctors Section Title"
-                    />
-                </div>
-
-                <div className="w-full">
-                    <label className="block text-sm font-semibold text-gray-700">
-                        Section Description
-                    </label>
-                    <textarea
-                        rows={3}
-                        value={formData.doctors.description}
-                        onChange={(e) =>
-                            handleNestedChange("doctors", "description", e.target.value)
-                        }
-                        className="w-full mt-2 p-2 border rounded-md"
-                        placeholder="Enter Doctors Section Description"
-                    />
-                </div>
-
-                <button
-                    type="button"
-                    onClick={addDoctor}
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-6"
-                >
-                    + Add Doctor
-                </button>
-
-                {(!formData.doctors.doctors || formData.doctors.doctors.length === 0) ? (
-                    <div className="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center">
-                        <h4 className="text-xl font-semibold text-gray-600">
-                            No Doctors Added
-                        </h4>
-                        <p className="text-gray-500 mt-2">
-                            Click &quot;+ Add Doctor&quot; to add a doctor profile.
-                        </p>
-                    </div>
-                ) : (
-                    <div className="space-y-6 mt-6">
-                        {formData.doctors.doctors.map((doctor, index) => (
-                            <div
-                                key={index}
-                                className="border rounded-xl p-6 bg-white shadow-sm space-y-4"
-                            >
-                                <div className="flex justify-between items-center">
-                                    <h4 className="text-lg font-semibold">
-                                        Doctor {index + 1}
-                                    </h4>
-                                    <button
-                                        type="button"
-                                        onClick={() => deleteDoctor(index)}
-                                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
-                                    >
-                                        Delete Doctor
-                                    </button>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold">
-                                        Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={doctor.name}
-                                        onChange={(e) =>
-                                            handleDoctorChange(index, "name", e.target.value)
-                                        }
-                                        className="w-full mt-2 p-2 border rounded-md"
-                                        placeholder="Dr. John Doe"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold">
-                                        Designation
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={doctor.designation}
-                                        onChange={(e) =>
-                                            handleDoctorChange(index, "designation", e.target.value)
-                                        }
-                                        className="w-full mt-2 p-2 border rounded-md"
-                                        placeholder="Senior Hair Transplant Surgeon"
-                                    />
-                                </div>
-
-                                <div className="mt-6">
-                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                        Doctor Image
-                                    </label>
-                                    <ImageUploader
-                                        initialImage={doctor.image}
-                                        onUpload={(url) => handleDoctorChange(index, "image", url)}
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold">
-                                        Image Alt
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={doctor.imageAlt}
-                                        onChange={(e) =>
-                                            handleDoctorChange(index, "imageAlt", e.target.value)
-                                        }
-                                        className="w-full mt-2 p-2 border rounded-md"
-                                        placeholder="Dr. John Doe profile picture"
-                                    />
-                                </div>
-
-                                {/* Qualifications Section for Doctor */}
-                                <div className="mt-4 border-t pt-4">
-                                    <h5 className="text-md font-semibold text-gray-800 mb-2">
-                                        Qualifications
-                                    </h5>
-                                    <button
-                                        type="button"
-                                        onClick={() => addQualification(index)}
-                                        className="px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm mb-3"
-                                    >
-                                        + Add Qualification
-                                    </button>
-
-                                    {(!doctor.qualifications || doctor.qualifications.length === 0) ? (
-                                        <p className="text-sm text-gray-500 italic">No qualifications added.</p>
-                                    ) : (
-                                        <div className="space-y-3">
-                                            {doctor.qualifications.map((qual, qualIndex) => (
-                                                <div key={qualIndex} className="flex gap-2 items-center">
-                                                    <input
-                                                        type="text"
-                                                        value={qual}
-                                                        onChange={(e) =>
-                                                            handleQualificationChange(index, qualIndex, e.target.value)
-                                                        }
-                                                        className="w-full p-2 border rounded-md"
-                                                        placeholder="e.g. MBBS, MD, FISHRS"
-                                                    />
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => deleteQualification(index, qualIndex)}
-                                                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm"
-                                                    >
-                                                        Delete
-                                                    </button>
-                                                </div>
-                                            ))}
+                    <div>
+                        <button type="button" onClick={() => addToArray("hero", "stats", { value: "", label: "" })} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-4">+ Add Hero Stat</button>
+                        {(formData.hero.stats || []).length === 0 ? (
+                            <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center"><p className="text-gray-500">No hero stats added yet.</p></div>
+                        ) : (
+                            <div className="space-y-4">
+                                {formData.hero.stats.map((stat, i) => (
+                                    <div key={i} className="border rounded-xl p-4 bg-white shadow-sm">
+                                        <div className="flex justify-between items-center mb-3"><h5 className="font-semibold">Stat {i + 1}</h5><button type="button" onClick={() => deleteFromArray("hero", "stats", i)} className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm">Delete</button></div>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div><label className="block text-sm font-semibold">Value</label><input type="text" value={stat.value} onChange={(e) => updateArrayItem("hero", "stats", i, "value", e.target.value)} className="w-full mt-1 p-2 border rounded-md" /></div>
+                                            <div><label className="block text-sm font-semibold">Label</label><input type="text" value={stat.label} onChange={(e) => updateArrayItem("hero", "stats", i, "label", e.target.value)} className="w-full mt-1 p-2 border rounded-md" /></div>
                                         </div>
-                                    )}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-
-                {/* FAQ Section */}
-                <h3 className="text-2xl font-bold underline mt-10 mb-5">
-                    FAQ Section
-                </h3>
-
-                <button
-                    type="button"
-                    onClick={addFaq}
-                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-6"
-                >
-                    + Add FAQ
-                </button>
-
-                {/* FAQ List */}
-                {(!formData.faq.faqs || formData.faq.faqs.length === 0) ? (
-                    <div className="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center mt-6">
-                        <h4 className="text-xl font-semibold text-gray-600">
-                            No FAQs added yet
-                        </h4>
-                        <p className="text-gray-500 mt-2">
-                            Click &quot;+ Add FAQ&quot; to create your first FAQ item.
-                        </p>
-                    </div>
-                ) : (
-                    <div className="space-y-6 mt-6">
-                        {formData.faq.faqs.map((faq, index) => (
-                            <div
-                                key={index}
-                                className="border rounded-xl p-6 bg-white shadow-sm space-y-4"
-                            >
-                                <div className="flex justify-between items-center">
-                                    <h4 className="text-lg font-semibold text-gray-800">
-                                        FAQ {index + 1}
-                                    </h4>
-                                    <button
-                                        type="button"
-                                        onClick={() => deleteFaq(index)}
-                                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition text-sm font-semibold"
-                                    >
-                                        Delete FAQ
-                                    </button>
-                                </div>
-
-                                <div className="space-y-4">
-                                    <div>
-                                        <label className="block text-sm font-semibold text-gray-700">
-                                            Question
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={faq.question}
-                                            onChange={(e) =>
-                                                handleFaqChange(index, "question", e.target.value)
-                                            }
-                                            className="w-full mt-2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
-                                            placeholder="Enter FAQ Question"
-                                            required
-                                        />
                                     </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <CTABlock label="WhatsApp CTA" value={formData.hero.whatsappText} onChange={(field, val) => handleNestedChange("hero", "whatsappText", { ...formData.hero.whatsappText, [field]: val })} />
+                        <CTABlock label="Phone Call CTA" value={formData.hero.callText} onChange={(field, val) => handleNestedChange("hero", "callText", { ...formData.hero.callText, [field]: val })} />
+                    </div>
+                </div>
 
+                {/* ─── INTRODUCTION ────────────────────────────────── */}
+                <h3 className="text-2xl font-bold underline mt-10 mb-5">Introduction Section</h3>
+                <div className="space-y-4">
+                    <div className="flex gap-4 flex-col md:flex-row">
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Small Heading</label><input type="text" value={formData.introduction.smallHeading} onChange={(e) => handleNestedChange("introduction", "smallHeading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="WELCOME TO RYAN CLINIC" /></div>
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Title</label><input type="text" value={formData.introduction.title} onChange={(e) => handleNestedChange("introduction", "title", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Restore Confidence..." /></div>
+                    </div>
+                    <div><label className="block text-sm font-semibold text-gray-700 mb-2">Description (Rich Text)</label><SunEditor setContents={formData.introduction.description} onChange={(val) => handleNestedChange("introduction", "description", val)} setOptions={sunEditorOptions} /></div>
+                    <div><label className="block text-sm font-semibold text-gray-700 mb-2">Highlight Box Text (Rich Text)</label><SunEditor setContents={formData.introduction.highlightBoxText} onChange={(val) => handleNestedChange("introduction", "highlightBoxText", val)} setOptions={sunEditorOptions} /></div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">Main Image</label>
+                            <ImageUploader initialImage={formData.introduction.mainImage?.image} onUpload={(url) => handleNestedChange("introduction", "mainImage", { ...formData.introduction.mainImage, image: url })} />
+                            <input type="text" value={formData.introduction.mainImage?.imageAlt || ""} onChange={(e) => handleNestedChange("introduction", "mainImage", { ...formData.introduction.mainImage, imageAlt: e.target.value })} className="w-full mt-2 p-2 border rounded-md" placeholder="Main Image Alt Text" />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">Floating Image</label>
+                            <ImageUploader initialImage={formData.introduction.floatingImage?.image} onUpload={(url) => handleNestedChange("introduction", "floatingImage", { ...formData.introduction.floatingImage, image: url })} />
+                            <input type="text" value={formData.introduction.floatingImage?.imageAlt || ""} onChange={(e) => handleNestedChange("introduction", "floatingImage", { ...formData.introduction.floatingImage, imageAlt: e.target.value })} className="w-full mt-2 p-2 border rounded-md" placeholder="Floating Image Alt Text" />
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button" onClick={() => addToArray("introduction", "bottomStats", { value: "", label: "" })} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-4">+ Add Bottom Stat</button>
+                        {(formData.introduction.bottomStats || []).length === 0 ? (
+                            <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center"><p className="text-gray-500">No stats added yet.</p></div>
+                        ) : (
+                            <div className="space-y-3">
+                                {formData.introduction.bottomStats.map((stat, i) => (
+                                    <div key={i} className="border rounded-xl p-4 bg-white shadow-sm">
+                                        <div className="flex justify-between items-center mb-3"><h5 className="font-semibold">Stat {i + 1}</h5><button type="button" onClick={() => deleteFromArray("introduction", "bottomStats", i)} className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm">Delete</button></div>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div><label className="block text-sm font-semibold">Value</label><input type="text" value={stat.value} onChange={(e) => updateArrayItem("introduction", "bottomStats", i, "value", e.target.value)} className="w-full mt-1 p-2 border rounded-md" /></div>
+                                            <div><label className="block text-sm font-semibold">Label</label><input type="text" value={stat.label} onChange={(e) => updateArrayItem("introduction", "bottomStats", i, "label", e.target.value)} className="w-full mt-1 p-2 border rounded-md" /></div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <CTABlock label="Primary CTA" value={formData.introduction.primaryCTA} onChange={(field, val) => handleNestedChange("introduction", "primaryCTA", { ...formData.introduction.primaryCTA, [field]: val })} />
+                        <CTABlock label="Secondary CTA" value={formData.introduction.secondaryCTA} onChange={(field, val) => handleNestedChange("introduction", "secondaryCTA", { ...formData.introduction.secondaryCTA, [field]: val })} />
+                    </div>
+                </div>
+
+                {/* ─── PROCEDURE SCIENCE ───────────────────────────── */}
+                <h3 className="text-2xl font-bold underline mt-10 mb-5">Procedure Science Section</h3>
+                <div className="space-y-4">
+                    <div><label className="block text-sm font-semibold text-gray-700">Main Heading</label><input type="text" value={formData.procedureScience.mainHeading} onChange={(e) => handleNestedChange("procedureScience", "mainHeading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="The Science of Follicle Survival" /></div>
+                    <div><label className="block text-sm font-semibold text-gray-700 mb-2">Description (Rich Text)</label><SunEditor setContents={formData.procedureScience.description} onChange={(val) => handleNestedChange("procedureScience", "description", val)} setOptions={sunEditorOptions} /></div>
+                    <button type="button" onClick={() => addToArray("procedureScience", "cards", { icon: "", title: "", description: "", cardImage: { image: "", imageAlt: "" }, badge: "", bulletPoints: [], displayOrder: 0 })} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">+ Add Science Card</button>
+                    {(formData.procedureScience.cards || []).length === 0 ? (
+                        <div className="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center mt-4"><p className="text-gray-500">No science cards added yet.</p></div>
+                    ) : (
+                        <div className="space-y-5 mt-4">
+                            {formData.procedureScience.cards.map((card, i) => (
+                                <div key={i} className="border rounded-xl p-6 bg-white shadow-sm space-y-4">
+                                    <div className="flex justify-between items-center"><h4 className="text-lg font-semibold">Science Card {i + 1}</h4><button type="button" onClick={() => deleteFromArray("procedureScience", "cards", i)} className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">Delete Card</button></div>
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div><label className="block text-sm font-semibold">Icon</label><input type="text" value={card.icon} onChange={(e) => updateArrayItem("procedureScience", "cards", i, "icon", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Brain" /></div>
+                                        <div><label className="block text-sm font-semibold">Title</label><input type="text" value={card.title} onChange={(e) => updateArrayItem("procedureScience", "cards", i, "title", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                                        <div><label className="block text-sm font-semibold">Badge</label><input type="text" value={card.badge} onChange={(e) => updateArrayItem("procedureScience", "cards", i, "badge", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Advanced" /></div>
+                                    </div>
+                                    <div><label className="block text-sm font-semibold">Description</label><textarea rows={3} value={card.description} onChange={(e) => updateArrayItem("procedureScience", "cards", i, "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700">
-                                            Answer
-                                        </label>
-                                        <textarea
-                                            rows={3}
-                                            value={faq.answer}
-                                            onChange={(e) =>
-                                                handleFaqChange(index, "answer", e.target.value)
-                                            }
-                                            className="w-full mt-2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
-                                            placeholder="Enter FAQ Answer"
-                                            required
-                                        />
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Card Image</label>
+                                        <ImageUploader initialImage={card.cardImage?.image} onUpload={(url) => updateArrayItem("procedureScience", "cards", i, "cardImage", { ...card.cardImage, image: url })} />
+                                        <input type="text" value={card.cardImage?.imageAlt || ""} onChange={(e) => updateArrayItem("procedureScience", "cards", i, "cardImage", { ...card.cardImage, imageAlt: e.target.value })} className="w-full mt-2 p-2 border rounded-md" placeholder="Image Alt Text" />
+                                    </div>
+                                    <div>
+                                        <div className="flex justify-between items-center mb-2"><label className="block text-sm font-semibold">Bullet Points</label><button type="button" onClick={() => addNestedItem("procedureScience", "cards", i, "bulletPoints", "")} className="px-3 py-1 bg-blue-600 text-white rounded-md text-sm">+ Add Bullet</button></div>
+                                        {(card.bulletPoints || []).map((b, bi) => (
+                                            <div key={bi} className="flex gap-2 mt-2">
+                                                <input type="text" value={b} onChange={(e) => updateNestedItem("procedureScience", "cards", i, "bulletPoints", bi, e.target.value)} className="flex-1 p-2 border rounded-md" placeholder="Bullet..." />
+                                                <button type="button" onClick={() => deleteNestedItem("procedureScience", "cards", i, "bulletPoints", bi)} className="bg-red-500 text-white px-3 py-1 rounded-md text-sm">Delete</button>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
+                            ))}
+                        </div>
+                    )}
+                </div>
 
-                {/* Submit Button */}
+                {/* ─── SAFETY SECTION ──────────────────────────────── */}
+                <h3 className="text-2xl font-bold underline mt-10 mb-5">Safety Section</h3>
+                <div className="space-y-4">
+                    <div><label className="block text-sm font-semibold text-gray-700">Heading</label><input type="text" value={formData.safety.heading} onChange={(e) => handleNestedChange("safety", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Zero Infection Clinical Environments" /></div>
+                    <div><label className="block text-sm font-semibold text-gray-700 mb-2">Description (Rich Text)</label><SunEditor setContents={formData.safety.description} onChange={(val) => handleNestedChange("safety", "description", val)} setOptions={sunEditorOptions} /></div>
+                    <button type="button" onClick={() => addToArray("safety", "safetyCards", { icon: "", title: "", description: "", displayOrder: 0 })} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">+ Add Safety Card</button>
+                    {(formData.safety.safetyCards || []).length === 0 ? (
+                        <div className="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center"><p className="text-gray-500">No safety cards added yet.</p></div>
+                    ) : (
+                        <div className="space-y-5">
+                            {formData.safety.safetyCards.map((card, i) => (
+                                <div key={i} className="border rounded-xl p-6 bg-white shadow-sm space-y-4">
+                                    <div className="flex justify-between items-center"><h4 className="text-lg font-semibold">Safety Card {i + 1}</h4><button type="button" onClick={() => deleteFromArray("safety", "safetyCards", i)} className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">Delete</button></div>
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div><label className="block text-sm font-semibold">Icon</label><input type="text" value={card.icon} onChange={(e) => updateArrayItem("safety", "safetyCards", i, "icon", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Shield" /></div>
+                                        <div><label className="block text-sm font-semibold">Title</label><input type="text" value={card.title} onChange={(e) => updateArrayItem("safety", "safetyCards", i, "title", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                                        <div><label className="block text-sm font-semibold">Order</label><input type="number" value={card.displayOrder} onChange={(e) => updateArrayItem("safety", "safetyCards", i, "displayOrder", parseInt(e.target.value) || 0)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                                    </div>
+                                    <div><label className="block text-sm font-semibold">Description</label><textarea rows={3} value={card.description} onChange={(e) => updateArrayItem("safety", "safetyCards", i, "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    <div className="border rounded-xl p-6 bg-gray-50 space-y-4 mt-4">
+                        <h4 className="text-lg font-semibold">Right Side Highlight Box</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div><label className="block text-sm font-semibold text-gray-700">Small Heading</label><input type="text" value={formData.safety.rightSideHighlightBox?.smallHeading || ""} onChange={(e) => handleDeepChange("safety", "rightSideHighlightBox", "smallHeading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="SAFETY RATING" /></div>
+                            <div><label className="block text-sm font-semibold text-gray-700">Title</label><input type="text" value={formData.safety.rightSideHighlightBox?.title || ""} onChange={(e) => handleDeepChange("safety", "rightSideHighlightBox", "title", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="ISO Certified Clinic" /></div>
+                        </div>
+                        <div><label className="block text-sm font-semibold text-gray-700">Description</label><textarea rows={2} value={formData.safety.rightSideHighlightBox?.description || ""} onChange={(e) => handleDeepChange("safety", "rightSideHighlightBox", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                        <div><label className="block text-sm font-semibold text-gray-700">Bottom Notice</label><input type="text" value={formData.safety.rightSideHighlightBox?.bottomNotice || ""} onChange={(e) => handleDeepChange("safety", "rightSideHighlightBox", "bottomNotice", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                        <div>
+                            <button type="button" onClick={() => { const updated = { ...formData.safety.rightSideHighlightBox, metrics: [...(formData.safety.rightSideHighlightBox?.metrics || []), { value: "", label: "" }] }; handleNestedChange("safety", "rightSideHighlightBox", updated); }} className="px-3 py-1.5 bg-blue-600 text-white rounded-md text-sm mb-3">+ Add Metric</button>
+                            {(formData.safety.rightSideHighlightBox?.metrics || []).map((metric, mi) => (
+                                <div key={mi} className="flex gap-3 mb-2 items-center">
+                                    <input type="text" value={metric.value} onChange={(e) => { const m = [...formData.safety.rightSideHighlightBox.metrics]; m[mi] = { ...m[mi], value: e.target.value }; handleNestedChange("safety", "rightSideHighlightBox", { ...formData.safety.rightSideHighlightBox, metrics: m }); }} className="flex-1 p-2 border rounded-md" placeholder="Value" />
+                                    <input type="text" value={metric.label} onChange={(e) => { const m = [...formData.safety.rightSideHighlightBox.metrics]; m[mi] = { ...m[mi], label: e.target.value }; handleNestedChange("safety", "rightSideHighlightBox", { ...formData.safety.rightSideHighlightBox, metrics: m }); }} className="flex-1 p-2 border rounded-md" placeholder="Label" />
+                                    <button type="button" onClick={() => { const metrics = formData.safety.rightSideHighlightBox.metrics.filter((_, idx) => idx !== mi); handleNestedChange("safety", "rightSideHighlightBox", { ...formData.safety.rightSideHighlightBox, metrics }); }} className="bg-red-500 text-white px-3 py-2 rounded-lg text-sm">Del</button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* ─── TECHNIQUES SECTION ──────────────────────────── */}
+                <h3 className="text-2xl font-bold underline mt-10 mb-5">Techniques Section</h3>
+                <div className="space-y-4">
+                    <div className="flex gap-4 flex-col md:flex-row">
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Heading</label><input type="text" value={formData.techniques.heading} onChange={(e) => handleNestedChange("techniques", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Our Extraction Techniques" /></div>
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Description</label><input type="text" value={formData.techniques.description} onChange={(e) => handleNestedChange("techniques", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                    </div>
+                    <button type="button" onClick={() => addToArray("techniques", "techniques", { name: "", subtitle: "", description: "", badge: "", featured: false, bulletPoints: [], bottomStatistics: [], ctaText: { text: "", link: "", external: false }, displayOrder: 0 })} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">+ Add Technique</button>
+                    {(formData.techniques.techniques || []).length === 0 ? (
+                        <div className="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center"><p className="text-gray-500">No techniques added yet.</p></div>
+                    ) : (
+                        <div className="space-y-5">
+                            {formData.techniques.techniques.map((tech, i) => (
+                                <div key={i} className="border rounded-xl p-6 bg-white shadow-sm space-y-4">
+                                    <div className="flex justify-between items-center"><h4 className="text-lg font-semibold">Technique {i + 1}</h4><button type="button" onClick={() => deleteFromArray("techniques", "techniques", i)} className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">Delete</button></div>
+                                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                        <div><label className="block text-sm font-semibold">Name</label><input type="text" value={tech.name} onChange={(e) => updateArrayItem("techniques", "techniques", i, "name", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="FUE Hair Transplant" /></div>
+                                        <div><label className="block text-sm font-semibold">Subtitle</label><input type="text" value={tech.subtitle} onChange={(e) => updateArrayItem("techniques", "techniques", i, "subtitle", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                                        <div><label className="block text-sm font-semibold">Badge</label><input type="text" value={tech.badge} onChange={(e) => updateArrayItem("techniques", "techniques", i, "badge", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Popular" /></div>
+                                        <div><label className="block text-sm font-semibold">Order</label><input type="number" value={tech.displayOrder} onChange={(e) => updateArrayItem("techniques", "techniques", i, "displayOrder", parseInt(e.target.value) || 0)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                                    </div>
+                                    <div className="flex items-center gap-2"><input type="checkbox" checked={!!tech.featured} onChange={(e) => updateArrayItem("techniques", "techniques", i, "featured", e.target.checked)} className="w-4 h-4" /><label className="text-sm text-gray-700">Mark as Featured Technique</label></div>
+                                    <div><label className="block text-sm font-semibold mb-2">Description (Rich Text)</label><SunEditor setContents={tech.description} onChange={(val) => updateArrayItem("techniques", "techniques", i, "description", val)} setOptions={sunEditorOptions} /></div>
+                                    <div>
+                                        <div className="flex justify-between items-center mb-2"><label className="block text-sm font-semibold">Bullet Points</label><button type="button" onClick={() => addNestedItem("techniques", "techniques", i, "bulletPoints", "")} className="px-3 py-1 bg-blue-600 text-white rounded-md text-sm">+ Add Bullet</button></div>
+                                        {(tech.bulletPoints || []).map((b, bi) => (
+                                            <div key={bi} className="flex gap-2 mt-2">
+                                                <input type="text" value={b} onChange={(e) => updateNestedItem("techniques", "techniques", i, "bulletPoints", bi, e.target.value)} className="flex-1 p-2 border rounded-md" />
+                                                <button type="button" onClick={() => deleteNestedItem("techniques", "techniques", i, "bulletPoints", bi)} className="bg-red-500 text-white px-3 py-1 rounded-md text-sm">Delete</button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <CTABlock label="Technique CTA" value={tech.ctaText || { text: "", link: "", external: false }} onChange={(field, val) => updateArrayItem("techniques", "techniques", i, "ctaText", { ...(tech.ctaText || {}), [field]: val })} />
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    <div className="border rounded-xl p-6 bg-gray-50 space-y-4 mt-4">
+                        <h4 className="text-lg font-semibold">Bottom CTA Block</h4>
+                        <div className="flex gap-4 flex-col md:flex-row">
+                            <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Heading</label><input type="text" value={formData.techniques.bottomCTABlock?.heading || ""} onChange={(e) => handleDeepChange("techniques", "bottomCTABlock", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                            <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Description</label><input type="text" value={formData.techniques.bottomCTABlock?.description || ""} onChange={(e) => handleDeepChange("techniques", "bottomCTABlock", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <CTABlock label="Primary CTA" value={formData.techniques.bottomCTABlock?.primaryCTA || {}} onChange={(field, val) => handleNestedChange("techniques", "bottomCTABlock", { ...formData.techniques.bottomCTABlock, primaryCTA: { ...(formData.techniques.bottomCTABlock?.primaryCTA || {}), [field]: val } })} />
+                            <CTABlock label="Secondary CTA" value={formData.techniques.bottomCTABlock?.secondaryCTA || {}} onChange={(field, val) => handleNestedChange("techniques", "bottomCTABlock", { ...formData.techniques.bottomCTABlock, secondaryCTA: { ...(formData.techniques.bottomCTABlock?.secondaryCTA || {}), [field]: val } })} />
+                        </div>
+                    </div>
+                </div>
+
+                {/* ─── QUALITY BENCHMARKS ──────────────────────────── */}
+                <h3 className="text-2xl font-bold underline mt-10 mb-5">Quality Benchmarks Section</h3>
+                <div className="space-y-4">
+                    <div className="flex gap-4 flex-col md:flex-row">
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Heading</label><input type="text" value={formData.qualityBenchmarks.heading} onChange={(e) => handleNestedChange("qualityBenchmarks", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Description</label><input type="text" value={formData.qualityBenchmarks.description} onChange={(e) => handleNestedChange("qualityBenchmarks", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                    </div>
+                    <button type="button" onClick={() => addToArray("qualityBenchmarks", "benchmarkCards", { number: "", description: "", displayOrder: 0 })} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">+ Add Benchmark Card</button>
+                    {(formData.qualityBenchmarks.benchmarkCards || []).length === 0 ? (
+                        <div className="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center"><p className="text-gray-500">No benchmark cards added yet.</p></div>
+                    ) : (
+                        <div className="space-y-4">
+                            {formData.qualityBenchmarks.benchmarkCards.map((card, i) => (
+                                <div key={i} className="border rounded-xl p-5 bg-white shadow-sm space-y-3">
+                                    <div className="flex justify-between items-center"><h5 className="font-semibold">Benchmark {i + 1}</h5><button type="button" onClick={() => deleteFromArray("qualityBenchmarks", "benchmarkCards", i)} className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm">Delete</button></div>
+                                    <div className="grid grid-cols-3 gap-3">
+                                        <div><label className="block text-sm font-semibold">Number</label><input type="text" value={card.number} onChange={(e) => updateArrayItem("qualityBenchmarks", "benchmarkCards", i, "number", e.target.value)} className="w-full mt-1 p-2 border rounded-md" placeholder="99%" /></div>
+                                        <div className="col-span-2"><label className="block text-sm font-semibold">Description</label><input type="text" value={card.description} onChange={(e) => updateArrayItem("qualityBenchmarks", "benchmarkCards", i, "description", e.target.value)} className="w-full mt-1 p-2 border rounded-md" placeholder="Success rate..." /></div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* ─── PROCEDURE TIMELINE ──────────────────────────── */}
+                <h3 className="text-2xl font-bold underline mt-10 mb-5">Procedure Timeline Section</h3>
+                <div className="space-y-4">
+                    <div className="flex gap-4 flex-col md:flex-row">
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Heading</label><input type="text" value={formData.procedureTimeline.heading} onChange={(e) => handleNestedChange("procedureTimeline", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Description</label><input type="text" value={formData.procedureTimeline.description} onChange={(e) => handleNestedChange("procedureTimeline", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                    </div>
+                    <div><label className="block text-sm font-semibold text-gray-700">Bottom Highlight Message</label><input type="text" value={formData.procedureTimeline.bottomHighlightMessage} onChange={(e) => handleNestedChange("procedureTimeline", "bottomHighlightMessage", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                    <button type="button" onClick={() => addToArray("procedureTimeline", "timelineSteps", { stepNumber: "", badge: "", title: "", description: "", stepImage: { image: "", imageAlt: "" }, icon: "", displayOrder: 0 })} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">+ Add Timeline Step</button>
+                    {(formData.procedureTimeline.timelineSteps || []).length === 0 ? (
+                        <div className="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center"><p className="text-gray-500">No timeline steps added yet.</p></div>
+                    ) : (
+                        <div className="space-y-5">
+                            {formData.procedureTimeline.timelineSteps.map((step, i) => (
+                                <div key={i} className="border rounded-xl p-6 bg-white shadow-sm space-y-4">
+                                    <div className="flex justify-between items-center"><h4 className="text-lg font-semibold">Step {i + 1}</h4><button type="button" onClick={() => deleteFromArray("procedureTimeline", "timelineSteps", i)} className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">Delete</button></div>
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                        <div><label className="block text-sm font-semibold">Step Number</label><input type="text" value={step.stepNumber} onChange={(e) => updateArrayItem("procedureTimeline", "timelineSteps", i, "stepNumber", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="01" /></div>
+                                        <div><label className="block text-sm font-semibold">Badge</label><input type="text" value={step.badge} onChange={(e) => updateArrayItem("procedureTimeline", "timelineSteps", i, "badge", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Day 1" /></div>
+                                        <div><label className="block text-sm font-semibold">Icon</label><input type="text" value={step.icon} onChange={(e) => updateArrayItem("procedureTimeline", "timelineSteps", i, "icon", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                                        <div><label className="block text-sm font-semibold">Order</label><input type="number" value={step.displayOrder} onChange={(e) => updateArrayItem("procedureTimeline", "timelineSteps", i, "displayOrder", parseInt(e.target.value) || 0)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                                    </div>
+                                    <div><label className="block text-sm font-semibold">Title</label><input type="text" value={step.title} onChange={(e) => updateArrayItem("procedureTimeline", "timelineSteps", i, "title", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                                    <div><label className="block text-sm font-semibold mb-2">Description (Rich Text)</label><SunEditor setContents={step.description} onChange={(val) => updateArrayItem("procedureTimeline", "timelineSteps", i, "description", val)} setOptions={sunEditorOptions} /></div>
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Step Image</label>
+                                        <ImageUploader initialImage={step.stepImage?.image} onUpload={(url) => updateArrayItem("procedureTimeline", "timelineSteps", i, "stepImage", { ...step.stepImage, image: url })} />
+                                        <input type="text" value={step.stepImage?.imageAlt || ""} onChange={(e) => updateArrayItem("procedureTimeline", "timelineSteps", i, "stepImage", { ...step.stepImage, imageAlt: e.target.value })} className="w-full mt-2 p-2 border rounded-md" placeholder="Image Alt Text" />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* ─── RECOVERY TIMELINE ───────────────────────────── */}
+                <h3 className="text-2xl font-bold underline mt-10 mb-5">Recovery Timeline Section</h3>
+                <div className="space-y-4">
+                    <div className="flex gap-4 flex-col md:flex-row">
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Heading</label><input type="text" value={formData.recoveryTimeline.heading} onChange={(e) => handleNestedChange("recoveryTimeline", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Description</label><input type="text" value={formData.recoveryTimeline.description} onChange={(e) => handleNestedChange("recoveryTimeline", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                    </div>
+                    <div className="border rounded-xl p-5 bg-gray-50 space-y-3">
+                        <h4 className="text-lg font-semibold">Left Highlight Card</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div><label className="block text-sm font-semibold">Icon</label><input type="text" value={formData.recoveryTimeline.leftHighlightCard?.icon || ""} onChange={(e) => handleDeepChange("recoveryTimeline", "leftHighlightCard", "icon", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                            <div><label className="block text-sm font-semibold">Title</label><input type="text" value={formData.recoveryTimeline.leftHighlightCard?.title || ""} onChange={(e) => handleDeepChange("recoveryTimeline", "leftHighlightCard", "title", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                            <div><label className="block text-sm font-semibold">Description</label><input type="text" value={formData.recoveryTimeline.leftHighlightCard?.description || ""} onChange={(e) => handleDeepChange("recoveryTimeline", "leftHighlightCard", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                        </div>
+                        <div>
+                            <button type="button" onClick={() => { const updated = { ...formData.recoveryTimeline.leftHighlightCard, statistics: [...(formData.recoveryTimeline.leftHighlightCard?.statistics || []), { value: "", label: "" }] }; handleNestedChange("recoveryTimeline", "leftHighlightCard", updated); }} className="px-3 py-1.5 bg-blue-600 text-white rounded-md text-sm mb-3">+ Add Statistic</button>
+                            {(formData.recoveryTimeline.leftHighlightCard?.statistics || []).map((stat, si) => (
+                                <div key={si} className="flex gap-3 mb-2 items-center">
+                                    <input type="text" value={stat.value} onChange={(e) => { const s = [...formData.recoveryTimeline.leftHighlightCard.statistics]; s[si] = { ...s[si], value: e.target.value }; handleNestedChange("recoveryTimeline", "leftHighlightCard", { ...formData.recoveryTimeline.leftHighlightCard, statistics: s }); }} className="flex-1 p-2 border rounded-md" placeholder="Value" />
+                                    <input type="text" value={stat.label} onChange={(e) => { const s = [...formData.recoveryTimeline.leftHighlightCard.statistics]; s[si] = { ...s[si], label: e.target.value }; handleNestedChange("recoveryTimeline", "leftHighlightCard", { ...formData.recoveryTimeline.leftHighlightCard, statistics: s }); }} className="flex-1 p-2 border rounded-md" placeholder="Label" />
+                                    <button type="button" onClick={() => { const statistics = formData.recoveryTimeline.leftHighlightCard.statistics.filter((_, idx) => idx !== si); handleNestedChange("recoveryTimeline", "leftHighlightCard", { ...formData.recoveryTimeline.leftHighlightCard, statistics }); }} className="bg-red-500 text-white px-3 py-2 rounded-lg text-sm">Del</button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <button type="button" onClick={() => addToArray("recoveryTimeline", "recoveryStages", { duration: "", title: "", description: "", icon: "", displayOrder: 0 })} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">+ Add Recovery Stage</button>
+                    {(formData.recoveryTimeline.recoveryStages || []).length === 0 ? (
+                        <div className="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center"><p className="text-gray-500">No recovery stages added yet.</p></div>
+                    ) : (
+                        <div className="space-y-5">
+                            {formData.recoveryTimeline.recoveryStages.map((stage, i) => (
+                                <div key={i} className="border rounded-xl p-6 bg-white shadow-sm space-y-4">
+                                    <div className="flex justify-between items-center"><h4 className="text-lg font-semibold">Recovery Stage {i + 1}</h4><button type="button" onClick={() => deleteFromArray("recoveryTimeline", "recoveryStages", i)} className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">Delete</button></div>
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                        <div><label className="block text-sm font-semibold">Duration</label><input type="text" value={stage.duration} onChange={(e) => updateArrayItem("recoveryTimeline", "recoveryStages", i, "duration", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Day 1-3" /></div>
+                                        <div><label className="block text-sm font-semibold">Title</label><input type="text" value={stage.title} onChange={(e) => updateArrayItem("recoveryTimeline", "recoveryStages", i, "title", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                                        <div><label className="block text-sm font-semibold">Icon</label><input type="text" value={stage.icon} onChange={(e) => updateArrayItem("recoveryTimeline", "recoveryStages", i, "icon", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                                        <div><label className="block text-sm font-semibold">Order</label><input type="number" value={stage.displayOrder} onChange={(e) => updateArrayItem("recoveryTimeline", "recoveryStages", i, "displayOrder", parseInt(e.target.value) || 0)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                                    </div>
+                                    <div><label className="block text-sm font-semibold mb-2">Description (Rich Text)</label><SunEditor setContents={stage.description} onChange={(val) => updateArrayItem("recoveryTimeline", "recoveryStages", i, "description", val)} setOptions={sunEditorOptions} /></div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* ─── DOCTORS SECTION ─────────────────────────────── */}
+                <h3 className="text-2xl font-bold underline mt-10 mb-5">Doctors Section</h3>
+                <div className="space-y-4">
+                    <div className="flex gap-4 flex-col md:flex-row">
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Section Heading</label><input type="text" value={formData.doctors.heading} onChange={(e) => handleNestedChange("doctors", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Description</label><input type="text" value={formData.doctors.description} onChange={(e) => handleNestedChange("doctors", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Top Button Text</label><input type="text" value={formData.doctors.topButtonText} onChange={(e) => handleNestedChange("doctors", "topButtonText", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                    </div>
+                    <button type="button" onClick={() => addToArray("doctors", "doctors", { name: "", designation: "", doctorImage: { image: "", imageAlt: "" }, experience: "", proceduresCount: "", qualifications: [], profileButtonText: "", displayOrder: 0 })} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-6">+ Add Doctor</button>
+                    {(formData.doctors.doctors || []).length === 0 ? (
+                        <div className="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center"><p className="text-gray-500">No doctors added yet.</p></div>
+                    ) : (
+                        <div className="space-y-6">
+                            {formData.doctors.doctors.map((doctor, i) => (
+                                <div key={i} className="border rounded-xl p-6 bg-white shadow-sm space-y-4">
+                                    <div className="flex justify-between items-center"><h4 className="text-lg font-semibold">Doctor {i + 1}</h4><button type="button" onClick={() => deleteFromArray("doctors", "doctors", i)} className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg">Delete Doctor</button></div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div><label className="block text-sm font-semibold">Name</label><input type="text" value={doctor.name} onChange={(e) => updateArrayItem("doctors", "doctors", i, "name", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Dr. John Doe" /></div>
+                                        <div><label className="block text-sm font-semibold">Designation</label><input type="text" value={doctor.designation} onChange={(e) => updateArrayItem("doctors", "doctors", i, "designation", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                                        <div><label className="block text-sm font-semibold">Experience</label><input type="text" value={doctor.experience} onChange={(e) => updateArrayItem("doctors", "doctors", i, "experience", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="15+ Years" /></div>
+                                        <div><label className="block text-sm font-semibold">Procedures Count</label><input type="text" value={doctor.proceduresCount} onChange={(e) => updateArrayItem("doctors", "doctors", i, "proceduresCount", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="5000+" /></div>
+                                        <div><label className="block text-sm font-semibold">Profile Button Text</label><input type="text" value={doctor.profileButtonText} onChange={(e) => updateArrayItem("doctors", "doctors", i, "profileButtonText", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                                        <div><label className="block text-sm font-semibold">Display Order</label><input type="number" value={doctor.displayOrder} onChange={(e) => updateArrayItem("doctors", "doctors", i, "displayOrder", parseInt(e.target.value) || 0)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                                    </div>
+                                    <div className="mt-4">
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Doctor Image</label>
+                                        <ImageUploader initialImage={doctor.doctorImage?.image} onUpload={(url) => updateArrayItem("doctors", "doctors", i, "doctorImage", { ...doctor.doctorImage, image: url })} />
+                                        <input type="text" value={doctor.doctorImage?.imageAlt || ""} onChange={(e) => updateArrayItem("doctors", "doctors", i, "doctorImage", { ...doctor.doctorImage, imageAlt: e.target.value })} className="w-full mt-2 p-2 border rounded-md" placeholder="Doctor Image Alt Text" />
+                                    </div>
+                                    <div className="mt-4 border-t pt-4">
+                                        <div className="flex justify-between items-center mb-3"><h5 className="text-md font-semibold text-gray-800">Qualifications</h5><button type="button" onClick={() => addNestedItem("doctors", "doctors", i, "qualifications", "")} className="px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm">+ Add Qualification</button></div>
+                                        {(!doctor.qualifications || doctor.qualifications.length === 0) ? (
+                                            <p className="text-sm text-gray-500 italic">No qualifications added.</p>
+                                        ) : (
+                                            <div className="space-y-2">
+                                                {doctor.qualifications.map((qual, qi) => (
+                                                    <div key={qi} className="flex gap-2">
+                                                        <input type="text" value={qual} onChange={(e) => updateNestedItem("doctors", "doctors", i, "qualifications", qi, e.target.value)} className="flex-1 p-2 border rounded-md" placeholder="e.g. MBBS, MD" />
+                                                        <button type="button" onClick={() => deleteNestedItem("doctors", "doctors", i, "qualifications", qi)} className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm">Delete</button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                {/* ─── PRICING SECTION ─────────────────────────────── */}
+                <h3 className="text-2xl font-bold underline mt-10 mb-5">Pricing Section</h3>
+                <div className="space-y-4">
+                    <div><label className="block text-sm font-semibold text-gray-700">Heading</label><input type="text" value={formData.pricing.heading} onChange={(e) => handleNestedChange("pricing", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                    <div><label className="block text-sm font-semibold text-gray-700 mb-2">Description (Rich Text)</label><SunEditor setContents={formData.pricing.description} onChange={(val) => handleNestedChange("pricing", "description", val)} setOptions={sunEditorOptions} /></div>
+                    <div><label className="block text-sm font-semibold text-gray-700">Warning Text</label><input type="text" value={formData.pricing.warningText} onChange={(e) => handleNestedChange("pricing", "warningText", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                    <div>
+                        <button type="button" onClick={() => addToArray("pricing", "pricingStats", { value: "", label: "" })} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-4">+ Add Pricing Stat</button>
+                        {(formData.pricing.pricingStats || []).length === 0 ? (
+                            <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center"><p className="text-gray-500">No pricing stats added yet.</p></div>
+                        ) : (
+                            <div className="space-y-3">
+                                {formData.pricing.pricingStats.map((stat, i) => (
+                                    <div key={i} className="border rounded-xl p-4 bg-white shadow-sm">
+                                        <div className="flex justify-between items-center mb-3"><h5 className="font-semibold">Stat {i + 1}</h5><button type="button" onClick={() => deleteFromArray("pricing", "pricingStats", i)} className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm">Delete</button></div>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div><label className="block text-sm font-semibold">Value</label><input type="text" value={stat.value} onChange={(e) => updateArrayItem("pricing", "pricingStats", i, "value", e.target.value)} className="w-full mt-1 p-2 border rounded-md" /></div>
+                                            <div><label className="block text-sm font-semibold">Label</label><input type="text" value={stat.label} onChange={(e) => updateArrayItem("pricing", "pricingStats", i, "label", e.target.value)} className="w-full mt-1 p-2 border rounded-md" /></div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                        <CTABlock label="WhatsApp CTA" value={formData.pricing.ctaTextWhatsApp} onChange={(field, val) => handleNestedChange("pricing", "ctaTextWhatsApp", { ...formData.pricing.ctaTextWhatsApp, [field]: val })} />
+                        <CTABlock label="Call CTA" value={formData.pricing.ctaTextCall} onChange={(field, val) => handleNestedChange("pricing", "ctaTextCall", { ...formData.pricing.ctaTextCall, [field]: val })} />
+                        <CTABlock label="Guide CTA" value={formData.pricing.ctaTextGuide} onChange={(field, val) => handleNestedChange("pricing", "ctaTextGuide", { ...formData.pricing.ctaTextGuide, [field]: val })} />
+                    </div>
+                </div>
+
+                {/* ─── VISIT CLINIC SECTION ────────────────────────── */}
+                <h3 className="text-2xl font-bold underline mt-10 mb-5">Visit Clinic Section</h3>
+                <div className="space-y-4">
+                    <div className="flex gap-4 flex-col md:flex-row">
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Heading</label><input type="text" value={formData.visitClinic.heading} onChange={(e) => handleNestedChange("visitClinic", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Description</label><input type="text" value={formData.visitClinic.description} onChange={(e) => handleNestedChange("visitClinic", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                    </div>
+                    <button type="button" onClick={() => addToArray("visitClinic", "informationCards", { icon: "", title: "", description: "" })} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-4">+ Add Information Card</button>
+                    {(formData.visitClinic.informationCards || []).length === 0 ? (
+                        <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center"><p className="text-gray-500">No information cards added yet.</p></div>
+                    ) : (
+                        <div className="space-y-4">
+                            {formData.visitClinic.informationCards.map((card, i) => (
+                                <div key={i} className="border rounded-xl p-5 bg-white shadow-sm space-y-3">
+                                    <div className="flex justify-between items-center"><h5 className="font-semibold">Card {i + 1}</h5><button type="button" onClick={() => deleteFromArray("visitClinic", "informationCards", i)} className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm">Delete</button></div>
+                                    <div className="grid grid-cols-3 gap-3">
+                                        <div><label className="block text-sm font-semibold">Icon</label><input type="text" value={card.icon} onChange={(e) => updateArrayItem("visitClinic", "informationCards", i, "icon", e.target.value)} className="w-full mt-1 p-2 border rounded-md" /></div>
+                                        <div><label className="block text-sm font-semibold">Title</label><input type="text" value={card.title} onChange={(e) => updateArrayItem("visitClinic", "informationCards", i, "title", e.target.value)} className="w-full mt-1 p-2 border rounded-md" /></div>
+                                        <div><label className="block text-sm font-semibold">Description</label><input type="text" value={card.description} onChange={(e) => updateArrayItem("visitClinic", "informationCards", i, "description", e.target.value)} className="w-full mt-1 p-2 border rounded-md" /></div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    <CTABlock label="Directions Button" value={formData.visitClinic.buttonText} onChange={(field, val) => handleNestedChange("visitClinic", "buttonText", { ...formData.visitClinic.buttonText, [field]: val })} />
+                </div>
+
+                {/* ─── CONSULTATION SECTION ────────────────────────── */}
+                <h3 className="text-2xl font-bold underline mt-10 mb-5">Consultation Section</h3>
+                <div className="space-y-4">
+                    <div className="flex gap-4 flex-col md:flex-row">
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Left Side Heading</label><input type="text" value={formData.consultation.leftSide?.heading || ""} onChange={(e) => handleDeepChange("consultation", "leftSide", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Left Side Description</label><textarea rows={3} value={formData.consultation.leftSide?.description || ""} onChange={(e) => handleDeepChange("consultation", "leftSide", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                    </div>
+                    <button type="button" onClick={() => { const updated = { ...formData.consultation.leftSide, contactCards: [...(formData.consultation.leftSide?.contactCards || []), { icon: "", title: "", description: "", link: "", ext: false, displayOrder: 0 }] }; handleNestedChange("consultation", "leftSide", updated); }} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-4">+ Add Contact Card</button>
+                    {(formData.consultation.leftSide?.contactCards || []).length === 0 ? (
+                        <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center"><p className="text-gray-500">No contact cards added yet.</p></div>
+                    ) : (
+                        <div className="space-y-4">
+                            {formData.consultation.leftSide.contactCards.map((card, i) => (
+                                <div key={i} className="border rounded-xl p-5 bg-white shadow-sm space-y-3">
+                                    <div className="flex justify-between items-center"><h5 className="font-semibold">Contact Card {i + 1}</h5><button type="button" onClick={() => { const updated = { ...formData.consultation.leftSide, contactCards: formData.consultation.leftSide.contactCards.filter((_, idx) => idx !== i) }; handleNestedChange("consultation", "leftSide", updated); }} className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm">Delete</button></div>
+                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                        <div><label className="block text-sm font-semibold">Icon</label><input type="text" value={card.icon} onChange={(e) => { const c = [...formData.consultation.leftSide.contactCards]; c[i] = { ...c[i], icon: e.target.value }; handleNestedChange("consultation", "leftSide", { ...formData.consultation.leftSide, contactCards: c }); }} className="w-full mt-1 p-2 border rounded-md" /></div>
+                                        <div><label className="block text-sm font-semibold">Title</label><input type="text" value={card.title} onChange={(e) => { const c = [...formData.consultation.leftSide.contactCards]; c[i] = { ...c[i], title: e.target.value }; handleNestedChange("consultation", "leftSide", { ...formData.consultation.leftSide, contactCards: c }); }} className="w-full mt-1 p-2 border rounded-md" /></div>
+                                        <div><label className="block text-sm font-semibold">Order</label><input type="number" value={card.displayOrder} onChange={(e) => { const c = [...formData.consultation.leftSide.contactCards]; c[i] = { ...c[i], displayOrder: parseInt(e.target.value) || 0 }; handleNestedChange("consultation", "leftSide", { ...formData.consultation.leftSide, contactCards: c }); }} className="w-full mt-1 p-2 border rounded-md" /></div>
+                                        <div><label className="block text-sm font-semibold">Description</label><input type="text" value={card.description} onChange={(e) => { const c = [...formData.consultation.leftSide.contactCards]; c[i] = { ...c[i], description: e.target.value }; handleNestedChange("consultation", "leftSide", { ...formData.consultation.leftSide, contactCards: c }); }} className="w-full mt-1 p-2 border rounded-md" /></div>
+                                        <div><label className="block text-sm font-semibold">Link URL</label><input type="text" value={card.link} onChange={(e) => { const c = [...formData.consultation.leftSide.contactCards]; c[i] = { ...c[i], link: e.target.value }; handleNestedChange("consultation", "leftSide", { ...formData.consultation.leftSide, contactCards: c }); }} className="w-full mt-1 p-2 border rounded-md" /></div>
+                                    </div>
+                                    <div className="flex items-center gap-2"><input type="checkbox" checked={!!card.ext} onChange={(e) => { const c = [...formData.consultation.leftSide.contactCards]; c[i] = { ...c[i], ext: e.target.checked }; handleNestedChange("consultation", "leftSide", { ...formData.consultation.leftSide, contactCards: c }); }} className="w-4 h-4" /><label className="text-sm text-gray-700">External URL</label></div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    <div className="border rounded-xl p-5 bg-gray-50 space-y-4 mt-4">
+                        <h4 className="text-lg font-semibold">Consultation Form Config</h4>
+                        <div><label className="block text-sm font-semibold text-gray-700">Form Title</label><input type="text" value={formData.consultation.consultationFormConfig?.title || ""} onChange={(e) => handleDeepChange("consultation", "consultationFormConfig", "title", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                        <div>
+                            <div className="flex justify-between items-center mb-2"><label className="block text-sm font-semibold text-gray-700">Service Dropdown Options</label><button type="button" onClick={() => { const updated = { ...formData.consultation.consultationFormConfig, servicesDropdown: [...(formData.consultation.consultationFormConfig?.servicesDropdown || []), ""] }; handleNestedChange("consultation", "consultationFormConfig", updated); }} className="px-3 py-1 bg-blue-600 text-white rounded-md text-sm">+ Add Service</button></div>
+                            {(formData.consultation.consultationFormConfig?.servicesDropdown || []).map((svc, si) => (
+                                <div key={si} className="flex gap-2 mb-2">
+                                    <input type="text" value={svc} onChange={(e) => { const a = [...formData.consultation.consultationFormConfig.servicesDropdown]; a[si] = e.target.value; handleNestedChange("consultation", "consultationFormConfig", { ...formData.consultation.consultationFormConfig, servicesDropdown: a }); }} className="flex-1 p-2 border rounded-md" placeholder="e.g. FUE Hair Transplant" />
+                                    <button type="button" onClick={() => { const a = formData.consultation.consultationFormConfig.servicesDropdown.filter((_, idx) => idx !== si); handleNestedChange("consultation", "consultationFormConfig", { ...formData.consultation.consultationFormConfig, servicesDropdown: a }); }} className="bg-red-500 text-white px-3 py-1 rounded-md text-sm">Del</button>
+                                </div>
+                            ))}
+                        </div>
+                        <CTABlock label="Submit Button" value={formData.consultation.consultationFormConfig?.submitButtonText || {}} onChange={(field, val) => handleNestedChange("consultation", "consultationFormConfig", { ...formData.consultation.consultationFormConfig, submitButtonText: { ...(formData.consultation.consultationFormConfig?.submitButtonText || {}), [field]: val } })} />
+                    </div>
+                </div>
+
+                {/* ─── FAQ SECTION ─────────────────────────────────── */}
+                <h3 className="text-2xl font-bold underline mt-10 mb-5">FAQ Section</h3>
+                <div className="space-y-4">
+                    <div className="flex gap-4 flex-col md:flex-row">
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Heading</label><input type="text" value={formData.faq.heading} onChange={(e) => handleNestedChange("faq", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Description</label><input type="text" value={formData.faq.description} onChange={(e) => handleNestedChange("faq", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                    </div>
+                    <div>
+                        <button type="button" onClick={() => addToArray("faq", "stats", { value: "", label: "" })} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-4">+ Add FAQ Stat</button>
+                        {(formData.faq.stats || []).length === 0 ? (
+                            <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center"><p className="text-gray-500">No FAQ stats added yet.</p></div>
+                        ) : (
+                            <div className="space-y-3">
+                                {formData.faq.stats.map((stat, i) => (
+                                    <div key={i} className="border rounded-xl p-4 bg-white shadow-sm">
+                                        <div className="flex justify-between items-center mb-3"><h5 className="font-semibold">Stat {i + 1}</h5><button type="button" onClick={() => deleteFromArray("faq", "stats", i)} className="bg-red-500 text-white px-3 py-1 rounded-lg text-sm">Delete</button></div>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div><label className="block text-sm font-semibold">Value</label><input type="text" value={stat.value} onChange={(e) => updateArrayItem("faq", "stats", i, "value", e.target.value)} className="w-full mt-1 p-2 border rounded-md" /></div>
+                                            <div><label className="block text-sm font-semibold">Label</label><input type="text" value={stat.label} onChange={(e) => updateArrayItem("faq", "stats", i, "label", e.target.value)} className="w-full mt-1 p-2 border rounded-md" /></div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    <button type="button" onClick={() => addToArray("faq", "faqs", { question: "", answer: "", displayOrder: 0 })} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-6">+ Add FAQ</button>
+                    {(formData.faq.faqs || []).length === 0 ? (
+                        <div className="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center mt-6"><h4 className="text-xl font-semibold text-gray-600">No FAQs added yet</h4><p className="text-gray-500 mt-2">Click &quot;+ Add FAQ&quot; to create your first FAQ item.</p></div>
+                    ) : (
+                        <div className="space-y-6 mt-6">
+                            {formData.faq.faqs.map((faq, i) => (
+                                <div key={i} className="border rounded-xl p-6 bg-white shadow-sm space-y-4">
+                                    <div className="flex justify-between items-center"><h4 className="text-lg font-semibold text-gray-800">FAQ {i + 1}</h4><button type="button" onClick={() => deleteFromArray("faq", "faqs", i)} className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition text-sm font-semibold">Delete FAQ</button></div>
+                                    <div className="space-y-4">
+                                        <div><label className="block text-sm font-semibold text-gray-700">Question</label><input type="text" value={faq.question} onChange={(e) => updateArrayItem("faq", "faqs", i, "question", e.target.value)} className="w-full mt-2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="Enter FAQ Question" required /></div>
+                                        <div><label className="block text-sm font-semibold text-gray-700 mb-2">Answer (Rich Text)</label><SunEditor setContents={faq.answer} onChange={(val) => updateArrayItem("faq", "faqs", i, "answer", val)} setOptions={sunEditorOptions} /></div>
+                                        <div><label className="block text-sm font-semibold text-gray-700">Display Order</label><input type="number" value={faq.displayOrder} onChange={(e) => updateArrayItem("faq", "faqs", i, "displayOrder", parseInt(e.target.value) || 0)} className="w-full mt-2 p-2 border rounded-md" /></div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    <CTABlock label="FAQ Help Button" value={formData.faq.ctaButtonText} onChange={(field, val) => handleNestedChange("faq", "ctaButtonText", { ...formData.faq.ctaButtonText, [field]: val })} />
+                </div>
+
+                {/* ─── SUBMIT ──────────────────────────────────────── */}
                 <div className="pt-4">
-                    <button
-                        type="submit"
-                        disabled={submitting}
-                        className="w-full bg-blue-600 text-white py-3 px-4 rounded-xl hover:bg-blue-700 transition duration-200 font-semibold text-sm disabled:opacity-60 disabled:cursor-not-allowed"
-                    >
+                    <button type="submit" disabled={submitting} className="w-full bg-blue-600 text-white py-3 px-4 rounded-xl hover:bg-blue-700 transition duration-200 font-semibold text-sm disabled:opacity-60 disabled:cursor-not-allowed">
                         {submitting ? "Saving..." : "Update Surgery Page"}
                     </button>
                 </div>
 
             </form>
-
         </section>
     );
 }

@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import { Fragment } from "react";
+import useTrackCTA from "@/lib/useTrackCTA";
 
 export default function PageBanner({
   breadcrumb,
@@ -9,7 +11,9 @@ export default function PageBanner({
   breadcrumbLabel,
   bgImage,
   hideBadge = false,
+  stats,
 }) {
+  const trackCTA = useTrackCTA();
   return (
     <header className="relative w-full overflow-hidden">
       <div className="hidden md:block">
@@ -75,12 +79,14 @@ export default function PageBanner({
                   <a
                     href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20consultation%20in%20Delhi"
                     className="bg-[#D32F2F] px-5 py-3 rounded-lg text-sm font-semibold hover:bg-red-700"
+                    onClick={() => trackCTA({ type: "whatsapp", ctaName: "Banner WhatsApp Us", buttonLocation: "Page Banner" })}
                   >
                     WhatsApp Us
                   </a>
                   <a
                     href="tel:+919911111247"
                     className="border border-white/40 px-5 py-3 rounded-lg text-sm font-semibold hover:bg-white/10"
+                    onClick={() => trackCTA({ type: "call", ctaName: "Banner Call Now", buttonLocation: "Page Banner" })}
                   >
                     Call Now
                   </a>
@@ -95,16 +101,27 @@ export default function PageBanner({
               <span className="text-white text-xl">❤</span>
             </div>
           </div>
-          <div
-            className="absolute bottom-6 right-20 bg-white rounded-xl shadow-xl px-6 py-4 flex gap-8 z-30"
-            dangerouslySetInnerHTML={{
-              __html:
-                '<div class="text-center"><p class="font-bold text-lg text-gray-800">12+</p><p class="text-xs text-gray-500">Years</p></div>' +
-                '<div class="text-center border-l border-gray-200 pl-6"><p class="font-bold text-lg text-gray-800">10,000+</p><p class="text-xs text-gray-500">Procedures</p></div>' +
-                '<div class="text-center border-l border-gray-200 pl-6"><p class="font-bold text-lg text-gray-800">4.9★</p><p class="text-xs text-gray-500">Google rating</p></div>' +
-                '<div class="text-center border-l border-gray-200 pl-6"><p class="font-bold text-lg text-gray-800">0%</p><p class="text-xs text-gray-500">EMI Available</p></div>',
-            }}
-          />
+          {stats && stats.length > 0 ? (
+            <div className="absolute bottom-6 right-20 bg-white rounded-xl shadow-xl px-6 py-4 flex gap-8 z-30">
+              {stats.map((stat, i) => (
+                <div key={i} className={`text-center ${i > 0 ? "border-l border-gray-200 pl-6" : ""}`}>
+                  <p className="font-bold text-lg text-gray-800">{stat.value}</p>
+                  <p className="text-xs text-gray-500">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div
+              className="absolute bottom-6 right-20 bg-white rounded-xl shadow-xl px-6 py-4 flex gap-8 z-30"
+              dangerouslySetInnerHTML={{
+                __html:
+                  '<div class="text-center"><p class="font-bold text-lg text-gray-800">12+</p><p class="text-xs text-gray-500">Years</p></div>' +
+                  '<div class="text-center border-l border-gray-200 pl-6"><p class="font-bold text-lg text-gray-800">10,000+</p><p class="text-xs text-gray-500">Procedures</p></div>' +
+                  '<div class="text-center border-l border-gray-200 pl-6"><p class="font-bold text-lg text-gray-800">4.9★</p><p class="text-xs text-gray-500">Google rating</p></div>' +
+                  '<div class="text-center border-l border-gray-200 pl-6"><p class="font-bold text-lg text-gray-800">0%</p><p class="text-xs text-gray-500">EMI Available</p></div>',
+              }}
+            />
+          )}
         </div>
       </div>
 
@@ -198,6 +215,7 @@ export default function PageBanner({
             <a
               href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20consultation%20in%20Delhi"
               className="flex-1 text-center bg-[#D32F2F] py-3.5 rounded-xl text-[13px] font-semibold text-white active:scale-95 transition-transform"
+              onClick={() => trackCTA({ type: "whatsapp", ctaName: "Banner WhatsApp Us", buttonLocation: "Page Banner Mobile" })}
             >
               WhatsApp Us
             </a>
@@ -205,54 +223,78 @@ export default function PageBanner({
               href="tel:+919911111247"
               className="flex-1 text-center border border-white/25 py-3.5 rounded-xl text-[13px] font-semibold text-white active:scale-95 transition-transform"
               style={{ background: "rgba(255,255,255,0.07)" }}
+              onClick={() => trackCTA({ type: "call", ctaName: "Banner Call Now", buttonLocation: "Page Banner Mobile" })}
             >
               Call Now
             </a>
           </div>
 
           {/* Stats — glassmorphism strip */}
-          <div
-            className="flex items-center rounded-2xl py-3.5"
-            style={{
-              background: "rgba(255,255,255,0.07)",
-              border: "1px solid rgba(255,255,255,0.11)",
-              backdropFilter: "blur(12px)",
-            }}
-          >
-            <div className="flex-1 text-center">
-              <p className="font-bold text-[17px] text-white leading-none mb-0.5">
-                12+
-              </p>
-              <p className="text-[9.5px] text-white/45">Years of Experience</p>
+          {stats && stats.length > 0 ? (
+            <div
+              className="flex items-center rounded-2xl py-3.5"
+              style={{
+                background: "rgba(255,255,255,0.07)",
+                border: "1px solid rgba(255,255,255,0.11)",
+                backdropFilter: "blur(12px)",
+              }}
+            >
+              {stats.map((stat, i) => (
+                <Fragment key={i}>
+                  {i > 0 && <div className="w-px h-8 bg-white/15" />}
+                  <div className="flex-1 text-center">
+                    <p className="font-bold text-[17px] text-white leading-none mb-0.5">
+                      {stat.value}
+                    </p>
+                    <p className="text-[9.5px] text-white/45">{stat.label}</p>
+                  </div>
+                </Fragment>
+              ))}
             </div>
+          ) : (
+            <div
+              className="flex items-center rounded-2xl py-3.5"
+              style={{
+                background: "rgba(255,255,255,0.07)",
+                border: "1px solid rgba(255,255,255,0.11)",
+                backdropFilter: "blur(12px)",
+              }}
+            >
+              <div className="flex-1 text-center">
+                <p className="font-bold text-[17px] text-white leading-none mb-0.5">
+                  12+
+                </p>
+                <p className="text-[9.5px] text-white/45">Years of Experience</p>
+              </div>
 
-            <div className="w-px h-8 bg-white/15" />
+              <div className="w-px h-8 bg-white/15" />
 
-            <div className="flex-1 text-center">
-              <p className="font-bold text-[17px] text-white leading-none mb-0.5">
-                10,000+
-              </p>
-              <p className="text-[9.5px] text-white/45">Procedures</p>
+              <div className="flex-1 text-center">
+                <p className="font-bold text-[17px] text-white leading-none mb-0.5">
+                  10,000+
+                </p>
+                <p className="text-[9.5px] text-white/45">Procedures</p>
+              </div>
+
+              <div className="w-px h-8 bg-white/15" />
+
+              <div className="flex-1 text-center">
+                <p className="font-bold text-[17px] text-white leading-none mb-0.5">
+                  4.9★
+                </p>
+                <p className="text-[9.5px] text-white/45">Google Rating</p>
+              </div>
+
+              <div className="w-px h-8 bg-white/15" />
+
+              <div className="flex-1 text-center">
+                <p className="font-bold text-[17px] text-white leading-none mb-0.5">
+                  0%
+                </p>
+                <p className="text-[9.5px] text-white/45">EMI available</p>
+              </div>
             </div>
-
-            <div className="w-px h-8 bg-white/15" />
-
-            <div className="flex-1 text-center">
-              <p className="font-bold text-[17px] text-white leading-none mb-0.5">
-                4.9★
-              </p>
-              <p className="text-[9.5px] text-white/45">Google Rating</p>
-            </div>
-
-            <div className="w-px h-8 bg-white/15" />
-
-            <div className="flex-1 text-center">
-              <p className="font-bold text-[17px] text-white leading-none mb-0.5">
-                0%
-              </p>
-              <p className="text-[9.5px] text-white/45">EMI available</p>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </header>

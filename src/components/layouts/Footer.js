@@ -1,3 +1,5 @@
+"use client";
+
 import {
   FaFacebookF,
   FaInstagram,
@@ -8,6 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Logo from "../../../public/uploads/logo-2.png";
 import FooterCallbackForm from "@/components/pages/FooterCallbackForm";
+import useTrackCTA from "@/lib/useTrackCTA";
 
 const services = [
   { label: "Turkey Sapphire FUE", href: "/hairline-transplant" },
@@ -64,6 +67,7 @@ const branches = [
 ];
 
 export default function Footer() {
+  const trackCTA = useTrackCTA();
   return (
     <footer style={{ background: "#0d0d0d", color: "#e5e5e5" }}>
       {/* ── Trust bar ── */}
@@ -114,6 +118,7 @@ export default function Footer() {
               rel="noreferrer"
               className="text-white hover:text-green-200 transition"
               aria-label="WhatsApp"
+              onClick={() => trackCTA({ type: "whatsapp", ctaName: "Footer Social WhatsApp", buttonLocation: "Footer" })}
             >
               <FaWhatsapp size={18} />
             </a>
@@ -362,6 +367,7 @@ export default function Footer() {
                   href="tel:+919911111247"
                   className="text-sm font-medium text-white hover:underline"
                   style={{ color: "var(--accent-gold)" }}
+                  onClick={() => trackCTA({ type: "call", ctaName: "Footer Call", buttonLocation: "Footer" })}
                 >
                   +91-9911111247
                 </a>
@@ -399,6 +405,7 @@ export default function Footer() {
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 text-sm font-semibold py-2.5 px-5 rounded-xl text-white transition-colors"
                   style={{ background: "#16a34a" }}
+                  onClick={() => trackCTA({ type: "whatsapp", ctaName: "Footer Book Appointment", buttonLocation: "Footer" })}
                 >
                   <FaWhatsapp size={15} />
                   WhatsApp Us

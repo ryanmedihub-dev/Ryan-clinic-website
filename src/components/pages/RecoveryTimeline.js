@@ -1,6 +1,9 @@
+"use client";
+
 // RecoveryTimeline.js
 // Usage: <RecoveryTimeline phases={[{period,phase,color,progress,points:[],tip}]} />
 // Icons are built-in and cycle by index; all text fields can be overridden from DB.
+import useTrackCTA from "@/lib/useTrackCTA";
 
 const DEFAULT_TIMELINE = [
   {
@@ -96,6 +99,7 @@ const DEFAULT_TIMELINE = [
 ];
 
 export default function RecoveryTimeline({ phases }) {
+  const trackCTA = useTrackCTA();
   const timeline = phases?.length
     ? phases.map((p, i) => ({ ...p, icon: DEFAULT_TIMELINE[i % DEFAULT_TIMELINE.length].icon }))
     : DEFAULT_TIMELINE;
@@ -224,6 +228,7 @@ export default function RecoveryTimeline({ phases }) {
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2.5 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-4 px-7 text-sm tracking-wide transition-colors rounded-xl"
+            onClick={() => trackCTA({ type: "whatsapp", ctaName: "Recovery Book Consultation", buttonLocation: "Recovery Timeline Section" })}
           >
             Book Free Consultation
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

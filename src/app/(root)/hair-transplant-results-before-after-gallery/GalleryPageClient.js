@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import PageBanner from "@/components/layouts/pageBanner";
+import useTrackCTA from "@/lib/useTrackCTA";
 import {
   MapPin,
   ShieldCheck,
@@ -169,6 +170,7 @@ export function LeadForm() {
   const [formData, setFormData] = useState({ name: "", phone: "", email: "" });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const trackCTA = useTrackCTA();
 
   const handleChange = (e) => setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
 
@@ -184,7 +186,16 @@ export function LeadForm() {
       const data = await res.json();
       if (data.success) {
         setSuccess(true);
-        window.location.href = "https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20scalp%20analysis";
+        // Fire tracking BEFORE navigation — sendBeacon/fetch keepalive is queued instantly
+        trackCTA({
+          type: "form",
+          ctaName: "Gallery Lead Form Submission",
+          buttonLocation: "Gallery Page Lead Form",
+        });
+        // Redirect current tab to WhatsApp after a brief timeout to avoid popup blockers
+        setTimeout(() => {
+          window.location.href = "https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20scalp%20analysis";
+        }, 100);
       } else {
         alert("⚠️ " + (data.message || "Something went wrong. Please call us directly."));
       }
@@ -194,6 +205,7 @@ export function LeadForm() {
       setLoading(false);
     }
   };
+
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
@@ -226,6 +238,7 @@ export function LeadForm() {
 }
 
 export default function GalleryPageClient() {
+  const trackCTA = useTrackCTA();
   const [selectedCity, setSelectedCity] = useState("All");
   const [lightboxImages, setLightboxImages] = useState([]);
   const [lightboxIndex, setLightboxIndex] = useState(null);
@@ -409,12 +422,14 @@ export default function GalleryPageClient() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-5 py-3 md:px-6 md:py-3.5 rounded-xl text-white font-bold text-sm transition-all hover:opacity-90 bg-[#D32F2F] shadow-md"
+                  onClick={() => trackCTA({ type: "whatsapp", ctaName: "Gallery Hero WA Free Analysis", buttonLocation: "Gallery Hero Section" })}
                 >
                   Get Your Free Scalp Analysis
                 </a>
                 <a
                   href="tel:+919911111247"
                   className="inline-flex items-center gap-2 px-5 py-3 md:px-6 md:py-3.5 rounded-xl border border-red-600/30 hover:border-red-600 text-red-600 font-bold text-sm bg-white hover:bg-red-50/30 transition-colors"
+                  onClick={() => trackCTA({ type: "call", ctaName: "Gallery Hero Call Now", buttonLocation: "Gallery Hero Section" })}
                 >
                   Call Now
                 </a>
@@ -549,6 +564,7 @@ export default function GalleryPageClient() {
               target="_blank"
               rel="noopener noreferrer"
               className="flex-shrink-0 px-6 py-3.5 bg-white text-[#8B1414] hover:bg-stone-100 font-bold rounded-2xl text-xs sm:text-sm shadow-md transition-colors"
+              onClick={() => trackCTA({ type: "whatsapp", ctaName: "Gallery Bottom WA Free Analysis", buttonLocation: "Gallery Bottom Section" })}
             >
               WhatsApp Us Now →
             </a>
@@ -723,6 +739,7 @@ export default function GalleryPageClient() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-white font-bold text-sm bg-[#D32F2F] hover:bg-red-700 shadow-md transition-colors"
+              onClick={() => trackCTA({ type: "whatsapp", ctaName: "Gallery FAQ WhatsApp", buttonLocation: "Gallery FAQ Section" })}
             >
               Have a question about results? Chat on WhatsApp →
             </a>
@@ -834,6 +851,7 @@ export default function GalleryPageClient() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-red-700 to-red-600 hover:from-red-600 hover:to-red-500 text-white font-bold py-3 md:py-3.5 px-6 rounded-2xl text-xs sm:text-sm transition-all duration-300 shadow-md active:scale-98"
+                  onClick={() => trackCTA({ type: "whatsapp", ctaName: `Gallery Inquire Case Result #${activeCase?.id}`, buttonLocation: "Gallery Lightbox Modal" })}
                 >
                   <MessageSquare className="w-4 h-4" />
                   Inquire About This Result

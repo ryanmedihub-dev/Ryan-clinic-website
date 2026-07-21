@@ -1,25 +1,12 @@
 
-const getApiUrl = () => {
-  // Client-side: relative URL always resolves to the correct domain
-  if (typeof window !== "undefined") {
-    return "/api/service/get-service";
-  }
-  // Server-side: need an absolute URL
-  const base =
-    process.env.NEXT_PUBLIC_BASE_URL ||
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
-  return `${base}/api/service/get-service`;
-};
+import { DBConnection } from "./db";
+import Services from "@/models/services";
 
 export const getAllServices = async () => {
   try {
-    const res = await fetch(getApiUrl(), {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      cache: "no-store",
-    });
-    const result = await res.json();
-    return result.data || [];
+    await DBConnection();
+    const services = await Services.find({}).lean();
+    return JSON.parse(JSON.stringify(services || []));
   } catch (error) {
     console.error("getAllServices error:", error.message);
     return [];
@@ -28,14 +15,9 @@ export const getAllServices = async () => {
 
 export const getServiceBySlug = async (id) => {
   try {
-    const res = await fetch(getApiUrl(), {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      cache: "no-store",
-    });
-    const result = await res.json();
-    const services = result.data || [];
-    return services.find((s) => s.metadata?.pageurl === id) || null;
+    await DBConnection();
+    const service = await Services.findOne({ "metadata.pageurl": id }).lean();
+    return service ? JSON.parse(JSON.stringify(service)) : null;
   } catch (error) {
     console.error("getServiceBySlug error:", error.message);
     return null;

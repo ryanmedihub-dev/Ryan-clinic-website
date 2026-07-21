@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import useTrackCTA from "@/lib/useTrackCTA";
 
 const WA =
   "https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20have%20a%20question%20about%20hair%20transplant%20surgery";
 
 export default function FAQSection({ faqs = [] }) {
   const [open, setOpen] = useState(null);
+  const trackCTA = useTrackCTA();
 
   return (
     <section className="py-16 md:py-24" style={{ background: "var(--bg-main)" }}>
@@ -89,6 +91,7 @@ export default function FAQSection({ faqs = [] }) {
               rel="noreferrer"
               className="inline-flex items-center gap-2 font-semibold text-sm py-3.5 px-7 rounded-xl text-white w-full justify-center transition-opacity hover:opacity-90"
               style={{ background: "var(--primary-red)" }}
+              onClick={() => trackCTA({ type: "whatsapp", ctaName: "FAQ Ask a Doctor", buttonLocation: "FAQ Section" })}
             >
               Ask a Doctor — Free
               <svg
@@ -232,6 +235,7 @@ export default function FAQSection({ faqs = [] }) {
                 rel="noreferrer"
                 className="font-semibold underline"
                 style={{ color: "var(--primary-red)" }}
+                onClick={() => trackCTA({ type: "whatsapp", ctaName: "FAQ Chat on WhatsApp", buttonLocation: "FAQ Section" })}
               >
                 Chat with our doctor on WhatsApp →
               </a>

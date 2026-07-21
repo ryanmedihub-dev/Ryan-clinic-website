@@ -19,6 +19,8 @@ import {
   ExternalLink,
   X,
   Image,
+  Scissors,
+  Activity,
 } from "lucide-react";
 
 
@@ -59,6 +61,10 @@ function LayoutWrapper({ children }) {
       setActiveTab("Components");
     } else if (pathname.startsWith("/admin/gallery")) {
       setActiveTab("Gallery");
+    } else if (pathname.startsWith("/admin/surgery")) {
+      setActiveTab("Surgery");
+    } else if (pathname.startsWith("/admin/tracker")) {
+      setActiveTab("Tracker");
     } else if (pathname.startsWith("/admin/help")) {
       setActiveTab("Help");
     } else if (pathname.startsWith("/admin/blogs/create")) {
@@ -85,6 +91,8 @@ function LayoutWrapper({ children }) {
       ],
     },
     { name: "Gallery", icon: Image, href: "/admin/gallery" },
+    { name: "Surgery", icon: Scissors, href: "/admin/surgery" },
+    { name: "Tracker", icon: Activity, href: "/admin/tracker" },
   ];
 
   const MenuItem = ({ item, isActive, onClick }) => {

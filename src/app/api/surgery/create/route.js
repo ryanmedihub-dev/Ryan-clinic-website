@@ -2,43 +2,49 @@ import { NextResponse } from "next/server";
 import { withDB } from "@/lib/withDB";
 import SurgeryPageModel from "@/models/surgeryPage";
 import { requireAdmin } from "@/lib/requireAdmin";
+import { generateSurgeryPageDetails } from "@/lib/surgerySlug";
 
 const handler = async (req) => {
-    //const authError = await requireAdmin();
+    const authError = await requireAdmin();
 
-    //if (authError) return authError;
+    if (authError) return authError;
 
     try {
         const body = await req.json();
 
         const {
-            pageName,
-            slug,
+            city,
             seo,
-            banner,
-            stats,
+            hero,
             introduction,
             procedureScience,
             safety,
             techniques,
-            recovery,
+            qualityBenchmarks,
+            procedureTimeline,
+            recoveryTimeline,
             doctors,
+            pricing,
+            visitClinic,
+            consultation,
             faq,
         } = body;
-
         // Validate Required Sections
         if (
-            !pageName ||
-            !slug ||
+            !city ||
             !seo ||
-            !banner ||
-            !stats ||
+            !hero ||
             !introduction ||
             !procedureScience ||
             !safety ||
             !techniques ||
-            !recovery ||
+            !qualityBenchmarks ||
+            !procedureTimeline ||
+            !recoveryTimeline ||
             !doctors ||
+            !pricing ||
+            !visitClinic ||
+            !consultation ||
             !faq
         ) {
             return NextResponse.json(
@@ -50,8 +56,7 @@ const handler = async (req) => {
                 }
             );
         }
-
-        const normalizedSlug = slug.toLowerCase().trim();
+        const { pageName, slug: normalizedSlug } = generateSurgeryPageDetails(city);
 
         // Check Existing Surgery Page
         const existingSurgeryPage = await SurgeryPageModel.findOne({
@@ -72,16 +77,34 @@ const handler = async (req) => {
         // Create Surgery Page
         const surgeryPageDoc = new SurgeryPageModel({
             pageName,
+            city,
             slug: normalizedSlug,
             seo,
-            banner,
-            stats,
+
+            hero,
+
             introduction,
+
             procedureScience,
+
             safety,
+
             techniques,
-            recovery,
+
+            qualityBenchmarks,
+
+            procedureTimeline,
+
+            recoveryTimeline,
+
             doctors,
+
+            pricing,
+
+            visitClinic,
+
+            consultation,
+
             faq,
         });
 
@@ -90,6 +113,13 @@ const handler = async (req) => {
         return NextResponse.json(
             {
                 message: "Surgery page created successfully.",
+                surgeryPage: {
+                    _id: surgeryPageDoc._id,
+                    pageName: surgeryPageDoc.pageName,
+                    city: surgeryPageDoc.city,
+                    slug: surgeryPageDoc.slug,
+                    status: surgeryPageDoc.status,
+                },
             },
             {
                 status: 201,

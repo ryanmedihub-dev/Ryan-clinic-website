@@ -1,8 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import AboutImg from "../../../../public/uploads/about-one.jpg";
+import useTrackCTA from "@/lib/useTrackCTA";
 
-export default function aboutSection() {
+export default function AboutSection() {
+  const trackCTA = useTrackCTA();
   return (
     <section className="py-8 md:py-12 md:mt-20">
       <div className="w-full bg-white containerFull px-4 md:px-6">
@@ -54,6 +58,7 @@ export default function aboutSection() {
               rel="noreferrer"
               className="inline-flex items-center gap-2 font-semibold text-sm py-3.5 px-7 rounded-xl text-white transition-opacity hover:opacity-90"
               style={{ background: "var(--primary-red)", boxShadow: "0 4px 14px rgba(227,10,23,0.3)" }}
+              onClick={() => trackCTA({ type: "whatsapp", ctaName: "About Section Book Appointment", buttonLocation: "About Section" })}
             >
               Book Your Appointment
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

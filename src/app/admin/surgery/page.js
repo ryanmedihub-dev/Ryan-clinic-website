@@ -27,6 +27,25 @@ export default function SurgeryListingPage() {
         }
     };
 
+    const handleDelete = async (id) => {
+        if (!confirm("Are you sure you want to delete this page?")) return;
+        try {
+            const response = await fetch(`/api/surgery/delete?id=${id}`, {
+                method: "DELETE",
+            });
+            const data = await response.json();
+            if (response.ok) {
+                alert(data.message || "Page deleted successfully.");
+                fetchSurgeryPages();
+            } else {
+                alert(data.message || "Failed to delete page.");
+            }
+        } catch (error) {
+            console.error(error);
+            alert("An error occurred while deleting the page.");
+        }
+    };
+
     useEffect(() => {
         fetchSurgeryPages();
     }, []);
@@ -56,9 +75,9 @@ export default function SurgeryListingPage() {
                     <table className="w-full border-collapse border">
                         <thead>
                             <tr>
-                                <th className="border p-3">Page Name</th>
-                                <th className="border p-3">Slug</th>
-                                <th className="border p-3">Actions</th>
+                                <th className="border p-3 text-left">Page Name</th>
+                                <th className="border p-3 text-left">Slug</th>
+                                <th className="border p-3 text-left">Actions</th>
                             </tr>
                         </thead>
 
@@ -74,12 +93,20 @@ export default function SurgeryListingPage() {
                                     </td>
 
                                     <td className="border p-3">
-                                        <Link
-                                            href={`/admin/surgery/edit?slug=${page.slug}`}
-                                            className="bg-yellow-500 text-white px-3 py-1 rounded text-sm font-semibold hover:bg-yellow-600"
-                                        >
-                                            Edit
-                                        </Link>
+                                        <div className="flex gap-2">
+                                            <Link
+                                                href={`/admin/surgery/edit?slug=${page.slug}`}
+                                                className="bg-yellow-500 text-white px-3 py-1 rounded text-sm font-semibold hover:bg-yellow-600"
+                                            >
+                                                Edit
+                                            </Link>
+                                            <button
+                                                onClick={() => handleDelete(page._id)}
+                                                className="bg-red-600 text-white px-3 py-1 rounded text-sm font-semibold hover:bg-red-700 cursor-pointer"
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             ))}

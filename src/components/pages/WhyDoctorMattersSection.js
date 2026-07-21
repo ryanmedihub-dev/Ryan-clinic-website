@@ -1,6 +1,9 @@
+"use client";
+
 // WhyDoctorMattersSection.js
 // Usage: <WhyDoctorMattersSection risks={[{number,title,body,type:'check'|'warn'}]} comparison={[{aspect,doctorLed,techLed}]} />
 // Icons are derived from the `type` field; all text fields can come from DB.
+import useTrackCTA from "@/lib/useTrackCTA";
 
 const CHECK_ICON = (
   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
@@ -31,6 +34,7 @@ const DEFAULT_COMPARISON = [
 ];
 
 export default function WhyDoctorMattersSection({ risks: risksOverride, comparison: comparisonOverride }) {
+  const trackCTA = useTrackCTA();
   const risks = risksOverride?.length
     ? risksOverride.map((r) => ({ ...r, icon: r.type === "warn" ? WARN_ICON : CHECK_ICON }))
     : DEFAULT_RISKS;
@@ -158,6 +162,7 @@ export default function WhyDoctorMattersSection({ risks: risksOverride, comparis
                 target="_blank"
                 rel="noreferrer"
                 className="font-semibold text-[#D32F2F] underline underline-offset-2"
+                onClick={() => trackCTA({ type: "whatsapp", ctaName: "Why Doctor Matters Inline Verify", buttonLocation: "Why Doctor Matters Section" })}
               >
                 Ask us to verify →
               </a>
@@ -168,16 +173,18 @@ export default function WhyDoctorMattersSection({ risks: risksOverride, comparis
         {/* ── CTA ── */}
         <div className="flex flex-wrap gap-3 justify-center">
           <a
-            href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20book%20a%20free%20consultation%20at%20Ryan%20Clinic"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2.5 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-4 px-7 text-sm tracking-wide transition-colors rounded-xl"
+              href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20verify%20your%20surgeon%20credentials%20before%20booking"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-3.5 px-7 text-sm tracking-wide transition-colors rounded-xl"
+              onClick={() => trackCTA({ type: "whatsapp", ctaName: "Why Doctor Matters Verify", buttonLocation: "Why Doctor Matters Section" })}
           >
             Book at a Doctor-Led Clinic →
           </a>
           <a
             href="/blog/doctor-led-vs-technician-hair-transplant/"
             className="inline-flex items-center gap-2 border border-gray-200 hover:border-[#D32F2F] text-gray-600 hover:text-[#D32F2F] font-semibold py-4 px-7 text-sm tracking-wide transition-all rounded-xl"
+            onClick={() => trackCTA({ type: "page_view", ctaName: "Doctor vs Technician Guide", buttonLocation: "Why Doctor Matters Section" })}
           >
             Doctor vs Technician Guide →
           </a>

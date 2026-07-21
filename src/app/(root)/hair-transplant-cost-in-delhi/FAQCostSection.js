@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import useTrackCTA from "@/lib/useTrackCTA";
 
 const WA =
   "https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20have%20a%20question%20about%20hair%20transplant%20cost%20in%20Delhi";
 
 export default function FAQCostSection({ faqs = [] }) {
   const [open, setOpen] = useState(0);
+  const trackCTA = useTrackCTA();
 
   const half = Math.ceil(faqs.length / 2);
   const left = faqs.slice(0, half);
@@ -65,6 +67,7 @@ export default function FAQCostSection({ faqs = [] }) {
           <a
             href={WA}
             className="shrink-0 inline-flex items-center gap-2 border border-gray-300 hover:border-[#D32F2F] text-gray-700 hover:text-[#D32F2F] font-semibold py-3 px-5 text-sm transition-all rounded-xl"
+            onClick={() => trackCTA({ type: "whatsapp", ctaName: "FAQ Cost Ask WhatsApp", buttonLocation: "FAQ Cost Section" })}
           >
             Ask us on WhatsApp →
           </a>

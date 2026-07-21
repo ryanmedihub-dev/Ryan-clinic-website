@@ -11,6 +11,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import useTrackCTA from "@/lib/useTrackCTA";
 
 const emptyForm = {
   formtype: "Website Form",
@@ -25,8 +26,8 @@ const emptyForm = {
 
 export default function ContactForm() {
   const [formData, setFormData] = useState(emptyForm);
-
   const [loading, setLoading] = useState(false);
+  const trackCTA = useTrackCTA();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,10 +53,16 @@ export default function ContactForm() {
       const data = await res.json();
 
       if (data.success) {
+        trackCTA({
+          type: "form",
+          ctaName: "Contact Form Submission",
+          buttonLocation: "Contact Form",
+        });
         alert("✅ Form submitted successfully!");
 
-        window.location.href =
-          "https://wa.me/919911111247?text=Hi, I have submitted the Google form.";
+        setTimeout(() => {
+          window.location.href = "https://wa.me/919911111247?text=Hi, I have submitted the Google form.";
+        }, 100);
         setFormData(emptyForm);
       } else {
         alert("⚠️ " + (data.message || data.error || "Something went wrong"));

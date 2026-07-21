@@ -2,6 +2,7 @@
 
 import { MapPin, PhoneCall, Mail } from "lucide-react";
 import { useState } from "react";
+import useTrackCTA from "@/lib/useTrackCTA";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,6 +22,7 @@ const emptyForm = { name: "", email: "", phone: "", serviceType: "", message: ""
 export default function ContactUs() {
   const [formData, setFormData] = useState(emptyForm);
   const [loading, setLoading] = useState(false);
+  const trackCTA = useTrackCTA();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,6 +45,11 @@ export default function ContactUs() {
 
       const data = await res.json();
       if (data.success) {
+        trackCTA({
+          type: "form",
+          ctaName: "Contact Page Form Submission",
+          buttonLocation: "Contact Page Form",
+        });
         alert("Form submitted successfully!");
         setFormData(emptyForm);
       } else {
@@ -131,7 +138,14 @@ export default function ContactUs() {
                   </div>
                   <div>
                     <h3 className="text-sm font-bold mb-0.5" style={{ color: "var(--text-primary)" }}>Phone</h3>
-                    <a href="tel:+919911111247" className="text-sm font-semibold" style={{ color: "var(--accent-gold)" }}>+91-9911111247</a>
+                    <a
+                      href="tel:+919911111247"
+                      className="text-sm font-semibold"
+                      style={{ color: "var(--accent-gold)" }}
+                      onClick={() => trackCTA({ type: "call", ctaName: "Contact Page Phone Link", buttonLocation: "Contact Info Section" })}
+                    >
+                      +91-9911111247
+                    </a>
                   </div>
                 </div>
 
