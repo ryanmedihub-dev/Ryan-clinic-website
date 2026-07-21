@@ -505,54 +505,110 @@ export default function SurgeryPageClient({ data }) {
           </RevealSection>
 
           {/* Criss-cross rows */}
-          {[
-            {
-              img: "/uploads/turkey-2.jpeg",
-              label: "PERMANENT",
-              icon: <Dna className="w-8 h-8" />,
-              title: "Grafted follicles are permanent",
-              desc: "Transplanted hair resists hormone shedding and stays permanent. However, native hair outside the transplant zone can continue to thin over time, which is why structured medical therapy is recommended alongside surgery.",
-              points: ["DHT-resistant donor follicles", "Permanent natural hair growth", "No lifelong medication needed"],
-              reverse: false,
-            },
-            {
-              img: "/uploads/gallery.jpg",
-              label: "STRATEGIC",
-              icon: <Hourglass className="w-8 h-8" />,
-              title: "Finite donor hair — artfully conserved",
-              desc: "A transplant relocates existing hair; it doesn't generate new roots. Skilled hair surgeons follow a strategic hairline design to ensure optimal graft survival while conserving your limited donor supply for future needs.",
-              points: ["Strategic hairline artistry", "Donor zone conservation", "Long-term planning approach"],
-              reverse: true,
-            },
-          ].map((row, i) => (
-            <div key={i} className={`flex flex-col ${row.reverse ? "lg:flex-row-reverse" : "lg:flex-row"} gap-0 items-stretch mb-12 last:mb-0 rounded-3xl overflow-hidden shadow-sm border border-gray-100`}>
-              {/* Image side with label */}
-              <div className="lg:w-[45%] relative min-h-[320px]">
-                <Image
-                  src={row.img}
-                  alt={row.title}
-                  fill
-                  className="object-cover"
-                  unoptimized
-                  sizes="(max-width: 1024px) 100vw, 45vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/60" />
-                {/* Single bold word overlay */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span
-                    className="text-white font-black tracking-[0.3em] select-none pointer-events-none"
-                    style={{ fontSize: "clamp(2.5rem, 6vw, 4.5rem)", opacity: 0.18 }}
-                  >
-                    {row.label}
-                  </span>
+          {SCIENCE_ROWS.length > 0 &&
+            SCIENCE_ROWS.map((row, i) => (
+              <div key={i} className={`flex flex-col ${i % 2 === 1 ? "lg:flex-row-reverse" : "lg:flex-row"} gap-0 items-stretch mb-12 last:mb-0 rounded-3xl overflow-hidden shadow-sm border border-gray-100`}>
+
+                {/* Image side with label */}
+
+                <div className="lg:w-[45%] relative min-h-[320px]">
+
+                  {row.cardImage?.image ? (
+                    <Image
+                      src={row.cardImage.image}
+                      alt={row.cardImage.imageAlt || row.title || ""}
+                      fill
+                      className="object-cover"
+                      unoptimized
+                      sizes="(max-width: 1024px) 100vw, 45vw"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
+                      No Image
+                    </div>
+                  )}
+
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/60" />
+
+                  {/* Single bold word overlay */}
+
+                  {row.badge && (
+
+                    <div className="absolute inset-0 flex items-center justify-center">
+
+                      <span
+
+                        className="text-white font-black tracking-[0.3em] select-none pointer-events-none"
+
+                        style={{ fontSize: "clamp(2.5rem, 6vw, 4.5rem)", opacity: 0.18 }}
+
+                      >
+
+                        {row.badge.toUpperCase()}
+
+                      </span>
+
+                    </div>
+
+                  )}
+
+                  {row.badge && (
+
+                    <div className="absolute bottom-6 left-6">
+
+                      <span className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-4 py-2 text-white text-xs font-bold tracking-widest uppercase">
+
+                        {row.badge}
+
+                      </span>
+
+                    </div>
+
+                  )}
+
                 </div>
-                <div className="absolute bottom-6 left-6">
-                  <span className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-4 py-2 text-white text-xs font-bold tracking-widest uppercase">
-                    {row.label}
-                  </span>
+
+
+
+                {/* Content side */}
+
+                <div className="lg:w-[55%] bg-white p-10 flex flex-col justify-center">
+
+                  <div className="w-14 h-14 rounded-2xl bg-red-50 text-[#e30a17] flex items-center justify-center mb-6">
+
+                    {getScienceIcon(row.icon, i)}
+
+                  </div>
+
+                  <h3 className="text-2xl md:text-3xl font-bold text-[#302658] mb-4">{row.title}</h3>
+
+                  <p className="text-gray-500 text-sm leading-relaxed mb-6">{row.description}</p>
+
+                  {row.bulletPoints && row.bulletPoints.length > 0 && (
+
+                    <ul className="space-y-2.5">
+
+                      {row.bulletPoints.map((pt, idx) => (
+
+                        <li key={idx} className="flex items-center gap-2.5 text-sm font-semibold text-[#302658]">
+
+                          <CheckCircle2 className="w-4 h-4 text-[#e30a17]" />
+
+                          {pt}
+
+                        </li>
+
+                      ))}
+
+                    </ul>
+
+                  )}
+
                 </div>
+
               </div>
 
+<<<<<<< HEAD
               {/* Content side */}
               <div className="lg:w-[55%] bg-white p-10 flex flex-col justify-center">
                 <div className="w-14 h-14 rounded-2xl bg-red-50 text-[#e30a17] flex items-center justify-center mb-6">
@@ -574,6 +630,12 @@ export default function SurgeryPageClient({ data }) {
       </section>
 
       {/* ── 4. Safety Section ─────────────────────────────────────────── */}
+=======
+            ))
+          }
+        </div>
+      </section>      {/* ── 4. Safety Section ─────────────────────────────────────────── */}
+>>>>>>> 0f61d6d9c3c20f81f3afadb3caba16e1e1982df6
       <section className="bg-white py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
@@ -639,6 +701,7 @@ export default function SurgeryPageClient({ data }) {
           </div>
 
           {/* Full-width Patient Transparency Note */}
+<<<<<<< HEAD
           <div className="mt-10">
             <Reveal>
               <div className="flex items-start gap-4 border-l-4 border-[#e30a17] bg-[#FFF8F8] rounded-r-2xl p-5">
@@ -651,6 +714,23 @@ export default function SurgeryPageClient({ data }) {
           </div>
         </div>
       </section>
+=======
+          {rightBoxNotice && (
+            <div className="mt-10">
+              <Reveal>
+                <div className="flex items-start gap-4 border-l-4 border-[#e30a17] bg-[#FFF8F8] rounded-r-2xl p-5">
+                  <Lightbulb className="w-5 h-5 shrink-0 mt-0.5 text-[#e30a17]" />
+                  <div className="text-sm md:text-base text-gray-700 leading-relaxed">
+                    <strong className="font-bold text-[#302658]">Patient Transparency Note: </strong>
+                    <span dangerouslySetInnerHTML={{ __html: rightBoxNotice }} />
+                  </div>
+                </div>
+              </Reveal>
+            </div>
+          )}
+        </div >
+      </section >
+>>>>>>> 0f61d6d9c3c20f81f3afadb3caba16e1e1982df6
 
       {/* ── 5. Surgical Methodologies ─────────────────────────────────── */}
       < section className="bg-white py-16 md:py-24" >
