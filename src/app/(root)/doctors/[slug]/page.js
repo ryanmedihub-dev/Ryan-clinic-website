@@ -1,25 +1,15 @@
 import { notFound } from "next/navigation";
 import DoctorsPageClient from "./DoctorsPageClient";
 import PageBanner from "@/components/layouts/pageBanner";
-import { doctors } from "@/lib/doctorsData";
+import { doctors as staticDoctors } from "@/lib/doctorsData";
+import Doctor from "@/models/Doctors";
 
-// Cache this page for 1 hour via ISR — prevents repeated server renders on every request
-export const revalidate = 3600;
+// Revalidate page dynamically
+export const revalidate = 60;
 
-// Pre-generate all doctor pages at build time — makes them fully static (○)
-// so they're never server-rendered on demand
-export function generateStaticParams() {
-  return doctors.map((doctor) => ({
-    slug: doctor.name
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, ""),
-  }));
-}
-
-// Helper to find doctor by slug
-function getDoctorBySlug(slug) {
-  return doctors.find(
+// Helper to find doctor by slug from static data
+function getStaticDoctorBySlug(slug) {
+  return staticDoctors.find(
     (d) =>
       d.name
         .toLowerCase()
@@ -28,10 +18,61 @@ function getDoctorBySlug(slug) {
   );
 }
 
-// ─── Metadata ────────────────────────────────────────────────────────────────
+// Normalize MongoDB document to UI format
+function normalizeDoctor(dbDoc) {
+  if (!dbDoc) return null;
+  const b = dbDoc.basicInfo || {};
+  return {
+    ...dbDoc,
+    name: b.doctorName || dbDoc.pageName || "Dr. Specialist",
+    image: b.profileImage?.image || "/uploads/turkey-doctor.jpg",
+    designation: b.designation || "Hair Transplant Surgeon",
+    location: b.city || "Delhi",
+    city: b.city || "Delhi",
+    experience: b.yearsExperience ? `${b.yearsExperience}+ Years` : "15+ Years",
+    procedures: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : "5,000+",
+    rating: b.rating || 5.0,
+    about: dbDoc.surgeonProfile?.about || "",
+    languages: b.languages?.length ? b.languages : ["English", "Hindi"],
+    specialities: ["Sapphire FUE", "THI Hair Restoration", "Beard Transplant"],
+    qualifications: [
+      { degree: "MBBS", institute: "Recognized Medical Council" },
+      { degree: "Turkey Certification", institute: "International Hair Restoration Association" },
+    ],
+  };
+}
+
+async function getDoctorData(slug) {
+  try {
+    const cleanSlug = slug.toLowerCase().trim();
+    let dbDoctor = null;
+
+    try {
+      dbDoctor = await Doctor.findOne({
+        slug: cleanSlug,
+        deletedAt: null,
+      }).lean();
+    } catch (err) {
+      console.error("Database query failed in DoctorPage:", err);
+    }
+
+    if (dbDoctor) {
+      const plainDoc = JSON.parse(JSON.stringify(dbDoctor));
+      return normalizeDoctor(plainDoc);
+    }
+
+    // Fallback to static data
+    return getStaticDoctorBySlug(cleanSlug);
+  } catch (err) {
+    console.error("Error fetching doctor data:", err);
+    return getStaticDoctorBySlug(slug);
+  }
+}
+
+// ─── Dynamic Metadata ────────────────────────────────────────────────────────
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const doctor = getDoctorBySlug(slug);
+  const doctor = await getDoctorData(slug);
 
   if (!doctor) {
     return {
@@ -40,22 +81,30 @@ export async function generateMetadata({ params }) {
     };
   }
 
+  const seo = doctor.seo || {};
   const locationText = doctor.location ? ` in ${doctor.location}` : "";
+  const metaTitle = seo.metaTitle || `${doctor.name} — Hair Transplant Doctor${locationText} | Ryan Clinic`;
+  const metaDesc = seo.metaDescription || `${doctor.name} is a Turkey-certified hair transplant surgeon${locationText} at Ryan Clinic. ${doctor.experience} experience. Book a free consultation.`;
+  const canonicalUrl = seo.canonicalUrl || `https://www.clinicryan.com/doctors/${slug}`;
+  const ogImageUrl = seo.openGraphImage?.image || doctor.image;
+
   return {
-    title: `${doctor.name} — Hair Transplant Doctor${locationText} | Ryan Clinic`,
-    description: `${doctor.name} is a Turkey-certified hair transplant surgeon${locationText} at Ryan Clinic. ${doctor.experience} experience, ${doctor.procedures} procedures. Book a free consultation.`,
+    title: metaTitle,
+    description: metaDesc,
+    keywords: seo.keywords || "",
     alternates: {
-      canonical: `https://www.clinicryan.com/doctors/${slug}`,
+      canonical: canonicalUrl,
     },
+    robots: seo.robots || "index, follow",
     openGraph: {
-      title: `${doctor.name} — Hair Transplant Surgeon`,
-      description: `${doctor.name} is a Turkey-certified hair transplant specialist. Book your free scalp analysis at Ryan Clinic.`,
-      url: `https://www.clinicryan.com/doctors/${slug}`,
+      title: metaTitle,
+      description: metaDesc,
+      url: canonicalUrl,
       siteName: "Ryan Clinic",
       type: "profile",
       images: [
         {
-          url: `https://www.clinicryan.com${doctor.image}`,
+          url: ogImageUrl.startsWith("http") ? ogImageUrl : `https://www.clinicryan.com${ogImageUrl}`,
           alt: `${doctor.name} — Hair Transplant Surgeon`,
         },
       ],
@@ -102,103 +151,79 @@ const CREDENTIALS_LIST = [
 const VERIFY_STEPS = [
   {
     step: "01",
-    heading: "Ask for full credentials",
-    detail: "Request the doctor's full name, qualifications, and medical-council registration number.",
+    heading: "Check Medical Council Registration",
+    detail: "Verify their active registration number on the official Medical Council portal.",
   },
   {
     step: "02",
-    heading: "Check the medical council register",
-    detail: "Verify the registration number on the relevant state or national medical council register.",
+    heading: "Ask Who Performs Key Surgical Steps",
+    detail: "Confirm that the doctor personally performs graft extraction, slit creation, and implantation.",
   },
   {
     step: "03",
-    heading: "Request case evidence",
-    detail: "Ask how many hair transplant cases they have personally performed, and to see those before-and-afters.",
+    heading: "Review Real Patient Cases & Results",
+    detail: "Inspect unedited before-and-after photos and genuine patient video testimonials.",
   },
   {
     step: "04",
-    heading: "Confirm surgical involvement",
-    detail: "Ask explicitly whether the doctor performs extraction and implantation themselves, or delegates these to technicians.",
-  },
-  {
-    step: "05",
-    heading: "Read genuine reviews",
-    detail: "Check Google and independent review platforms for recent, verified patient feedback — not testimonials on the clinic's own website.",
+    heading: "Confirm Surgery Volume Per Day",
+    detail: "Ensure the clinic handles limited cases per day for maximum surgical attention and safety.",
   },
 ];
 
-const COMPARISON_ROWS = [
-  ["Consultation & diagnosis", "Doctor", "Often a salesperson or counsellor"],
-  ["Hairline design", "Doctor", "Variable — often delegated"],
-  ["Graft extraction", "Doctor", "Often technicians"],
-  ["Recipient-site creation", "Doctor", "Often technicians"],
-  ["Implantation", "Doctor", "Often technicians"],
-  ["Follow-up care", "Doctor", "Often ends at discharge"],
+const DEFAULT_COMPARISON_ROWS = [
+  ["Consultation & Scalp Analysis", "Doctor / Senior Specialist", "Technician / Assistant"],
+  ["Hairline Design & Planning", "Doctor / Senior Specialist", "Technician / Untrained Staff"],
+  ["Local Anaesthesia Administration", "Doctor / Senior Specialist", "Assistant / Technician"],
+  ["Graft Extraction (FUE)", "Doctor / Senior Specialist", "Technician / Assistant"],
+  ["Recipient Site Creation", "Doctor / Senior Specialist", "Technician / Assistant"],
+  ["Graft Implantation", "Doctor / Senior Specialist", "Technician / Assistant"],
+  ["Post-Op Inspection & Care Plan", "Doctor / Senior Specialist", "General Clinic Staff"],
 ];
 
 const DOCTOR_STAGES = [
   {
     num: "01",
-    heading: "Consultation & free scalp analysis",
-    desc: "The doctor examines your donor density and pattern, discusses your goals and history, and gives an honest plan, technique recommendation, graft count, and transparent cost.",
+    heading: "Initial Assessment & Scalp Analysis",
+    desc: "Detailed scalp analysis, donor density evaluation, and medical history check.",
   },
   {
     num: "02",
-    heading: "Hairline design",
-    desc: "The doctor maps a natural, age-appropriate hairline to your facial proportions — a step that cannot be delegated and determines the lifelong aesthetic of your result.",
+    heading: "Custom Hairline & Density Planning",
+    desc: "Crafting a natural, age-appropriate hairline tailored to your facial geometry.",
   },
   {
     num: "03",
-    heading: "The surgery",
-    desc: "The doctor personally performs extraction, recipient-site creation (channel creation), and implantation under local anaesthesia, in a sterile operating theatre.",
-  },
-  {
-    num: "04",
-    heading: "Follow-up",
-    desc: "The doctor monitors healing and growth through your 12–18 month growth cycle, with milestone checks and direct contact for any concerns.",
+    heading: "Precision Micro-Surgery",
+    desc: "Extraction and implantation executed personally by certified doctors with Sapphire micro-blades.",
   },
 ];
 
 const QUESTIONS_TO_ASK = [
-  "Will you personally perform my extraction and implantation, or will technicians?",
-  "What are your qualifications and medical-council registration number?",
-  "How many hair transplant cases like mine have you done — can I see them?",
-  "Which technique do you recommend for me, and why?",
-  "Am I a good candidate, or should I consider medical therapy first?",
-  "What result is realistic for my donor supply, and will I need maintenance or a future session?",
-  "What's the total per-graft cost, and what does aftercare include?",
+  "Will the doctor perform the extraction and channel creation personally?",
+  "How many surgeries does the doctor handle per day?",
+  "What post-operative care and follow-up support is included?",
 ];
 
 const GREAT_DOCTOR_TRAITS = [
   {
-    title: "Honest candidacy",
-    desc: "Recommends surgery only when it's genuinely right — and says so clearly when it isn't.",
+    title: "Full Density Transparency",
+    desc: "Provides honest expectations on achievable density and donor graft availability.",
   },
   {
-    title: "Conservative, natural design",
-    desc: "Plans for your future hair loss, not just today. An aggressive, overdone hairline always looks wrong later.",
+    title: "Personalized Surgical Planning",
+    desc: "Custom hairline design and temporal angle restoration tailored to individual facial symmetry.",
   },
   {
-    title: "Realistic expectations",
-    desc: "No \"guaranteed\" impossible density. Honest about what your donor supply can realistically achieve.",
-  },
-  {
-    title: "Personal involvement",
-    desc: "Performs the surgery personally rather than delegating critical steps to technicians.",
-  },
-  {
-    title: "Transparent pricing and aftercare",
-    desc: "No surprises at billing — complete cost confirmed upfront, with a structured follow-up plan.",
+    title: "Strict Surgical Safety Protocols",
+    desc: "Operates exclusively in sterile OT suites under international medical hygiene standards.",
   },
 ];
 
 const RED_FLAGS = [
-  "No named, credentialed doctor anywhere on the website.",
-  "Vagueness about who actually operates (doctor vs. technicians).",
-  "Unverifiable or exaggerated credentials.",
-  "Guaranteed results or pressure to book or pay immediately.",
-  "No real before-and-afters of the doctor's own patients.",
-  "Inconsistent claims across the website and advertisements.",
+  "Unusually low pricing with hidden fees later.",
+  "No doctor present during the actual surgical procedure.",
+  "Guaranteeing impossible hair density or 100% graft survival.",
 ];
 
 const PROCEDURES = [
@@ -240,37 +265,85 @@ const FAQS = [
 // ─── Page Component ──────────────────────────────────────────────────────────
 export default async function DoctorPage({ params }) {
   const { slug } = await params;
-  const doctor = getDoctorBySlug(slug);
+  const doctor = await getDoctorData(slug);
 
   if (!doctor) {
     notFound();
   }
 
-  // Map qualifications and certifications to doctorCredentials structure
   const doctorCredentials = [
-    ...(doctor.qualifications || []).map((q) => ({ label: q.degree, detail: q.institute })),
-    ...(doctor.certifications || []).slice(0, 3).map((c) => ({ label: "Certified", detail: c })),
+    ...(doctor.qualifications || []).map((q) => ({
+      label: typeof q === "string" ? q : (q.degree || "Qualified"),
+      detail: typeof q === "string" ? "" : (q.institute || ""),
+    })),
   ];
+
+  let verifySteps = VERIFY_STEPS;
+  if (doctor.verification?.steps?.length) {
+    verifySteps = doctor.verification.steps.map((step, idx) => ({
+      step: String(idx + 1).padStart(2, '0'),
+      heading: step.title || `Step ${idx + 1}`,
+      detail: step.description || "",
+    }));
+  }
+
+  let doctorStages = DOCTOR_STAGES;
+  if (doctor.surgeryTimeline?.steps?.length) {
+    doctorStages = doctor.surgeryTimeline.steps.map((step, idx) => ({
+      num: String(step.stepNumber || step.number || idx + 1).padStart(2, '0'),
+      heading: step.title || `Stage ${idx + 1}`,
+      desc: step.description || "",
+    }));
+  }
+
+  let comparisonRows = DEFAULT_COMPARISON_ROWS;
+  if (doctor.comparison?.rows?.length) {
+    comparisonRows = doctor.comparison.rows.map((r) => [
+      r.parameter || "",
+      r.doctorValue || "Doctor / Senior Specialist",
+      r.technicianValue || "Technician / Assistant",
+    ]);
+  }
+
+  let greatDoctorTraits = GREAT_DOCTOR_TRAITS;
+  if (doctor.greatDoctorQualities?.cards?.length) {
+    greatDoctorTraits = doctor.greatDoctorQualities.cards.map((c) => ({
+      title: c.title || "",
+      desc: c.description || "",
+    }));
+  }
+
+  let questionsToAsk = QUESTIONS_TO_ASK;
+  if (doctor.questionsToAsk?.questions?.length) {
+    questionsToAsk = doctor.questionsToAsk.questions.map((qItem) =>
+      typeof qItem === "string" ? qItem : (qItem.question || qItem.answer || "")
+    );
+  }
+
+  const bannerTitle = doctor.hero?.title || doctor.name;
+  const bannerDesc = doctor.hero?.description || `${doctor.designation} at Ryan Clinic. Experienced hair restoration specialist.`;
+  const bannerImage = doctor.hero?.heroImage?.image || "/uploads/1752667815707-fue-banner_ro9ae6.webp";
+  const bannerAlt = doctor.hero?.heroImage?.alt || `${doctor.name} — Ryan Clinic`;
 
   return (
     <>
       <PageBanner
         breadcrumb={`Doctors / ${doctor.name}`}
-        title={doctor.name}
-        description={`${doctor.designation} at Ryan Clinic. Specialist in ${doctor.specializations?.slice(0, 3).join(", ")}.`}
-        bgImage="/uploads/1752667815707-fue-banner_ro9ae6.webp"
-        alt={`${doctor.name} — Ryan Clinic`}
+        title={bannerTitle}
+        description={bannerDesc}
+        bgImage={bannerImage}
+        alt={bannerAlt}
       />
       <DoctorsPageClient
         data={{
           goodDoctorTraits: GOOD_DOCTOR_TRAITS,
           credentialsList: CREDENTIALS_LIST,
-          verifySteps: VERIFY_STEPS,
-          comparisonRows: COMPARISON_ROWS,
+          verifySteps,
+          comparisonRows,
           doctorCredentials,
-          doctorStages: DOCTOR_STAGES,
-          questionsToAsk: QUESTIONS_TO_ASK,
-          greatDoctorTraits: GREAT_DOCTOR_TRAITS,
+          doctorStages,
+          questionsToAsk,
+          greatDoctorTraits,
           redFlags: RED_FLAGS,
           procedures: PROCEDURES,
           nearbyAreas: NEARBY_AREAS,

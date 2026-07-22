@@ -63,6 +63,8 @@ function LayoutWrapper({ children }) {
       setActiveTab("Gallery");
     } else if (pathname.startsWith("/admin/surgery")) {
       setActiveTab("Surgery");
+    } else if (pathname.startsWith("/admin/doctors")) {
+      setActiveTab("Doctors");
     } else if (pathname.startsWith("/admin/tracker")) {
       setActiveTab("Tracker");
     } else if (pathname.startsWith("/admin/help")) {
@@ -79,6 +81,7 @@ function LayoutWrapper({ children }) {
   const menuItems = [
     { name: "Dashboard", icon: LayoutDashboard, href: "/admin/" },
     { name: "Pages", icon: NotebookText, href: "/admin/pages" },
+    { name: "Doctors", icon: Users, href: "/admin/doctors" },
     { name: "Services", icon: ShieldPlus, href: "/admin/services" },
     { name: "Customer", icon: Users, href: "/admin/customer" },
     { name: "Components", icon: Component, href: "/admin/component" },

@@ -4,9 +4,10 @@ import SurgeryPageModel from "@/models/surgeryPage";
 import { requireAdmin } from "@/lib/requireAdmin";
 
 const handler = async (req) => {
+    const authError = await requireAdmin();
+    if (authError) return authError;
+
     try {
-        // const authError = await requireAdmin();
-        // if (authError) return authError;
 
         const { searchParams } = new URL(req.url);
 

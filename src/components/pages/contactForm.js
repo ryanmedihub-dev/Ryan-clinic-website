@@ -41,6 +41,12 @@ export default function ContactForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const phoneClean = (formData.phone || "").replace(/[\s-]/g, "");
+    if (!/^\+?[0-9]{10,15}$/.test(phoneClean)) {
+      alert("⚠️ Please enter a valid 10-digit phone number.");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -107,6 +113,9 @@ export default function ContactForm() {
             value={formData.phone}
             onChange={handleChange}
             required
+            minLength={10}
+            maxLength={15}
+            pattern="[0-9+\s-]{10,15}"
           />
 
           <Select

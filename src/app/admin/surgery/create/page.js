@@ -84,7 +84,8 @@ function useToast() {
 }
 
 const initialState = {
-    city: "",
+    pageName: "",
+    slug: "",
     status: "draft",
     seo: {
         metaTitle: "",
@@ -320,11 +321,8 @@ export default function CreateSurgeryPage() {
     // ─── SUBMIT HANDLER ────────────────────────────────────────────────────────
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!formData.city.trim()) {
-            toast.error(
-                "Validation Error",
-                "City is required."
-            );
+        if (!formData.pageName.trim()) {
+            toast.error("Validation Error", "Page name is required.");
             return;
         }
         setSubmitting(true);
@@ -351,28 +349,36 @@ export default function CreateSurgeryPage() {
 
 
     return (
-        <section className="pb-24">
+        <section className="pb-24" suppressHydrationWarning>
             <ToastContainer toasts={toast.toasts} removeToast={toast.remove} />
             <AdminHeader title="/ Create Surgery Page" />
 
-            <form onSubmit={handleSubmit} className="space-y-6 px-6 mx-auto">
+            <form onSubmit={handleSubmit} className="space-y-6 px-6 mx-auto" suppressHydrationWarning>
 
                 {/* ─── GENERAL INFO ────────────────────────────────── */}
                 <h3 className="text-2xl font-bold underline mb-5">General Info</h3>
                 <div className="flex gap-6 flex-col md:flex-row">
                     <div className="w-full">
                         <label className="block text-sm font-semibold text-gray-700">
-                            City *
+                            Page Name *
                         </label>
-
                         <input
                             type="text"
-                            value={formData.city}
-                            onChange={(e) =>
-                                handleTopLevelChange("city", e.target.value)
-                            }
+                            value={formData.pageName}
+                            onChange={(e) => {
+                                const name = e.target.value;
+                                handleTopLevelChange("pageName", name);
+                                // Auto-generate slug only if admin hasn't manually set one
+                                if (!formData.slug || formData.slug === formData.pageName
+                                    .toLowerCase().trim().replace(/[^\w\s-]/g, "").replace(/\s+/g, "-")) {
+                                    handleTopLevelChange(
+                                        "slug",
+                                        name.toLowerCase().trim().replace(/[^\w\s-]/g, "").replace(/\s+/g, "-")
+                                    );
+                                }
+                            }}
                             className="w-full mt-2 p-2 border rounded-md"
-                            placeholder="e.g. Delhi"
+                            placeholder="e.g. Hair Transplant Surgery in Delhi"
                             required
                         />
                     </div>
@@ -387,6 +393,24 @@ export default function CreateSurgeryPage() {
                             <option value="published">Published</option>
                         </select>
                     </div>
+                </div>
+                <div className="w-full">
+                    <label className="block text-sm font-semibold text-gray-700">
+                        Slug (URL)
+                    </label>
+                    <input
+                        type="text"
+                        value={formData.slug}
+                        onChange={(e) => handleTopLevelChange("slug", e.target.value
+                            .toLowerCase().replace(/[^\w\s-]/g, "").replace(/\s+/g, "-"))}
+                        className="w-full mt-2 p-2 border rounded-md font-mono"
+                        placeholder="auto-generated from page name"
+                    />
+                    {formData.slug && (
+                        <p className="text-xs text-gray-400 mt-1">
+                            URL preview: <span className="text-blue-600 font-mono">/surgery/{formData.slug}</span>
+                        </p>
+                    )}
                 </div>
 
                 {/* ─── SEO SECTION ─────────────────────────────────── */}
@@ -463,26 +487,28 @@ export default function CreateSurgeryPage() {
                 </div>
 
                 {/* ─── HERO SECTION ────────────────────────────────── */}
-                <h3 className="text-2xl font-bold underline mt-10 mb-5">Hero Section</h3>
+                {/* 2. BANNER SECTION */}
+                <h3 className="text-2xl font-bold underline mt-10 mb-5">Banner Section</h3>
                 <div className="space-y-4">
-                    <div className="flex gap-4 flex-col md:flex-row">
-                        <div className="w-full">
-                            <label className="block text-sm font-semibold text-gray-700">Breadcrumb</label>
-                            <input type="text" value={formData.hero.breadcrumb} onChange={(e) => handleNestedChange("hero", "breadcrumb", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Home > Surgeries > Hair Transplant" />
-                        </div>
-                        <div className="w-full">
-                            <label className="block text-sm font-semibold text-gray-700">Hero Title</label>
-                            <input type="text" value={formData.hero.title} onChange={(e) => handleNestedChange("hero", "title", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Advanced Hair Transplant" />
-                        </div>
+                    <div className="w-full">
+                        <label className="block text-sm font-semibold text-gray-700">Banner Title</label>
+                        <input type="text" value={formData.hero.title} onChange={(e) => handleNestedChange("hero", "title", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Enter Banner Title" />
                     </div>
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700">Hero Description</label>
-                        <textarea rows={3} value={formData.hero.description} onChange={(e) => handleNestedChange("hero", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Enter Hero Description" />
+                        <label className="block text-sm font-semibold text-gray-700">Banner Description</label>
+                        <textarea rows={4} value={formData.hero.description} onChange={(e) => handleNestedChange("hero", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Enter Banner Description" />
                     </div>
                     <div className="mt-4">
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">Hero Banner Image</label>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Banner Image</label>
                         <ImageUploader initialImage={formData.hero.heroImage.image} onUpload={(url) => handleNestedChange("hero", "heroImage", { ...formData.hero.heroImage, image: url })} />
-                        <input type="text" value={formData.hero.heroImage.imageAlt} onChange={(e) => handleNestedChange("hero", "heroImage", { ...formData.hero.heroImage, imageAlt: e.target.value })} className="w-full mt-2 p-2 border rounded-md" placeholder="Hero Image Alt Text" />
+                    </div>
+                    <div className="w-full">
+                        <label className="block text-sm font-semibold text-gray-700">Banner Image Alt</label>
+                        <input type="text" value={formData.hero.heroImage.imageAlt} onChange={(e) => handleNestedChange("hero", "heroImage", { ...formData.hero.heroImage, imageAlt: e.target.value })} className="w-full mt-2 p-2 border rounded-md" placeholder="Enter Banner Image Alt" />
+                    </div>
+                    <div className="w-full">
+                        <label className="block text-sm font-semibold text-gray-700">Breadcrumb</label>
+                        <input type="text" value={formData.hero.breadcrumb} onChange={(e) => handleNestedChange("hero", "breadcrumb", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Home > Surgeries > Hair Transplant" />
                     </div>
 
                     {/* Hero Stats */}

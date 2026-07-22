@@ -3,6 +3,29 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
 
+  // Prevent the dev-server file watcher from triggering HMR when you create
+  // new folders / files in directories that aren't part of your source code.
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.watchOptions = {
+        ...config.watchOptions,
+        // Ignore directories that are NOT source code.
+        // This stops re-renders every time you create a file or folder.
+        ignored: [
+          "**/node_modules/**",
+          "**/.git/**",
+          "**/.next/**",
+          "**/public/uploads/**",
+          "**/scripts/**",
+        ],
+        // Debounce: wait 300ms after the last change before triggering HMR.
+        aggregateTimeout: 300,
+      };
+    }
+    return config;
+  },
+
+
   images: {
     formats: ["image/webp"],
     minimumCacheTTL: 86400,
@@ -69,6 +92,13 @@ const nextConfig = {
       {
         source: "/results",
         destination: "/hair-transplant-results-before-after-gallery",
+        permanent: true,
+      },
+      // The old static surgery page has been consolidated into the dynamic CMS route.
+      // Permanent 301 preserves SEO equity and existing backlinks.
+      {
+        source: "/hair-transplant-surgery-in-delhi",
+        destination: "/surgery/hair-transplant-surgery-in-delhi",
         permanent: true,
       },
     ];

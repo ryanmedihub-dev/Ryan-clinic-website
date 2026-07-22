@@ -70,6 +70,7 @@ export default function InterviewForm() {
     if (!formData.date)           errors.date     = "Date is required";
     if (!formData.position)       errors.position = "Position is required";
     if (!formData.phone.trim())   errors.phone    = "Phone number is required";
+    else if (!/^\+?[0-9]{10,15}$/.test(formData.phone.replace(/[\s-]/g, ""))) errors.phone = "Please enter a valid 10-digit phone number";
     if (!formData.address.trim()) errors.address  = "Address is required";
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
@@ -257,8 +258,9 @@ export default function InterviewForm() {
                         </svg>
                       </div>
                       <input
-                        type="number" name="phone" placeholder="Enter phone number"
+                        type="tel" name="phone" placeholder="Enter phone number"
                         value={formData.phone} onChange={handleChange}
+                        minLength={10} maxLength={15} pattern="[0-9+\s-]{10,15}"
                         className={`w-full pl-10 pr-4 py-3 border ${validationErrors.phone ? "border-red-500" : "border-gray-300"} rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition`}
                         required
                       />

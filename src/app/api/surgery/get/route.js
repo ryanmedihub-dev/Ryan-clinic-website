@@ -35,6 +35,7 @@ const handler = async (req) => {
         if (!surgeryPage) {
             return NextResponse.json(
                 {
+                    success: false,
                     message: "Surgery page not found",
                 },
                 {
@@ -45,6 +46,7 @@ const handler = async (req) => {
 
         return NextResponse.json(
             {
+                success: true,
                 surgeryPage,
             },
             {
@@ -54,6 +56,7 @@ const handler = async (req) => {
     } catch (error) {
         return NextResponse.json(
             {
+                success: false,
                 message: error.message,
             },
             {

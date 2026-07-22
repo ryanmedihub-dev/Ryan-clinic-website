@@ -33,6 +33,13 @@ export default function FeedbackForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    const phoneClean = (formData.phone || "").replace(/[\s-]/g, "");
+    if (!/^\+?[0-9]{10,15}$/.test(phoneClean)) {
+      alert("⚠️ Please enter a valid 10-digit phone number.");
+      return;
+    }
+
     setIsSubmitting(true)
 
     try {
@@ -187,6 +194,9 @@ export default function FeedbackForm() {
                 value={formData.phone}
                 onChange={handleChange}
                 required
+                minLength={10}
+                maxLength={15}
+                pattern="[0-9+\s-]{10,15}"
                 placeholder="9876543210"
                 className="w-full px-4 py-4 bg-white rounded-xl text-base text-gray-900 placeholder-gray-400 border-0 shadow-sm focus:ring-2 focus:ring-blue-400 outline-none"
               />

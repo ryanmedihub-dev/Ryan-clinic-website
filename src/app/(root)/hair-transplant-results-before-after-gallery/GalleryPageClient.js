@@ -176,6 +176,13 @@ export function LeadForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const phoneClean = (formData.phone || "").replace(/[\s-]/g, "");
+    if (!/^\+?[0-9]{10,15}$/.test(phoneClean)) {
+      alert("⚠️ Please enter a valid 10-digit phone number.");
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await fetch("/api/leads", {
@@ -217,6 +224,7 @@ export function LeadForm() {
         />
         <input
           name="phone" value={formData.phone} onChange={handleChange} required type="tel"
+          minLength={10} maxLength={15} pattern="[0-9+\s-]{10,15}"
           placeholder="Phone Number *"
           className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent bg-stone-50"
         />

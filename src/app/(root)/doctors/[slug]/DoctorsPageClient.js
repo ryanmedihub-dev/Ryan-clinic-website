@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import useTrackCTA from "@/lib/useTrackCTA";
 import ContactForm from "@/components/pages/contactForm";
-import FAQSection from "@/app/(root)/hair-transplant-surgery-in-delhi/FAQSection";
+import FAQSection from "@/components/surgery/FAQSection";
 import {
     ShieldCheck,
     CheckCircle2,
@@ -671,20 +671,19 @@ export default function DoctorPageClient({ data }) {
             </section>
 
             {/* ── 6. Meet Your Surgeon ───────────────────────────────────── */}
-            {/* STEP 4: Dark-navy icon header → doctor photo with gradient overlay */}
             <section className="bg-white py-16 md:py-24 border-t border-gray-100">
                 <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
                     <SectionLabel text="Your Surgeon" />
-                    <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight mb-12">
+                    <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight mb-10">
                         Meet Your Surgeon at{" "}
                         <span className="text-[#D32F2F]">Ryan Clinic, {doctor.location || "Delhi"}</span>
                     </h2>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:items-stretch">
                         {/* Doctor profile card (Left column, 5 spans) */}
                         <div className="lg:col-span-5 rounded-3xl border border-gray-200 overflow-hidden shadow-xl bg-white flex flex-col justify-between h-full">
                             {/* Header — Doctor Photo */}
-                            <div className="relative h-[340px] w-full shrink-0">
+                            <div className="relative h-[340px] md:h-[360px] w-full shrink-0 overflow-hidden">
                                 <Image
                                     src={doctor.image}
                                     alt={`${doctor.name} — Hair Transplant Surgeon at Ryan Clinic`}
@@ -694,41 +693,89 @@ export default function DoctorPageClient({ data }) {
                                     sizes="(max-width: 1024px) 100vw, 40vw"
                                     priority
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                                {/* Name overlay */}
-                                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                                    <span className="bg-[#D32F2F] text-white text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full mb-2 inline-block shadow-sm">
-                                        {doctor.specialtyBadge || "Expert Surgeon"}
-                                    </span>
-                                    <h3 className="text-2xl font-black">{doctor.name}</h3>
-                                    <p className="text-white/80 text-sm mt-0.5">
+                                {/* Top Badge */}
+                                <span className="absolute top-4 left-4 bg-[#D32F2F] text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-md z-10">
+                                    {doctor.specialtyBadge || "Expert Surgeon"}
+                                </span>
+
+                                {/* Bottom Gradient Overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none" />
+
+                                {/* Name & Details Overlay */}
+                                <div className="absolute bottom-0 left-0 right-0 p-6 text-white z-10">
+                                    <h3 className="text-2xl sm:text-3xl font-black tracking-tight">{doctor.name}</h3>
+                                    <p className="text-white/90 text-sm font-medium mt-1 flex items-center gap-1.5">
+                                        <Stethoscope className="w-4 h-4 text-red-400 shrink-0" />
                                         {doctor.designation}
                                     </p>
-                                    <div className="flex flex-wrap gap-2 mt-3.5">
-                                        <span className="bg-white/20 border border-white/30 text-white text-[10px] font-semibold px-2.5 py-1 rounded-full backdrop-blur-xs">
+                                    <div className="flex flex-wrap gap-2 mt-3">
+                                        <span className="bg-white/20 border border-white/30 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-md">
                                             NABH Certified
                                         </span>
-                                        <span className="bg-white/20 border border-white/30 text-white text-[10px] font-semibold px-2.5 py-1 rounded-full backdrop-blur-xs">
-                                            Doctor-Led
+                                        <span className="bg-white/20 border border-white/30 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-md">
+                                            100% Doctor-Led
                                         </span>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Credentials grid */}
-                            <div className="px-6 py-5 border-b border-gray-100 bg-gray-50/60 flex-1">
-                                <p className="text-[10px] font-black uppercase tracking-wider text-gray-400 mb-3.5">
-                                    Qualifications & Credentials
+                            <div className="px-6 py-5 border-t border-gray-100 bg-gray-50/70">
+                                <p className="text-xs font-black uppercase tracking-wider text-gray-400 mb-3 flex items-center gap-2">
+                                    <GraduationCap className="w-4 h-4 text-[#D32F2F]" /> Qualifications &amp; Credentials
                                 </p>
-                                <div className="space-y-3">
+                                <div className="space-y-2.5">
                                     {doctorCredentials.map((c, i) => (
-                                        <div key={i} className="flex gap-3">
-                                            <div className="w-8 h-8 rounded-lg bg-red-50 border border-red-100 flex items-center justify-center shrink-0 mt-0.5">
-                                                <Award className="w-4 h-4 text-[#D32F2F]" />
+                                        <div key={i} className="flex items-start gap-3 bg-white p-2.5 rounded-xl border border-gray-200/60 shadow-2xs">
+                                            <div className="w-7 h-7 rounded-lg bg-red-50 border border-red-100 flex items-center justify-center shrink-0 mt-0.5">
+                                                <Award className="w-3.5 h-3.5 text-[#D32F2F]" />
+                                            </div>
+                                            <div className="min-w-0">
+                                                <p className="font-bold text-gray-900 text-xs">{c.label}</p>
+                                                <p className="text-gray-500 text-xs mt-0.5 leading-snug">{c.detail}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Location & Languages Spoken info bar */}
+                            <div className="px-6 py-3.5 border-t border-gray-100 bg-white space-y-2">
+                                <div className="flex items-center justify-between text-xs">
+                                    <span className="text-gray-500 font-medium flex items-center gap-1.5">
+                                        <MapPin className="w-3.5 h-3.5 text-[#D32F2F]" /> Primary Clinic:
+                                    </span>
+                                    <span className="font-bold text-gray-900">Ryan Clinic, {doctor.location || "Delhi"}</span>
+                                </div>
+                                {doctor.languages && doctor.languages.length > 0 && (
+                                    <div className="flex items-center justify-between text-xs">
+                                        <span className="text-gray-500 font-medium flex items-center gap-1.5">
+                                            <Globe className="w-3.5 h-3.5 text-slate-500" /> Languages:
+                                        </span>
+                                        <span className="font-semibold text-gray-700">{doctor.languages.join(", ")}</span>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Why Patients Choose Doctor — BALANCES LEFT COLUMN HEIGHT */}
+                            <div className="p-6 bg-gradient-to-br from-[#1a1430] to-[#302658] border-t border-gray-100 text-white flex-1 flex flex-col justify-between">
+                                <p className="text-xs font-black uppercase tracking-wider text-red-400 mb-3 flex items-center gap-2">
+                                    <ShieldCheck className="w-4 h-4 text-red-400" />
+                                    Why Patients Choose {doctor.name.startsWith("Dr.") ? doctor.name : `Dr. ${doctor.name}`}
+                                </p>
+                                <div className="space-y-2.5">
+                                    {[
+                                        { icon: <ShieldCheck className="w-4 h-4 text-red-400" />, label: "100% Doctor-Led", sub: "Every step personally performed" },
+                                        { icon: <Award className="w-4 h-4 text-red-400" />, label: "NABH Certified", sub: "Internationally accredited clinic" },
+                                        { icon: <Globe className="w-4 h-4 text-red-400" />, label: "ISHRS Member", sub: "Global hair restoration body" },
+                                    ].map((item, i) => (
+                                        <div key={i} className="flex items-center gap-3 bg-white/10 rounded-xl p-3 border border-white/10">
+                                            <div className="w-7 h-7 rounded-lg bg-red-500/20 flex items-center justify-center shrink-0">
+                                                {item.icon}
                                             </div>
                                             <div>
-                                                <p className="font-bold text-gray-800 text-xs">{c.label}</p>
-                                                <p className="text-gray-500 text-[10px] leading-tight mt-0.5">{c.detail}</p>
+                                                <p className="text-white font-bold text-xs leading-tight">{item.label}</p>
+                                                <p className="text-white/70 text-[11px] leading-snug">{item.sub}</p>
                                             </div>
                                         </div>
                                     ))}
@@ -737,39 +784,43 @@ export default function DoctorPageClient({ data }) {
                         </div>
 
                         {/* Bio & Details (Right column, 7 spans) */}
-                        <div className="lg:col-span-7 flex flex-col h-full">
-                            {/* Stats bar */}
-                            <div className="border border-gray-200/60 rounded-2xl p-5 mb-6 grid grid-cols-3 divide-x divide-gray-100 bg-white shadow-sm">
+                        <div className="lg:col-span-7 flex flex-col space-y-4 justify-between h-full">
+                            {/* About Doctor — AT TOP */}
+                            <div className="bg-white border border-gray-200/80 rounded-2xl p-6 shadow-sm">
+                                <h3 className="text-xl font-extrabold text-gray-900 mb-3 flex items-center gap-2">
+                                    <span className="w-2 h-2 rounded-full bg-[#D32F2F]" />
+                                    About {doctor.name.startsWith("Dr.") ? doctor.name : `Dr. ${doctor.name}`}
+                                </h3>
+                                <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+                                    {doctor.about}
+                                </p>
+                            </div>
+
+                            {/* Stats bar — BELOW ABOUT */}
+                            <div className="border border-gray-200/80 rounded-2xl p-5 grid grid-cols-3 divide-x divide-gray-100 bg-white shadow-sm">
                                 {[
                                     { val: doctor.experience, label: "Years Exp." },
                                     { val: doctor.procedures, label: "Procedures" },
                                     { val: doctor.successRate || "95%+", label: "Graft Survival" },
                                 ].map((s, i) => (
                                     <div key={i} className="text-center px-2">
-                                        <p className="font-black text-[#D32F2F] text-xl leading-none">{s.val}</p>
-                                        <p className="text-gray-400 text-[10px] font-bold uppercase tracking-wider mt-2">{s.label}</p>
+                                        <p className="font-black text-[#D32F2F] text-2xl sm:text-3xl leading-none">{s.val}</p>
+                                        <p className="text-gray-400 text-xs font-bold uppercase tracking-wider mt-2">{s.label}</p>
                                     </div>
                                 ))}
                             </div>
 
-                            <div className="bg-white border border-gray-200/60 rounded-2xl p-5 mb-4 shadow-sm">
-                                <h3 className="text-xl font-extrabold text-gray-900 mb-3">About Dr. {doctor.name.split(" ").slice(-1)[0]}</h3>
-                                <p className="text-gray-600 text-sm md:text-[15px] leading-relaxed">
-                                    {doctor.about}
-                                </p>
-                            </div>
-
                             {/* Core Specializations */}
                             {doctor.specializations && doctor.specializations.length > 0 && (
-                                <div className="bg-white border border-gray-200/60 rounded-2xl p-5 mb-4 shadow-sm">
-                                    <p className="text-[11px] font-black uppercase tracking-wider text-[#D32F2F] mb-3">
-                                        Clinical Focus &amp; Specialty
+                                <div className="bg-white border border-gray-200/80 rounded-2xl p-6 shadow-sm">
+                                    <p className="text-xs font-black uppercase tracking-wider text-[#D32F2F] mb-3.5 flex items-center gap-2">
+                                        <Sparkles className="w-4 h-4 text-[#D32F2F]" /> Clinical Focus &amp; Specialty
                                     </p>
-                                    <div className="flex flex-wrap gap-2">
+                                    <div className="flex flex-wrap gap-2.5">
                                         {doctor.specializations.map((spec, i) => (
                                             <span
                                                 key={i}
-                                                className="bg-red-50 text-[#D32F2F] border border-red-100/50 rounded-xl px-3 py-1.5 text-xs font-semibold"
+                                                className="bg-red-50 text-[#D32F2F] border border-red-100 rounded-xl px-3.5 py-1.5 text-xs font-bold shadow-2xs"
                                             >
                                                 {spec}
                                             </span>
@@ -780,20 +831,24 @@ export default function DoctorPageClient({ data }) {
 
                             {/* Achievements */}
                             {doctor.achievements && doctor.achievements.length > 0 && (
-                                <div className="bg-white border border-gray-200/60 rounded-2xl p-5 mb-4 shadow-sm">
-                                    <p className="text-[11px] font-black uppercase tracking-wider text-gray-400 mb-3">
-                                        Key Achievements &amp; Recognitions
+                                <div className="bg-white border border-gray-200/80 rounded-2xl p-6 shadow-sm">
+                                    <p className="text-xs font-black uppercase tracking-wider text-gray-400 mb-3.5 flex items-center gap-2">
+                                        <Award className="w-4 h-4 text-amber-500" /> Key Achievements &amp; Recognitions
                                     </p>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                         {doctor.achievements.map((ach, i) => (
                                             <div
                                                 key={i}
-                                                className="flex items-start gap-2.5 p-3 rounded-xl bg-gray-50 border border-gray-100 hover:border-gray-200 transition-all duration-200"
+                                                className={`flex items-start gap-3 p-3.5 rounded-xl bg-gray-50 border border-gray-100 hover:border-gray-200 transition-all ${
+                                                    doctor.achievements.length % 2 !== 0 && i === doctor.achievements.length - 1
+                                                        ? "sm:col-span-2"
+                                                        : ""
+                                                }`}
                                             >
-                                                <span className="w-5 h-5 rounded-full bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold">
+                                                <span className="w-5 h-5 rounded-full bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0 mt-0.5 text-xs font-black">
                                                     ★
                                                 </span>
-                                                <p className="text-xs text-gray-700 font-medium leading-relaxed">
+                                                <p className="text-xs text-gray-700 font-semibold leading-relaxed">
                                                     {ach}
                                                 </p>
                                             </div>
@@ -802,55 +857,58 @@ export default function DoctorPageClient({ data }) {
                                 </div>
                             )}
 
-                            {/* Why Patients Choose */}
-                            <div className="bg-gradient-to-br from-[#1a1430] to-[#302658] rounded-2xl p-5 mb-4 shadow-sm">
-                                <p className="text-[11px] font-black uppercase tracking-wider text-red-400 mb-3">
-                                    Why Patients Choose {doctor.name.split(" ").slice(-1)[0]}
-                                </p>
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                    {[
-                                        { icon: <ShieldCheck className="w-4 h-4 text-red-400" />, label: "100% Doctor-Led", sub: "Every step personally performed" },
-                                        { icon: <Award className="w-4 h-4 text-red-400" />, label: "NABH Certified", sub: "Internationally accredited clinic" },
-                                        { icon: <Globe className="w-4 h-4 text-red-400" />, label: "ISHRS Member", sub: "Global hair restoration body" },
-                                    ].map((item, i) => (
-                                        <div key={i} className="flex flex-col gap-1.5 bg-white/10 rounded-xl p-3 border border-white/10">
-                                            <div className="w-7 h-7 rounded-lg bg-red-500/20 flex items-center justify-center shrink-0">
-                                                {item.icon}
+                            {/* Free Consultation Includes & CTA */}
+                            <div className="bg-white border border-gray-200/80 rounded-2xl p-6 shadow-sm flex-1 flex flex-col justify-between">
+                                <div className="space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <p className="text-xs font-black uppercase tracking-wider text-gray-400">
+                                            Free Consultation Includes
+                                        </p>
+                                        <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">
+                                            100% Free &amp; Private
+                                        </span>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                        {[
+                                            "Scalp & donor density analysis",
+                                            "Personalised graft count estimate",
+                                            "Technique recommendation (Sapphire FUE / DHI)",
+                                            "Custom hairline design preview",
+                                            "Transparent cost & timeline breakdown",
+                                            "Medical candidacy & non-surgical review",
+                                            "Real patient case portfolio comparison",
+                                            "No obligation — 100% free consultation",
+                                        ].map((item, i) => (
+                                            <div key={i} className="flex items-center gap-2.5 bg-gray-50/70 p-2.5 rounded-xl border border-gray-100 hover:border-gray-200 transition-all">
+                                                <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                                                    <Check className="w-3 h-3 text-emerald-600 stroke-[3]" />
+                                                </span>
+                                                <span className="text-xs text-gray-700 font-semibold">{item}</span>
                                             </div>
-                                            <p className="text-white font-bold text-xs leading-tight">{item.label}</p>
-                                            <p className="text-white/55 text-[10px] leading-snug">{item.sub}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+                                        ))}
+                                    </div>
 
-                            {/* Free Consultation Includes */}
-                            <div className="bg-white border border-gray-200/60 rounded-2xl p-5 mb-4 shadow-sm">
-                                <p className="text-[11px] font-black uppercase tracking-wider text-gray-400 mb-3">
-                                    Free Consultation Includes
-                                </p>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                    {[
-                                        "Scalp & donor density analysis",
-                                        "Personalised graft estimate",
-                                        "Technique recommendation (FUE / THI)",
-                                        "Hairline design preview",
-                                        "Cost & timeline breakdown",
-                                        "No obligation — 100% free",
-                                    ].map((item, i) => (
-                                        <div key={i} className="flex items-center gap-2">
-                                            <span className="w-4 h-4 rounded-full bg-green-100 flex items-center justify-center shrink-0">
-                                                <Check className="w-2.5 h-2.5 text-green-600" />
-                                            </span>
-                                            <span className="text-xs text-gray-600 font-medium">{item}</span>
+                                    {/* Consultation Trust Guarantee Banner */}
+                                    <div className="bg-gradient-to-r from-red-50/80 via-rose-50/50 to-amber-50/40 rounded-xl p-3.5 border border-red-100/80 flex items-center justify-between gap-3">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-8 h-8 rounded-full bg-red-100 text-[#D32F2F] flex items-center justify-center shrink-0">
+                                                <ShieldCheck className="w-4 h-4" />
+                                            </div>
+                                            <div>
+                                                <p className="text-xs font-bold text-gray-900">Direct Medical Consultation</p>
+                                                <p className="text-[11px] text-gray-600 font-medium">Speak directly with {doctor.name.startsWith("Dr.") ? doctor.name : `Dr. ${doctor.name}`} — zero sales pressure.</p>
+                                            </div>
                                         </div>
-                                    ))}
+                                        <span className="hidden sm:inline-flex text-[10px] font-extrabold uppercase tracking-wider text-[#D32F2F] bg-white px-2.5 py-1 rounded-md border border-red-200/60 shadow-2xs shrink-0">
+                                            Doctor-Led
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
 
-                            {/* CTA — pinned to bottom of column */}
-                            <div className="border-t border-gray-100 pt-5 mt-auto">
-                                <CTAButtons primary={`Book Consultation with ${doctor.name}`} doctorName={doctor.name} />
+                                <div className="border-t border-gray-100 pt-5 mt-4">
+                                    <CTAButtons primary={`Book Free Consultation with ${doctor.name}`} doctorName={doctor.name} />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1390,7 +1448,7 @@ export default function DoctorPageClient({ data }) {
                         </a>
                         <span className="text-gray-300">·</span>
                         <a
-                            href="/hair-transplant-surgery-in-delhi"
+                            href="/surgery/hair-transplant-surgery-in-delhi"
                             className="text-[#D32F2F] hover:text-red-700 font-semibold underline underline-offset-4 decoration-red-200 hover:decoration-[#D32F2F] transition-all"
                         >
                             hair transplant surgery in Delhi
