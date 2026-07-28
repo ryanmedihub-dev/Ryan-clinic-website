@@ -3,14 +3,14 @@
 import Image from "next/image";
 import { useState } from "react";
 import ContactForm from "@/components/pages/contactForm";
-import FAQSection from "./FAQSection";
+import FAQSection from "@/components/surgery/FAQSection";
 import PageBanner from "@/components/layouts/pageBanner";
 import useTrackCTA from "@/lib/useTrackCTA";
 import {
   AnimatedCard,
   Reveal,
   RevealSection,
-} from "./AnimatedPage";
+} from "@/components/surgery/AnimatedPage";
 import {
   Dna,
   Hourglass,
@@ -82,6 +82,23 @@ const RECOVERY_ICONS = [
   <TrendingUp key="r1" className="w-6 h-6" />,
   <Hourglass key="r2" className="w-6 h-6" />,
   <Star key="r3" className="w-6 h-6" />,
+];
+
+const PRICING_STAT_ICONS = [
+  <Scissors key="p0" className="w-6 h-6 text-[#e30a17]" />,
+  <CreditCard key="p1" className="w-6 h-6 text-amber-400" />,
+  <Zap key="p2" className="w-6 h-6 text-[#e30a17]" />,
+  <ShieldCheck key="p3" className="w-6 h-6 text-blue-400" />,
+];
+
+const DEFAULT_COST_ITEMS = [
+  { id: "01", title: "Up to 1,000 Grafts", price: "Rs. 40,000/-", oldPrice: "from Rs. 30,000/-", duration: "4–5 hrs" },
+  { id: "02", title: "1,000 – 1,500 Grafts", price: "Rs. 52,500/-", oldPrice: "from Rs. 40,000/-", duration: "5 hrs" },
+  { id: "03", title: "1,500 – 2,000 Grafts", price: "Rs. 70,000/-", oldPrice: "from Rs. 55,000/-", duration: "6 hrs" },
+  { id: "04", title: "2,000 – 2,500 Grafts", price: "Rs. 87,500/-", oldPrice: "from Rs. 73,000/-", duration: "7 hrs" },
+  { id: "05", title: "2,500 – 3,000 Grafts", price: "Rs. 1,05,000/-", oldPrice: "from Rs. 90,000/-", duration: "8 hrs" },
+  { id: "06", title: "3,000 – 3,500 Grafts", price: "Rs. 1,15,000/-", oldPrice: "from Rs. 95,000/-", duration: "9 hrs" },
+  { id: "07", title: "3,500 – 4,000 Grafts", price: "Rs. 1,45,000/-", oldPrice: "from Rs. 1,25,000/-", duration: "9–10 hrs" },
 ];
 
 const VISIT_ICONS = [
@@ -691,11 +708,11 @@ export default function SurgeryPageClient({ data }) {
               </Reveal>
             </div>
           )}
-        </div >
-      </section >
+        </div>
+      </section>
 
       {/* ── 5. Surgical Methodologies ─────────────────────────────────── */}
-      < section className="bg-white py-16 md:py-24" >
+      <section className="bg-white py-16 md:py-24" >
         <div className="w-full px-4 sm:px-6 lg:px-12 xl:px-20">
 
           {/* Header */}
@@ -803,11 +820,11 @@ export default function SurgeryPageClient({ data }) {
           </div>
 
         </div>
-      </section >
+      </section>
 
 
       {/* ── 6. What Defines a Premium Surgery — full width ──────────── */}
-      < section className="bg-white py-16 md:py-24" >
+      <section className="bg-white py-16 md:py-24" >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal direction="left">
             <SectionLabel text="Quality Benchmarks" />
@@ -831,10 +848,10 @@ export default function SurgeryPageClient({ data }) {
             ) : null}
           </div>
         </div>
-      </section >
+      </section>
 
       {/* ── 7. Step-by-Step Procedure — vertical timeline with images ── */}
-      < section className="bg-[#F7F5F2] py-16 md:py-24 border-y border-gray-100" >
+      <section className="bg-[#F7F5F2] py-16 md:py-24 border-y border-gray-100" >
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <RevealSection>
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -918,10 +935,10 @@ export default function SurgeryPageClient({ data }) {
             </div>
           </div>
         </div>
-      </section >
+      </section>
 
       {/* ── 8. Recovery Timeline — reference card grid layout ─────────── */}
-      < section className="bg-white py-16 md:py-24" >
+      <section className="bg-white py-16 md:py-24" >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <RevealSection>
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -983,14 +1000,12 @@ export default function SurgeryPageClient({ data }) {
             </div>
           </div>
 
-          <div className="flex justify-center mt-12">
-            <CTAButtons primary={pricingWALabel} waLink={heroWALink} telLink={heroTelLink} center />
-          </div>
+
         </div>
-      </section >
+      </section>
 
       {/* ── 9. Doctor Profiles — image top, content below ─────────────── */}
-      < section className="bg-[#F7F5F2] py-16 md:py-24 border-y border-gray-100" >
+      <section className="bg-[#F7F5F2] py-16 md:py-24 border-y border-gray-100" >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <RevealSection>
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
@@ -1068,90 +1083,115 @@ export default function SurgeryPageClient({ data }) {
             ))}
           </div>
         </div>
-      </section >
+      </section>
 
-      {/* ── 10. Cost CTA — full-width banner ──────────────────────────── */}
-      < section className="bg-white py-16 md:py-24" >
-        <div className="w-full px-4 sm:px-6 lg:px-12 xl:px-20">
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-            {/* Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#1a1430] via-[#302658] to-[#1a1430]" />
-            <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
-            {/* Red glow */}
-            <div className="absolute -top-20 -right-20 w-80 h-80 bg-[#e30a17]/20 rounded-full blur-3xl" />
-            <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-[#e30a17]/10 rounded-full blur-3xl" />
-
-            <div className="relative z-10 p-10 md:p-16 text-center">
-              {/* Top badge */}
-              <div className="inline-flex items-center gap-2 bg-[#e30a17]/20 border border-[#e30a17]/30 rounded-full px-4 py-2 mb-8">
-                <span className="w-2 h-2 rounded-full bg-[#e30a17] animate-pulse" />
-                <span className="text-[#e30a17] text-[11px] font-bold uppercase tracking-widest">Transparent Pricing</span>
-              </div>
-
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-5 leading-tight">
+      {/* ── 10. Cost CTA — Site Standard Light Section ──────────────────── */}
+      <section className="bg-white py-14 md:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <RevealSection>
+            <div className="mb-10">
+              <SectionLabel text="Transparent Pricing" />
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight tracking-tight mt-2 mb-3">
                 {pricingHeading}
               </h2>
-              <div className="text-white/60 text-base md:text-lg max-w-2xl mx-auto mb-3" dangerouslySetInnerHTML={{ __html: pricingDesc }} />
-              {pricingWarning && (
-                <p className="text-amber-400/80 text-sm mb-10 flex items-center justify-center gap-2">
-                  <AlertTriangle className="w-4 h-4" />
-                  {pricingWarning}
-                </p>
-              )}
-
-              {/* Stat pills */}
-              <div className="flex flex-wrap justify-center gap-4 mb-10">
-                {pricingStats.length > 0 &&
-                  pricingStats.map((stat, i) => (
-                    <div
-                      key={i}
-                      className="bg-white/10 border border-white/10 rounded-2xl px-6 py-3 text-center backdrop-blur-sm"
-                    >
-                      <p className="text-xl font-black text-white">
-                        {stat.value}
-                      </p>
-
-                      <p className="text-white/50 text-xs mt-0.5">
-                        {stat.label}
-                      </p>
-                    </div>
-                  ))}
-              </div>
-
-              {/* CTA buttons */}
-              <div className="flex flex-wrap gap-4 justify-center">
-                <a
-                  href={pricingWA}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2.5 bg-[#e30a17] hover:bg-red-700 text-white font-bold py-4 px-8 rounded-2xl text-base shadow-lg shadow-red-900/40 hover:-translate-y-0.5 transition-all duration-200"
-                  onClick={() => trackCTA({ type: "whatsapp", ctaName: `Pricing: ${pricingWALabel}`, buttonLocation: "Pricing Box" })}
-                >
-                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.458 5.706 1.458h.008c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" /></svg>
-                  {pricingWALabel}
-                </a>
-                <a
-                  href={pricingTel}
-                  className="inline-flex items-center gap-2 border border-white/25 bg-white/10 hover:bg-white/20 text-white font-bold py-4 px-8 rounded-2xl text-base transition-all duration-200 hover:-translate-y-0.5"
-                  onClick={() => trackCTA({ type: "call", ctaName: `Pricing: ${pricingTelLabel}`, buttonLocation: "Pricing Box" })}
-                >
-                  <Phone className="w-4 h-4" />
-                  {pricingTelLabel}
-                </a>
-                <a
-                  href={pricingGuide}
-                  className="inline-flex items-center gap-1.5 text-white/60 hover:text-white text-sm font-semibold py-4 px-4 transition-colors underline-offset-4 hover:underline"
-                >
-                  {pricingGuideLabel} <ArrowRight className="w-4 h-4" />
-                </a>
+              <div className="text-gray-500 text-sm md:text-base leading-relaxed font-sans max-w-2xl">
+                {pricingDesc ? (
+                  <div dangerouslySetInnerHTML={{ __html: pricingDesc }} />
+                ) : (
+                  <p>
+                    No hidden charges, no unexpected OT fees. Pricing is calculated strictly on graft count with full transparency.
+                  </p>
+                )}
               </div>
             </div>
+          </RevealSection>
+
+          {/* 4 Stat Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+            {pricingStats.length > 0 &&
+              pricingStats.map((stat, i) => (
+                <AnimatedCard
+                  key={i}
+                  delay={i * 80}
+                  className="bg-[#F7F5F2] rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between"
+                >
+                  <div>
+                    <span className="w-9 h-9 rounded-lg bg-white text-[#e30a17] flex items-center justify-center mb-4 shadow-sm border border-gray-100">
+                      {PRICING_STAT_ICONS[i % PRICING_STAT_ICONS.length]}
+                    </span>
+                    <p className="text-xl md:text-2xl font-extrabold text-[#302658] mb-0.5">
+                      {stat.value}
+                    </p>
+                    <p className="text-gray-500 text-xs font-medium leading-relaxed">
+                      {stat.label}
+                    </p>
+                  </div>
+                </AnimatedCard>
+              ))}
           </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-wrap gap-3 items-center mb-10">
+            <a
+              href={pricingWA}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white font-semibold py-3 px-6 text-sm tracking-wide transition-all duration-200 rounded-xl shadow-md shadow-red-200 hover:-translate-y-0.5 active:translate-y-0"
+              onClick={() =>
+                trackCTA({
+                  type: "whatsapp",
+                  ctaName: `Pricing: ${pricingWALabel}`,
+                  buttonLocation: "Pricing Box",
+                })
+              }
+            >
+              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.458 5.706 1.458h.008c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+              </svg>
+              {pricingWALabel || "Calculate My Cost on WhatsApp"}
+            </a>
+
+            <a
+              href={pricingTel}
+              className="inline-flex items-center justify-center gap-2 border border-gray-200 bg-white hover:bg-gray-50 text-[#302658] hover:text-[#e30a17] hover:border-red-200 font-semibold py-3 px-6 text-sm tracking-wide transition-all duration-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5"
+              onClick={() =>
+                trackCTA({
+                  type: "call",
+                  ctaName: `Pricing: ${pricingTelLabel}`,
+                  buttonLocation: "Pricing Box",
+                })
+              }
+            >
+              <Phone className="w-4 h-4" />
+              {pricingTelLabel || "Call for Pricing Quote"}
+            </a>
+
+            {pricingGuide && (
+              <a
+                href={pricingGuide}
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#e30a17] hover:underline py-3 px-1"
+              >
+                {pricingGuideLabel || "Read Full Cost Breakdown Guide"}{" "}
+                <ArrowRight className="w-3.5 h-3.5" />
+              </a>
+            )}
+          </div>
+
+          {/* Pricing Warning Notice — full width at bottom */}
+          {pricingWarning && (
+            <div className="w-full bg-[#F7F5F2] border-l-4 border-[#e30a17] p-4 rounded-r-xl text-xs md:text-sm text-gray-600 leading-relaxed flex items-start gap-2.5">
+              <AlertTriangle className="w-4 h-4 text-[#e30a17] shrink-0 mt-0.5" />
+              <div>
+                <strong className="font-semibold text-[#302658]">Pricing Advisory: </strong>
+                <span>{pricingWarning}</span>
+              </div>
+            </div>
+          )}
         </div>
-      </section >
+      </section>
 
       {/* ── 11. Visiting Ryan Clinic — full-width, no map ─────────────── */}
-      < section className="bg-[#F7F5F2] py-16 md:py-24 border-y border-gray-100" >
+      <section className="bg-[#F7F5F2] py-16 md:py-24 border-y border-gray-100" >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <SectionLabel text="Visit Our Center" />
@@ -1181,116 +1221,118 @@ export default function SurgeryPageClient({ data }) {
             <CTAButtons primary={visitBtnLabel} waLink={visitBtnWA} telLink={heroTelLink} center />
           </div>
         </div>
-      </section >
+      </section>
 
       {/* ── 12. Free Scalp Analysis & Quote ─────────────────────────────── */}
-      < section id="appointment-form" className="relative overflow-hidden" >
-        {/* Split background: left dark, right light */}
-        < div className="absolute inset-0 flex" >
-          <div className="w-full lg:w-1/2 bg-[#1a1430]" />
-          <div className="hidden lg:block w-1/2 bg-[#F7F5F2]" />
-        </div >
-        {/* Red top accent line */}
-        < div className="absolute top-0 left-0 right-0 h-1 bg-[#e30a17]" />
-        {/* Decorative glow */}
-        < div className="absolute top-20 left-0 w-96 h-96 bg-[#e30a17]/10 rounded-full blur-3xl pointer-events-none" />
+      <section id="appointment-form" className="relative overflow-hidden bg-white">
+        <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[85vh]">
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[90vh]">
+          {/* Left Column — Clinic Image with overlay */}
+          <div className="relative flex flex-col justify-end overflow-hidden min-h-[420px] lg:min-h-0">
+            {/* Background Image */}
+            <img
+              src="/assets/ryan-clinic-interior.jpg"
+              alt="Ryan Clinic - Premium Hair Transplant Center in Delhi"
+              className="absolute inset-0 w-full h-full object-cover object-center"
+            />
+            {/* Dark gradient overlay — subtle, not blue */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10" />
+            {/* Red top accent line */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-[#e30a17]" />
 
-            {/* Left Column — Dark credentials panel */}
-            <div className="py-20 lg:py-28 lg:pr-16 flex flex-col justify-center">
-              <div className="mb-8">
-                <span className="inline-flex items-center gap-2 bg-[#e30a17]/20 border border-[#e30a17]/30 rounded-full px-4 py-1.5 text-[11px] font-bold text-[#e30a17] uppercase tracking-widest">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#e30a17] animate-pulse" />
+            {/* Content over image */}
+            <div className="relative z-10 p-8 md:p-12 lg:p-14">
+              <div className="mb-5">
+                <span className="inline-flex items-center gap-2 bg-[#e30a17]/90 border border-[#e30a17] rounded-full px-4 py-1.5 text-[11px] font-bold text-white uppercase tracking-widest backdrop-blur-sm">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
                   Consultation Booking
                 </span>
               </div>
 
-              <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-none mb-6">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-4">
                 {consultHeading}
               </h2>
-              <p className="text-white/60 text-base md:text-lg leading-relaxed mb-10 max-w-md">
+              <p className="text-white/75 text-sm md:text-base leading-relaxed mb-8 max-w-md">
                 {consultDesc}
               </p>
 
               {/* Contact channels */}
-              <div className="space-y-3 mb-10">
+              <div className="space-y-2.5 mb-8">
                 {CONTACT_CARDS.map((item, i) => (
                   <a
                     key={i}
                     href={item.link}
                     target={item.ext ? "_blank" : undefined}
                     rel={item.ext ? "noopener noreferrer" : undefined}
-                    className="flex items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group"
+                    className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/10 border border-white/15 hover:bg-white/20 hover:border-white/30 transition-all duration-200 group backdrop-blur-sm"
                   >
-                    <span className="w-9 h-9 rounded-xl bg-[#e30a17]/20 text-[#e30a17] flex items-center justify-center shrink-0">
+                    <span className="w-8 h-8 rounded-xl bg-[#e30a17] text-white flex items-center justify-center shrink-0">
                       {item.icon}
                     </span>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[10px] font-bold tracking-widest uppercase text-white/40">{item.title}</p>
+                      <p className="text-[10px] font-bold tracking-widest uppercase text-white/50">{item.title}</p>
                       <p className="text-sm font-semibold text-white mt-0.5 truncate">{item.val}</p>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-white/30 group-hover:text-white/70 -translate-x-1 group-hover:translate-x-0 transition-all duration-300" />
+                    <ArrowRight className="w-4 h-4 text-white/40 group-hover:text-white/80 group-hover:translate-x-0.5 transition-all duration-200" />
                   </a>
                 ))}
               </div>
 
               {/* Stats grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                 {CONSULT_STATS.length > 0 ? (
                   CONSULT_STATS.map((s, i) => (
-                    <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-3 text-center">
+                    <div key={i} className="bg-white/10 border border-white/15 rounded-xl p-3 text-center backdrop-blur-sm">
                       <p className="text-lg font-black text-[#e30a17]">{s.n}</p>
-                      <p className="text-[9px] font-bold text-white/40 mt-0.5 uppercase tracking-wider">{s.l}</p>
+                      <p className="text-[9px] font-bold text-white/50 mt-0.5 uppercase tracking-wider">{s.l}</p>
                     </div>
                   ))
                 ) : (
                   [["12+", "Years Care"], ["10K+", "Procedures"], ["95%+", "Graft Rate"], ["4.9 ★", "Reviews"]].map(([n, l]) => (
-                    <div key={l} className="bg-white/5 border border-white/10 rounded-2xl p-3 text-center">
+                    <div key={l} className="bg-white/10 border border-white/15 rounded-xl p-3 text-center backdrop-blur-sm">
                       <p className="text-lg font-black text-[#e30a17]">{n}</p>
-                      <p className="text-[9px] font-bold text-white/40 mt-0.5 uppercase tracking-wider">{l}</p>
+                      <p className="text-[9px] font-bold text-white/50 mt-0.5 uppercase tracking-wider">{l}</p>
                     </div>
                   ))
                 )}
               </div>
             </div>
+          </div>
 
-            {/* Right Column — Form panel */}
-            <div className="py-20 lg:py-28 lg:pl-16 flex flex-col justify-center bg-[#F7F5F2] lg:bg-transparent">
-              {/* Form header */}
-              <div className="mb-8 flex items-center justify-between">
-                <div>
-                  <h3 className="text-2xl font-bold text-[#302658]">{formTitle}</h3>
-                  <p className="text-sm text-gray-500 mt-1">Takes less than 60 seconds</p>
-                </div>
-                <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3.5 py-2 shadow-sm">
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                  <span className="text-[10px] font-bold text-gray-500 tracking-wider uppercase">Secure</span>
-                </div>
+          {/* Right Column — Form panel */}
+          <div className="bg-[#F7F5F2] flex flex-col justify-center px-8 md:px-12 lg:px-14 py-14 lg:py-20">
+            {/* Form header */}
+            <div className="mb-7 flex items-start justify-between gap-4">
+              <div>
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900">{formTitle}</h3>
+                <p className="text-sm text-gray-500 mt-1">Takes less than 60 seconds</p>
               </div>
-
-              {/* Form — transparent background */}
-              <div className="w-full">
-                <ContactForm />
-              </div>
-
-              {/* Trust note */}
-              <div className="mt-6 flex items-center gap-3 text-xs text-gray-400 leading-snug">
-                <ShieldCheck className="w-4 h-4 text-green-500 shrink-0" />
-                <p>Your personal &amp; medical details are fully encrypted. We never share your contact info with third parties.</p>
+              <div className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-xl px-3 py-1.5 shadow-sm shrink-0 mt-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-[10px] font-bold text-gray-500 tracking-wider uppercase">Secure</span>
               </div>
             </div>
 
+            {/* Form */}
+            <div className="w-full">
+              <ContactForm />
+            </div>
+
+            {/* Trust note */}
+            <div className="mt-5 flex items-center gap-2.5 text-xs text-gray-400 leading-snug">
+              <ShieldCheck className="w-4 h-4 text-green-500 shrink-0" />
+              <p>Your personal &amp; medical details are fully encrypted. We never share your contact info with third parties.</p>
+            </div>
           </div>
+
         </div>
-      </section >
+      </section>
 
       {/* ── 13. FAQ ────────────────────────────────────────────────────── */}
-      < FAQSection faqs={FAQS} />
+      <FAQSection faqs={FAQS} />
 
       {/* ── Disclaimer ─────────────────────────────────────────────────── */}
-      < div className="bg-[#F7F5F2] border-t border-gray-200/60 py-10" >
+      <div className="bg-[#F7F5F2] border-t border-gray-200/60 py-10" >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-sm text-gray-400 leading-relaxed max-w-4xl font-sans">
             <strong className="text-gray-500">Medical disclaimer:</strong> The content provided on this page is for general information only and does not substitute professional medical diagnosis or treatment options. Results can vary between candidates.{" "}
@@ -1299,7 +1341,7 @@ export default function SurgeryPageClient({ data }) {
             <a href="/terms-and-conditions" className="underline text-[#e30a17] hover:opacity-85 font-medium">Terms &amp; Conditions</a>
           </p>
         </div>
-      </div >
+      </div>
     </>
   );
 }

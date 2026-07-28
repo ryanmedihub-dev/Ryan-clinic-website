@@ -68,6 +68,7 @@ function EditDoctorContent() {
               city: "Delhi",
               yearsExperience: 15,
               proceduresCount: 5000,
+              successRate: "95%+",
               rating: 5.0,
               phoneNumber: "+91-9217958539",
               whatsappNumber: "+91-9217958539",
@@ -530,6 +531,16 @@ function EditDoctorContent() {
               value={formData.basicInfo?.proceduresCount ?? 0}
               onChange={(e) => handleNestedChange("basicInfo", "proceduresCount", parseInt(e.target.value) || 0)}
               className="w-full mt-2 p-2 border rounded-md"
+            />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Graft Success Rate</label>
+            <input
+              type="text"
+              value={formData.basicInfo?.successRate || "95%+"}
+              onChange={(e) => handleNestedChange("basicInfo", "successRate", e.target.value)}
+              className="w-full mt-2 p-2 border rounded-md"
+              placeholder="e.g. 95%+"
             />
           </div>
           <div className="w-full">

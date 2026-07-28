@@ -24,7 +24,7 @@ const emptyForm = {
   source: "Main Website",
 };
 
-export default function ContactForm() {
+export default function ContactForm({ plain = false, showHeader = true }) {
   const [formData, setFormData] = useState(emptyForm);
   const [loading, setLoading] = useState(false);
   const trackCTA = useTrackCTA();
@@ -82,11 +82,13 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="md:bg-white md:rounded-lg shadow-new stickyItem">
-      <div className="md:p-6 p-3 md:py-8">
-        <p className="md:text-[24px] text-xl font-semibold underline mb-5 text-center">
-          Book Your Free Consult Now!
-        </p>
+    <div className={plain ? "w-full" : "md:bg-white md:rounded-lg shadow-new stickyItem"}>
+      <div className={plain ? "w-full p-0" : "md:p-6 p-3 md:py-8"}>
+        {showHeader && !plain && (
+          <p className="md:text-[24px] text-xl font-semibold underline mb-5 text-center">
+            Book Your Free Consult Now!
+          </p>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
           <div className="grid grid-flow-col gap-4">

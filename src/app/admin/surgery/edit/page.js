@@ -68,6 +68,7 @@ function useToast() {
 
 const initialState = {
     pageName: "",
+    city: "",
     slug: "",
     status: "draft",
     seo: {
@@ -170,6 +171,7 @@ const initialState = {
         buttonText: { text: "", link: "", external: false },
     },
     consultation: {
+        backgroundImage: { image: "", imageAlt: "" },
         leftSide: {
             heading: "",
             description: "",
@@ -213,6 +215,7 @@ function EditSurgeryForm() {
                     ...initialState,
                     ...d,
                     pageName: d.pageName || "",
+                    city: d.city || "",
                     slug: d.slug || "",
                     seo: { ...initialState.seo, ...(d.seo || {}) },
                     hero: { ...initialState.hero, ...(d.hero || {}), stats: d.hero?.stats || [] },
@@ -239,6 +242,7 @@ function EditSurgeryForm() {
                     pricing: { ...initialState.pricing, ...(d.pricing || {}), pricingStats: d.pricing?.pricingStats || [] },
                     visitClinic: { ...initialState.visitClinic, ...(d.visitClinic || {}), informationCards: d.visitClinic?.informationCards || [] },
                     consultation: {
+                        backgroundImage: { ...initialState.consultation.backgroundImage, ...(d.consultation?.backgroundImage || {}) },
                         leftSide: { ...initialState.consultation.leftSide, ...(d.consultation?.leftSide || {}), contactCards: d.consultation?.leftSide?.contactCards || [] },
                         consultationFormConfig: { ...initialState.consultation.consultationFormConfig, ...(d.consultation?.consultationFormConfig || {}), servicesDropdown: d.consultation?.consultationFormConfig?.servicesDropdown || [] }
                     },
@@ -383,23 +387,37 @@ function EditSurgeryForm() {
                         </select>
                     </div>
                 </div>
-                <div className="w-full">
-                    <label className="block text-sm font-semibold text-gray-700">
-                        Slug (URL) — editing changes the public URL
-                    </label>
-                    <input
-                        type="text"
-                        value={formData.slug}
-                        onChange={(e) => handleTopLevelChange("slug", e.target.value
-                            .toLowerCase().replace(/[^\w\s-]/g, "").replace(/\s+/g, "-"))}
-                        className="w-full mt-2 p-2 border rounded-md font-mono"
-                        placeholder="e.g. hair-transplant-surgery-in-delhi"
-                    />
-                    {formData.slug && (
-                        <p className="text-xs text-gray-400 mt-1">
-                            URL preview: <span className="text-blue-600 font-mono">/surgery/{formData.slug}</span>
-                        </p>
-                    )}
+                <div className="flex gap-6 flex-col md:flex-row">
+                    <div className="w-full">
+                        <label className="block text-sm font-semibold text-gray-700">
+                            City
+                        </label>
+                        <input
+                            type="text"
+                            value={formData.city || ""}
+                            onChange={(e) => handleTopLevelChange("city", e.target.value)}
+                            className="w-full mt-2 p-2 border rounded-md"
+                            placeholder="e.g. Delhi"
+                        />
+                    </div>
+                    <div className="w-full">
+                        <label className="block text-sm font-semibold text-gray-700">
+                            Slug (URL) — editing changes the public URL
+                        </label>
+                        <input
+                            type="text"
+                            value={formData.slug}
+                            onChange={(e) => handleTopLevelChange("slug", e.target.value
+                                .toLowerCase().replace(/[^\w\s-]/g, "").replace(/\s+/g, "-"))}
+                            className="w-full mt-2 p-2 border rounded-md font-mono"
+                            placeholder="e.g. hair-transplant-surgery-in-delhi"
+                        />
+                        {formData.slug && (
+                            <p className="text-xs text-gray-400 mt-1">
+                                URL preview: <span className="text-blue-600 font-mono">/surgery/{formData.slug}</span>
+                            </p>
+                        )}
+                    </div>
                 </div>
 
                 {/* ─── SEO SECTION ─────────────────────────────────── */}
@@ -868,6 +886,13 @@ function EditSurgeryForm() {
                 {/* ─── CONSULTATION SECTION ────────────────────────── */}
                 <h3 className="text-2xl font-bold underline mt-10 mb-5">Consultation Section</h3>
                 <div className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Section Background Image (Ryan Clinic Photo)</label>
+                        <ImageUploader
+                            initialImage={formData.consultation?.backgroundImage?.image || ""}
+                            onUpload={(url) => handleNestedChange("consultation", "backgroundImage", { ...(formData.consultation?.backgroundImage || {}), image: url })}
+                        />
+                    </div>
                     <div className="flex gap-4 flex-col md:flex-row">
                         <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Left Side Heading</label><input type="text" value={formData.consultation.leftSide?.heading || ""} onChange={(e) => handleDeepChange("consultation", "leftSide", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
                         <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Left Side Description</label><textarea rows={3} value={formData.consultation.leftSide?.description || ""} onChange={(e) => handleDeepChange("consultation", "leftSide", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>

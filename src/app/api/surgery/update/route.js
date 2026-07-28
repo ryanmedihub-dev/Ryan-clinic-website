@@ -13,7 +13,9 @@ const handler = async (req) => {
 
     const {
       pageName,
+      city,
       slug: rawSlug,
+      status,
       seo,
       hero,
       introduction,
@@ -48,18 +50,6 @@ const handler = async (req) => {
       );
     }
 
-    if (
-      !seo || !hero || !introduction || !procedureScience || !safety ||
-      !techniques || !qualityBenchmarks || !procedureTimeline ||
-      !recoveryTimeline || !doctors || !pricing || !visitClinic ||
-      !consultation || !faq
-    ) {
-      return NextResponse.json(
-        { message: "Please provide all required surgery page data." },
-        { status: 400 }
-      );
-    }
-
     const surgeryPage = await SurgeryPageModel.findOne({ slug: currentSlug });
     if (!surgeryPage) {
       return NextResponse.json(
@@ -87,21 +77,23 @@ const handler = async (req) => {
     }
 
     surgeryPage.pageName = pageName.trim();
+    if (city !== undefined) surgeryPage.city = city.trim();
     surgeryPage.slug = newSlug;
-    surgeryPage.seo = seo;
-    surgeryPage.hero = hero;
-    surgeryPage.introduction = introduction;
-    surgeryPage.procedureScience = procedureScience;
-    surgeryPage.safety = safety;
-    surgeryPage.techniques = techniques;
-    surgeryPage.qualityBenchmarks = qualityBenchmarks;
-    surgeryPage.procedureTimeline = procedureTimeline;
-    surgeryPage.recoveryTimeline = recoveryTimeline;
-    surgeryPage.doctors = doctors;
-    surgeryPage.pricing = pricing;
-    surgeryPage.visitClinic = visitClinic;
-    surgeryPage.consultation = consultation;
-    surgeryPage.faq = faq;
+    if (status !== undefined) surgeryPage.status = status;
+    surgeryPage.seo = seo || {};
+    surgeryPage.hero = hero || {};
+    surgeryPage.introduction = introduction || {};
+    surgeryPage.procedureScience = procedureScience || {};
+    surgeryPage.safety = safety || {};
+    surgeryPage.techniques = techniques || {};
+    surgeryPage.qualityBenchmarks = qualityBenchmarks || {};
+    surgeryPage.procedureTimeline = procedureTimeline || {};
+    surgeryPage.recoveryTimeline = recoveryTimeline || {};
+    surgeryPage.doctors = doctors || {};
+    surgeryPage.pricing = pricing || {};
+    surgeryPage.visitClinic = visitClinic || {};
+    surgeryPage.consultation = consultation || {};
+    surgeryPage.faq = faq || {};
 
     await surgeryPage.save();
 

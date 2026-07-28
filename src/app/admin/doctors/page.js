@@ -76,7 +76,8 @@ export default function DoctorListingPage() {
       const data = await res.json();
       if (res.ok) {
         toast.success("Deleted", data.message || "Doctor page deleted successfully.");
-        fetchDoctors();
+        setDoctors((prev) => prev.filter((d) => d._id !== id));
+        setTotal((prev) => Math.max(0, prev - 1));
       } else {
         toast.error("Delete Failed", data.message || "Failed to delete doctor.");
       }

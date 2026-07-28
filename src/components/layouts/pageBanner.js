@@ -14,6 +14,11 @@ export default function PageBanner({
   stats,
 }) {
   const trackCTA = useTrackCTA();
+  const breadcrumbText = typeof breadcrumb === "string" 
+    ? breadcrumb 
+    : Array.isArray(breadcrumb)
+    ? breadcrumb.map((b) => (typeof b === "string" ? b : b?.label || b?.name || "")).filter(Boolean).join(" / ")
+    : "";
   return (
     <header className="relative w-full overflow-hidden">
       <div className="hidden md:block">
@@ -59,7 +64,7 @@ export default function PageBanner({
                     className="text-xs uppercase tracking-widest text-white/60"
                     suppressHydrationWarning
                   >
-                    Home / hair transplant / {breadcrumb}
+                    Home / hair transplant / {breadcrumbText}
                   </p>
                 </div>
 
@@ -174,7 +179,7 @@ export default function PageBanner({
             className="text-[9px] uppercase tracking-[2.5px] text-white/45"
             suppressHydrationWarning
           >
-            Home / Hair Transplant / {breadcrumb}
+            Home / Hair Transplant / {breadcrumbText}
           </p>
         </div>
 

@@ -5,9 +5,6 @@ import Doctor from "@/models/Doctors";
 
 const handler = async (req) => {
     try {
-        const authError = await requireAdmin();
-        if (authError) return authError;
-
         const { searchParams } = new URL(req.url);
 
         const id = searchParams.get("id");

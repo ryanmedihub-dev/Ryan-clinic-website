@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import DoctorsPageClient from "./DoctorsPageClient";
 import PageBanner from "@/components/layouts/pageBanner";
 import { doctors as staticDoctors } from "@/lib/doctorsData";
 import Doctor from "@/models/Doctors";
+import { DBConnection } from "@/lib/db";
 
 // Revalidate page dynamically
 export const revalidate = 60;
@@ -18,10 +20,10 @@ function getStaticDoctorBySlug(slug) {
   );
 }
 
-// Normalize MongoDB document to UI format
 function normalizeDoctor(dbDoc) {
   if (!dbDoc) return null;
   const b = dbDoc.basicInfo || {};
+  const s = dbDoc.surgeonProfile || {};
   return {
     ...dbDoc,
     name: b.doctorName || dbDoc.pageName || "Dr. Specialist",
@@ -29,25 +31,33 @@ function normalizeDoctor(dbDoc) {
     designation: b.designation || "Hair Transplant Surgeon",
     location: b.city || "Delhi",
     city: b.city || "Delhi",
-    experience: b.yearsExperience ? `${b.yearsExperience}+ Years` : "15+ Years",
+    experience: b.yearsExperience ? `${b.yearsExperience}+ Yrs` : "15+ Yrs",
     procedures: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : "5,000+",
+    proceduresCount: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : "7,500+",
+    successRate: b.successRate || "95%+",
     rating: b.rating || 5.0,
-    about: dbDoc.surgeonProfile?.about || "",
+    about: s.about || "",
+    biography: s.biography || "",
+    philosophy: s.philosophy || "",
     languages: b.languages?.length ? b.languages : ["English", "Hindi"],
-    specialities: ["Sapphire FUE", "THI Hair Restoration", "Beard Transplant"],
-    qualifications: [
+    specialities: s.specialities?.length ? s.specialities : ["Sapphire FUE", "THI Hair Restoration", "Beard Transplant"],
+    qualifications: s.qualifications?.length ? s.qualifications : [
       { degree: "MBBS", institute: "Recognized Medical Council" },
       { degree: "Turkey Certification", institute: "International Hair Restoration Association" },
     ],
+    certifications: s.certifications?.length ? s.certifications : [],
+    achievements: s.achievements?.length ? s.achievements.map(a => typeof a === "string" ? a : `${a.title || ""}: ${a.description || ""}`) : [],
+    memberships: s.memberships?.length ? s.memberships : [],
   };
 }
 
-async function getDoctorData(slug) {
+const getDoctorData = cache(async (slug) => {
   try {
     const cleanSlug = slug.toLowerCase().trim();
     let dbDoctor = null;
 
     try {
+      await DBConnection();
       dbDoctor = await Doctor.findOne({
         slug: cleanSlug,
         deletedAt: null,
@@ -67,7 +77,7 @@ async function getDoctorData(slug) {
     console.error("Error fetching doctor data:", err);
     return getStaticDoctorBySlug(slug);
   }
-}
+});
 
 // ─── Dynamic Metadata ────────────────────────────────────────────────────────
 export async function generateMetadata({ params }) {
@@ -320,6 +330,29 @@ export default async function DoctorPage({ params }) {
     );
   }
 
+  let goodDoctorTraits = GOOD_DOCTOR_TRAITS;
+  if (doctor.doctorStandards?.cards?.length) {
+    goodDoctorTraits = doctor.doctorStandards.cards.map((c) => ({
+      title: c.title || "",
+      desc: c.description || "",
+    }));
+  }
+
+  let redFlags = RED_FLAGS;
+  if (doctor.warningSigns?.cards?.length) {
+    redFlags = doctor.warningSigns.cards.map((c) =>
+      typeof c === "string" ? c : `${c.title || ""}: ${c.description || ""}`
+    );
+  }
+
+  let faqs = FAQS;
+  if (doctor.faq?.faqs?.length) {
+    faqs = doctor.faq.faqs.map((f) => ({
+      q: f.question || f.q || "",
+      a: f.answer || f.a || "",
+    }));
+  }
+
   const bannerTitle = doctor.hero?.title || doctor.name;
   const bannerDesc = doctor.hero?.description || `${doctor.designation} at Ryan Clinic. Experienced hair restoration specialist.`;
   const bannerImage = doctor.hero?.heroImage?.image || "/uploads/1752667815707-fue-banner_ro9ae6.webp";
@@ -336,7 +369,7 @@ export default async function DoctorPage({ params }) {
       />
       <DoctorsPageClient
         data={{
-          goodDoctorTraits: GOOD_DOCTOR_TRAITS,
+          goodDoctorTraits,
           credentialsList: CREDENTIALS_LIST,
           verifySteps,
           comparisonRows,
@@ -344,10 +377,10 @@ export default async function DoctorPage({ params }) {
           doctorStages,
           questionsToAsk,
           greatDoctorTraits,
-          redFlags: RED_FLAGS,
+          redFlags,
           procedures: PROCEDURES,
           nearbyAreas: NEARBY_AREAS,
-          faqs: FAQS,
+          faqs,
           doctor,
         }}
       />

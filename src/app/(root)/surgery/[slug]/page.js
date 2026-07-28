@@ -1,16 +1,17 @@
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import { DBConnection } from "@/lib/db";
 import SurgeryPageModel from "@/models/surgeryPage";
 import SurgeryPageClient from "@/components/surgery/SurgeryPageClient";
 
 // ─── Data Fetching ────────────────────────────────────────────────────────────
 
-async function getSurgeryPage(slug) {
+const getSurgeryPage = cache(async (slug) => {
   await DBConnection();
   const page = await SurgeryPageModel.findOne({ slug }).lean();
   // Serialize Mongoose document to a plain JS object before passing to client
   return page ? JSON.parse(JSON.stringify(page)) : null;
-}
+});
 
 // ─── SEO Metadata ─────────────────────────────────────────────────────────────
 

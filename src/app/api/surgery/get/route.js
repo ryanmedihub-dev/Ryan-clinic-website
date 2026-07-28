@@ -5,9 +5,6 @@ import { requireAdmin } from "@/lib/requireAdmin";
 
 const handler = async (req) => {
     try {
-        const authError = await requireAdmin();
-        if (authError) return authError;
-
         const { searchParams } = new URL(req.url);
 
         const slug = searchParams.get("slug");

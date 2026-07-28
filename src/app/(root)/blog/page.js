@@ -7,6 +7,8 @@ import BlogCTAButtons from "./BlogCTAButtons";
 
 
 
+export const revalidate = 60;
+
 export const metadata = {
   title: "Hair Transplant Blog | Expert Tips & Insights | Ryan Clinic",
   description:

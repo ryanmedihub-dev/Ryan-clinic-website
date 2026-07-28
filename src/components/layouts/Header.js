@@ -73,7 +73,7 @@ const Header = () => {
         },
       ]
       : []),
-    { name: "Cost", href: "/hair-transplant-cost-in-delhi" },
+    { name: "Cost", href: "/cost" },
     { name: "Gallery", href: "/hair-transplant-results-before-after-gallery" },
     { name: "Contact us", href: "/contact" },
   ];

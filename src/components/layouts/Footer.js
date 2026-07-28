@@ -503,8 +503,14 @@ export default function Footer() {
           information and does not replace a personal medical consultation.
           Results vary between individuals.
           <br /> Please consult a qualified hair transplant surgeon to assess
-          your suitability. [Link to full medical disclaimer + privacy
-          policy.]{" "}
+          your suitability. Read our{" "}
+          <Link
+            href="/privacy-policy"
+            style={{ color: "#6b7280", textDecoration: "underline" }}
+          >
+            Privacy Policy
+          </Link>
+          .
         </p>
         <p className="text-xs text-center mt-2" style={{ color: "#4b5563" }}>
           India's only Turkey Sapphire FUE Hair Transplant Clinic

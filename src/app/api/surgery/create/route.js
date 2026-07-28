@@ -13,7 +13,9 @@ const handler = async (req) => {
 
     const {
       pageName,
+      city,
       slug: rawSlug,
+      status,
       seo,
       hero,
       introduction,
@@ -37,17 +39,7 @@ const handler = async (req) => {
       );
     }
 
-    if (
-      !seo || !hero || !introduction || !procedureScience || !safety ||
-      !techniques || !qualityBenchmarks || !procedureTimeline ||
-      !recoveryTimeline || !doctors || !pricing || !visitClinic ||
-      !consultation || !faq
-    ) {
-      return NextResponse.json(
-        { message: "Please provide all required surgery page data." },
-        { status: 400 }
-      );
-    }
+
 
     // Use provided slug, or auto-generate from page name
     const slug = rawSlug ? generateSlug(rawSlug) : generateSlug(pageName);
@@ -63,21 +55,23 @@ const handler = async (req) => {
 
     const doc = new SurgeryPageModel({
       pageName: pageName.trim(),
+      city: (city || "").trim(),
       slug,
-      seo,
-      hero,
-      introduction,
-      procedureScience,
-      safety,
-      techniques,
-      qualityBenchmarks,
-      procedureTimeline,
-      recoveryTimeline,
-      doctors,
-      pricing,
-      visitClinic,
-      consultation,
-      faq,
+      status: status || "draft",
+      seo: seo || {},
+      hero: hero || {},
+      introduction: introduction || {},
+      procedureScience: procedureScience || {},
+      safety: safety || {},
+      techniques: techniques || {},
+      qualityBenchmarks: qualityBenchmarks || {},
+      procedureTimeline: procedureTimeline || {},
+      recoveryTimeline: recoveryTimeline || {},
+      doctors: doctors || {},
+      pricing: pricing || {},
+      visitClinic: visitClinic || {},
+      consultation: consultation || {},
+      faq: faq || {},
     });
 
     await doc.save();

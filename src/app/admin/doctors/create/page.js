@@ -36,6 +36,7 @@ const initialState = {
     city: "Delhi",
     yearsExperience: 0,
     proceduresCount: 0,
+    successRate: "95%+",
     rating: 5.0,
     phoneNumber: "",
     whatsappNumber: "",
@@ -464,6 +465,16 @@ export default function CreateDoctorPage() {
               value={formData.basicInfo.proceduresCount}
               onChange={(e) => handleNestedChange("basicInfo", "proceduresCount", parseInt(e.target.value) || 0)}
               className="w-full mt-2 p-2 border rounded-md"
+            />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Graft Success Rate</label>
+            <input
+              type="text"
+              value={formData.basicInfo.successRate || "95%+"}
+              onChange={(e) => handleNestedChange("basicInfo", "successRate", e.target.value)}
+              className="w-full mt-2 p-2 border rounded-md"
+              placeholder="e.g. 95%+"
             />
           </div>
           <div className="w-full">

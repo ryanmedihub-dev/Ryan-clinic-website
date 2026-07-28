@@ -69,7 +69,7 @@ export const metadata = {
       },
     ],
     publishedTime: "2024-01-01T00:00:00+05:30",
-    modifiedTime: new Date().toISOString(),
+    modifiedTime: "2026-01-01T00:00:00+05:30",
   },
   twitter: {
     card: "summary_large_image",
@@ -107,7 +107,7 @@ export const metadata = {
     distribution: "global",
     yahooSeeker: "index, follow",
     msnbot: "index, follow",
-    "article:modified_time": new Date().toISOString(),
+    "article:modified_time": "2026-01-01T00:00:00+05:30",
     "article:publisher": "https://www.facebook.com/RyanClinic",
     "format-detection": "telephone=no",
     copyright: "clinicryan.com",

@@ -2,6 +2,7 @@
 const nextConfig = {
   compress: true,
   poweredByHeader: false,
+  turbopack: {},
 
   // Prevent the dev-server file watcher from triggering HMR when you create
   // new folders / files in directories that aren't part of your source code.
@@ -39,13 +40,6 @@ const nextConfig = {
 
   async headers() {
     return [
-      // Long-term cache for hashed Next.js static assets
-      {
-        source: "/_next/static/(.*)",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
-      },
       // 1-day cache for uploads folder (images, logo, etc.)
       {
         source: "/uploads/(.*)",
