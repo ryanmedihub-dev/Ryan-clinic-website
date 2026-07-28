@@ -88,18 +88,17 @@ const nextConfig = {
         destination: "/hair-transplant-results-before-after-gallery",
         permanent: true,
       },
-<<<<<<< HEAD
       // Treatment content pages moved to the shared /treatments/[slug] dynamic route
       {
         source: "/hair-fall-loss-treatment-in-delhi",
         destination: "/treatments/hair-fall-loss-treatment-in-delhi",
-=======
+        permanent: true,
+      },
       // The old static surgery page has been consolidated into the dynamic CMS route.
       // Permanent 301 preserves SEO equity and existing backlinks.
       {
         source: "/hair-transplant-surgery-in-delhi",
         destination: "/surgery/hair-transplant-surgery-in-delhi",
->>>>>>> 16627eee7fd085ec874508caf57edb22460df97f
         permanent: true,
       },
     ];

@@ -21,10 +21,7 @@ import {
   Image,
   Scissors,
   Activity,
-<<<<<<< HEAD
-=======
   DollarSign,
->>>>>>> 16627eee7fd085ec874508caf57edb22460df97f
   Stethoscope,
 } from "lucide-react";
 
@@ -68,13 +65,10 @@ function LayoutWrapper({ children }) {
       setActiveTab("Gallery");
     } else if (pathname.startsWith("/admin/surgery")) {
       setActiveTab("Surgery");
-<<<<<<< HEAD
     } else if (pathname.startsWith("/admin/hair-fall")) {
       setActiveTab("Hair Fall Treatment");
-=======
     } else if (pathname.startsWith("/admin/doctors")) {
       setActiveTab("Doctors");
->>>>>>> 16627eee7fd085ec874508caf57edb22460df97f
     } else if (pathname.startsWith("/admin/tracker")) {
       setActiveTab("Tracker");
     } else if (pathname.startsWith("/admin/cost")) {
@@ -109,12 +103,9 @@ function LayoutWrapper({ children }) {
     },
     { name: "Gallery", icon: Image, href: "/admin/gallery" },
     { name: "Surgery", icon: Scissors, href: "/admin/surgery" },
-<<<<<<< HEAD
     { name: "Hair Fall Treatment", icon: Stethoscope, href: "/admin/hair-fall" },
-=======
     { name: "Cost", icon: DollarSign, href: "/admin/cost" },
     { name: "Surgeon", icon: Stethoscope, href: "/admin/surgeon" },
->>>>>>> 16627eee7fd085ec874508caf57edb22460df97f
     { name: "Tracker", icon: Activity, href: "/admin/tracker" },
   ];
 
