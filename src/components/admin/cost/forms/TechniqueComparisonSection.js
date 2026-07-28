@@ -43,7 +43,7 @@ export default function TechniqueComparisonSection({
             value={comp.heading || ""}
             onChange={(e) => updateField("techniqueComparison.heading", e.target.value)}
             className="w-full mt-2 p-2 border rounded-md"
-            placeholder="e.g. FUE vs DHI vs FUT Cost & Results"
+            placeholder="e.g. FUE vs Turkish Technique vs FUT Cost & Results"
           />
         </div>
       </div>

@@ -17,7 +17,7 @@ const credentials = [
       </svg>
     ),
     title: "Turkey-Certified Techniques",
-    body: "Our doctors trained at Turkey's top hair restoration institutes and are certified in Sapphire FUE and DHI — techniques unavailable at any other Indian clinic.",
+    body: "Our doctors trained at Turkey's top hair restoration institutes and are certified in Sapphire FUE and Turkish Technique — techniques unavailable at any other Indian clinic.",
   },
   {
     icon: (

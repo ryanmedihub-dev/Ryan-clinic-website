@@ -18,7 +18,7 @@ export const doctors = [
       { degree: "MS – General Surgery", institute: "PGIMER, Chandigarh" },
       { degree: "Fellowship – Hair Restoration", institute: "Istanbul, Turkey" },
     ],
-    specializations: ["Turkey Sapphire FUE", "DHI Choi Pen", "Hairline Design", "Crown Restoration", "High-Density FUE"],
+    specializations: ["Turkey Sapphire FUE", Turkish Technique Choi Pen", "Hairline Design", "Crown Restoration", "High-Density FUE"],
     certifications: [
       "Turkey Sapphire FUE Certification — Istanbul Hair Institute",
       "NABH-Certified Operating Surgeon",

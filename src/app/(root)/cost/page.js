@@ -88,7 +88,7 @@ export default async function CostIndexPage() {
       <PageBanner
         breadcrumb="Hair Transplant Cost"
         title="Hair Transplant Cost Guide & City Pricing"
-        description="Transparent Per-Graft Pricing · 0% Interest EMI · Doctor-Led Sapphire FUE & DHI · Free Scalp Analysis"
+        description="Transparent Per-Graft Pricing · 0% Interest EMI · Doctor-Led Sapphire FUE & Turkish Technique · Free Scalp Analysis"
         bgImage="/uploads/1752667815707-fue-banner_ro9ae6.webp"
         alt="Hair transplant cost guide — Ryan Clinic pricing"
       />

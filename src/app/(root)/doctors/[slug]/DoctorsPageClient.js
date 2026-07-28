@@ -382,8 +382,8 @@ export default function DoctorPageClient({ data }) {
                                         },
                                         {
                                             title: "Technique Certification",
-                                            hint: "Sapphire FUE & DHI Choi Pen",
-                                            desc: "Specific advanced certification in Sapphire FUE and DHI techniques personally performed by the doctor.",
+                                            hint: "Sapphire FUE & Turkish Technique Choi Pen",
+                                            desc: "Specific advanced certification in Sapphire FUE and Turkish Technique techniques personally performed by the doctor.",
                                             icon: <Award className="w-4 h-4 text-[#D32F2F]" />,
                                             image: "/uploads/service-two.jpg",
                                         },
@@ -865,8 +865,8 @@ export default function DoctorPageClient({ data }) {
                             {
                                 tag: "TECHNIQUE & PLANNING",
                                 question: "Which hair restoration technique is recommended for my hairline, and why?",
-                                answer: "A genuine surgeon customises the technique (Sapphire FUE vs DHI Choi Pen) according to graft density needs, hairline aesthetics, and donor hair caliber rather than pushing a one-size-fits-all package.",
-                                ryanStandard: "Customised Sapphire FUE & DHI combined protocols tailored to your face structure.",
+                                answer: "A genuine surgeon customises the technique (Sapphire FUE vs Turkish Technique Choi Pen) according to graft density needs, hairline aesthetics, and donor hair caliber rather than pushing a one-size-fits-all package.",
+                                ryanStandard: "Customised Sapphire FUE & Turkish Technique combined protocols tailored to your face structure.",
                             },
                             {
                                 tag: "CREDENTIAL VERIFICATION",

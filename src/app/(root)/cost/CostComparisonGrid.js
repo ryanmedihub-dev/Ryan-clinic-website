@@ -16,7 +16,7 @@ const COMPARISON_DATA = [
     highlight: true,
   },
   {
-    technique: "DHI (Choi Pen)",
+    technique: Turkish Technique (Choi Pen)",
     tag: "Gold Standard",
     perGraft: "₹60 – ₹120",
     scarring: "Zero Linear Scar",
@@ -74,7 +74,7 @@ export default function CostComparisonGrid() {
               Comparing Techniques &amp; <span className="text-[#D32F2F]">Per-Graft Rates</span>
             </h2>
             <p className="text-gray-600 text-sm md:text-base mt-3 max-w-2xl leading-relaxed">
-              Understand why Sapphire FUE and DHI command premium per-graft pricing due to blade precision, follicle survival, and rapid healing.
+              Understand why Sapphire FUE and Turkish Technique command premium per-graft pricing due to blade precision, follicle survival, and rapid healing.
             </p>
           </div>
         </div>

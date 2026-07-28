@@ -33,7 +33,7 @@ export async function generateMetadata() {
     },
     robots: seo.robots || "index, follow",
     openGraph: {
-      title: seo.metaTitle || page?.title || "Best Hair Transplant Surgeon in Delhi — Doctor-Led FUE & DHI | Ryan Clinic",
+      title: seo.metaTitle || page?.title || "Best Hair Transplant Surgeon in Delhi — Doctor-Led FUE & Turkish Technique | Ryan Clinic",
       description:
         seo.metaDescription ||
         "Why surgical skill decides your result, what to look for, and the surgeon behind Ryan Clinic's natural, lasting hair transplants in Delhi.",

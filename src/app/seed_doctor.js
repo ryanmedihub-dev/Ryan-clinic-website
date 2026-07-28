@@ -34,7 +34,7 @@ const drHimanshuJawla = {
     useGlobalSEO: false,
   },
   hero: {
-    description: "100% Doctor-Led Sapphire FUE & DHI Hair Restoration performed personally by Dr. Himanshu Jawla with high-density natural hairline design.",
+    description: "100% Doctor-Led Sapphire FUE & Turkish Technique Hair Restoration performed personally by Dr. Himanshu Jawla with high-density natural hairline design.",
     heroImage: { image: "/uploads/turkey-doctor.jpg", alt: "Dr. Himanshu Jawla Hero" },
     breadcrumbs: [
       { title: "Home", url: "/" },
@@ -78,7 +78,7 @@ const drHimanshuJawla = {
     description: "Verified medical degrees and advanced aesthetic surgery certifications.",
     tabs: [
       { title: "MBBS & Post Graduate Surgery", icon: "GraduationCap", description: "Registered medical doctor with extensive surgical training.", ctaText: "Verify Medical Registration", ctaLink: "https://www.nmc.org.in/" },
-      { title: "Advanced FUE & DHI Fellowship", icon: "Award", description: "Specialized hands-on fellowship in Istanbul, Turkey for Sapphire micro-slit technique.", ctaText: "View Fellowship Info", ctaLink: "#" },
+      { title: "Advanced FUE & Turkish Technique Fellowship", icon: "Award", description: "Specialized hands-on fellowship in Istanbul, Turkey for Sapphire micro-slit technique.", ctaText: "View Fellowship Info", ctaLink: "#" },
       { title: "Cosmetic & Hair Restoration Association", icon: "Globe", description: "Active participant in national and international hair restoration symposia.", ctaText: "Verify Credentials", ctaLink: "#" },
     ],
     bottomCTA: { badge: "Certified Hair Surgeon", heading: "Get Expert Hair Advice", description: "Consult Dr. Himanshu Jawla for a comprehensive scalp analysis.", buttonText: "Schedule Consultation", buttonLink: "#consultation" },
@@ -117,7 +117,7 @@ const drHimanshuJawla = {
   surgeonProfile: {
     sectionLabel: "Surgeon Profile",
     heading: "About Dr. Himanshu Jawla",
-    about: "Dr. Himanshu Jawla is a distinguished hair transplant and cosmetic surgeon with over 14 years of clinical experience. Specializing in Sapphire FUE and DHI hair restoration, Dr. Jawla has successfully performed over 4,800 hair restoration procedures for patients from India and abroad.",
+    about: "Dr. Himanshu Jawla is a distinguished hair transplant and cosmetic surgeon with over 14 years of clinical experience. Specializing in Sapphire FUE and Turkish Technique hair restoration, Dr. Jawla has successfully performed over 4,800 hair restoration procedures for patients from India and abroad.",
     philosophy: "Hair restoration must balance surgical density with natural aesthetic harmony. Every hairline should be custom-designed to match the patient's facial geometry and age profile.",
     whyChooseDoctor: [
       { icon: "UserCheck", title: "Direct Doctor Care", description: "Consultation and procedure handled personally by Dr. Jawla." },
@@ -151,7 +151,7 @@ const drHimanshuJawla = {
       { icon: "MessageSquare", title: "WhatsApp Direct", value: "+91-9217958539", link: "https://wa.me/919217958539" },
       { icon: "Mail", title: "Email Us", value: "info@clinicryan.com", link: "mailto:info@clinicryan.com" },
     ],
-    form: { title: "Book Appointment with Dr. Jawla", services: ["Sapphire FUE Hair Transplant", "DHI Direct Implantation", "Beard Transplant", "PRP Hair Loss Therapy"], submitButtonText: "Book Appointment Now" },
+    form: { title: "Book Appointment with Dr. Jawla", services: ["Sapphire FUE Hair Transplant", Turkish Technique Direct Implantation", "Beard Transplant", "PRP Hair Loss Therapy"], submitButtonText: "Book Appointment Now" },
   },
   questionsToAsk: {
     sectionLabel: "Questions to Ask",
