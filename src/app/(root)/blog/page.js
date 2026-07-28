@@ -54,7 +54,7 @@ function FeaturedCard({ blog }) {
       }}
     >
       {/* Image */}
-      <div className="relative w-full lg:w-3/5 h-64 sm:h-80 lg:h-[420px] shrink-0 overflow-hidden">
+      <div className="relative w-full lg:w-3/5 h-64 sm:h-80 lg:h-105 shrink-0 overflow-hidden">
         <Image
           src={blog.pageImageUrl || "/uploads/banner.jpg"}
           alt={blog.pageImageAlt || blog.blogTitle}

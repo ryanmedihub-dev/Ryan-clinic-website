@@ -21,6 +21,7 @@ import {
   Image,
   Scissors,
   Activity,
+  Stethoscope,
 } from "lucide-react";
 
 
@@ -63,6 +64,8 @@ function LayoutWrapper({ children }) {
       setActiveTab("Gallery");
     } else if (pathname.startsWith("/admin/surgery")) {
       setActiveTab("Surgery");
+    } else if (pathname.startsWith("/admin/hair-fall")) {
+      setActiveTab("Hair Fall Treatment");
     } else if (pathname.startsWith("/admin/tracker")) {
       setActiveTab("Tracker");
     } else if (pathname.startsWith("/admin/help")) {
@@ -92,6 +95,7 @@ function LayoutWrapper({ children }) {
     },
     { name: "Gallery", icon: Image, href: "/admin/gallery" },
     { name: "Surgery", icon: Scissors, href: "/admin/surgery" },
+    { name: "Hair Fall Treatment", icon: Stethoscope, href: "/admin/hair-fall" },
     { name: "Tracker", icon: Activity, href: "/admin/tracker" },
   ];
 

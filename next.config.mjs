@@ -71,6 +71,12 @@ const nextConfig = {
         destination: "/hair-transplant-results-before-after-gallery",
         permanent: true,
       },
+      // Treatment content pages moved to the shared /treatments/[slug] dynamic route
+      {
+        source: "/hair-fall-loss-treatment-in-delhi",
+        destination: "/treatments/hair-fall-loss-treatment-in-delhi",
+        permanent: true,
+      },
     ];
   },
 };

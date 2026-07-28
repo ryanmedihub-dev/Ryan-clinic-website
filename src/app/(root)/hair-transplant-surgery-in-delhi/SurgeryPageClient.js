@@ -10,7 +10,7 @@ import {
   AnimatedCard,
   Reveal,
   RevealSection,
-} from "./AnimatedPage";
+} from "@/components/animations/AnimatedPage";
 import {
   Dna,
   Hourglass,
