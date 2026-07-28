@@ -24,7 +24,7 @@ const emptyForm = {
   source: "Main Website",
 };
 
-export default function ContactForm() {
+export default function ContactForm({ plain = false, showHeader = true }) {
   const [formData, setFormData] = useState(emptyForm);
   const [loading, setLoading] = useState(false);
   const trackCTA = useTrackCTA();
@@ -40,6 +40,12 @@ export default function ContactForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const phoneClean = (formData.phone || "").replace(/[\s-]/g, "");
+    if (!/^\+?[0-9]{10,15}$/.test(phoneClean)) {
+      alert("⚠️ Please enter a valid 10-digit phone number.");
+      return;
+    }
 
     setLoading(true);
 
@@ -76,11 +82,13 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="md:bg-white md:rounded-lg shadow-new stickyItem">
-      <div className="md:p-6 p-3 md:py-8">
-        <p className="md:text-[24px] text-xl font-semibold underline mb-5 text-center">
-          Book Your Free Consult Now!
-        </p>
+    <div className={plain ? "w-full" : "md:bg-white md:rounded-lg shadow-new stickyItem"}>
+      <div className={plain ? "w-full p-0" : "md:p-6 p-3 md:py-8"}>
+        {showHeader && !plain && (
+          <p className="md:text-[24px] text-xl font-semibold underline mb-5 text-center">
+            Book Your Free Consult Now!
+          </p>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
           <div className="grid grid-flow-col gap-4">
@@ -107,6 +115,9 @@ export default function ContactForm() {
             value={formData.phone}
             onChange={handleChange}
             required
+            minLength={10}
+            maxLength={15}
+            pattern="[0-9+\s-]{10,15}"
           />
 
           <Select

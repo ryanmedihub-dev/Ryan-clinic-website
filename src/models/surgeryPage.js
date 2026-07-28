@@ -618,6 +618,15 @@ const doctorSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
+    bio: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    specializations: {
+      type: [String],
+      default: [],
+    },
     profileButtonText: {
       type: String,
       trim: true,
@@ -813,6 +822,10 @@ const consultationFormConfigSchema = new mongoose.Schema(
 
 const consultationSectionSchema = new mongoose.Schema(
   {
+    backgroundImage: {
+      type: imageFieldSchema,
+      default: () => ({}),
+    },
     leftSide: {
       type: consultationLeftSchema,
       default: () => ({}),
@@ -890,8 +903,9 @@ const surgeryPageSchema = new mongoose.Schema(
     },
     city: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
+      default: "",
     },
     status: {
       type: String,

@@ -4,14 +4,14 @@ import { useState } from "react";
 import useTrackCTA from "@/lib/useTrackCTA";
 
 const WA =
-  "https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20have%20a%20question%20about%20hair%20transplant%20surgery";
+  "https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20have%20a%20question%20about%20hair%20transplant%20cost%20in%20Delhi";
 
-export default function FAQSection({ faqs = [] }) {
-  const [open, setOpen] = useState(null);
+export default function FAQCostSection({ faqs = [] }) {
+  const [open, setOpen] = useState(0);
   const trackCTA = useTrackCTA();
 
   return (
-    <section className="py-16 md:py-24" style={{ background: "var(--bg-main)" }}>
+    <section className="py-16 md:py-24" style={{ background: "var(--bg-main, #ffffff)" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* ── Two-column layout ── */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-16 items-start">
@@ -22,60 +22,57 @@ export default function FAQSection({ faqs = [] }) {
             <div className="flex items-center gap-3 mb-5">
               <span
                 className="block w-8 h-px"
-                style={{ background: "var(--primary-red)" }}
+                style={{ background: "var(--primary-red, #D32F2F)" }}
               />
               <span
-                className="text-[11px] font-semibold tracking-[0.22em] uppercase"
-                style={{ color: "var(--primary-red)" }}
+                className="text-[11px] font-bold tracking-[0.22em] uppercase"
+                style={{ color: "var(--primary-red, #D32F2F)" }}
               >
-                Got Questions?
+                Cost &amp; Pricing FAQs
               </span>
             </div>
 
             <h2
               className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-5"
-              style={{ color: "var(--text-primary)" }}
+              style={{ color: "var(--text-primary, #111827)" }}
             >
               Frequently
               <br />
-              Asked{" "}
-              <span style={{ color: "var(--primary-red)" }}>Questions</span>
+              Asked <span style={{ color: "var(--primary-red, #D32F2F)" }}>Questions</span>
             </h2>
 
             <p
               className="text-sm md:text-base leading-relaxed mb-8"
-              style={{ color: "var(--text-muted)" }}
+              style={{ color: "var(--text-muted, #4B5563)" }}
             >
-              Everything you need to know about hair transplant surgery at Ryan
-              Clinic — costs, procedure, recovery and results. Still have a
-              question? Our doctors answer within 24 hours.
+              Everything you need to know about hair transplant costs in Delhi — per-graft pricing, EMI plans, procedure breakdown, and hidden charge guarantees.
             </p>
 
-            {/* Stats */}
+            {/* Trust stats card */}
             <div
-              className="rounded-2xl p-6 mb-6"
+              className="rounded-2xl p-6 mb-6 shadow-sm"
               style={{
-                background: "var(--bg-card)",
-                border: "1px solid var(--border-light)",
+                background: "var(--bg-card, #F9FAFB)",
+                border: "1px solid var(--border-light, #E5E7EB)",
               }}
             >
               <div className="grid grid-cols-2 gap-5">
                 {[
-                  { num: "95%+", label: "Graft Survival Rate" },
-                  { num: "4.9★", label: "Google Rating" },
-                  { num: "10K+", label: "Happy Patients" },
-                  { num: "0%", label: "EMI Available" },
+                  { num: "₹40–₹120", label: "Per Graft Price" },
+                  { num: "0% EMI", label: "Interest-Free Plans" },
+                  { num: "100%", label: "Written Cost Guarantee" },
+                  { num: "18 Months", label: "Free Follow-Up" },
                 ].map((s) => (
                   <div key={s.label}>
                     <p
-                      className="text-2xl font-bold"
-                      style={{ color: "var(--text-primary)" }}
+                      className="text-xl md:text-2xl font-bold"
+                      style={{ color: "var(--primary-red, #D32F2F)" }}
                     >
                       {s.num}
                     </p>
                     <p
                       className="text-[11px] font-medium mt-0.5"
-                      style={{ color: "var(--text-muted)" }}
+                      style={{ color: "var(--text-muted, #6B7280)" }}
                     >
                       {s.label}
                     </p>
@@ -89,11 +86,11 @@ export default function FAQSection({ faqs = [] }) {
               href={WA}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 font-semibold text-sm py-3.5 px-7 rounded-xl text-white w-full justify-center transition-opacity hover:opacity-90"
-              style={{ background: "var(--primary-red)" }}
-              onClick={() => trackCTA({ type: "whatsapp", ctaName: "FAQ Ask a Doctor", buttonLocation: "FAQ Section" })}
+              className="inline-flex items-center gap-2 font-semibold text-sm py-4 px-7 rounded-xl text-white w-full justify-center transition-all shadow-lg hover:opacity-95"
+              style={{ background: "var(--primary-red, #D32F2F)", boxShadow: "0 4px 14px rgba(211,47,47,0.3)" }}
+              onClick={() => trackCTA({ type: "whatsapp", ctaName: "FAQ Cost Ask A Doctor", buttonLocation: "Cost FAQ Section" })}
             >
-              Ask a Doctor — Free
+              Ask a Doctor on WhatsApp
               <svg
                 className="w-4 h-4"
                 fill="none"
@@ -113,8 +110,8 @@ export default function FAQSection({ faqs = [] }) {
           {/* ── Right accordion ── */}
           <div className="lg:col-span-3">
             <div
-              className="rounded-2xl overflow-hidden"
-              style={{ border: "1px solid var(--border-light)" }}
+              className="rounded-2xl overflow-hidden shadow-sm"
+              style={{ border: "1px solid var(--border-light, #E5E7EB)" }}
             >
               {faqs.map((faq, i) => {
                 const isOpen = open === i;
@@ -124,27 +121,27 @@ export default function FAQSection({ faqs = [] }) {
                     style={{
                       borderBottom:
                         i < faqs.length - 1
-                          ? "1px solid var(--border-light)"
+                          ? "1px solid var(--border-light, #E5E7EB)"
                           : "none",
                     }}
                   >
                     <button
                       onClick={() => setOpen(isOpen ? null : i)}
-                      className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left transition-colors"
+                      className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left transition-colors cursor-pointer"
                       style={{
                         background: isOpen
-                          ? "var(--bg-card)"
-                          : "var(--bg-main)",
+                          ? "rgba(211,47,47,0.03)"
+                          : "#ffffff",
                       }}
                     >
                       {/* Number + question */}
                       <div className="flex items-start gap-4 min-w-0">
                         <span
-                          className="text-[11px] font-semibold tracking-[0.12em] shrink-0 pt-0.5"
+                          className="text-[11px] font-bold tracking-[0.12em] shrink-0 pt-0.5"
                           style={{
                             color: isOpen
-                              ? "var(--primary-red)"
-                              : "var(--border-soft)",
+                              ? "var(--primary-red, #D32F2F)"
+                              : "#9CA3AF",
                           }}
                         >
                           {String(i + 1).padStart(2, "0")}
@@ -153,8 +150,8 @@ export default function FAQSection({ faqs = [] }) {
                           className="font-semibold text-sm md:text-[15px] leading-snug"
                           style={{
                             color: isOpen
-                              ? "var(--text-primary)"
-                              : "var(--text-secondary)",
+                              ? "var(--primary-red, #D32F2F)"
+                              : "#1F2937",
                           }}
                         >
                           {faq.q}
@@ -166,12 +163,12 @@ export default function FAQSection({ faqs = [] }) {
                         className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 border transition-all duration-200"
                         style={{
                           background: isOpen
-                            ? "var(--primary-red)"
+                            ? "var(--primary-red, #D32F2F)"
                             : "transparent",
                           borderColor: isOpen
-                            ? "var(--primary-red)"
-                            : "var(--border-soft)",
-                          color: isOpen ? "#fff" : "var(--text-muted)",
+                            ? "var(--primary-red, #D32F2F)"
+                            : "#D1D5DB",
+                          color: isOpen ? "#ffffff" : "#6B7280",
                         }}
                       >
                         <svg
@@ -199,20 +196,20 @@ export default function FAQSection({ faqs = [] }) {
                     <div
                       className="overflow-hidden transition-all duration-300 ease-in-out"
                       style={{
-                        maxHeight: isOpen ? "300px" : "0",
+                        maxHeight: isOpen ? "400px" : "0",
                         opacity: isOpen ? 1 : 0,
-                        background: "var(--bg-card)",
+                        background: isOpen ? "rgba(211,47,47,0.02)" : "transparent",
                       }}
                     >
                       <div className="px-6 pb-5 pl-14">
                         {/* Red accent rule */}
                         <span
                           className="block w-6 h-0.5 mb-3 rounded-full"
-                          style={{ background: "var(--primary-red)" }}
+                          style={{ background: "var(--primary-red, #D32F2F)" }}
                         />
                         <p
                           className="text-sm leading-relaxed"
-                          style={{ color: "var(--text-muted)" }}
+                          style={{ color: "#4B5563" }}
                         >
                           {faq.a}
                         </p>
@@ -225,19 +222,19 @@ export default function FAQSection({ faqs = [] }) {
 
             {/* Bottom note */}
             <p
-              className="text-xs mt-5 text-center"
-              style={{ color: "var(--text-muted)" }}
+              className="text-xs mt-6 text-center"
+              style={{ color: "#6B7280" }}
             >
-              Can&apos;t find your answer?{" "}
+              Have a specific question about your graft requirement?{" "}
               <a
                 href={WA}
                 target="_blank"
                 rel="noreferrer"
-                className="font-semibold underline"
-                style={{ color: "var(--primary-red)" }}
-                onClick={() => trackCTA({ type: "whatsapp", ctaName: "FAQ Chat on WhatsApp", buttonLocation: "FAQ Section" })}
+                className="font-bold underline"
+                style={{ color: "var(--primary-red, #D32F2F)" }}
+                onClick={() => trackCTA({ type: "whatsapp", ctaName: "Cost FAQ Chat With Doctor", buttonLocation: "Cost FAQ Section" })}
               >
-                Chat with our doctor on WhatsApp →
+                Chat directly with our doctor on WhatsApp →
               </a>
             </p>
           </div>

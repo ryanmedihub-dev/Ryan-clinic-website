@@ -6,7 +6,8 @@ import useTrackCTA from "@/lib/useTrackCTA";
 /* ─────────────────────────────────────────
    DATA
 ───────────────────────────────────────── */
-import { doctors } from "@/lib/doctorsData";
+import { useState, useEffect } from "react";
+import { doctors as staticDoctors } from "@/lib/doctorsData";
 
 const trustStats = [
   { value: "10,000+", label: "Successful Procedures" },
@@ -313,25 +314,56 @@ function DoctorCard({ doctor }) {
             </span>
           </div>
 
-          {/* CTA */}
-          <a
-            href={`https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I'd%20like%20to%20book%20a%20consultation%20with%20${encodeURIComponent(doctor.name)}`}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center justify-center gap-2.5 text-[13px] font-bold py-3.5 px-6 rounded-xl text-white whitespace-nowrap transition-opacity duration-200 hover:opacity-90 active:opacity-80"
-            style={{
-              background: "var(--primary-red)",
-              boxShadow: "0 4px 20px rgba(211,47,47,0.3)",
-            }}
-            onClick={() => trackCTA({ type: "whatsapp", ctaName: `Doctor Book Consultation: ${doctor.name}`, buttonLocation: "Doctors Grid Section" })}
-          >
-            <WhatsAppIcon />
-            Book Free Consultation
-          </a>
+          {/* CTA Buttons */}
+          <div className="flex items-center gap-2">
+            {doctor.slug && (
+              <a
+                href={`/doctors/${doctor.slug}`}
+                className="inline-flex items-center justify-center text-[13px] font-bold py-3.5 px-4 rounded-xl border border-gray-200 text-gray-800 hover:bg-gray-100 hover:border-gray-300 whitespace-nowrap transition-all"
+              >
+                View Profile →
+              </a>
+            )}
+            <a
+              href={`https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I'd%20like%20to%20book%20a%20consultation%20with%20${encodeURIComponent(doctor.name)}`}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center gap-2.5 text-[13px] font-bold py-3.5 px-6 rounded-xl text-white whitespace-nowrap transition-opacity duration-200 hover:opacity-90 active:opacity-80"
+              style={{
+                background: "var(--primary-red)",
+                boxShadow: "0 4px 20px rgba(211,47,47,0.3)",
+              }}
+              onClick={() => trackCTA({ type: "whatsapp", ctaName: `Doctor Book Consultation: ${doctor.name}`, buttonLocation: "Doctors Grid Section" })}
+            >
+              <WhatsAppIcon />
+              Book Free Consultation
+            </a>
+          </div>
         </div>
       </div>
     </article>
   );
+}
+
+function normalizeDbDoctor(doc) {
+  const b = doc.basicInfo || {};
+  return {
+    id: doc._id || doc.slug,
+    name: b.doctorName || doc.pageName || "Dr. Specialist",
+    designation: b.designation || "Hair Transplant Surgeon",
+    city: b.city || "Delhi",
+    experience: b.yearsExperience ? `${b.yearsExperience}` : "15",
+    procedures: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : "5,000+",
+    rating: b.rating || 4.9,
+    image: b.profileImage?.image || "/uploads/turkey-doctor.jpg",
+    languages: b.languages?.length ? b.languages : ["English", "Hindi"],
+    slug: doc.slug,
+    specialities: ["Sapphire FUE", "THI Hair Restoration", "Beard Transplant"],
+    qualifications: [
+      { degree: "MBBS", institute: "Recognized Medical Council" },
+      { degree: "Turkey Certification", institute: "International Hair Restoration Association" },
+    ],
+  };
 }
 
 /* ─────────────────────────────────────────
@@ -339,6 +371,23 @@ function DoctorCard({ doctor }) {
 ───────────────────────────────────────── */
 export default function DoctorsGrid() {
   const trackCTA = useTrackCTA();
+  const [doctorList, setDoctorList] = useState(staticDoctors);
+
+  useEffect(() => {
+    async function fetchPublishedDoctors() {
+      try {
+        const res = await fetch("/api/doctors/list?status=published&limit=50");
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.success && data.doctors && data.doctors.length > 0) {
+          setDoctorList(data.doctors.map(normalizeDbDoctor));
+        }
+      } catch (err) {
+        console.error("Failed to fetch published doctors:", err);
+      }
+    }
+    fetchPublishedDoctors();
+  }, []);
   return (
     <section className="py-16 md:py-24" style={{ background: "var(--bg-soft)" }}>
       <div className="containerFull">
@@ -416,7 +465,7 @@ export default function DoctorsGrid() {
 
         {/* ── cards stack ── */}
         <div className="flex flex-col gap-8">
-          {doctors.map((doctor) => (
+          {doctorList.map((doctor) => (
             <DoctorCard key={doctor.id} doctor={doctor} />
           ))}
         </div>

@@ -5,9 +5,6 @@ import { requireAdmin } from "@/lib/requireAdmin";
 
 const handler = async (req) => {
     try {
-        const authError = await requireAdmin();
-        if (authError) return authError;
-
         const { searchParams } = new URL(req.url);
 
         const slug = searchParams.get("slug");
@@ -35,6 +32,7 @@ const handler = async (req) => {
         if (!surgeryPage) {
             return NextResponse.json(
                 {
+                    success: false,
                     message: "Surgery page not found",
                 },
                 {
@@ -45,6 +43,7 @@ const handler = async (req) => {
 
         return NextResponse.json(
             {
+                success: true,
                 surgeryPage,
             },
             {
@@ -54,6 +53,7 @@ const handler = async (req) => {
     } catch (error) {
         return NextResponse.json(
             {
+                success: false,
                 message: error.message,
             },
             {

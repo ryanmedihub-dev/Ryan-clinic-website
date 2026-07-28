@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import Link from "next/link";
 import Image from "next/image";
 import PageBanner from "@/components/layouts/pageBanner";
@@ -8,6 +6,8 @@ import AboutBanner from "../../../../public/uploads/blog.jpg";
 import BlogCTAButtons from "./BlogCTAButtons";
 
 
+
+export const revalidate = 60;
 
 export const metadata = {
   title: "Hair Transplant Blog | Expert Tips & Insights | Ryan Clinic",

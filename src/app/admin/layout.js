@@ -21,6 +21,10 @@ import {
   Image,
   Scissors,
   Activity,
+<<<<<<< HEAD
+=======
+  DollarSign,
+>>>>>>> 16627eee7fd085ec874508caf57edb22460df97f
   Stethoscope,
 } from "lucide-react";
 
@@ -64,10 +68,19 @@ function LayoutWrapper({ children }) {
       setActiveTab("Gallery");
     } else if (pathname.startsWith("/admin/surgery")) {
       setActiveTab("Surgery");
+<<<<<<< HEAD
     } else if (pathname.startsWith("/admin/hair-fall")) {
       setActiveTab("Hair Fall Treatment");
+=======
+    } else if (pathname.startsWith("/admin/doctors")) {
+      setActiveTab("Doctors");
+>>>>>>> 16627eee7fd085ec874508caf57edb22460df97f
     } else if (pathname.startsWith("/admin/tracker")) {
       setActiveTab("Tracker");
+    } else if (pathname.startsWith("/admin/cost")) {
+      setActiveTab("Cost");
+    } else if (pathname.startsWith("/admin/surgeon")) {
+      setActiveTab("Surgeon");
     } else if (pathname.startsWith("/admin/help")) {
       setActiveTab("Help");
     } else if (pathname.startsWith("/admin/blogs/create")) {
@@ -82,6 +95,7 @@ function LayoutWrapper({ children }) {
   const menuItems = [
     { name: "Dashboard", icon: LayoutDashboard, href: "/admin/" },
     { name: "Pages", icon: NotebookText, href: "/admin/pages" },
+    { name: "Doctors", icon: Users, href: "/admin/doctors" },
     { name: "Services", icon: ShieldPlus, href: "/admin/services" },
     { name: "Customer", icon: Users, href: "/admin/customer" },
     { name: "Components", icon: Component, href: "/admin/component" },
@@ -95,7 +109,12 @@ function LayoutWrapper({ children }) {
     },
     { name: "Gallery", icon: Image, href: "/admin/gallery" },
     { name: "Surgery", icon: Scissors, href: "/admin/surgery" },
+<<<<<<< HEAD
     { name: "Hair Fall Treatment", icon: Stethoscope, href: "/admin/hair-fall" },
+=======
+    { name: "Cost", icon: DollarSign, href: "/admin/cost" },
+    { name: "Surgeon", icon: Stethoscope, href: "/admin/surgeon" },
+>>>>>>> 16627eee7fd085ec874508caf57edb22460df97f
     { name: "Tracker", icon: Activity, href: "/admin/tracker" },
   ];
 
@@ -106,8 +125,8 @@ function LayoutWrapper({ children }) {
     return (
       <div className="group relative">
         <div
-          className={`w-full flex items-center justify-between gap-3 px-4 py-3 text-left rounded-lg transition-all duration-200 cursor-pointer ${isActive === item.name
-              ? "bg-blue-500 text-white shadow-lg shadow-blue-500/25"
+          className={`w-full flex items-center justify-between gap-3 px-3.5 py-2.5 text-left rounded-lg transition-all duration-200 cursor-pointer ${isActive === item.name
+              ? "bg-blue-500 text-white shadow-md shadow-blue-500/25"
               : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
             }`}
         >
@@ -191,7 +210,7 @@ function LayoutWrapper({ children }) {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-2">
+          <nav className="flex-1 overflow-y-auto min-h-0 p-3 space-y-1">
             {menuItems.map((item) => (
               <MenuItem
                 key={item.name}

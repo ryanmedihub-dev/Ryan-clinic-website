@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import SurgeryPageClient from "./SurgeryPageClient";
+import SurgeryPageClient from "@/components/surgery/SurgeryPageClient";
 
 export const dynamic = "force-dynamic";
 

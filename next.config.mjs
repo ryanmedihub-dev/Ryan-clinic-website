@@ -2,6 +2,30 @@
 const nextConfig = {
   compress: true,
   poweredByHeader: false,
+  turbopack: {},
+
+  // Prevent the dev-server file watcher from triggering HMR when you create
+  // new folders / files in directories that aren't part of your source code.
+  webpack: (config, { dev }) => {
+    if (dev) {
+      config.watchOptions = {
+        ...config.watchOptions,
+        // Ignore directories that are NOT source code.
+        // This stops re-renders every time you create a file or folder.
+        ignored: [
+          "**/node_modules/**",
+          "**/.git/**",
+          "**/.next/**",
+          "**/public/uploads/**",
+          "**/scripts/**",
+        ],
+        // Debounce: wait 300ms after the last change before triggering HMR.
+        aggregateTimeout: 300,
+      };
+    }
+    return config;
+  },
+
 
   images: {
     formats: ["image/webp"],
@@ -16,13 +40,6 @@ const nextConfig = {
 
   async headers() {
     return [
-      // Long-term cache for hashed Next.js static assets
-      {
-        source: "/_next/static/(.*)",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
-      },
       // 1-day cache for uploads folder (images, logo, etc.)
       {
         source: "/uploads/(.*)",
@@ -71,10 +88,18 @@ const nextConfig = {
         destination: "/hair-transplant-results-before-after-gallery",
         permanent: true,
       },
+<<<<<<< HEAD
       // Treatment content pages moved to the shared /treatments/[slug] dynamic route
       {
         source: "/hair-fall-loss-treatment-in-delhi",
         destination: "/treatments/hair-fall-loss-treatment-in-delhi",
+=======
+      // The old static surgery page has been consolidated into the dynamic CMS route.
+      // Permanent 301 preserves SEO equity and existing backlinks.
+      {
+        source: "/hair-transplant-surgery-in-delhi",
+        destination: "/surgery/hair-transplant-surgery-in-delhi",
+>>>>>>> 16627eee7fd085ec874508caf57edb22460df97f
         permanent: true,
       },
     ];

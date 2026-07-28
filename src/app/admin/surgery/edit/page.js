@@ -67,7 +67,9 @@ function useToast() {
 }
 
 const initialState = {
+    pageName: "",
     city: "",
+    slug: "",
     status: "draft",
     seo: {
         metaTitle: "",
@@ -169,6 +171,7 @@ const initialState = {
         buttonText: { text: "", link: "", external: false },
     },
     consultation: {
+        backgroundImage: { image: "", imageAlt: "" },
         leftSide: {
             heading: "",
             description: "",
@@ -211,6 +214,9 @@ function EditSurgeryForm() {
                 setFormData({
                     ...initialState,
                     ...d,
+                    pageName: d.pageName || "",
+                    city: d.city || "",
+                    slug: d.slug || "",
                     seo: { ...initialState.seo, ...(d.seo || {}) },
                     hero: { ...initialState.hero, ...(d.hero || {}), stats: d.hero?.stats || [] },
                     introduction: { ...initialState.introduction, ...(d.introduction || {}), bottomStats: d.introduction?.bottomStats || [] },
@@ -236,6 +242,7 @@ function EditSurgeryForm() {
                     pricing: { ...initialState.pricing, ...(d.pricing || {}), pricingStats: d.pricing?.pricingStats || [] },
                     visitClinic: { ...initialState.visitClinic, ...(d.visitClinic || {}), informationCards: d.visitClinic?.informationCards || [] },
                     consultation: {
+                        backgroundImage: { ...initialState.consultation.backgroundImage, ...(d.consultation?.backgroundImage || {}) },
                         leftSide: { ...initialState.consultation.leftSide, ...(d.consultation?.leftSide || {}), contactCards: d.consultation?.leftSide?.contactCards || [] },
                         consultationFormConfig: { ...initialState.consultation.consultationFormConfig, ...(d.consultation?.consultationFormConfig || {}), servicesDropdown: d.consultation?.consultationFormConfig?.servicesDropdown || [] }
                     },
@@ -346,30 +353,70 @@ function EditSurgeryForm() {
     }
 
     return (
-        <section className="pb-24">
+        <section className="pb-24" suppressHydrationWarning>
             <ToastContainer toasts={toast.toasts} removeToast={toast.remove} />
             <AdminHeader title={`/ Edit Surgery Page: ${formData.pageName}`} />
 
-            <form onSubmit={handleSubmit} className="space-y-6 px-6 mx-auto">
+            <form onSubmit={handleSubmit} className="space-y-6 px-6 mx-auto" suppressHydrationWarning>
 
                 {/* ─── GENERAL INFO ────────────────────────────────── */}
                 <h3 className="text-2xl font-bold underline mb-5">General Info</h3>
                 <div className="flex gap-6 flex-col md:flex-row">
                     <div className="w-full">
                         <label className="block text-sm font-semibold text-gray-700">
-                            City *
+                            Page Name *
                         </label>
-
                         <input
                             type="text"
-                            value={formData.city}
-                            onChange={(e) =>
-                                handleTopLevelChange("city", e.target.value)
-                            }
+                            value={formData.pageName}
+                            onChange={(e) => handleTopLevelChange("pageName", e.target.value)}
                             className="w-full mt-2 p-2 border rounded-md"
-                            placeholder="e.g. Delhi"
+                            placeholder="e.g. Hair Transplant Surgery in Delhi"
                             required
                         />
+                    </div>
+                    <div className="w-full">
+                        <label className="block text-sm font-semibold text-gray-700">Status</label>
+                        <select
+                            value={formData.status}
+                            onChange={(e) => handleTopLevelChange("status", e.target.value)}
+                            className="w-full mt-2 p-2 border rounded-md"
+                        >
+                            <option value="draft">Draft</option>
+                            <option value="published">Published</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="flex gap-6 flex-col md:flex-row">
+                    <div className="w-full">
+                        <label className="block text-sm font-semibold text-gray-700">
+                            City
+                        </label>
+                        <input
+                            type="text"
+                            value={formData.city || ""}
+                            onChange={(e) => handleTopLevelChange("city", e.target.value)}
+                            className="w-full mt-2 p-2 border rounded-md"
+                            placeholder="e.g. Delhi"
+                        />
+                    </div>
+                    <div className="w-full">
+                        <label className="block text-sm font-semibold text-gray-700">
+                            Slug (URL) — editing changes the public URL
+                        </label>
+                        <input
+                            type="text"
+                            value={formData.slug}
+                            onChange={(e) => handleTopLevelChange("slug", e.target.value
+                                .toLowerCase().replace(/[^\w\s-]/g, "").replace(/\s+/g, "-"))}
+                            className="w-full mt-2 p-2 border rounded-md font-mono"
+                            placeholder="e.g. hair-transplant-surgery-in-delhi"
+                        />
+                        {formData.slug && (
+                            <p className="text-xs text-gray-400 mt-1">
+                                URL preview: <span className="text-blue-600 font-mono">/surgery/{formData.slug}</span>
+                            </p>
+                        )}
                     </div>
                 </div>
 
@@ -397,17 +444,28 @@ function EditSurgeryForm() {
                 </div>
 
                 {/* ─── HERO SECTION ────────────────────────────────── */}
-                <h3 className="text-2xl font-bold underline mt-10 mb-5">Hero Section</h3>
+                {/* 2. BANNER SECTION */}
+                <h3 className="text-2xl font-bold underline mt-10 mb-5">Banner Section</h3>
                 <div className="space-y-4">
-                    <div className="flex gap-4 flex-col md:flex-row">
-                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Breadcrumb</label><input type="text" value={formData.hero.breadcrumb} onChange={(e) => handleNestedChange("hero", "breadcrumb", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Home > Surgeries > Hair Transplant" /></div>
-                        <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Hero Title</label><input type="text" value={formData.hero.title} onChange={(e) => handleNestedChange("hero", "title", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Advanced Hair Transplant" /></div>
+                    <div className="w-full">
+                        <label className="block text-sm font-semibold text-gray-700">Banner Title</label>
+                        <input type="text" value={formData.hero.title} onChange={(e) => handleNestedChange("hero", "title", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Enter Banner Title" />
                     </div>
-                    <div><label className="block text-sm font-semibold text-gray-700">Hero Description</label><textarea rows={3} value={formData.hero.description} onChange={(e) => handleNestedChange("hero", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Enter Hero Description" /></div>
+                    <div>
+                        <label className="block text-sm font-semibold text-gray-700">Banner Description</label>
+                        <textarea rows={4} value={formData.hero.description} onChange={(e) => handleNestedChange("hero", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Enter Banner Description" />
+                    </div>
                     <div className="mt-4">
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">Hero Banner Image</label>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Banner Image</label>
                         <ImageUploader initialImage={formData.hero.heroImage?.image} onUpload={(url) => handleNestedChange("hero", "heroImage", { ...formData.hero.heroImage, image: url })} />
-                        <input type="text" value={formData.hero.heroImage?.imageAlt || ""} onChange={(e) => handleNestedChange("hero", "heroImage", { ...formData.hero.heroImage, imageAlt: e.target.value })} className="w-full mt-2 p-2 border rounded-md" placeholder="Hero Image Alt Text" />
+                    </div>
+                    <div className="w-full">
+                        <label className="block text-sm font-semibold text-gray-700">Banner Image Alt</label>
+                        <input type="text" value={formData.hero.heroImage?.imageAlt || ""} onChange={(e) => handleNestedChange("hero", "heroImage", { ...formData.hero.heroImage, imageAlt: e.target.value })} className="w-full mt-2 p-2 border rounded-md" placeholder="Enter Banner Image Alt" />
+                    </div>
+                    <div className="w-full">
+                        <label className="block text-sm font-semibold text-gray-700">Breadcrumb</label>
+                        <input type="text" value={formData.hero.breadcrumb} onChange={(e) => handleNestedChange("hero", "breadcrumb", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Home > Surgeries > Hair Transplant" />
                     </div>
                     <div>
                         <button type="button" onClick={() => addToArray("hero", "stats", { value: "", label: "" })} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-4">+ Add Hero Stat</button>
@@ -828,6 +886,13 @@ function EditSurgeryForm() {
                 {/* ─── CONSULTATION SECTION ────────────────────────── */}
                 <h3 className="text-2xl font-bold underline mt-10 mb-5">Consultation Section</h3>
                 <div className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Section Background Image (Ryan Clinic Photo)</label>
+                        <ImageUploader
+                            initialImage={formData.consultation?.backgroundImage?.image || ""}
+                            onUpload={(url) => handleNestedChange("consultation", "backgroundImage", { ...(formData.consultation?.backgroundImage || {}), image: url })}
+                        />
+                    </div>
                     <div className="flex gap-4 flex-col md:flex-row">
                         <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Left Side Heading</label><input type="text" value={formData.consultation.leftSide?.heading || ""} onChange={(e) => handleDeepChange("consultation", "leftSide", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>
                         <div className="w-full"><label className="block text-sm font-semibold text-gray-700">Left Side Description</label><textarea rows={3} value={formData.consultation.leftSide?.description || ""} onChange={(e) => handleDeepChange("consultation", "leftSide", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" /></div>

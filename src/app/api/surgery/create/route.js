@@ -2,139 +2,99 @@ import { NextResponse } from "next/server";
 import { withDB } from "@/lib/withDB";
 import SurgeryPageModel from "@/models/surgeryPage";
 import { requireAdmin } from "@/lib/requireAdmin";
-import { generateSurgeryPageDetails } from "@/lib/surgerySlug";
+import { generateSlug } from "@/lib/surgerySlug";
 
 const handler = async (req) => {
-    const authError = await requireAdmin();
+  const authError = await requireAdmin();
+  if (authError) return authError;
 
-    if (authError) return authError;
+  try {
+    const body = await req.json();
 
-    try {
-        const body = await req.json();
+    const {
+      pageName,
+      city,
+      slug: rawSlug,
+      status,
+      seo,
+      hero,
+      introduction,
+      procedureScience,
+      safety,
+      techniques,
+      qualityBenchmarks,
+      procedureTimeline,
+      recoveryTimeline,
+      doctors,
+      pricing,
+      visitClinic,
+      consultation,
+      faq,
+    } = body;
 
-        const {
-            city,
-            seo,
-            hero,
-            introduction,
-            procedureScience,
-            safety,
-            techniques,
-            qualityBenchmarks,
-            procedureTimeline,
-            recoveryTimeline,
-            doctors,
-            pricing,
-            visitClinic,
-            consultation,
-            faq,
-        } = body;
-        // Validate Required Sections
-        if (
-            !city ||
-            !seo ||
-            !hero ||
-            !introduction ||
-            !procedureScience ||
-            !safety ||
-            !techniques ||
-            !qualityBenchmarks ||
-            !procedureTimeline ||
-            !recoveryTimeline ||
-            !doctors ||
-            !pricing ||
-            !visitClinic ||
-            !consultation ||
-            !faq
-        ) {
-            return NextResponse.json(
-                {
-                    message: "Please provide all required surgery page data.",
-                },
-                {
-                    status: 400,
-                }
-            );
-        }
-        const { pageName, slug: normalizedSlug } = generateSurgeryPageDetails(city);
-
-        // Check Existing Surgery Page
-        const existingSurgeryPage = await SurgeryPageModel.findOne({
-            slug: normalizedSlug,
-        });
-
-        if (existingSurgeryPage) {
-            return NextResponse.json(
-                {
-                    message: "Surgery page already exists.",
-                },
-                {
-                    status: 409,
-                }
-            );
-        }
-
-        // Create Surgery Page
-        const surgeryPageDoc = new SurgeryPageModel({
-            pageName,
-            city,
-            slug: normalizedSlug,
-            seo,
-
-            hero,
-
-            introduction,
-
-            procedureScience,
-
-            safety,
-
-            techniques,
-
-            qualityBenchmarks,
-
-            procedureTimeline,
-
-            recoveryTimeline,
-
-            doctors,
-
-            pricing,
-
-            visitClinic,
-
-            consultation,
-
-            faq,
-        });
-
-        await surgeryPageDoc.save();
-
-        return NextResponse.json(
-            {
-                message: "Surgery page created successfully.",
-                surgeryPage: {
-                    _id: surgeryPageDoc._id,
-                    pageName: surgeryPageDoc.pageName,
-                    city: surgeryPageDoc.city,
-                    slug: surgeryPageDoc.slug,
-                    status: surgeryPageDoc.status,
-                },
-            },
-            {
-                status: 201,
-            }
-        );
-    } catch (error) {
-        return NextResponse.json(
-            {
-                message: error.message,
-            },
-            {
-                status: 500,
-            }
-        );
+    if (!pageName) {
+      return NextResponse.json(
+        { message: "Page name is required." },
+        { status: 400 }
+      );
     }
+
+
+
+    // Use provided slug, or auto-generate from page name
+    const slug = rawSlug ? generateSlug(rawSlug) : generateSlug(pageName);
+
+    // Validate uniqueness
+    const existing = await SurgeryPageModel.findOne({ slug });
+    if (existing) {
+      return NextResponse.json(
+        { message: `A surgery page with slug "${slug}" already exists.` },
+        { status: 409 }
+      );
+    }
+
+    const doc = new SurgeryPageModel({
+      pageName: pageName.trim(),
+      city: (city || "").trim(),
+      slug,
+      status: status || "draft",
+      seo: seo || {},
+      hero: hero || {},
+      introduction: introduction || {},
+      procedureScience: procedureScience || {},
+      safety: safety || {},
+      techniques: techniques || {},
+      qualityBenchmarks: qualityBenchmarks || {},
+      procedureTimeline: procedureTimeline || {},
+      recoveryTimeline: recoveryTimeline || {},
+      doctors: doctors || {},
+      pricing: pricing || {},
+      visitClinic: visitClinic || {},
+      consultation: consultation || {},
+      faq: faq || {},
+    });
+
+    await doc.save();
+
+    return NextResponse.json(
+      {
+        message: "Surgery page created successfully.",
+        surgeryPage: {
+          _id: doc._id,
+          pageName: doc.pageName,
+          slug: doc.slug,
+          status: doc.status,
+          url: `/surgery/${doc.slug}`,
+        },
+      },
+      { status: 201 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { message: error.message },
+      { status: 500 }
+    );
+  }
 };
 
 export const POST = withDB(handler);

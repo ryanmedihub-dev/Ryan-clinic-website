@@ -22,6 +22,13 @@ export default function FooterCallbackForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const phoneClean = (formData.phone || "").replace(/[\s-]/g, "");
+    if (!/^\+?[0-9]{10,15}$/.test(phoneClean)) {
+      alert("Please enter a valid 10-digit phone number.");
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await fetch("/api/leads", {
@@ -148,6 +155,9 @@ export default function FooterCallbackForm() {
           onChange={handleChange}
           placeholder="+91 XXXXX XXXXX"
           required
+          minLength={10}
+          maxLength={15}
+          pattern="[0-9+\s-]{10,15}"
           style={inputStyle}
           onFocus={(e) =>
             (e.target.style.borderColor = "var(--primary-red)")
