@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -1147,7 +1147,7 @@ export default function SurgeonPageClient({ pageData }) {
                     <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-red-200 border border-red-200 rounded-2xl overflow-hidden mb-10">
                         {[
                             { icon: <Scissors className="w-5 h-5" />, num: "01", title: "Sapphire FUE Hair Transplant", text: "Turkey's authentic Sapphire FUE with original Choi Pen. Sharper blades, less trauma, 95%+ graft survival." },
-                            { icon: <Sparkles className="w-5 h-5" />, num: "02", title: Turkish Technique Choi Pen Implantation", text: "Direct hair implantation using Choi Pen — no channel pre-opening, maximum density with minimal trauma." },
+                            { icon: <Sparkles className="w-5 h-5" />, num: "02", title: "Turkish Technique Choi Pen Implantation", text: "Direct hair implantation using Choi Pen — no channel pre-opening, maximum density with minimal trauma." },
                             { icon: <Compass className="w-5 h-5" />, num: "03", title: "Natural Hairline Design", text: "Soft, micro-irregular hairline design tailored to facial structure, age, and long-term loss patterns." },
                             { icon: <ShieldCheck className="w-5 h-5" />, num: "04", title: "Beard & Moustache Restoration", text: "Precise beard and moustache transplant using FUE — natural angle, direction, and density." },
                             { icon: <Award className="w-5 h-5" />, num: "05", title: "Female Hair Transplant", text: "Specialist female hairline and density restoration — delicate extraction to protect existing hair." },

@@ -22,7 +22,7 @@ const SURGERIES_DATA = [
   },
   {
     id: "dhi-choi-pen",
-    name: Turkish Technique Choi Pen Transplant",
+    name: "Turkish Technique Choi Pen Transplant",
     tag: "PREMIUM",
     perGraft: "₹60 – ₹120 / graft",
     totalRange: "₹60,000 – ₹3,60,000",

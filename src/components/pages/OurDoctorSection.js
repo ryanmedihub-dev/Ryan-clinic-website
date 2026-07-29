@@ -26,7 +26,7 @@ const DEFAULT_STATS = [
 
 const DEFAULT_SPECIALIZATIONS = [
   "Turkey Sapphire FUE",
-  Turkish Technique Choi Pen",
+  "Turkish Technique Choi Pen",
   "Hairline Design",
   "Crown Restoration",
   "High-Density FUE",
