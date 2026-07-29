@@ -16,7 +16,7 @@ const COMPARISON_DATA = [
     highlight: true,
   },
   {
-    technique: Turkish Technique (Choi Pen)",
+    technique: "Turkish Technique (Choi Pen)",
     tag: "Gold Standard",
     perGraft: "₹60 – ₹120",
     scarring: "Zero Linear Scar",

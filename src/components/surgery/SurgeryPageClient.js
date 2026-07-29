@@ -314,7 +314,7 @@ export default function SurgeryPageClient({ data }) {
     bio: d.bio || d.description || "Pioneer in Turkey Sapphire FUE & Turkish Technique Choi Pen hair restoration techniques. Personally conducts 100% of surgical incisions and graft extractions with high-density precision.",
     specializations: d.specializations?.length ? d.specializations : [
       "Turkey Sapphire FUE",
-      Turkish Technique Choi Pen",
+      "Turkish Technique Choi Pen",
       "Micro-Hairline Design",
       "Crown Restoration",
       "High Graft Density",
@@ -1106,7 +1106,7 @@ export default function SurgeryPageClient({ data }) {
                 ? doc.specializations
                 : [
                     "Turkey Sapphire FUE",
-                    Turkish Technique Choi Pen",
+                    "Turkish Technique Choi Pen",
                     "Natural Hairline Design",
                     "Crown Restorations",
                     "100% Doctor-Led",

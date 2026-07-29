@@ -190,20 +190,13 @@ export default function HairFallPageClient({ data }) {
 
                 <div className="space-y-5 text-gray-600 text-base md:text-lg leading-relaxed">
                   {introduction.description && (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: introduction.description,
-                      }}
-                    />
+                    <p className="whitespace-pre-line">{introduction.description}</p>
                   )}
                   {introduction.highlightBoxText && (
                     <div className="bg-[#F7F5F2] border-l-4 border-[#e30a17] p-5 rounded-r-2xl">
-                      <div
-                        className="font-semibold text-[#302658]"
-                        dangerouslySetInnerHTML={{
-                          __html: introduction.highlightBoxText,
-                        }}
-                      />
+                      <p className="font-semibold text-[#302658] whitespace-pre-line">
+                        {introduction.highlightBoxText}
+                      </p>
                     </div>
                   )}
                 </div>
@@ -316,10 +309,9 @@ export default function HairFallPageClient({ data }) {
                   {causes.heading}
                 </h2>
                 {causes.description && (
-                  <div
-                    className="text-gray-500 text-base md:text-lg leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: causes.description }}
-                  />
+                  <p className="text-gray-500 text-base md:text-lg leading-relaxed whitespace-pre-line">
+                    {causes.description}
+                  </p>
                 )}
               </div>
             </RevealSection>
@@ -778,7 +770,7 @@ export default function HairFallPageClient({ data }) {
           <div className="max-w-8xl  mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
               <Reveal direction="left" className="lg:col-span-6">
-                <div className="relative overflow-hidden rounded-3xl shadow-xl">
+                <div className="relative overflow-hidden rounded-3xl shadow-xl h-[320px] lg:h-[440px]">
                   <Image
                     src={
                       results.resultImage?.image ||

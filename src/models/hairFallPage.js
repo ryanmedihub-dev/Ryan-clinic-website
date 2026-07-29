@@ -59,8 +59,8 @@ const introductionSectionSchema = new mongoose.Schema(
   {
     smallHeading: { type: String, trim: true, default: "" },
     title: { type: String, trim: true, default: "" },
-    description: { type: String, trim: true, default: "" }, // Supports HTML
-    highlightBoxText: { type: String, trim: true, default: "" }, // Supports HTML
+    description: { type: String, trim: true, default: "" },
+    highlightBoxText: { type: String, trim: true, default: "" },
     mainImage: { type: imageFieldSchema, default: () => ({}) },
     floatingImage: { type: imageFieldSchema, default: () => ({}) },
     heroStats: { type: [statSchema], default: [] },
@@ -317,7 +317,7 @@ const consultationSectionSchema = new mongoose.Schema(
 const faqItemSchema = new mongoose.Schema(
   {
     question: { type: String, trim: true, default: "" },
-    answer: { type: String, trim: true, default: "" }, // Supports HTML
+    answer: { type: String, trim: true, default: "" },
     displayOrder: { type: Number, default: 0 },
   },
   { _id: false }

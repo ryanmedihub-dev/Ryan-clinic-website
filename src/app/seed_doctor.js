@@ -151,7 +151,7 @@ const drHimanshuJawla = {
       { icon: "MessageSquare", title: "WhatsApp Direct", value: "+91-9217958539", link: "https://wa.me/919217958539" },
       { icon: "Mail", title: "Email Us", value: "info@clinicryan.com", link: "mailto:info@clinicryan.com" },
     ],
-    form: { title: "Book Appointment with Dr. Jawla", services: ["Sapphire FUE Hair Transplant", Turkish Technique Direct Implantation", "Beard Transplant", "PRP Hair Loss Therapy"], submitButtonText: "Book Appointment Now" },
+    form: { title: "Book Appointment with Dr. Jawla", services: ["Sapphire FUE Hair Transplant", "Turkish Technique Direct Implantation", "Beard Transplant", "PRP Hair Loss Therapy"], submitButtonText: "Book Appointment Now" },
   },
   questionsToAsk: {
     sectionLabel: "Questions to Ask",
