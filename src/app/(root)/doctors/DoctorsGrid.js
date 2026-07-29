@@ -11,9 +11,9 @@ import { doctors as staticDoctors } from "@/lib/doctorsData";
 
 const trustStats = [
   { value: "10,000+", label: "Successful Procedures" },
-  { value: "95%+",    label: "Graft Survival Rate" },
-  { value: "4.9 ★",  label: "Google Rating" },
-  { value: "12+",     label: "Years of Excellence" },
+  { value: "95%+", label: "Graft Survival Rate" },
+  { value: "4.9 ★", label: "Google Rating" },
+  { value: "12+", label: "Years of Excellence" },
 ];
 
 /* ─────────────────────────────────────────
@@ -325,7 +325,7 @@ function DoctorCard({ doctor }) {
               </a>
             )}
             <a
-              href={`https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I'd%20like%20to%20book%20a%20consultation%20with%20${encodeURIComponent(doctor.name)}`}
+              href={`https://api.whatsapp.com/send?phone=+919911111247&text=Hi%2C%20I'd%20like%20to%20book%20a%20consultation%20with%20${encodeURIComponent(doctor.name)}`}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center justify-center gap-2.5 text-[13px] font-bold py-3.5 px-6 rounded-xl text-white whitespace-nowrap transition-opacity duration-200 hover:opacity-90 active:opacity-80"

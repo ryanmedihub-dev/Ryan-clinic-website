@@ -92,7 +92,7 @@ function RedCheck() {
   );
 }
 
-const WA_BASE = "https://api.whatsapp.com/send?phone=+919217958539&text=";
+const WA_BASE = "https://api.whatsapp.com/send?phone=+919911111247&text=";
 const TEL = "tel:+919911111247";
 
 /* ═══════════════════════════════════════════════════════════════
@@ -401,11 +401,10 @@ export default async function DynamicCostPage({ params }) {
                   return (
                     <div
                       key={i}
-                      className={`relative bg-white flex flex-col transition-all duration-300 hover:-translate-y-1.5 rounded-3xl ${
-                        isFeatured
+                      className={`relative bg-white flex flex-col transition-all duration-300 hover:-translate-y-1.5 rounded-3xl ${isFeatured
                           ? "border-2 border-[#e30a17] shadow-2xl shadow-red-100 ring-4 ring-[#e30a17]/8"
                           : "border border-[#E8E4DF] shadow-md hover:shadow-xl"
-                      }`}
+                        }`}
                     >
                       {/* Most Popular floating pill */}
                       {isFeatured && (
@@ -470,11 +469,10 @@ export default async function DynamicCostPage({ params }) {
                         {/* CTA Button */}
                         <a
                           href={tier.buttonLink || "/contact"}
-                          className={`inline-flex items-center justify-center w-full gap-2 font-bold py-3 px-4 text-xs transition-all duration-200 rounded-xl mt-auto ${
-                            isFeatured
+                          className={`inline-flex items-center justify-center w-full gap-2 font-bold py-3 px-4 text-xs transition-all duration-200 rounded-xl mt-auto ${isFeatured
                               ? "bg-[#e30a17] text-white hover:bg-red-700 shadow-lg shadow-red-200"
                               : "bg-[#e30a17] text-white hover:bg-red-700 shadow-md shadow-red-100"
-                          }`}
+                            }`}
                         >
                           {tier.buttonText || "Get Free Quote"} <ArrowIcon />
                         </a>
@@ -640,16 +638,14 @@ export default async function DynamicCostPage({ params }) {
                     {techniqueComparison.columns.map((col, ci) => (
                       <th
                         key={ci}
-                        className={`px-6 py-5 text-left font-bold text-gray-900 ${
-                          col.highlighted ? "bg-[#e30a17] text-white" : ""
-                        }`}
+                        className={`px-6 py-5 text-left font-bold text-gray-900 ${col.highlighted ? "bg-[#e30a17] text-white" : ""
+                          }`}
                       >
                         <div className="flex items-center gap-2">
                           <span className="font-bold text-sm">{col.name}</span>
                           {col.badge && (
-                            <span className={`text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${
-                              col.highlighted ? "bg-white/20 text-white" : "bg-gray-200 text-gray-700"
-                            }`}>
+                            <span className={`text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${col.highlighted ? "bg-white/20 text-white" : "bg-gray-200 text-gray-700"
+                              }`}>
                               {col.badge}
                             </span>
                           )}
@@ -667,9 +663,8 @@ export default async function DynamicCostPage({ params }) {
                       {row.values?.map((val, vi) => (
                         <td
                           key={vi}
-                          className={`px-6 py-4 text-gray-800 font-medium ${
-                            techniqueComparison.columns[vi + 1]?.highlighted ? "bg-red-50/40 font-bold text-gray-900" : ""
-                          }`}
+                          className={`px-6 py-4 text-gray-800 font-medium ${techniqueComparison.columns[vi + 1]?.highlighted ? "bg-red-50/40 font-bold text-gray-900" : ""
+                            }`}
                         >
                           {val.value}
                         </td>
@@ -786,11 +781,11 @@ export default async function DynamicCostPage({ params }) {
                 {(consultation?.features?.length > 0
                   ? consultation.features.map((f) => f.text || f)
                   : [
-                      "Free Scalp Assessment & Graft Audit",
-                      "Direct Consultation with Senior Surgeon",
-                      "Written Cost Quote with Zero Hidden Fees",
-                      "Personalised Recovery & Care Plan",
-                    ]
+                    "Free Scalp Assessment & Graft Audit",
+                    "Direct Consultation with Senior Surgeon",
+                    "Written Cost Quote with Zero Hidden Fees",
+                    "Personalised Recovery & Care Plan",
+                  ]
                 ).map((text, i) => (
                   <div
                     key={i}
@@ -807,7 +802,7 @@ export default async function DynamicCostPage({ params }) {
               {/* Compact Action Buttons & Availability */}
               <div className="flex flex-wrap items-center gap-3">
                 <a
-                  href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20book%20a%20free%20consultation"
+                  href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20want%20to%20book%20a%20free%20consultation"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white text-xs font-bold py-3 px-5 rounded-xl transition-all shadow-md shadow-red-200 hover:-translate-y-0.5"

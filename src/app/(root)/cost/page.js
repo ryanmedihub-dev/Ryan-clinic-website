@@ -287,7 +287,7 @@ export default async function CostIndexPage() {
             </div>
             <div className="flex items-center gap-3 flex-wrap">
               <a
-                href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20would%20like%20a%20cost%20estimate%20for%20my%20hair%20transplant."
+                href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20would%20like%20a%20cost%20estimate%20for%20my%20hair%20transplant."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white font-semibold py-3 px-6 text-sm rounded-xl shadow-md transition-all duration-200"

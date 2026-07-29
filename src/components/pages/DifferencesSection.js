@@ -5,14 +5,14 @@
 import useTrackCTA from "@/lib/useTrackCTA";
 
 const DEFAULT_FEATURES = [
-  { label: "Scarring",       fut: { value: "Linear donor scar", bad: true },      fue: { value: "Tiny dot scars only" },          sapphire: { value: "Tiny dots + finer channels" } },
-  { label: "Healing Speed",  fut: { value: "Slowest (stitches)", bad: true },      fue: { value: "Faster — no stitches" },          sapphire: { value: "Fastest — sapphire precision" } },
-  { label: "Naturalness",    fut: { value: "Good" },                                fue: { value: "Very Good" },                     sapphire: { value: "Most natural / undetectable" } },
-  { label: "Graft Density",  fut: { value: "High (one session)" },                  fue: { value: "High" },                          sapphire: { value: "High with less trauma" } },
-  { label: "Recovery Time",  fut: { value: "10–14 days", bad: true },              fue: { value: "7–10 days" },                     sapphire: { value: "5–7 days" } },
-  { label: "Pain Level",     fut: { value: "Moderate (sutures)", bad: true },      fue: { value: "Low" },                           sapphire: { value: "Lowest" } },
-  { label: "Graft Survival", fut: { value: "~70–80%" },                             fue: { value: "~75–85%" },                       sapphire: { value: "90%+ (Ryan Clinic)" } },
-  { label: "Best For",       fut: { value: "Very large / budget cases" },           fue: { value: "Most patients" },                 sapphire: { value: "Best result + fast recovery" } },
+  { label: "Scarring", fut: { value: "Linear donor scar", bad: true }, fue: { value: "Tiny dot scars only" }, sapphire: { value: "Tiny dots + finer channels" } },
+  { label: "Healing Speed", fut: { value: "Slowest (stitches)", bad: true }, fue: { value: "Faster — no stitches" }, sapphire: { value: "Fastest — sapphire precision" } },
+  { label: "Naturalness", fut: { value: "Good" }, fue: { value: "Very Good" }, sapphire: { value: "Most natural / undetectable" } },
+  { label: "Graft Density", fut: { value: "High (one session)" }, fue: { value: "High" }, sapphire: { value: "High with less trauma" } },
+  { label: "Recovery Time", fut: { value: "10–14 days", bad: true }, fue: { value: "7–10 days" }, sapphire: { value: "5–7 days" } },
+  { label: "Pain Level", fut: { value: "Moderate (sutures)", bad: true }, fue: { value: "Low" }, sapphire: { value: "Lowest" } },
+  { label: "Graft Survival", fut: { value: "~70–80%" }, fue: { value: "~75–85%" }, sapphire: { value: "90%+ (Ryan Clinic)" } },
+  { label: "Best For", fut: { value: "Very large / budget cases" }, fue: { value: "Most patients" }, sapphire: { value: "Best result + fast recovery" } },
 ];
 
 export default function DifferencesSection({ features: featuresOverride }) {
@@ -184,7 +184,7 @@ export default function DifferencesSection({ features: featuresOverride }) {
             About FUT →
           </a>
           <a
-            href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20know%20which%20technique%20is%20right%20for%20me"
+            href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20want%20to%20know%20which%20technique%20is%20right%20for%20me"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-3 px-6 text-sm tracking-wide transition-colors rounded-xl"

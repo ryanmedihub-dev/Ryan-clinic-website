@@ -52,7 +52,7 @@ export function SplitCTA() {
 
             <div className="flex flex-col sm:flex-row gap-3">
               <a
-                href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi, I want a free hair transplant consultation"
+                href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi, I want a free hair transplant consultation"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center justify-center gap-2 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-3.5 px-5 text-sm tracking-wide transition-colors rounded-xl flex-1"
@@ -86,7 +86,7 @@ export function SplitCTA() {
               style={{
                 backgroundImage: 'url("/uploads/images/image2.jpg")',
                 backgroundSize: "cover",
-                backgroundPosition : "center",
+                backgroundPosition: "center",
               }}
             />
 
@@ -108,7 +108,7 @@ export function SplitCTA() {
             </div>
 
             {/* Placeholder label */}
-            
+
           </div>
 
           {/* ── Right card — feature highlight ── */}

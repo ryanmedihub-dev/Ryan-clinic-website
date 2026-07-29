@@ -31,21 +31,21 @@ const images = [
 
 // Desktop mosaic layout — same grid positions as before
 const tiles = [
-  { col: "1 / 4",   row: "4 / 9",  showInfo: false },
-  { col: "3 / 7",   row: "3 / 7",  showInfo: true,  grafts: "2800 Grafts" },
-  { col: "6 / 8",   row: "1 / 6",  showInfo: false },
-  { col: "8 / 10",  row: "2 / 6",  showInfo: false },
-  { col: "10 / 13", row: "1 / 6",  showInfo: false },
-  { col: "13 / 15", row: "2 / 5",  showInfo: false },
-  { col: "15 / 19", row: "1 / 5",  showInfo: true,  grafts: "4200 Grafts" },
-  { col: "8 / 14",  row: "5 / 9",  showInfo: true,  grafts: "3500 Grafts" },
-  { col: "14 / 19", row: "5 / 9",  showInfo: true,  grafts: "3200 Grafts" },
-  { col: "19 / 22", row: "3 / 6",  showInfo: false },
-  { col: "21 / 24", row: "4 / 7",  showInfo: false },
-  { col: "3 / 7",   row: "7 / 10", showInfo: false },
-  { col: "6 / 8",   row: "6 / 9",  showInfo: false },
-  { col: "7 / 9",   row: "8 / 11", showInfo: false },
-  { col: "9 / 13",  row: "8 / 11", showInfo: false },
+  { col: "1 / 4", row: "4 / 9", showInfo: false },
+  { col: "3 / 7", row: "3 / 7", showInfo: true, grafts: "2800 Grafts" },
+  { col: "6 / 8", row: "1 / 6", showInfo: false },
+  { col: "8 / 10", row: "2 / 6", showInfo: false },
+  { col: "10 / 13", row: "1 / 6", showInfo: false },
+  { col: "13 / 15", row: "2 / 5", showInfo: false },
+  { col: "15 / 19", row: "1 / 5", showInfo: true, grafts: "4200 Grafts" },
+  { col: "8 / 14", row: "5 / 9", showInfo: true, grafts: "3500 Grafts" },
+  { col: "14 / 19", row: "5 / 9", showInfo: true, grafts: "3200 Grafts" },
+  { col: "19 / 22", row: "3 / 6", showInfo: false },
+  { col: "21 / 24", row: "4 / 7", showInfo: false },
+  { col: "3 / 7", row: "7 / 10", showInfo: false },
+  { col: "6 / 8", row: "6 / 9", showInfo: false },
+  { col: "7 / 9", row: "8 / 11", showInfo: false },
+  { col: "9 / 13", row: "8 / 11", showInfo: false },
   { col: "13 / 16", row: "8 / 10", showInfo: false },
   { col: "19 / 23", row: "6 / 10", showInfo: false },
   { col: "15 / 19", row: "9 / 11", showInfo: false },
@@ -61,17 +61,17 @@ const staggerDelay = [
 
 // Mobile grid
 const mobileGrid = [
-  { span: 2, showInfo: true,  grafts: "2800 Grafts" },
+  { span: 2, showInfo: true, grafts: "2800 Grafts" },
   { span: 1, showInfo: false },
   { span: 1, showInfo: false },
   { span: 1, showInfo: false },
   { span: 1, showInfo: false },
-  { span: 2, showInfo: true,  grafts: "4200 Grafts" },
+  { span: 2, showInfo: true, grafts: "4200 Grafts" },
   { span: 1, showInfo: false },
   { span: 1, showInfo: false },
   { span: 1, showInfo: false },
   { span: 1, showInfo: false },
-  { span: 2, showInfo: true,  grafts: "3500 Grafts" },
+  { span: 2, showInfo: true, grafts: "3500 Grafts" },
   { span: 1, showInfo: false },
 ];
 
@@ -368,7 +368,7 @@ export default function OurResults({ city = "Delhi" }) {
         {/* CTA strip */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 px-4 pb-4">
           <a
-            href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation"
+            href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center justify-center gap-2 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-3.5 px-6 text-sm tracking-wide transition-colors rounded-xl w-full sm:w-auto"
@@ -444,7 +444,7 @@ export default function OurResults({ city = "Delhi" }) {
         {/* Desktop CTA strip */}
         <div className="flex items-center justify-center gap-4 mt-10 pb-4 px-12 md:px-20">
           <a
-            href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation"
+            href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-3.5 px-7 text-sm tracking-wide transition-colors rounded-xl"

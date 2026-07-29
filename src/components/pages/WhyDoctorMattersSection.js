@@ -25,12 +25,12 @@ const DEFAULT_RISKS = [
 ];
 
 const DEFAULT_COMPARISON = [
-  { aspect: "Who operates",    doctorLed: "Certified doctor at every step",          techLed: "Technician performs extraction + implant" },
-  { aspect: "Graft survival",  doctorLed: "90%+ (Ryan Clinic standard)",             techLed: "Often 50–70% — rushed, less precise" },
-  { aspect: "Naturalness",     doctorLed: "Precise angle, depth & direction",        techLed: "Variable — uneven, patchy results" },
-  { aspect: "Safety",          doctorLed: "Sterile OT, single-use instruments",      techLed: "Risk of infection, poor hygiene" },
-  { aspect: "Accountability",  doctorLed: "Licensed, registered, legally liable",    techLed: "No medical accountability" },
-  { aspect: "Price signal",    doctorLed: "₹40–₹120 per graft (transparent)",        techLed: "₹15–25 per graft (corner-cutting)" },
+  { aspect: "Who operates", doctorLed: "Certified doctor at every step", techLed: "Technician performs extraction + implant" },
+  { aspect: "Graft survival", doctorLed: "90%+ (Ryan Clinic standard)", techLed: "Often 50–70% — rushed, less precise" },
+  { aspect: "Naturalness", doctorLed: "Precise angle, depth & direction", techLed: "Variable — uneven, patchy results" },
+  { aspect: "Safety", doctorLed: "Sterile OT, single-use instruments", techLed: "Risk of infection, poor hygiene" },
+  { aspect: "Accountability", doctorLed: "Licensed, registered, legally liable", techLed: "No medical accountability" },
+  { aspect: "Price signal", doctorLed: "₹40–₹120 per graft (transparent)", techLed: "₹15–25 per graft (corner-cutting)" },
 ];
 
 export default function WhyDoctorMattersSection({ risks: risksOverride, comparison: comparisonOverride }) {
@@ -78,14 +78,12 @@ export default function WhyDoctorMattersSection({ risks: risksOverride, comparis
             {risks.map((item) => (
               <div
                 key={item.number}
-                className={`flex gap-4 bg-white rounded-2xl p-5 border shadow-xs transition-transform hover:-translate-y-0.5 ${
-                  item.type === "warn" ? "border-amber-200" : "border-gray-100"
-                }`}
+                className={`flex gap-4 bg-white rounded-2xl p-5 border shadow-xs transition-transform hover:-translate-y-0.5 ${item.type === "warn" ? "border-amber-200" : "border-gray-100"
+                  }`}
               >
                 <div
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${
-                    item.type === "warn" ? "bg-amber-50 text-amber-600" : "bg-red-50 text-[#D32F2F]"
-                  }`}
+                  className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${item.type === "warn" ? "bg-amber-50 text-amber-600" : "bg-red-50 text-[#D32F2F]"
+                    }`}
                 >
                   {item.icon}
                 </div>
@@ -158,7 +156,7 @@ export default function WhyDoctorMattersSection({ risks: risksOverride, comparis
             <p className="text-[11px] text-gray-400 mt-4 text-center leading-relaxed">
               At Ryan Clinic, every procedure is 100% doctor-led.{" "}
               <a
-                href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20verify%20your%20surgeon%20credentials%20before%20booking"
+                href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20want%20to%20verify%20your%20surgeon%20credentials%20before%20booking"
                 target="_blank"
                 rel="noreferrer"
                 className="font-semibold text-[#D32F2F] underline underline-offset-2"
@@ -173,11 +171,11 @@ export default function WhyDoctorMattersSection({ risks: risksOverride, comparis
         {/* ── CTA ── */}
         <div className="flex flex-wrap gap-3 justify-center">
           <a
-              href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20verify%20your%20surgeon%20credentials%20before%20booking"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-3.5 px-7 text-sm tracking-wide transition-colors rounded-xl"
-              onClick={() => trackCTA({ type: "whatsapp", ctaName: "Why Doctor Matters Verify", buttonLocation: "Why Doctor Matters Section" })}
+            href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20want%20to%20verify%20your%20surgeon%20credentials%20before%20booking"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-3.5 px-7 text-sm tracking-wide transition-colors rounded-xl"
+            onClick={() => trackCTA({ type: "whatsapp", ctaName: "Why Doctor Matters Verify", buttonLocation: "Why Doctor Matters Section" })}
           >
             Book at a Doctor-Led Clinic →
           </a>

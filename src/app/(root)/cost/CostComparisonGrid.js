@@ -84,11 +84,10 @@ export default function CostComparisonGrid() {
           {COMPARISON_DATA.map((item, idx) => (
             <div
               key={idx}
-              className={`rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 relative ${
-                item.highlight
+              className={`rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 relative ${item.highlight
                   ? "bg-red-50/70 border-2 border-[#D32F2F] text-gray-900 shadow-lg scale-[1.02]"
                   : "bg-gray-50 border border-gray-200 text-gray-900 hover:border-gray-300 shadow-xs"
-              }`}
+                }`}
             >
               {item.highlight && (
                 <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#D32F2F] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-md">
@@ -98,9 +97,8 @@ export default function CostComparisonGrid() {
 
               <div>
                 <div className="flex items-center justify-between gap-2 mb-4">
-                  <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${
-                    item.highlight ? "bg-[#D32F2F] text-white font-bold" : "bg-gray-200 text-gray-700"
-                  }`}>
+                  <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${item.highlight ? "bg-[#D32F2F] text-white font-bold" : "bg-gray-200 text-gray-700"
+                    }`}>
                     {item.tag}
                   </span>
                 </div>
@@ -141,14 +139,13 @@ export default function CostComparisonGrid() {
               </div>
 
               <a
-                href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20compare%20techniques%20and%20costs%20at%20Ryan%20Clinic."
+                href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20want%20to%20compare%20techniques%20and%20costs%20at%20Ryan%20Clinic."
                 target="_blank"
                 rel="noreferrer"
-                className={`w-full inline-flex items-center justify-center text-xs font-bold py-3 px-4 rounded-xl transition-all ${
-                  item.highlight
+                className={`w-full inline-flex items-center justify-center text-xs font-bold py-3 px-4 rounded-xl transition-all ${item.highlight
                     ? "bg-[#D32F2F] text-white hover:bg-red-700 shadow-md"
                     : "bg-white border border-gray-300 text-gray-800 hover:border-[#D32F2F] hover:text-[#D32F2F]"
-                }`}
+                  }`}
                 onClick={() => trackCTA({ type: "whatsapp", ctaName: `Compare Technique: ${item.technique}`, buttonLocation: "Technique Comparison Grid" })}
               >
                 Discuss {item.technique} →
