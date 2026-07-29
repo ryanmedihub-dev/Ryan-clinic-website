@@ -1105,7 +1105,6 @@ export default function SurgeryPageClient({ data }) {
               const doctorSpecs = doc.specializations?.length
                 ? doc.specializations
                 : [
-<<<<<<< HEAD
                     "Turkey Sapphire FUE",
                     "Turkish Technique Choi Pen",
                     "Natural Hairline Design",
@@ -1113,15 +1112,6 @@ export default function SurgeryPageClient({ data }) {
                     "100% Doctor-Led",
                     "NABH Sterile OT",
                   ];
-=======
-                  "Turkey Sapphire FUE",
-                  "DHI Choi Pen",
-                  "Natural Hairline Design",
-                  "Crown Restorations",
-                  "100% Doctor-Led",
-                  "NABH Sterile OT",
-                ];
->>>>>>> 64ef61e0cdf9e3801d6190c4fdf25e2636eb0f18
               const doctorBio =
                 doc.bio ||
                 `Leading hair transplant surgery with surgical precision. Trained under Turkey's top specialists in Istanbul, personally performing 100% of incisions and graft extractions with 95%+ graft survival.`;
