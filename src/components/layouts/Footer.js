@@ -113,7 +113,7 @@ export default function Footer() {
               <FaFacebookF size={18} />
             </a>
             <a
-              href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi, I want a free hair transplant consultation"
+              href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi, I want a free hair transplant consultation"
               target="_blank"
               rel="noreferrer"
               className="text-white hover:text-green-200 transition"
@@ -400,7 +400,7 @@ export default function Footer() {
               </li>
               <li className="pt-2">
                 <a
-                  href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi, I want a free hair transplant consultation"
+                  href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi, I want a free hair transplant consultation"
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 text-sm font-semibold py-2.5 px-5 rounded-xl text-white transition-colors"

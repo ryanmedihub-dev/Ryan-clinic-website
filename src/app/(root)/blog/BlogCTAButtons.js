@@ -8,7 +8,7 @@ export default function BlogCTAButtons() {
   return (
     <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
       <a
-        href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation"
+        href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation"
         target="_blank"
         rel="noreferrer"
         className="inline-flex items-center gap-2 font-semibold text-sm py-3.5 px-7 rounded-xl text-white transition-opacity hover:opacity-90 w-full sm:w-auto justify-center"

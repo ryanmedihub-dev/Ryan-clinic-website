@@ -183,7 +183,7 @@ export default function TurkeySpecialists() {
             {/* CTA */}
             <div className="flex flex-wrap gap-3">
               <a
-                href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi, I want to learn more about the Turkey technique at Ryan Clinic."
+                href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi, I want to learn more about the Turkey technique at Ryan Clinic."
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2.5 font-semibold text-sm py-4 px-7 rounded-xl text-white transition-opacity hover:opacity-90"

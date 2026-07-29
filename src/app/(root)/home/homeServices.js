@@ -87,25 +87,22 @@ export default function WhyRyanSection() {
 
                 {/* Overlay */}
                 <div
-                  className={`absolute inset-0 transition-all duration-500 ${
-                    isActive
+                  className={`absolute inset-0 transition-all duration-500 ${isActive
                       ? "bg-linear-to-t from-red-600/70 via-red-600/30 to-transparent"
                       : "bg-linear-to-t from-red-600/90 via-red-600/50 to-transparent"
-                  }`}
+                    }`}
                 />
 
                 {/* Yellow top bar */}
                 <div
-                  className={`absolute top-0 left-0 h-0.75 bg-[#FFC107] transition-all duration-500 ${
-                    isActive ? "w-full" : "w-0"
-                  }`}
+                  className={`absolute top-0 left-0 h-0.75 bg-[#FFC107] transition-all duration-500 ${isActive ? "w-full" : "w-0"
+                    }`}
                 />
 
                 {/* Red left accent */}
                 <div
-                  className={`absolute left-0 top-0 w-0.75 h-full bg-[#D32F2F] transition-all duration-500 ${
-                    isActive ? "opacity-100" : "opacity-0"
-                  }`}
+                  className={`absolute left-0 top-0 w-0.75 h-full bg-[#D32F2F] transition-all duration-500 ${isActive ? "opacity-100" : "opacity-0"
+                    }`}
                 />
 
                 {/* Content */}
@@ -118,34 +115,31 @@ export default function WhyRyanSection() {
 
                   {/* Divider */}
                   <div
-                    className={`h-px bg-[#FFC107] mb-2 md:mb-3 transition-all duration-500 ${
-                      isActive ? "w-16 md:w-20 opacity-100" : "w-12 md:w-18 opacity-40"
-                    }`}
+                    className={`h-px bg-[#FFC107] mb-2 md:mb-3 transition-all duration-500 ${isActive ? "w-16 md:w-20 opacity-100" : "w-12 md:w-18 opacity-40"
+                      }`}
                   />
 
                   {/* Title */}
                   <h3
-                    className={`text-white font-hind font-semibold leading-snug transition-all duration-500 ${
-                      isActive
+                    className={`text-white font-hind font-semibold leading-snug transition-all duration-500 ${isActive
                         ? "text-lg sm:text-xl md:text-2xl lg:text-3xl mb-2 md:mb-3"
                         : "text-sm sm:text-base mb-0"
-                    }`}
+                      }`}
                   >
                     {card.title}
                   </h3>
 
                   {/* Description + CTA */}
                   <div
-                    className={`overflow-hidden transition-all duration-500 ${
-                      isActive ? "max-h-48 opacity-100" : "max-h-0 opacity-0"
-                    }`}
+                    className={`overflow-hidden transition-all duration-500 ${isActive ? "max-h-48 opacity-100" : "max-h-0 opacity-0"
+                      }`}
                   >
                     <p className="text-white text-xs sm:text-sm leading-relaxed mb-3 md:mb-4">
                       {card.description}
                     </p>
 
                     <a
-                      href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi, I visited your website. Please guide me with the best treatment."
+                      href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi, I visited your website. Please guide me with the best treatment."
                       target="_blank"
                       rel="noreferrer"
                       onClick={(e) => {

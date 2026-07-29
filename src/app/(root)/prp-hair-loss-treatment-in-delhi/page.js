@@ -159,7 +159,7 @@ export default function PRPHairLossTreatmentDelhiPage() {
         name: "Where can I get PRP in Delhi?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "At Ryan Clinic's Pitampura centre (CD 163, Block CD, Dakshini Pitampura, 110034), Mon–Sat, 9 AM–7 PM. Call or WhatsApp +91-9217958539 to book.",
+          text: "At Ryan Clinic's Pitampura centre (CD 163, Block CD, Dakshini Pitampura, 110034), Mon–Sat, 9 AM–7 PM. Call or WhatsApp +91-9911111247 to book.",
         },
       },
       {

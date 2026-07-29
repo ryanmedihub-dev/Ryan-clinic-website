@@ -70,8 +70,8 @@ function EditDoctorContent() {
               proceduresCount: 5000,
               successRate: "95%+",
               rating: 5.0,
-              phoneNumber: "+91-9217958539",
-              whatsappNumber: "+91-9217958539",
+              phoneNumber: "+91-9911111247",
+              whatsappNumber: "+91-9911111247",
               email: "info@clinicryan.com",
               clinicName: "Ryan Clinic",
               clinicAddress: "CD 163, Block CD, Dakshini Pitampura, New Delhi – 110034",
@@ -565,7 +565,7 @@ function EditDoctorContent() {
               value={formData.basicInfo?.phoneNumber || ""}
               onChange={(e) => handleNestedChange("basicInfo", "phoneNumber", e.target.value)}
               className="w-full mt-2 p-2 border rounded-md"
-              placeholder="+91-9217958539"
+              placeholder="+91-9911111247"
             />
           </div>
           <div className="w-full">
@@ -575,7 +575,7 @@ function EditDoctorContent() {
               value={formData.basicInfo?.whatsappNumber || ""}
               onChange={(e) => handleNestedChange("basicInfo", "whatsappNumber", e.target.value)}
               className="w-full mt-2 p-2 border rounded-md"
-              placeholder="+91-9217958539"
+              placeholder="+91-9911111247"
             />
           </div>
           <div className="w-full">
@@ -772,7 +772,7 @@ function EditDoctorContent() {
               value={formData.hero?.whatsappCTA?.url || ""}
               onChange={(e) => handleDeepChange("hero", "whatsappCTA", "url", e.target.value)}
               className="w-full mt-2 p-2 border rounded-md"
-              placeholder="https://wa.me/919217958539"
+              placeholder="https://wa.me/919911111247"
             />
           </div>
         </div>
@@ -795,7 +795,7 @@ function EditDoctorContent() {
               value={formData.hero?.callCTA?.url || ""}
               onChange={(e) => handleDeepChange("hero", "callCTA", "url", e.target.value)}
               className="w-full mt-2 p-2 border rounded-md"
-              placeholder="tel:+919217958539"
+              placeholder="tel:+919911111247"
             />
           </div>
         </div>

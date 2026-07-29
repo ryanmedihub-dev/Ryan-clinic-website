@@ -33,8 +33,8 @@ import {
 } from "lucide-react";
 
 const WA =
-    "https://api.whatsapp.com/send?phone=919217958539&text=Hi%2C%20I%20want%20a%20free%20consultation%20with%20the%20best%20hair%20transplant%20doctor%20in%20Delhi";
-const TEL = "tel:+919217958539";
+    "https://api.whatsapp.com/send?phone=919911111247&text=Hi%2C%20I%20want%20a%20free%20consultation%20with%20the%20best%20hair%20transplant%20doctor%20in%20Delhi";
+const TEL = "tel:+919911111247";
 
 const branchData = {
     Delhi: {
@@ -126,7 +126,7 @@ function SectionLabel({ text, dark = false }) {
 function CTAButtons({ primary = "Book Free Consultation", center = false, doctorName = "" }) {
     const trackCTA = useTrackCTA();
     const waLink = doctorName
-        ? `https://api.whatsapp.com/send?phone=919217958539&text=Hi%2C%20I%20want%20a%20free%20consultation%20with%20${encodeURIComponent(doctorName)}`
+        ? `https://api.whatsapp.com/send?phone=919911111247&text=Hi%2C%20I%20want%20a%20free%20consultation%20with%20${encodeURIComponent(doctorName)}`
         : WA;
     return (
         <div className={`flex flex-wrap gap-3 ${center ? "justify-center" : ""}`}>
@@ -142,7 +142,7 @@ function CTAButtons({ primary = "Book Free Consultation", center = false, doctor
                 className="inline-flex items-center justify-center gap-2 border border-gray-200 hover:border-[#D32F2F] text-gray-700 hover:text-[#D32F2F] font-semibold py-3.5 px-6 text-sm tracking-wide transition-all rounded-xl"
                 onClick={() => trackCTA({ type: "call", ctaName: "Doctor Page Call", buttonLocation: "Doctor Page Content" })}
             >
-                Call +91-9217958539
+                Call +91-9911111247
             </a>
         </div>
     );
@@ -177,7 +177,7 @@ export default function DoctorPageClient({ data }) {
 
     const activeBranch = branchData[doctor.location] || branchData.Delhi;
     const waDoctorLink = doctor
-        ? `https://api.whatsapp.com/send?phone=919217958539&text=Hi%2C%20I%20want%20a%20free%20consultation%20with%20${encodeURIComponent(doctor.name)}`
+        ? `https://api.whatsapp.com/send?phone=919911111247&text=Hi%2C%20I%20want%20a%20free%20consultation%20with%20${encodeURIComponent(doctor.name)}`
         : WA;
 
     return (
@@ -405,11 +405,10 @@ export default function DoctorPageClient({ data }) {
                                         <div key={i} className="rounded-2xl border border-gray-100 overflow-hidden">
                                             <button
                                                 onClick={() => setActiveCred(activeCred === i ? -1 : i)}
-                                                className={`w-full text-left flex items-center justify-between p-4 transition-all ${
-                                                    activeCred === i
+                                                className={`w-full text-left flex items-center justify-between p-4 transition-all ${activeCred === i
                                                         ? "bg-red-50/50 text-gray-900 font-bold"
                                                         : "bg-gray-50/50 hover:bg-gray-50 text-gray-700"
-                                                }`}
+                                                    }`}
                                             >
                                                 <div className="flex items-center gap-3">
                                                     <span className="w-6 h-6 rounded-full bg-white text-[#D32F2F] flex items-center justify-center font-black text-xs shadow-xs border border-red-100 shrink-0">
@@ -486,11 +485,10 @@ export default function DoctorPageClient({ data }) {
                                     ].map((task, i) => (
                                         <label
                                             key={i}
-                                            className={`flex items-start gap-3 p-3.5 rounded-2xl border cursor-pointer select-none transition-all ${
-                                                checkedSteps[i]
+                                            className={`flex items-start gap-3 p-3.5 rounded-2xl border cursor-pointer select-none transition-all ${checkedSteps[i]
                                                     ? "bg-emerald-50/60 border-emerald-200 text-gray-900"
                                                     : "bg-[#FAF6F3] border-[#EDE9E4] hover:border-gray-300 text-gray-700"
-                                            }`}
+                                                }`}
                                             onClick={() => {
                                                 const n = [...checkedSteps];
                                                 n[i] = !n[i];
@@ -498,11 +496,10 @@ export default function DoctorPageClient({ data }) {
                                             }}
                                         >
                                             <div
-                                                className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all ${
-                                                    checkedSteps[i]
+                                                className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all ${checkedSteps[i]
                                                         ? "bg-emerald-600 border-emerald-600 text-white"
                                                         : "border-gray-300 bg-white"
-                                                }`}
+                                                    }`}
                                             >
                                                 {checkedSteps[i] && <Check className="w-3 h-3 text-white" />}
                                             </div>
@@ -837,698 +834,695 @@ export default function DoctorPageClient({ data }) {
 
 
 
-    {/* ── 8. Questions to Ask (Redesigned & Rich) ───────────────── */ }
-    <section className="bg-white py-16 md:py-24 border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            {/* ── 8. Questions to Ask (Redesigned & Rich) ───────────────── */}
+            <section className="bg-white py-16 md:py-24 border-b border-gray-100">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
 
-                {/* Left Column: Rich Interactive Questions Cards */}
-                <div className="lg:col-span-7">
-                    <SectionLabel text="Questions to Ask" />
-                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight mb-3">
-                        Questions to ask your hair transplant doctor in {doctor.location || "Delhi"}{" "}
-                        <span className="text-[#D32F2F]">before booking</span>
-                    </h2>
-                    <p className="text-gray-500 text-xs sm:text-sm leading-relaxed mb-8 font-sans">
-                        The quality of a doctor&apos;s answers tells you almost everything. Below are the 5 non-negotiables to ask before committing to surgery.
-                    </p>
+                        {/* Left Column: Rich Interactive Questions Cards */}
+                        <div className="lg:col-span-7">
+                            <SectionLabel text="Questions to Ask" />
+                            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight mb-3">
+                                Questions to ask your hair transplant doctor in {doctor.location || "Delhi"}{" "}
+                                <span className="text-[#D32F2F]">before booking</span>
+                            </h2>
+                            <p className="text-gray-500 text-xs sm:text-sm leading-relaxed mb-8 font-sans">
+                                The quality of a doctor&apos;s answers tells you almost everything. Below are the 5 non-negotiables to ask before committing to surgery.
+                            </p>
 
-                    {/* Question Cards List */}
-                    <div className="space-y-4">
-                        {[
-                            {
-                                tag: "SURGICAL ROLE",
-                                question: "Will the doctor personally perform graft extraction and channel creation?",
-                                answer: "Uncredentialed technicians performing extraction risk permanent follicle damage and over-harvesting donor areas. Always demand written confirmation that your surgeon conducts all major surgical phases.",
-                                ryanStandard: "100% Doctor-Led: Dr. Aman Gosain personally extracts and implants every graft.",
-                            },
-                            {
-                                tag: "TECHNIQUE & PLANNING",
-                                question: "Which hair restoration technique is recommended for my hairline, and why?",
-                                answer: "A genuine surgeon customises the technique (Sapphire FUE vs Turkish Technique Choi Pen) according to graft density needs, hairline aesthetics, and donor hair caliber rather than pushing a one-size-fits-all package.",
-                                ryanStandard: "Customised Sapphire FUE & Turkish Technique combined protocols tailored to your face structure.",
-                            },
-                            {
-                                tag: "CREDENTIAL VERIFICATION",
-                                question: "Can I verify your DMC / NMC state medical council registration number?",
-                                answer: "Qualified hair restoration surgeons readily provide their medical council registration details. Unverifiable registration is a major red flag.",
-                                ryanStandard: "Active and verifiable DMC registration available for instant online check.",
-                            },
-                            {
-                                tag: "TRANSPARENT PRICING",
-                                question: "Is the per-graft cost fixed with zero hidden post-op fees?",
-                                answer: "Ensure the estimate includes full anesthesia, sterile OT charges, post-op wash kits, and post-surgery medications without surprise extra billing.",
-                                ryanStandard: "Transparent written per-graft estimate with zero hidden extras and 0% EMI available.",
-                            },
-                            {
-                                tag: "LONG-TERM CARE",
-                                question: "What is your post-operative review and growth monitoring protocol?",
-                                answer: "Hair transplant results mature over 12 to 14 months. Your clinic should offer structured follow-up checkups at months 1, 3, 6, and 12.",
-                                ryanStandard: "Full 18-month post-op follow-up care and progress tracking included free.",
-                            },
-                        ].map((q, i) => (
-                            <div
-                                key={i}
-                                className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
-                                    openQuestion === i
-                                        ? "bg-[#FAF6F3] border-red-200 shadow-md"
-                                        : "bg-white border-gray-100 hover:border-gray-200 hover:bg-gray-50/50 shadow-xs"
-                                }`}
-                            >
-                                <button
-                                    onClick={() => setOpenQuestion(openQuestion === i ? -1 : i)}
-                                    className="w-full text-left p-5 flex items-start justify-between gap-4 select-none"
-                                >
-                                    <div className="flex items-start gap-3.5">
-                                        <span className="w-7 h-7 rounded-full bg-[#D32F2F] text-white flex items-center justify-center font-black text-xs shrink-0 mt-0.5 shadow-xs">
-                                            0{i + 1}
-                                        </span>
-                                        <div>
-                                            <span className="text-[10px] font-bold text-[#D32F2F] tracking-widest uppercase block mb-1">
-                                                {q.tag}
-                                            </span>
-                                            <h3 className="text-sm md:text-base font-bold text-gray-900 leading-snug">
-                                                {q.question}
-                                            </h3>
-                                        </div>
+                            {/* Question Cards List */}
+                            <div className="space-y-4">
+                                {[
+                                    {
+                                        tag: "SURGICAL ROLE",
+                                        question: "Will the doctor personally perform graft extraction and channel creation?",
+                                        answer: "Uncredentialed technicians performing extraction risk permanent follicle damage and over-harvesting donor areas. Always demand written confirmation that your surgeon conducts all major surgical phases.",
+                                        ryanStandard: "100% Doctor-Led: Dr. Aman Gosain personally extracts and implants every graft.",
+                                    },
+                                    {
+                                        tag: "TECHNIQUE & PLANNING",
+                                        question: "Which hair restoration technique is recommended for my hairline, and why?",
+                                        answer: "A genuine surgeon customises the technique (Sapphire FUE vs DHI Choi Pen) according to graft density needs, hairline aesthetics, and donor hair caliber rather than pushing a one-size-fits-all package.",
+                                        ryanStandard: "Customised Sapphire FUE & DHI combined protocols tailored to your face structure.",
+                                    },
+                                    {
+                                        tag: "CREDENTIAL VERIFICATION",
+                                        question: "Can I verify your DMC / NMC state medical council registration number?",
+                                        answer: "Qualified hair restoration surgeons readily provide their medical council registration details. Unverifiable registration is a major red flag.",
+                                        ryanStandard: "Active and verifiable DMC registration available for instant online check.",
+                                    },
+                                    {
+                                        tag: "TRANSPARENT PRICING",
+                                        question: "Is the per-graft cost fixed with zero hidden post-op fees?",
+                                        answer: "Ensure the estimate includes full anesthesia, sterile OT charges, post-op wash kits, and post-surgery medications without surprise extra billing.",
+                                        ryanStandard: "Transparent written per-graft estimate with zero hidden extras and 0% EMI available.",
+                                    },
+                                    {
+                                        tag: "LONG-TERM CARE",
+                                        question: "What is your post-operative review and growth monitoring protocol?",
+                                        answer: "Hair transplant results mature over 12 to 14 months. Your clinic should offer structured follow-up checkups at months 1, 3, 6, and 12.",
+                                        ryanStandard: "Full 18-month post-op follow-up care and progress tracking included free.",
+                                    },
+                                ].map((q, i) => (
+                                    <div
+                                        key={i}
+                                        className={`rounded-2xl border transition-all duration-300 overflow-hidden ${openQuestion === i
+                                                ? "bg-[#FAF6F3] border-red-200 shadow-md"
+                                                : "bg-white border-gray-100 hover:border-gray-200 hover:bg-gray-50/50 shadow-xs"
+                                            }`}
+                                    >
+                                        <button
+                                            onClick={() => setOpenQuestion(openQuestion === i ? -1 : i)}
+                                            className="w-full text-left p-5 flex items-start justify-between gap-4 select-none"
+                                        >
+                                            <div className="flex items-start gap-3.5">
+                                                <span className="w-7 h-7 rounded-full bg-[#D32F2F] text-white flex items-center justify-center font-black text-xs shrink-0 mt-0.5 shadow-xs">
+                                                    0{i + 1}
+                                                </span>
+                                                <div>
+                                                    <span className="text-[10px] font-bold text-[#D32F2F] tracking-widest uppercase block mb-1">
+                                                        {q.tag}
+                                                    </span>
+                                                    <h3 className="text-sm md:text-base font-bold text-gray-900 leading-snug">
+                                                        {q.question}
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                            <ChevronDown
+                                                className={`w-5 h-5 text-[#D32F2F] shrink-0 transition-transform duration-300 mt-1 ${openQuestion === i ? "rotate-180" : ""
+                                                    }`}
+                                            />
+                                        </button>
+
+                                        {openQuestion === i && (
+                                            <div className="px-5 pb-5 pt-1 border-t border-red-100/80 font-sans space-y-3">
+                                                <p className="text-xs text-gray-600 leading-relaxed">
+                                                    <strong className="text-gray-900 font-bold block mb-1">Why this matters:</strong>
+                                                    {q.answer}
+                                                </p>
+
+                                                <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 flex items-start gap-2.5">
+                                                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                                                    <span className="text-xs font-semibold text-emerald-900 leading-tight">
+                                                        {q.ryanStandard}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
-                                    <ChevronDown
-                                        className={`w-5 h-5 text-[#D32F2F] shrink-0 transition-transform duration-300 mt-1 ${
-                                            openQuestion === i ? "rotate-180" : ""
-                                        }`}
-                                    />
-                                </button>
-
-                                {openQuestion === i && (
-                                    <div className="px-5 pb-5 pt-1 border-t border-red-100/80 font-sans space-y-3">
-                                        <p className="text-xs text-gray-600 leading-relaxed">
-                                            <strong className="text-gray-900 font-bold block mb-1">Why this matters:</strong>
-                                            {q.answer}
-                                        </p>
-
-                                        <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 flex items-start gap-2.5">
-                                            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                                            <span className="text-xs font-semibold text-emerald-900 leading-tight">
-                                                {q.ryanStandard}
-                                            </span>
-                                        </div>
-                                    </div>
-                                )}
+                                ))}
                             </div>
-                        ))}
+                        </div>
+
+                        {/* Sidebar CTA (Right Column) */}
+                        <div className="lg:col-span-5 lg:sticky lg:top-28">
+                            <div className="rounded-3xl bg-[#1a1430] p-7 md:p-9 shadow-xl border border-white/5 relative overflow-hidden group">
+                                <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#D32F2F]/10 rounded-full blur-3xl group-hover:bg-[#D32F2F]/20 transition-colors duration-500 pointer-events-none" />
+                                <p className="text-[11px] font-bold uppercase tracking-widest text-[#D32F2F] mb-3">
+                                    Ryan Clinic Guarantee
+                                </p>
+                                <h3 className="text-white font-extrabold text-2xl mb-6 leading-tight">
+                                    We answer every one of these questions at your consultation
+                                </h3>
+                                <div className="space-y-3.5 mb-8">
+                                    {[
+                                        "Doctor performs every step personally",
+                                        "Verifiable credentials & ISHRS membership",
+                                        "10,000+ documented cases to show",
+                                        "Transparent per-graft pricing",
+                                        "Free 18-month follow-up",
+                                    ].map((item, i) => (
+                                        <div key={i} className="flex items-center gap-3">
+                                            <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+                                            <p className="text-white/90 text-xs sm:text-sm font-medium">{item}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="space-y-3">
+                                    <a
+                                        href={waDoctorLink}
+                                        className="block text-center bg-[#D32F2F] hover:bg-red-700 text-white font-extrabold py-3.5 px-6 text-xs sm:text-sm tracking-wide transition-all rounded-2xl w-full shadow-lg hover:shadow-red-900/30"
+                                        onClick={() => trackCTA({ type: "whatsapp", ctaName: "Doctor Page Book Free Consultation", buttonLocation: "Doctor Stage Section" })}
+                                    >
+                                        Book Free Consultation
+                                    </a>
+                                    <a
+                                        href={TEL}
+                                        className="block text-center border border-white/20 hover:bg-white/10 hover:border-white/40 text-white/90 font-extrabold py-3.5 px-6 text-xs sm:text-sm tracking-wide transition-all rounded-2xl w-full"
+                                        onClick={() => trackCTA({ type: "call", ctaName: "Doctor Page Call", buttonLocation: "Doctor Stage Section" })}
+                                    >
+                                        Call +91-9911111247
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </section>
 
-                {/* Sidebar CTA (Right Column) */}
-                <div className="lg:col-span-5 lg:sticky lg:top-28">
-                    <div className="rounded-3xl bg-[#1a1430] p-7 md:p-9 shadow-xl border border-white/5 relative overflow-hidden group">
-                        <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#D32F2F]/10 rounded-full blur-3xl group-hover:bg-[#D32F2F]/20 transition-colors duration-500 pointer-events-none" />
-                        <p className="text-[11px] font-bold uppercase tracking-widest text-[#D32F2F] mb-3">
-                            Ryan Clinic Guarantee
-                        </p>
-                        <h3 className="text-white font-extrabold text-2xl mb-6 leading-tight">
-                            We answer every one of these questions at your consultation
-                        </h3>
-                        <div className="space-y-3.5 mb-8">
-                            {[
-                                "Doctor performs every step personally",
-                                "Verifiable credentials & ISHRS membership",
-                                "10,000+ documented cases to show",
-                                "Transparent per-graft pricing",
-                                "Free 18-month follow-up",
-                            ].map((item, i) => (
-                                <div key={i} className="flex items-center gap-3">
-                                    <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
-                                    <p className="text-white/90 text-xs sm:text-sm font-medium">{item}</p>
+            {/* ── 9+10: MERGED — Doctor Excellence & Red Flags (Surgeon Page Grid Layout) ── */}
+            <section className="bg-[#fff5ec]/50 py-16 md:py-24 border-t border-b border-red-100">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 md:space-y-20">
+
+                    {/* PART 1: What a Great Hair Transplant Doctor Does Differently */}
+                    <div>
+                        <div className="flex items-center gap-3 mb-4">
+                            <span className="block w-8 h-px bg-emerald-600" />
+                            <span className="text-emerald-600 text-[11px] font-extrabold tracking-[0.22em] uppercase">
+                                Excellence Standard
+                            </span>
+                        </div>
+                        <div className="max-w-3xl mb-8 md:mb-12">
+                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
+                                What a Great Doctor Does.{" "}
+                                <span className="text-emerald-600">Differently.</span>
+                            </h2>
+                            <p className="text-gray-500 text-sm md:text-base leading-relaxed mt-4 font-sans">
+                                Every stage of your treatment in {doctor.location || "New Delhi"} is personally performed with high medical rigor to guarantee lifetime natural density.
+                            </p>
+                        </div>
+
+                        {/* 6-Grid Box (Emerald Theme matching Image 1 layout) */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 border border-emerald-200 rounded-3xl overflow-hidden bg-emerald-200/50 gap-px mb-6 shadow-sm">
+                            {greatDoctorTraits.map((t, i) => (
+                                <div
+                                    key={i}
+                                    className="group bg-white hover:bg-emerald-600 transition-all duration-300 p-7 md:p-8 flex flex-col gap-4 justify-between"
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-3xl font-light text-emerald-300 group-hover:text-white/30 transition-colors tracking-tight font-sans">
+                                            0{i + 1}
+                                        </span>
+                                        <div className="w-10 h-10 rounded-full bg-emerald-50 group-hover:bg-white/15 flex items-center justify-center text-emerald-600 group-hover:text-white transition-all duration-300">
+                                            <Check className="w-5 h-5" />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-base font-bold text-gray-900 group-hover:text-white mb-1.5 transition-colors leading-snug">
+                                            {t.title}
+                                        </h3>
+                                        <p className="text-xs text-gray-500 group-hover:text-emerald-50 leading-relaxed transition-colors font-sans">
+                                            {t.desc}
+                                        </p>
+                                    </div>
                                 </div>
                             ))}
                         </div>
-                        <div className="space-y-3">
-                            <a
-                                href={waDoctorLink}
-                                className="block text-center bg-[#D32F2F] hover:bg-red-700 text-white font-extrabold py-3.5 px-6 text-xs sm:text-sm tracking-wide transition-all rounded-2xl w-full shadow-lg hover:shadow-red-900/30"
-                                onClick={() => trackCTA({ type: "whatsapp", ctaName: "Doctor Page Book Free Consultation", buttonLocation: "Doctor Stage Section" })}
-                            >
-                                Book Free Consultation
-                            </a>
-                            <a
-                                href={TEL}
-                                className="block text-center border border-white/20 hover:bg-white/10 hover:border-white/40 text-white/90 font-extrabold py-3.5 px-6 text-xs sm:text-sm tracking-wide transition-all rounded-2xl w-full"
-                                onClick={() => trackCTA({ type: "call", ctaName: "Doctor Page Call", buttonLocation: "Doctor Stage Section" })}
-                            >
-                                Call +91-9217958539
-                            </a>
-                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    {/* ── 9+10: MERGED — Doctor Excellence & Red Flags (Surgeon Page Grid Layout) ── */}
-    <section className="bg-[#fff5ec]/50 py-16 md:py-24 border-t border-b border-red-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 md:space-y-20">
+                    {/* Subtle Divider */}
+                    <div className="border-t border-red-200/60" />
 
-            {/* PART 1: What a Great Hair Transplant Doctor Does Differently */}
-            <div>
-                <div className="flex items-center gap-3 mb-4">
-                    <span className="block w-8 h-px bg-emerald-600" />
-                    <span className="text-emerald-600 text-[11px] font-extrabold tracking-[0.22em] uppercase">
-                        Excellence Standard
-                    </span>
-                </div>
-                <div className="max-w-3xl mb-8 md:mb-12">
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
-                        What a Great Doctor Does.{" "}
-                        <span className="text-emerald-600">Differently.</span>
-                    </h2>
-                    <p className="text-gray-500 text-sm md:text-base leading-relaxed mt-4 font-sans">
-                        Every stage of your treatment in {doctor.location || "New Delhi"} is personally performed with high medical rigor to guarantee lifetime natural density.
-                    </p>
-                </div>
-
-                {/* 6-Grid Box (Emerald Theme matching Image 1 layout) */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 border border-emerald-200 rounded-3xl overflow-hidden bg-emerald-200/50 gap-px mb-6 shadow-sm">
-                    {greatDoctorTraits.map((t, i) => (
-                        <div
-                            key={i}
-                            className="group bg-white hover:bg-emerald-600 transition-all duration-300 p-7 md:p-8 flex flex-col gap-4 justify-between"
-                        >
-                            <div className="flex items-center justify-between">
-                                <span className="text-3xl font-light text-emerald-300 group-hover:text-white/30 transition-colors tracking-tight font-sans">
-                                    0{i + 1}
-                                </span>
-                                <div className="w-10 h-10 rounded-full bg-emerald-50 group-hover:bg-white/15 flex items-center justify-center text-emerald-600 group-hover:text-white transition-all duration-300">
-                                    <Check className="w-5 h-5" />
-                                </div>
-                            </div>
-                            <div>
-                                <h3 className="text-base font-bold text-gray-900 group-hover:text-white mb-1.5 transition-colors leading-snug">
-                                    {t.title}
-                                </h3>
-                                <p className="text-xs text-gray-500 group-hover:text-emerald-50 leading-relaxed transition-colors font-sans">
-                                    {t.desc}
-                                </p>
-                            </div>
+                    {/* PART 2: Red Flags When Choosing a Doctor */}
+                    <div>
+                        <div className="flex items-center gap-3 mb-4">
+                            <span className="block w-8 h-px bg-[#D32F2F]" />
+                            <span className="text-[#D32F2F] text-[11px] font-extrabold tracking-[0.22em] uppercase">
+                                Warning Signs
+                            </span>
                         </div>
-                    ))}
-                </div>
-            </div>
-
-            {/* Subtle Divider */}
-            <div className="border-t border-red-200/60" />
-
-            {/* PART 2: Red Flags When Choosing a Doctor */}
-            <div>
-                <div className="flex items-center gap-3 mb-4">
-                    <span className="block w-8 h-px bg-[#D32F2F]" />
-                    <span className="text-[#D32F2F] text-[11px] font-extrabold tracking-[0.22em] uppercase">
-                        Warning Signs
-                    </span>
-                </div>
-                <div className="max-w-3xl mb-8 md:mb-12">
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
-                        Red Flags When Choosing a Doctor{" "}
-                        <span className="text-[#D32F2F]">in {doctor.location || "New Delhi"}</span>
-                    </h2>
-                    <p className="text-gray-500 text-sm md:text-base leading-relaxed mt-4 font-sans">
-                        If you encounter any of the following at a clinic, walk away. Corrective surgery after a poor procedure costs far more than getting it right the first time.
-                    </p>
-                </div>
-
-                {/* 6-Grid Box (Red Theme matching Image 1 layout) */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 border border-red-200 rounded-3xl overflow-hidden bg-red-200/60 gap-px mb-8 shadow-sm">
-                    {[
-                        {
-                            num: "01",
-                            title: "No Named Doctor",
-                            desc: redFlags[0] || "No named, credentialed doctor anywhere on the website.",
-                            icon: <AlertTriangle className="w-5 h-5" />,
-                        },
-                        {
-                            num: "02",
-                            title: "Technician Delegation",
-                            desc: redFlags[1] || "No doctor present during the actual surgical procedure.",
-                            icon: <X className="w-5 h-5" />,
-                        },
-                        {
-                            num: "03",
-                            title: "Fake Credentials",
-                            desc: redFlags[2] || "Guaranteeing impossible hair density or 100% graft survival.",
-                            icon: <ShieldCheck className="w-5 h-5" />,
-                        },
-                        {
-                            num: "04",
-                            title: "High-Pressure Booking",
-                            desc: redFlags[3] || "Guaranteed results or pressure to book or pay immediately.",
-                            icon: <AlertTriangle className="w-5 h-5" />,
-                        },
-                        {
-                            num: "05",
-                            title: "Zero Patient Portfolio",
-                            desc: redFlags[4] || "No real before-and-afters of the doctor's own patients.",
-                            icon: <Scissors className="w-5 h-5" />,
-                        },
-                        {
-                            num: "06",
-                            title: "Inconsistent Information",
-                            desc: redFlags[5] || "Inconsistent claims across the website and advertisements.",
-                            icon: <X className="w-5 h-5" />,
-                        },
-                    ].map((flag, i) => (
-                        <div
-                            key={i}
-                            className="group bg-white hover:bg-[#D32F2F] transition-all duration-300 p-7 md:p-8 flex flex-col gap-4 justify-between"
-                        >
-                            <div className="flex items-center justify-between">
-                                <span className="text-3xl font-light text-red-300 group-hover:text-white/30 transition-colors tracking-tight font-sans">
-                                    {flag.num}
-                                </span>
-                                <div className="w-10 h-10 rounded-full bg-red-50 group-hover:bg-white/15 flex items-center justify-center text-[#D32F2F] group-hover:text-white transition-all duration-300">
-                                    {flag.icon}
-                                </div>
-                            </div>
-                            <div>
-                                <h3 className="text-base font-bold text-gray-900 group-hover:text-white mb-1.5 transition-colors leading-snug">
-                                    {flag.title}
-                                </h3>
-                                <p className="text-xs text-gray-500 group-hover:text-red-100 leading-relaxed transition-colors font-sans">
-                                    {flag.desc}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Bottom row matching Image 1 layout */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div className="bg-white p-6 rounded-2xl border border-red-100 shadow-sm flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-[#D32F2F] shrink-0">
-                            <ShieldCheck className="w-5 h-5" />
-                        </div>
-                        <div>
-                            <p className="text-xs font-bold text-gray-900 mb-0.5">100% Doctor-Led Surgery Standard</p>
-                            <p className="text-xs text-gray-500 font-sans leading-relaxed">
-                                {doctor.name || "Our lead surgeon"} personally designs every hairline & performs key extraction and incision steps.
+                        <div className="max-w-3xl mb-8 md:mb-12">
+                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
+                                Red Flags When Choosing a Doctor{" "}
+                                <span className="text-[#D32F2F]">in {doctor.location || "New Delhi"}</span>
+                            </h2>
+                            <p className="text-gray-500 text-sm md:text-base leading-relaxed mt-4 font-sans">
+                                If you encounter any of the following at a clinic, walk away. Corrective surgery after a poor procedure costs far more than getting it right the first time.
                             </p>
                         </div>
-                    </div>
-                    <div className="bg-white p-6 rounded-2xl border border-red-100 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                        <div>
-                            <p className="text-xs font-bold text-gray-900 mb-0.5">Clear Your Doubts Before Booking</p>
-                            <p className="text-xs text-gray-500 font-sans">+91-9217958539 · Direct Scalp & Case Consultation</p>
+
+                        {/* 6-Grid Box (Red Theme matching Image 1 layout) */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 border border-red-200 rounded-3xl overflow-hidden bg-red-200/60 gap-px mb-8 shadow-sm">
+                            {[
+                                {
+                                    num: "01",
+                                    title: "No Named Doctor",
+                                    desc: redFlags[0] || "No named, credentialed doctor anywhere on the website.",
+                                    icon: <AlertTriangle className="w-5 h-5" />,
+                                },
+                                {
+                                    num: "02",
+                                    title: "Technician Delegation",
+                                    desc: redFlags[1] || "No doctor present during the actual surgical procedure.",
+                                    icon: <X className="w-5 h-5" />,
+                                },
+                                {
+                                    num: "03",
+                                    title: "Fake Credentials",
+                                    desc: redFlags[2] || "Guaranteeing impossible hair density or 100% graft survival.",
+                                    icon: <ShieldCheck className="w-5 h-5" />,
+                                },
+                                {
+                                    num: "04",
+                                    title: "High-Pressure Booking",
+                                    desc: redFlags[3] || "Guaranteed results or pressure to book or pay immediately.",
+                                    icon: <AlertTriangle className="w-5 h-5" />,
+                                },
+                                {
+                                    num: "05",
+                                    title: "Zero Patient Portfolio",
+                                    desc: redFlags[4] || "No real before-and-afters of the doctor's own patients.",
+                                    icon: <Scissors className="w-5 h-5" />,
+                                },
+                                {
+                                    num: "06",
+                                    title: "Inconsistent Information",
+                                    desc: redFlags[5] || "Inconsistent claims across the website and advertisements.",
+                                    icon: <X className="w-5 h-5" />,
+                                },
+                            ].map((flag, i) => (
+                                <div
+                                    key={i}
+                                    className="group bg-white hover:bg-[#D32F2F] transition-all duration-300 p-7 md:p-8 flex flex-col gap-4 justify-between"
+                                >
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-3xl font-light text-red-300 group-hover:text-white/30 transition-colors tracking-tight font-sans">
+                                            {flag.num}
+                                        </span>
+                                        <div className="w-10 h-10 rounded-full bg-red-50 group-hover:bg-white/15 flex items-center justify-center text-[#D32F2F] group-hover:text-white transition-all duration-300">
+                                            {flag.icon}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-base font-bold text-gray-900 group-hover:text-white mb-1.5 transition-colors leading-snug">
+                                            {flag.title}
+                                        </h3>
+                                        <p className="text-xs text-gray-500 group-hover:text-red-100 leading-relaxed transition-colors font-sans">
+                                            {flag.desc}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                        <a
-                            href={waDoctorLink}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-2 bg-[#D32F2F] hover:bg-red-700 text-white font-bold py-3 px-5 rounded-xl text-xs transition-all shrink-0 shadow-sm"
-                            onClick={() => trackCTA({ type: "whatsapp", ctaName: "Speak to Doctor Red Flags", buttonLocation: "Merged Red Flags Section" })}
-                        >
-                            Speak to Doctor <ArrowRight className="w-4 h-4" />
-                        </a>
+
+                        {/* Bottom row matching Image 1 layout */}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div className="bg-white p-6 rounded-2xl border border-red-100 shadow-sm flex items-center gap-4">
+                                <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-[#D32F2F] shrink-0">
+                                    <ShieldCheck className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <p className="text-xs font-bold text-gray-900 mb-0.5">100% Doctor-Led Surgery Standard</p>
+                                    <p className="text-xs text-gray-500 font-sans leading-relaxed">
+                                        {doctor.name || "Our lead surgeon"} personally designs every hairline & performs key extraction and incision steps.
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="bg-white p-6 rounded-2xl border border-red-100 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                <div>
+                                    <p className="text-xs font-bold text-gray-900 mb-0.5">Clear Your Doubts Before Booking</p>
+                                    <p className="text-xs text-gray-500 font-sans">+91-9911111247 · Direct Scalp & Case Consultation</p>
+                                </div>
+                                <a
+                                    href={waDoctorLink}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="inline-flex items-center gap-2 bg-[#D32F2F] hover:bg-red-700 text-white font-bold py-3 px-5 rounded-xl text-xs transition-all shrink-0 shadow-sm"
+                                    onClick={() => trackCTA({ type: "whatsapp", ctaName: "Speak to Doctor Red Flags", buttonLocation: "Merged Red Flags Section" })}
+                                >
+                                    Speak to Doctor <ArrowRight className="w-4 h-4" />
+                                </a>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
-            </div>
-
-        </div>
-    </section>
+            </section>
 
 
 
-    {/* ── 11. Procedures Step-by-Step — Interactive Stepper ───────── */}
-    <section className="py-16 md:py-24 bg-[#fff5ec] border-y border-red-100">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* ── 11. Procedures Step-by-Step — Interactive Stepper ───────── */}
+            <section className="py-16 md:py-24 bg-[#fff5ec] border-y border-red-100">
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            {/* Section Label + Header */}
-            <div className="text-center max-w-3xl mx-auto mb-14">
-                <div className="inline-flex items-center gap-2 bg-white border border-red-200 px-4 py-1.5 rounded-full mb-5 shadow-sm">
-                    <span className="w-2 h-2 rounded-full bg-[#D32F2F]" />
-                    <span className="text-[#D32F2F] text-xs font-extrabold tracking-widest uppercase">
-                        Surgical Process
-                    </span>
-                </div>
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
-                    Hair Transplant Surgery Procedure: <br />
-                    <span className="text-[#D32F2F]">Step-by-Step</span>
-                </h2>
-                <p className="text-gray-500 text-sm md:text-base leading-relaxed mt-5 font-sans">
-                    Every stage of your hair restoration procedure is personally performed by {doctor.name || "our lead surgeon"} to ensure 95%+ graft survival and natural hairline aesthetics.
-                </p>
-            </div>
+                    {/* Section Label + Header */}
+                    <div className="text-center max-w-3xl mx-auto mb-14">
+                        <div className="inline-flex items-center gap-2 bg-white border border-red-200 px-4 py-1.5 rounded-full mb-5 shadow-sm">
+                            <span className="w-2 h-2 rounded-full bg-[#D32F2F]" />
+                            <span className="text-[#D32F2F] text-xs font-extrabold tracking-widest uppercase">
+                                Surgical Process
+                            </span>
+                        </div>
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
+                            Hair Transplant Surgery Procedure: <br />
+                            <span className="text-[#D32F2F]">Step-by-Step</span>
+                        </h2>
+                        <p className="text-gray-500 text-sm md:text-base leading-relaxed mt-5 font-sans">
+                            Every stage of your hair restoration procedure is personally performed by {doctor.name || "our lead surgeon"} to ensure 95%+ graft survival and natural hairline aesthetics.
+                        </p>
+                    </div>
 
-            {/* ── Stepper Container ── */}
-            <div className="bg-white rounded-3xl shadow-lg border border-red-100 overflow-hidden">
+                    {/* ── Stepper Container ── */}
+                    <div className="bg-white rounded-3xl shadow-lg border border-red-100 overflow-hidden">
 
-                {/* ── Step Progress Bar (top row) ── */}
-                <div className="px-8 pt-10 pb-8 border-b border-gray-100">
-                    <div className="flex items-start justify-between relative">
+                        {/* ── Step Progress Bar (top row) ── */}
+                        <div className="px-8 pt-10 pb-8 border-b border-gray-100">
+                            <div className="flex items-start justify-between relative">
 
-                        {/* connecting line track — behind everything */}
-                        <div className="absolute left-5 right-5 top-5 h-0.5 flex" style={{ zIndex: 0 }}>
+                                {/* connecting line track — behind everything */}
+                                <div className="absolute left-5 right-5 top-5 h-0.5 flex" style={{ zIndex: 0 }}>
+                                    {[
+                                        { num: "01", title: "Consultation & Hairline Design", body: "The doctor personally maps your new hairline according to facial symmetry and marks donor and recipient zones for lifetime natural framing." },
+                                        { num: "02", title: "Graft Extraction (FUE)", body: "Follicular units are harvested one by one from the safe donor area using precision micro-punches (0.7–0.9mm) to protect viability." },
+                                        { num: "03", title: "Recipient-Site Creation (Sapphire)", body: "Microscopic channels are opened using sharp gemstone sapphire blades, setting exact direction, angle, and radial depth." },
+                                        { num: "04", title: "Direct Implantation (Choi Pen / DHI)", body: "Using original Choi implanter pens, sorted grafts are loaded and placed directly into channels for maximum density without scalp trauma." },
+                                        { num: "05", title: "18-Month Growth & Follow-Up", body: "Free structured follow-up check-ups at months 1, 3, 6, 12, and 18 ensure your hair growth progress is fully tracked." },
+                                    ].map((_, idx, arr) => {
+                                        if (idx === arr.length - 1) return null;
+                                        return (
+                                            <div
+                                                key={idx}
+                                                className="flex-1 h-full transition-all duration-500"
+                                                style={{ backgroundColor: activeStep > idx ? "#D32F2F" : "#e5e7eb" }}
+                                            />
+                                        );
+                                    })}
+                                </div>
+
+                                {/* Step circles + labels */}
+                                {[
+                                    { num: "01", title: "Consultation & Hairline Design", body: "The doctor personally maps your new hairline according to facial symmetry and marks donor and recipient zones for lifetime natural framing." },
+                                    { num: "02", title: "Graft Extraction (FUE)", body: "Follicular units are harvested one by one from the safe donor area using precision micro-punches (0.7–0.9mm) to protect viability." },
+                                    { num: "03", title: "Recipient-Site Creation (Sapphire)", body: "Microscopic channels are opened using sharp gemstone sapphire blades, setting exact direction, angle, and radial depth." },
+                                    { num: "04", title: "Direct Implantation (Choi Pen / DHI)", body: "Using original Choi implanter pens, sorted grafts are loaded and placed directly into channels for maximum density without scalp trauma." },
+                                    { num: "05", title: "18-Month Growth & Follow-Up", body: "Free structured follow-up check-ups at months 1, 3, 6, 12, and 18 ensure your hair growth progress is fully tracked." },
+                                ].map((step, idx) => {
+                                    const isActive = activeStep === idx;
+                                    const isCompleted = activeStep > idx;
+                                    return (
+                                        <button
+                                            key={idx}
+                                            onClick={() => setActiveStep(idx)}
+                                            className="flex flex-col items-center gap-3 relative z-10 group flex-1"
+                                        >
+                                            {/* Circle */}
+                                            <div
+                                                className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-all duration-300 shadow-sm
+                                            ${isActive
+                                                        ? "bg-[#D32F2F] border-[#D32F2F] text-white scale-110 ring-4 ring-red-100 shadow-red-200 shadow-md"
+                                                        : isCompleted
+                                                            ? "bg-[#D32F2F] border-[#D32F2F] text-white"
+                                                            : "bg-white border-gray-200 text-gray-400 group-hover:border-[#D32F2F] group-hover:text-[#D32F2F]"
+                                                    }`}
+                                            >
+                                                {isCompleted ? (
+                                                    <Check className="w-4 h-4 text-white stroke-[3]" />
+                                                ) : (
+                                                    <span className="text-xs">{step.num}</span>
+                                                )}
+                                            </div>
+                                            {/* Label */}
+                                            <span
+                                                className={`text-[10px] sm:text-xs font-semibold text-center leading-snug hidden sm:block px-1 transition-colors duration-200
+                                            ${isActive ? "text-[#D32F2F]" : "text-gray-400 group-hover:text-gray-600"}`}
+                                            >
+                                                {step.title}
+                                            </span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {/* ── Step Content Cards Row ── */}
+                        <div className="grid grid-cols-1 sm:grid-cols-5 border-b border-gray-100">
                             {[
                                 { num: "01", title: "Consultation & Hairline Design", body: "The doctor personally maps your new hairline according to facial symmetry and marks donor and recipient zones for lifetime natural framing." },
                                 { num: "02", title: "Graft Extraction (FUE)", body: "Follicular units are harvested one by one from the safe donor area using precision micro-punches (0.7–0.9mm) to protect viability." },
                                 { num: "03", title: "Recipient-Site Creation (Sapphire)", body: "Microscopic channels are opened using sharp gemstone sapphire blades, setting exact direction, angle, and radial depth." },
                                 { num: "04", title: "Direct Implantation (Choi Pen / DHI)", body: "Using original Choi implanter pens, sorted grafts are loaded and placed directly into channels for maximum density without scalp trauma." },
                                 { num: "05", title: "18-Month Growth & Follow-Up", body: "Free structured follow-up check-ups at months 1, 3, 6, 12, and 18 ensure your hair growth progress is fully tracked." },
-                            ].map((_, idx, arr) => {
-                                if (idx === arr.length - 1) return null;
+                            ].map((step, idx) => {
+                                const isActive = activeStep === idx;
+                                const isCompleted = activeStep > idx;
                                 return (
-                                    <div
+                                    <button
                                         key={idx}
-                                        className="flex-1 h-full transition-all duration-500"
-                                        style={{ backgroundColor: activeStep > idx ? "#D32F2F" : "#e5e7eb" }}
-                                    />
+                                        onClick={() => setActiveStep(idx)}
+                                        className={`text-left p-6 flex flex-col gap-2.5 transition-all duration-300 group border-r border-gray-100 last:border-r-0 relative
+                                    ${isActive
+                                                ? "bg-red-50"
+                                                : "bg-white hover:bg-gray-50"
+                                            }`}
+                                    >
+                                        {/* Active top accent */}
+                                        {isActive && (
+                                            <div className="absolute top-0 left-0 right-0 h-0.5 bg-[#D32F2F]" />
+                                        )}
+
+                                        {/* Step number badge */}
+                                        <div className="flex items-center justify-between mb-1">
+                                            <span className={`text-xs font-black tracking-widest
+                                        ${isActive ? "text-[#D32F2F]" : isCompleted ? "text-gray-300" : "text-gray-300 group-hover:text-gray-400"}`}>
+                                                {step.num}
+                                            </span>
+                                            <span className={`text-[9px] font-bold uppercase tracking-widest
+                                        ${isActive ? "text-[#D32F2F]" : "text-gray-300"}`}>
+                                                STEP {idx + 1}
+                                            </span>
+                                        </div>
+
+                                        {/* Title */}
+                                        <h3 className={`text-sm font-extrabold leading-snug transition-colors duration-200
+                                    ${isActive ? "text-gray-900" : "text-gray-500 group-hover:text-gray-800"}`}>
+                                            {step.title}
+                                        </h3>
+
+                                        {/* Body — only visible on active */}
+                                        <p className={`text-xs leading-relaxed transition-all duration-300 overflow-hidden font-sans
+                                    ${isActive ? "text-gray-500 max-h-40 opacity-100 mt-1" : "max-h-0 opacity-0"}`}>
+                                            {step.body}
+                                        </p>
+
+                                        {/* Doctor-Led tag */}
+                                        <div className={`flex items-center gap-1 text-[10px] font-bold pt-2 mt-auto border-t transition-colors duration-200
+                                    ${isActive ? "border-red-100 text-[#D32F2F]" : "border-gray-100 text-gray-300 group-hover:text-gray-400"}`}>
+                                            <span>Doctor-Led Step</span>
+                                            <ArrowRight className={`w-3 h-3 transition-transform duration-200 ${isActive ? "translate-x-0.5" : ""}`} />
+                                        </div>
+                                    </button>
                                 );
                             })}
                         </div>
 
-                        {/* Step circles + labels */}
-                        {[
-                            { num: "01", title: "Consultation & Hairline Design", body: "The doctor personally maps your new hairline according to facial symmetry and marks donor and recipient zones for lifetime natural framing." },
-                            { num: "02", title: "Graft Extraction (FUE)", body: "Follicular units are harvested one by one from the safe donor area using precision micro-punches (0.7–0.9mm) to protect viability." },
-                            { num: "03", title: "Recipient-Site Creation (Sapphire)", body: "Microscopic channels are opened using sharp gemstone sapphire blades, setting exact direction, angle, and radial depth." },
-                            { num: "04", title: "Direct Implantation (Choi Pen / DHI)", body: "Using original Choi implanter pens, sorted grafts are loaded and placed directly into channels for maximum density without scalp trauma." },
-                            { num: "05", title: "18-Month Growth & Follow-Up", body: "Free structured follow-up check-ups at months 1, 3, 6, 12, and 18 ensure your hair growth progress is fully tracked." },
-                        ].map((step, idx) => {
-                            const isActive = activeStep === idx;
-                            const isCompleted = activeStep > idx;
-                            return (
-                                <button
-                                    key={idx}
-                                    onClick={() => setActiveStep(idx)}
-                                    className="flex flex-col items-center gap-3 relative z-10 group flex-1"
-                                >
-                                    {/* Circle */}
-                                    <div
-                                        className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-all duration-300 shadow-sm
-                                            ${
-                                                isActive
-                                                    ? "bg-[#D32F2F] border-[#D32F2F] text-white scale-110 ring-4 ring-red-100 shadow-red-200 shadow-md"
-                                                    : isCompleted
-                                                    ? "bg-[#D32F2F] border-[#D32F2F] text-white"
-                                                    : "bg-white border-gray-200 text-gray-400 group-hover:border-[#D32F2F] group-hover:text-[#D32F2F]"
-                                            }`}
-                                    >
-                                        {isCompleted ? (
-                                            <Check className="w-4 h-4 text-white stroke-[3]" />
-                                        ) : (
-                                            <span className="text-xs">{step.num}</span>
-                                        )}
-                                    </div>
-                                    {/* Label */}
-                                    <span
-                                        className={`text-[10px] sm:text-xs font-semibold text-center leading-snug hidden sm:block px-1 transition-colors duration-200
-                                            ${isActive ? "text-[#D32F2F]" : "text-gray-400 group-hover:text-gray-600"}`}
-                                    >
-                                        {step.title}
-                                    </span>
-                                </button>
-                            );
-                        })}
-                    </div>
-                </div>
-
-                {/* ── Step Content Cards Row ── */}
-                <div className="grid grid-cols-1 sm:grid-cols-5 border-b border-gray-100">
-                    {[
-                        { num: "01", title: "Consultation & Hairline Design", body: "The doctor personally maps your new hairline according to facial symmetry and marks donor and recipient zones for lifetime natural framing." },
-                        { num: "02", title: "Graft Extraction (FUE)", body: "Follicular units are harvested one by one from the safe donor area using precision micro-punches (0.7–0.9mm) to protect viability." },
-                        { num: "03", title: "Recipient-Site Creation (Sapphire)", body: "Microscopic channels are opened using sharp gemstone sapphire blades, setting exact direction, angle, and radial depth." },
-                        { num: "04", title: "Direct Implantation (Choi Pen / DHI)", body: "Using original Choi implanter pens, sorted grafts are loaded and placed directly into channels for maximum density without scalp trauma." },
-                        { num: "05", title: "18-Month Growth & Follow-Up", body: "Free structured follow-up check-ups at months 1, 3, 6, 12, and 18 ensure your hair growth progress is fully tracked." },
-                    ].map((step, idx) => {
-                        const isActive = activeStep === idx;
-                        const isCompleted = activeStep > idx;
-                        return (
-                            <button
-                                key={idx}
-                                onClick={() => setActiveStep(idx)}
-                                className={`text-left p-6 flex flex-col gap-2.5 transition-all duration-300 group border-r border-gray-100 last:border-r-0 relative
-                                    ${isActive
-                                        ? "bg-red-50"
-                                        : "bg-white hover:bg-gray-50"
-                                    }`}
-                            >
-                                {/* Active top accent */}
-                                {isActive && (
-                                    <div className="absolute top-0 left-0 right-0 h-0.5 bg-[#D32F2F]" />
-                                )}
-
-                                {/* Step number badge */}
-                                <div className="flex items-center justify-between mb-1">
-                                    <span className={`text-xs font-black tracking-widest
-                                        ${isActive ? "text-[#D32F2F]" : isCompleted ? "text-gray-300" : "text-gray-300 group-hover:text-gray-400"}`}>
-                                        {step.num}
-                                    </span>
-                                    <span className={`text-[9px] font-bold uppercase tracking-widest
-                                        ${isActive ? "text-[#D32F2F]" : "text-gray-300"}`}>
-                                        STEP {idx + 1}
-                                    </span>
+                        {/* ── Bottom CTA strip ── */}
+                        <div className="bg-[#D32F2F] px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center shrink-0">
+                                    <CheckCircle2 className="w-4 h-4 text-white" />
                                 </div>
-
-                                {/* Title */}
-                                <h3 className={`text-sm font-extrabold leading-snug transition-colors duration-200
-                                    ${isActive ? "text-gray-900" : "text-gray-500 group-hover:text-gray-800"}`}>
-                                    {step.title}
-                                </h3>
-
-                                {/* Body — only visible on active */}
-                                <p className={`text-xs leading-relaxed transition-all duration-300 overflow-hidden font-sans
-                                    ${isActive ? "text-gray-500 max-h-40 opacity-100 mt-1" : "max-h-0 opacity-0"}`}>
-                                    {step.body}
+                                <p className="text-white text-sm font-semibold">
+                                    Ready to discuss your hairline design directly with {doctor.name || "our surgeon"}?
                                 </p>
-
-                                {/* Doctor-Led tag */}
-                                <div className={`flex items-center gap-1 text-[10px] font-bold pt-2 mt-auto border-t transition-colors duration-200
-                                    ${isActive ? "border-red-100 text-[#D32F2F]" : "border-gray-100 text-gray-300 group-hover:text-gray-400"}`}>
-                                    <span>Doctor-Led Step</span>
-                                    <ArrowRight className={`w-3 h-3 transition-transform duration-200 ${isActive ? "translate-x-0.5" : ""}`} />
-                                </div>
-                            </button>
-                        );
-                    })}
-                </div>
-
-                {/* ── Bottom CTA strip ── */}
-                <div className="bg-[#D32F2F] px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center shrink-0">
-                            <CheckCircle2 className="w-4 h-4 text-white" />
+                            </div>
+                            <a
+                                href={waDoctorLink}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center gap-2 bg-white text-[#D32F2F] font-bold py-3 px-6 rounded-xl text-xs hover:bg-red-50 transition-colors shrink-0"
+                                onClick={() => trackCTA({ type: "whatsapp", ctaName: "Step Process Book", buttonLocation: "Doctor Step Process" })}
+                            >
+                                Book Surgical Scalp Analysis <ArrowRight className="w-4 h-4" />
+                            </a>
                         </div>
-                        <p className="text-white text-sm font-semibold">
-                            Ready to discuss your hairline design directly with {doctor.name || "our surgeon"}?
-                        </p>
+
                     </div>
-                    <a
-                        href={waDoctorLink}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-2 bg-white text-[#D32F2F] font-bold py-3 px-6 rounded-xl text-xs hover:bg-red-50 transition-colors shrink-0"
-                        onClick={() => trackCTA({ type: "whatsapp", ctaName: "Step Process Book", buttonLocation: "Doctor Step Process" })}
-                    >
-                        Book Surgical Scalp Analysis <ArrowRight className="w-4 h-4" />
-                    </a>
+
+                    {/* Internal links */}
+                    <div className="flex flex-wrap gap-2.5 items-center text-sm text-gray-500 mt-8">
+                        <span>Learn more:</span>
+                        <a
+                            href="/hair-transplant-in-delhi"
+                            className="text-[#D32F2F] hover:text-red-700 font-semibold underline underline-offset-4 decoration-red-200 hover:decoration-[#D32F2F] transition-all"
+                        >
+                            hair transplant in Delhi
+                        </a>
+                        <span className="text-gray-300">·</span>
+                        <a
+                            href="/surgery/hair-transplant-surgery-in-delhi"
+                            className="text-[#D32F2F] hover:text-red-700 font-semibold underline underline-offset-4 decoration-red-200 hover:decoration-[#D32F2F] transition-all"
+                        >
+                            hair transplant surgery in Delhi
+                        </a>
+                        <span className="text-gray-300">·</span>
+                        <a
+                            href="/best-hair-transplant-clinic-in-delhi"
+                            className="text-[#D32F2F] hover:text-red-700 font-semibold underline underline-offset-4 decoration-red-200 hover:decoration-[#D32F2F] transition-all"
+                        >
+                            best hair transplant clinic in Delhi
+                        </a>
+                    </div>
                 </div>
+            </section>
 
-            </div>
+            {/* SECTION 12: Cost Section */}
+            <section className="bg-white py-16 md:py-20">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                        <div>
+                            <SectionLabel text="Cost & Consultation" />
+                            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight tracking-tight mb-5">
+                                Cost of consulting a hair transplant doctor in Delhi
+                            </h2>
+                            <p className="text-gray-500 text-sm md:text-[15px] leading-relaxed mb-6">
+                                Consultation at Ryan Clinic includes a free scalp analysis — your doctor assesses your
+                                case and gives an exact graft count and transparent, per-graft cost. Surgery pricing
+                                starts from ₹40,000, with 0% EMI available.
+                            </p>
+                            <a
+                                href="/hair-transplant-cost-in-delhi"
+                                className="inline-flex items-center gap-2 text-[#D32F2F] font-semibold text-sm hover:underline mb-8"
+                            >
+                                Full cost breakdown <ArrowRight className="w-4 h-4" />
+                            </a>
+                            <CTAButtons primary="Get Free Cost Estimate" doctorName={doctor.name} />
+                        </div>
 
-            {/* Internal links */}
-            <div className="flex flex-wrap gap-2.5 items-center text-sm text-gray-500 mt-8">
-                <span>Learn more:</span>
-                <a
-                    href="/hair-transplant-in-delhi"
-                    className="text-[#D32F2F] hover:text-red-700 font-semibold underline underline-offset-4 decoration-red-200 hover:decoration-[#D32F2F] transition-all"
-                >
-                    hair transplant in Delhi
-                </a>
-                <span className="text-gray-300">·</span>
-                <a
-                    href="/surgery/hair-transplant-surgery-in-delhi"
-                    className="text-[#D32F2F] hover:text-red-700 font-semibold underline underline-offset-4 decoration-red-200 hover:decoration-[#D32F2F] transition-all"
-                >
-                    hair transplant surgery in Delhi
-                </a>
-                <span className="text-gray-300">·</span>
-                <a
-                    href="/best-hair-transplant-clinic-in-delhi"
-                    className="text-[#D32F2F] hover:text-red-700 font-semibold underline underline-offset-4 decoration-red-200 hover:decoration-[#D32F2F] transition-all"
-                >
-                    best hair transplant clinic in Delhi
-                </a>
-            </div>
-        </div>
-    </section>
+                        <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-white">
+                            <table className="w-full text-sm">
+                                <tbody>
+                                    {[
+                                        ["Consultation", "Free scalp analysis — no obligation"],
+                                        ["Surgery starting from", "₹40,000"],
+                                        ["Per-graft rate", "₹40–₹120 (doctor-led Sapphire FUE)"],
+                                        ["0% EMI", "6 & 12-month plans via leading banks"],
+                                        ["Follow-up", "18 months included free"],
+                                        ["Pricing method", "Per graft — confirmed in writing"],
+                                    ].map(([label, value], i) => (
+                                        <tr key={i} className={i % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+                                            <td className="px-5 py-3.5 font-semibold text-gray-800 w-[45%] text-[13px]">
+                                                {label}
+                                            </td>
+                                            <td className="px-5 py-3.5 text-gray-600 text-[13px]">{value}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    {/* SECTION 12: Cost Section */}
-    <section className="bg-white py-16 md:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                <div>
-                    <SectionLabel text="Cost & Consultation" />
-                    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight tracking-tight mb-5">
-                        Cost of consulting a hair transplant doctor in Delhi
+            {/* ── 13. Location ─────────────────────────────────────────── */}
+            <section className="bg-white py-16 md:py-24 border-t border-b border-gray-100">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex items-center gap-3 mb-4">
+                        <span className="block w-8 h-px bg-[#D32F2F]" />
+                        <span className="text-[#D32F2F] text-[11px] font-extrabold tracking-[0.22em] uppercase">
+                            Visit Us
+                        </span>
+                    </div>
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-12">
+                        Visiting Ryan Clinic in <span className="text-[#D32F2F]">{doctor.location || "New Delhi"}</span>
                     </h2>
-                    <p className="text-gray-500 text-sm md:text-[15px] leading-relaxed mb-6">
-                        Consultation at Ryan Clinic includes a free scalp analysis — your doctor assesses your
-                        case and gives an exact graft count and transparent, per-graft cost. Surgery pricing
-                        starts from ₹40,000, with 0% EMI available.
-                    </p>
-                    <a
-                        href="/hair-transplant-cost-in-delhi"
-                        className="inline-flex items-center gap-2 text-[#D32F2F] font-semibold text-sm hover:underline mb-8"
-                    >
-                        Full cost breakdown <ArrowRight className="w-4 h-4" />
-                    </a>
-                    <CTAButtons primary="Get Free Cost Estimate" doctorName={doctor.name} />
-                </div>
 
-                <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-white">
-                    <table className="w-full text-sm">
-                        <tbody>
-                            {[
-                                ["Consultation", "Free scalp analysis — no obligation"],
-                                ["Surgery starting from", "₹40,000"],
-                                ["Per-graft rate", "₹40–₹120 (doctor-led Sapphire FUE)"],
-                                ["0% EMI", "6 & 12-month plans via leading banks"],
-                                ["Follow-up", "18 months included free"],
-                                ["Pricing method", "Per graft — confirmed in writing"],
-                            ].map(([label, value], i) => (
-                                <tr key={i} className={i % 2 === 0 ? "bg-gray-50" : "bg-white"}>
-                                    <td className="px-5 py-3.5 font-semibold text-gray-800 w-[45%] text-[13px]">
-                                        {label}
-                                    </td>
-                                    <td className="px-5 py-3.5 text-gray-600 text-[13px]">{value}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
 
-    {/* ── 13. Location ─────────────────────────────────────────── */}
-    <section className="bg-white py-16 md:py-24 border-t border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-3 mb-4">
-                <span className="block w-8 h-px bg-[#D32F2F]" />
-                <span className="text-[#D32F2F] text-[11px] font-extrabold tracking-[0.22em] uppercase">
-                    Visit Us
-                </span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-12">
-                Visiting Ryan Clinic in <span className="text-[#D32F2F]">{doctor.location || "New Delhi"}</span>
-            </h2>
+                        {/* Left Column: Address, Phone, Hours & Service Tags */}
+                        <div className="space-y-6">
+                            <p className="text-gray-500 text-sm md:text-base leading-relaxed font-sans">
+                                Our {doctor.location || "Delhi"} centre is convenient from across the city. Accessible
+                                from <strong className="text-gray-900 font-bold">{activeBranch.metro}</strong>, serving patients from{" "}
+                                {activeBranch.areas}
+                            </p>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-
-                {/* Left Column: Address, Phone, Hours & Service Tags */}
-                <div className="space-y-6">
-                    <p className="text-gray-500 text-sm md:text-base leading-relaxed font-sans">
-                        Our {doctor.location || "Delhi"} centre is convenient from across the city. Accessible
-                        from <strong className="text-gray-900 font-bold">{activeBranch.metro}</strong>, serving patients from{" "}
-                        {activeBranch.areas}
-                    </p>
-
-                    {/* Address Box */}
-                    <div className="rounded-2xl border border-gray-200 overflow-hidden shadow-sm bg-white">
-                        <div className="bg-[#1a1430] px-6 py-3.5 flex items-center justify-between">
-                            <p className="text-white font-bold text-sm">{activeBranch.addressTitle}</p>
-                            <span className="inline-flex items-center gap-1 bg-[#D32F2F] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-                                Open Daily
-                            </span>
-                        </div>
-                        <div className="p-5 space-y-4">
-                            <div className="flex items-start gap-3.5">
-                                <div className="w-8 h-8 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-[#D32F2F] shrink-0 mt-0.5">
-                                    <MapPin className="w-4 h-4" />
+                            {/* Address Box */}
+                            <div className="rounded-2xl border border-gray-200 overflow-hidden shadow-sm bg-white">
+                                <div className="bg-[#1a1430] px-6 py-3.5 flex items-center justify-between">
+                                    <p className="text-white font-bold text-sm">{activeBranch.addressTitle}</p>
+                                    <span className="inline-flex items-center gap-1 bg-[#D32F2F] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                                        Open Daily
+                                    </span>
                                 </div>
-                                <div>
-                                    <p className="font-bold text-gray-900 text-xs uppercase tracking-wider text-gray-400 mb-0.5 font-sans">Clinic Address</p>
-                                    <p className="text-gray-700 text-xs font-semibold leading-relaxed">
-                                        {activeBranch.addressLine1}
-                                        <br />
-                                        {activeBranch.addressLine2}
-                                    </p>
+                                <div className="p-5 space-y-4">
+                                    <div className="flex items-start gap-3.5">
+                                        <div className="w-8 h-8 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-[#D32F2F] shrink-0 mt-0.5">
+                                            <MapPin className="w-4 h-4" />
+                                        </div>
+                                        <div>
+                                            <p className="font-bold text-gray-900 text-xs uppercase tracking-wider text-gray-400 mb-0.5 font-sans">Clinic Address</p>
+                                            <p className="text-gray-700 text-xs font-semibold leading-relaxed">
+                                                {activeBranch.addressLine1}
+                                                <br />
+                                                {activeBranch.addressLine2}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center gap-3.5 border-t border-gray-100 pt-3.5">
+                                        <div className="w-8 h-8 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-[#D32F2F] shrink-0">
+                                            <Phone className="w-4 h-4" />
+                                        </div>
+                                        <div>
+                                            <p className="font-bold text-xs uppercase tracking-wider text-gray-400 mb-0.5 font-sans">Phone / Appointments</p>
+                                            <a
+                                                href="tel:+919911111247"
+                                                className="text-[#D32F2F] text-sm hover:underline font-extrabold"
+                                            >
+                                                +91-9911111247
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center gap-3.5 border-t border-gray-100 pt-3.5">
+                                        <div className="w-8 h-8 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-[#D32F2F] shrink-0">
+                                            <Clock className="w-4 h-4" />
+                                        </div>
+                                        <div>
+                                            <p className="font-bold text-xs uppercase tracking-wider text-gray-400 mb-0.5 font-sans">Consultation Hours</p>
+                                            <p className="text-gray-700 text-xs font-semibold">Monday – Saturday, 9:00 AM – 7:00 PM</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-3.5 border-t border-gray-100 pt-3.5">
-                                <div className="w-8 h-8 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-[#D32F2F] shrink-0">
-                                    <Phone className="w-4 h-4" />
-                                </div>
-                                <div>
-                                    <p className="font-bold text-xs uppercase tracking-wider text-gray-400 mb-0.5 font-sans">Phone / Appointments</p>
-                                    <a
-                                        href="tel:+919217958539"
-                                        className="text-[#D32F2F] text-sm hover:underline font-extrabold"
-                                    >
-                                        +91-9217958539
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div className="flex items-center gap-3.5 border-t border-gray-100 pt-3.5">
-                                <div className="w-8 h-8 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-[#D32F2F] shrink-0">
-                                    <Clock className="w-4 h-4" />
-                                </div>
-                                <div>
-                                    <p className="font-bold text-xs uppercase tracking-wider text-gray-400 mb-0.5 font-sans">Consultation Hours</p>
-                                    <p className="text-gray-700 text-xs font-semibold">Monday – Saturday, 9:00 AM – 7:00 PM</p>
+                            {/* Nearby areas tags */}
+                            <div>
+                                <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2.5">
+                                    Serving Patients From All Areas
+                                </p>
+                                <div className="flex flex-wrap gap-1.5">
+                                    {nearbyAreas.map((area, i) => (
+                                        <span
+                                            key={i}
+                                            className="text-xs bg-gray-100 text-gray-600 font-medium px-3 py-1 rounded-full cursor-default"
+                                        >
+                                            {area}
+                                        </span>
+                                    ))}
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    {/* Nearby areas tags */}
-                    <div>
-                        <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2.5">
-                            Serving Patients From All Areas
-                        </p>
-                        <div className="flex flex-wrap gap-1.5">
-                            {nearbyAreas.map((area, i) => (
-                                <span
-                                    key={i}
-                                    className="text-xs bg-gray-100 text-gray-600 font-medium px-3 py-1 rounded-full cursor-default"
-                                >
-                                    {area}
-                                </span>
-                            ))}
+                        {/* Right Column: Normal Sized Clean Map Card */}
+                        <div className="w-full h-[380px] rounded-2xl overflow-hidden border border-gray-200 shadow-sm relative">
+                            <iframe
+                                src={`https://maps.google.com/maps?q=${activeBranch.mapQuery}&output=embed`}
+                                width="100%"
+                                height="100%"
+                                style={{ border: 0 }}
+                                allowFullScreen
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                                title={`Ryan Clinic ${doctor.location || "Delhi"} location map`}
+                                className="w-full h-full"
+                            />
+
+                            {/* Action Badge */}
+                            <a
+                                href={`https://maps.google.com/?q=${activeBranch.mapQuery}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md border border-gray-200 shadow-md text-xs font-bold text-gray-800 hover:text-[#D32F2F] px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition-colors"
+                            >
+                                <MapPin className="w-3.5 h-3.5 text-[#D32F2F]" />
+                                Open in Google Maps
+                            </a>
                         </div>
+
                     </div>
                 </div>
-
-                {/* Right Column: Normal Sized Clean Map Card */}
-                <div className="w-full h-[380px] rounded-2xl overflow-hidden border border-gray-200 shadow-sm relative">
-                    <iframe
-                        src={`https://maps.google.com/maps?q=${activeBranch.mapQuery}&output=embed`}
-                        width="100%"
-                        height="100%"
-                        style={{ border: 0 }}
-                        allowFullScreen
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                        title={`Ryan Clinic ${doctor.location || "Delhi"} location map`}
-                        className="w-full h-full"
-                    />
-
-                    {/* Action Badge */}
-                    <a
-                        href={`https://maps.google.com/?q=${activeBranch.mapQuery}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md border border-gray-200 shadow-md text-xs font-bold text-gray-800 hover:text-[#D32F2F] px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition-colors"
-                    >
-                        <MapPin className="w-3.5 h-3.5 text-[#D32F2F]" />
-                        Open in Google Maps
-                    </a>
-                </div>
-
-            </div>
-        </div>
-    </section>
+            </section>
 
             {/* ── 14. FAQ ──────────────────────────────────────────────── */}
             <FAQSection faqs={faqs} />

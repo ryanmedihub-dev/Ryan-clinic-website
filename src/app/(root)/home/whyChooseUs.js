@@ -209,7 +209,7 @@ export default function WhyChooseUs({ city = "Delhi" }) {
             <div className="mt-8 pt-8 border-t border-gray-100">
               <div className="flex flex-wrap gap-3">
                 <a
-                  href={`https://api.whatsapp.com/send?phone=919217958539&text=Hi,%20I%20want%20a%20free%20scalp%20analysis%20in%20${encodeURIComponent(city)}`}
+                  href={`https://api.whatsapp.com/send?phone=919911111247&text=Hi,%20I%20want%20a%20free%20scalp%20analysis%20in%20${encodeURIComponent(city)}`}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-3 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-4 px-7 text-sm tracking-wide transition-colors rounded-xl justify-center"

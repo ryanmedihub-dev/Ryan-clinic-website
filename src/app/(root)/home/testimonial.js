@@ -175,10 +175,10 @@ export default function Testimonials() {
               style={
                 activeTab === "celebrities"
                   ? {
-                      background: "var(--primary-red)",
-                      color: "#fff",
-                      boxShadow: "0 4px 12px rgba(227,10,23,0.3)",
-                    }
+                    background: "var(--primary-red)",
+                    color: "#fff",
+                    boxShadow: "0 4px 12px rgba(227,10,23,0.3)",
+                  }
                   : { color: "var(--text-secondary)" }
               }
             >
@@ -193,10 +193,10 @@ export default function Testimonials() {
               style={
                 activeTab === "google"
                   ? {
-                      background: "var(--primary-red)",
-                      color: "#fff",
-                      boxShadow: "0 4px 12px rgba(227,10,23,0.3)",
-                    }
+                    background: "var(--primary-red)",
+                    color: "#fff",
+                    boxShadow: "0 4px 12px rgba(227,10,23,0.3)",
+                  }
                   : { color: "var(--text-secondary)" }
               }
             >
@@ -458,7 +458,7 @@ export default function Testimonials() {
           </p>
           <div className="flex flex-wrap gap-3 shrink-0">
             <a
-              href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi, I visited your website. I want a free consultation."
+              href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi, I visited your website. I want a free consultation."
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 font-semibold text-sm py-3 px-6 rounded-xl text-white transition-all hover:opacity-90"

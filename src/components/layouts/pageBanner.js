@@ -14,11 +14,11 @@ export default function PageBanner({
   stats,
 }) {
   const trackCTA = useTrackCTA();
-  const breadcrumbText = typeof breadcrumb === "string" 
-    ? breadcrumb 
+  const breadcrumbText = typeof breadcrumb === "string"
+    ? breadcrumb
     : Array.isArray(breadcrumb)
-    ? breadcrumb.map((b) => (typeof b === "string" ? b : b?.label || b?.name || "")).filter(Boolean).join(" / ")
-    : "";
+      ? breadcrumb.map((b) => (typeof b === "string" ? b : b?.label || b?.name || "")).filter(Boolean).join(" / ")
+      : "";
   return (
     <header className="relative w-full overflow-hidden">
       <div className="hidden md:block">
@@ -82,7 +82,7 @@ export default function PageBanner({
                 {/* Buttons */}
                 <div className="flex gap-3">
                   <a
-                    href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20consultation%20in%20Delhi"
+                    href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20consultation%20in%20Delhi"
                     className="bg-[#D32F2F] px-5 py-3 rounded-lg text-sm font-semibold hover:bg-red-700"
                     onClick={() => trackCTA({ type: "whatsapp", ctaName: "Banner WhatsApp Us", buttonLocation: "Page Banner" })}
                   >
@@ -218,7 +218,7 @@ export default function PageBanner({
           {/* CTA Buttons */}
           <div className="flex gap-3 mb-5">
             <a
-              href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20consultation%20in%20Delhi"
+              href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20consultation%20in%20Delhi"
               className="flex-1 text-center bg-[#D32F2F] py-3.5 rounded-xl text-[13px] font-semibold text-white active:scale-95 transition-transform"
               onClick={() => trackCTA({ type: "whatsapp", ctaName: "Banner WhatsApp Us", buttonLocation: "Page Banner Mobile" })}
             >

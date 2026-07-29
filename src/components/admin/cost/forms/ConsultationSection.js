@@ -64,7 +64,7 @@ export default function ConsultationSection({
           <label className="block text-sm font-semibold text-gray-700">Button Link</label>
           <input
             type="text"
-            value={cons.buttonLink || "https://wa.me/919217958539"}
+            value={cons.buttonLink || "https://wa.me/919911111247"}
             onChange={(e) => updateField("consultation.buttonLink", e.target.value)}
             className="w-full mt-2 p-2 border rounded-md"
           />

@@ -83,11 +83,10 @@ export default function GraftTierCards() {
           {GRAFT_TIERS.map((tier, idx) => (
             <div
               key={idx}
-              className={`relative bg-white rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 shadow-lg hover:shadow-2xl ${
-                tier.featured
+              className={`relative bg-white rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 shadow-lg hover:shadow-2xl ${tier.featured
                   ? "border-2 border-[#e30a17] ring-4 ring-[#e30a17]/10"
                   : "border border-[#E8E4DF]"
-              }`}
+                }`}
             >
               {tier.featured && (
                 <div className="absolute top-0 left-6 right-6 h-1 bg-[#e30a17] rounded-b-full" />
@@ -124,7 +123,7 @@ export default function GraftTierCards() {
 
                 {/* CTA Button */}
                 <a
-                  href={`https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20check%20pricing%20for%20${encodeURIComponent(tier.grafts)}`}
+                  href={`https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20want%20to%20check%20pricing%20for%20${encodeURIComponent(tier.grafts)}`}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center justify-center w-full gap-2 bg-[#e30a17] hover:bg-red-700 text-white font-bold py-3 px-4 text-xs transition-colors rounded-xl shadow-md shadow-red-600/20 my-2"

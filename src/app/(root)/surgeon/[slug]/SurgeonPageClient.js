@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -23,8 +23,8 @@ import {
     Minus,
 } from "lucide-react";
 
-const WA = "https://api.whatsapp.com/send?phone=919217958539&text=Hi%2C%20I%20want%20to%20book%20a%20consultation%20with%20the%20best%20hair%20transplant%20surgeon%20in%20Delhi";
-const TEL = "tel:+919217958539";
+const WA = "https://api.whatsapp.com/send?phone=919911111247&text=Hi%2C%20I%20want%20to%20book%20a%20consultation%20with%20the%20best%20hair%20transplant%20surgeon%20in%20Delhi";
+const TEL = "tel:+919911111247";
 
 /* ─── Scroll Animation Hook ──────────────────────────────────────────────── */
 function useScrollReveal(options = {}) {
@@ -109,7 +109,7 @@ const faqList = [
     { q: "Can a skilled hair transplant surgeon repair a previous bad transplant?", a: "Often, yes. An experienced surgeon can refine an unnatural hairline, add density, or improve an over-harvested donor area. Revision work demands strong surgical judgement, so it's a good marker of skill." },
     { q: "How much does a hair transplant surgeon in Delhi charge?", a: "It's priced per graft and depends mainly on graft count and technique. At Ryan Clinic the surgeon provides an exact, transparent quote after a free scalp analysis, starting from ₹40,000, with 0% EMI." },
     { q: "Where can I meet the hair transplant surgeon in Delhi?", a: "At our Pitampura centre (CD 163, Block CD, Dakshini Pitampura, 110034), Mon–Sat, 9 AM–7 PM. Accessible via Pitampura Metro Station (Red Line)." },
-    { q: "How do I book a consultation with the surgeon?", a: "Call or WhatsApp +91-9217958539, or use the booking form. You'll get a scalp analysis, graft count, and cost breakdown with no obligation." },
+    { q: "How do I book a consultation with the surgeon?", a: "Call or WhatsApp +91-9911111247, or use the booking form. You'll get a scalp analysis, graft count, and cost breakdown with no obligation." },
 ];
 
 /* ─── Feature cards (matching featuresOverview.js 9-cell grid) ──────────── */
@@ -224,7 +224,7 @@ export default function SurgeonPageClient({ pageData }) {
                                         className="inline-flex items-center gap-3 border-2 border-gray-200 hover:border-[#D32F2F] text-gray-800 hover:text-[#D32F2F] font-bold py-4 px-7 rounded-xl text-sm transition-all bg-white"
                                         onClick={() => trackCTA({ type: "call", ctaName: "Surgeon Hero Call", buttonLocation: "Surgeon Hero" })}
                                     >
-                                        <Phone className="w-4 h-4 text-[#D32F2F]" /> Call +91-9217958539
+                                        <Phone className="w-4 h-4 text-[#D32F2F]" /> Call +91-9911111247
                                     </a>
                                 </div>
                             </Reveal>
@@ -239,11 +239,11 @@ export default function SurgeonPageClient({ pageData }) {
                                             { num: "95%+", label: "Graft Survival" },
                                             { num: "4.9★", label: "Google Rating" },
                                         ]).map((s, i) => (
-                                        <div key={i} className="bg-white border border-red-100 rounded-xl p-3.5 flex flex-col gap-0.5 shadow-2xs">
-                                            <span className="text-2xl font-black text-gray-900">{s.num}</span>
-                                            <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wider">{s.label}</span>
-                                        </div>
-                                    ))}
+                                            <div key={i} className="bg-white border border-red-100 rounded-xl p-3.5 flex flex-col gap-0.5 shadow-2xs">
+                                                <span className="text-2xl font-black text-gray-900">{s.num}</span>
+                                                <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wider">{s.label}</span>
+                                            </div>
+                                        ))}
                                 </div>
                             </Reveal>
                         </div>
@@ -301,7 +301,7 @@ export default function SurgeonPageClient({ pageData }) {
                         <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight max-w-lg">
                             What Makes Us<br />The Best
                         </h2>
-                        
+
                         {/* Enhanced right text block */}
                         <div className="max-w-md border-l-4 border-[#D32F2F] pl-5 py-2 bg-white/70 rounded-r-2xl border border-y-0 border-r-0 border-red-100 shadow-2xs">
                             <p className="text-gray-800 text-sm md:text-[15px] leading-relaxed font-medium">
@@ -637,10 +637,9 @@ export default function SurgeonPageClient({ pageData }) {
                                             {/* Circle */}
                                             <div
                                                 className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-all duration-300 shadow-sm
-                                                    ${
-                                                        isActive
-                                                            ? "bg-[#D32F2F] border-[#D32F2F] text-white scale-110 ring-4 ring-red-100 shadow-red-200 shadow-md"
-                                                            : isCompleted
+                                                    ${isActive
+                                                        ? "bg-[#D32F2F] border-[#D32F2F] text-white scale-110 ring-4 ring-red-100 shadow-red-200 shadow-md"
+                                                        : isCompleted
                                                             ? "bg-[#D32F2F] border-[#D32F2F] text-white"
                                                             : "bg-white border-gray-200 text-gray-400 group-hover:border-[#D32F2F] group-hover:text-[#D32F2F]"
                                                     }`}
@@ -947,15 +946,15 @@ export default function SurgeonPageClient({ pageData }) {
                                         "MBBS (AIIMS) & MS (PGIMER) Qualified",
                                         "Turkey Sapphire FUE Fellowship Certified",
                                     ]).map((item, i) => (
-                                    <li key={i} className="flex items-start gap-3">
-                                        <span className="mt-1 w-5 h-5 rounded-full flex items-center justify-center shrink-0 bg-[#D32F2F]">
-                                            <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </span>
-                                        <span className="text-sm leading-snug text-gray-600">{item}</span>
-                                    </li>
-                                ))}
+                                        <li key={i} className="flex items-start gap-3">
+                                            <span className="mt-1 w-5 h-5 rounded-full flex items-center justify-center shrink-0 bg-[#D32F2F]">
+                                                <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                                </svg>
+                                            </span>
+                                            <span className="text-sm leading-snug text-gray-600">{item}</span>
+                                        </li>
+                                    ))}
                             </ul>
 
                             {/* Stats row */}
@@ -968,11 +967,11 @@ export default function SurgeonPageClient({ pageData }) {
                                         { num: "95%+", label: "Graft Survival Rate" },
                                         { num: "4.9★", label: "Google Rating" },
                                     ]).map((s) => (
-                                    <div key={s.label} className="rounded-xl p-4 text-center bg-white border border-gray-100">
-                                        <p className="text-xl font-bold text-gray-900">{s.num}</p>
-                                        <p className="text-[10px] font-medium mt-0.5 text-gray-400">{s.label}</p>
-                                    </div>
-                                ))}
+                                        <div key={s.label} className="rounded-xl p-4 text-center bg-white border border-gray-100">
+                                            <p className="text-xl font-bold text-gray-900">{s.num}</p>
+                                            <p className="text-[10px] font-medium mt-0.5 text-gray-400">{s.label}</p>
+                                        </div>
+                                    ))}
                             </div>
 
                             {/* CTA */}
@@ -1182,7 +1181,7 @@ export default function SurgeonPageClient({ pageData }) {
                         <div className="bg-white p-6 rounded-2xl border border-gray-100">
                             <p className="text-xs font-bold text-gray-900 mb-1">Visit Our Surgeon In Delhi</p>
                             <p className="text-xs text-gray-500 mb-2">CD 163, Block CD, Dakshini Pitampura, New Delhi – 110034. Accessible via Pitampura Metro Station (Red Line).</p>
-                            <p className="text-xs font-bold text-[#D32F2F]">+91-9217958539 · Mon–Sat, 9 AM – 7 PM</p>
+                            <p className="text-xs font-bold text-[#D32F2F]">+91-9911111247 · Mon–Sat, 9 AM – 7 PM</p>
                         </div>
                     </div>
                 </div>
@@ -1506,3 +1505,4 @@ export default function SurgeonPageClient({ pageData }) {
         </div>
     );
 }
+

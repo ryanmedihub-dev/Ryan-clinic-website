@@ -8,8 +8,8 @@ import ContactForm from "@/components/pages/contactForm";
 import useTrackCTA from "@/lib/useTrackCTA";
 
 const WA_URL =
-  "https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20know%20more%20about%20PRP%20hair%20loss%20treatment%20in%20Delhi%20at%20Ryan%20Clinic";
-const TEL_URL = "tel:+919217958539";
+  "https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20want%20to%20know%20more%20about%20PRP%20hair%20loss%20treatment%20in%20Delhi%20at%20Ryan%20Clinic";
+const TEL_URL = "tel:+919911111247";
 
 /* Helper Section Badge */
 function SectionBadge({ text }) {
@@ -87,7 +87,7 @@ export default function PRPPageClient() {
     },
     {
       q: "14. Where can I get PRP in Delhi?",
-      a: "At Ryan Clinic's Pitampura centre (CD 163, Block CD, Dakshini Pitampura, 110034), Mon–Sat, 9 AM–7 PM. Call or WhatsApp +91-9217958539 to book.",
+      a: "At Ryan Clinic's Pitampura centre (CD 163, Block CD, Dakshini Pitampura, 110034), Mon–Sat, 9 AM–7 PM. Call or WhatsApp +91-9911111247 to book.",
     },
     {
       q: "15. Is 'PRP hair treatment' the same as 'PRP hair loss treatment' in Delhi?",
@@ -509,16 +509,14 @@ export default function PRPPageClient() {
                 return (
                   <div
                     key={step.num}
-                    className={`flex flex-col md:flex-row gap-8 items-center ${
-                      isRight ? "md:flex-row-reverse" : ""
-                    }`}
+                    className={`flex flex-col md:flex-row gap-8 items-center ${isRight ? "md:flex-row-reverse" : ""
+                      }`}
                   >
                     {/* Image card */}
                     <div className="w-full md:w-[45%]">
                       <div
-                        className={`relative rounded-3xl overflow-hidden shadow-lg border border-gray-200 group hover:shadow-2xl hover:border-[#D32F2F]/40 transition-all duration-300 ${
-                          isRight ? "md:ml-6" : "md:mr-6"
-                        }`}
+                        className={`relative rounded-3xl overflow-hidden shadow-lg border border-gray-200 group hover:shadow-2xl hover:border-[#D32F2F]/40 transition-all duration-300 ${isRight ? "md:ml-6" : "md:mr-6"
+                          }`}
                       >
                         <div className="relative aspect-[4/3] w-full">
                           <Image
@@ -548,9 +546,8 @@ export default function PRPPageClient() {
                     {/* Content Card */}
                     <div className="w-full md:w-[45%]">
                       <div
-                        className={`bg-[#FAF9F6] rounded-3xl p-8 border border-gray-200 shadow-sm hover:shadow-xl hover:bg-white hover:border-[#D32F2F]/40 transition-all duration-300 ${
-                          isRight ? "md:mr-6" : "md:ml-6"
-                        }`}
+                        className={`bg-[#FAF9F6] rounded-3xl p-8 border border-gray-200 shadow-sm hover:shadow-xl hover:bg-white hover:border-[#D32F2F]/40 transition-all duration-300 ${isRight ? "md:mr-6" : "md:ml-6"
+                          }`}
                       >
                         <div className="flex items-center gap-3 mb-3">
                           <span className="w-7 h-7 rounded-lg bg-red-100 text-[#D32F2F] font-bold text-xs flex items-center justify-center">
@@ -1571,7 +1568,7 @@ export default function PRPPageClient() {
                   <span className="text-lg">📞</span>
                   <div>
                     <strong className="text-gray-900 block font-bold mb-0.5">Phone / WhatsApp:</strong>
-                    +91-9217958539
+                    +91-9911111247
                   </div>
                 </div>
 
@@ -1636,7 +1633,7 @@ export default function PRPPageClient() {
                     })
                   }
                 >
-                  📞 Call: +91-9217958539
+                  📞 Call: +91-9911111247
                 </a>
 
                 <a
