@@ -862,8 +862,8 @@ export default function DoctorPageClient({ data }) {
                                     {
                                         tag: "TECHNIQUE & PLANNING",
                                         question: "Which hair restoration technique is recommended for my hairline, and why?",
-                                        answer: "A genuine surgeon customises the technique (Sapphire FUE vs DHI Choi Pen) according to graft density needs, hairline aesthetics, and donor hair caliber rather than pushing a one-size-fits-all package.",
-                                        ryanStandard: "Customised Sapphire FUE & DHI combined protocols tailored to your face structure.",
+                                        answer: "A genuine surgeon customises the technique (Sapphire FUE vs Turkish Technique) according to graft density needs, hairline aesthetics, and donor hair caliber rather than pushing a one-size-fits-all package.",
+                                        ryanStandard: "Customised Sapphire FUE & Turkish Technique combined protocols tailored to your face structure.",
                                     },
                                     {
                                         tag: "CREDENTIAL VERIFICATION",
@@ -1153,7 +1153,7 @@ export default function DoctorPageClient({ data }) {
 
             {/* ── 11. Procedures Step-by-Step — Interactive Stepper ───────── */}
             <section className="py-16 md:py-24 bg-[#fff5ec] border-y border-red-100">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
                     {/* Section Label + Header */}
                     <div className="text-center max-w-3xl mx-auto mb-14">
@@ -1173,7 +1173,7 @@ export default function DoctorPageClient({ data }) {
                     </div>
 
                     {/* ── Stepper Container ── */}
-                    <div className="bg-white rounded-3xl shadow-lg border border-red-100 overflow-hidden">
+                    <div className="bg-white rounded-xl overflow-hidden">
 
                         {/* ── Step Progress Bar (top row) ── */}
                         <div className="px-8 pt-10 pb-8 border-b border-gray-100">
@@ -1185,7 +1185,7 @@ export default function DoctorPageClient({ data }) {
                                         { num: "01", title: "Consultation & Hairline Design", body: "The doctor personally maps your new hairline according to facial symmetry and marks donor and recipient zones for lifetime natural framing." },
                                         { num: "02", title: "Graft Extraction (FUE)", body: "Follicular units are harvested one by one from the safe donor area using precision micro-punches (0.7–0.9mm) to protect viability." },
                                         { num: "03", title: "Recipient-Site Creation (Sapphire)", body: "Microscopic channels are opened using sharp gemstone sapphire blades, setting exact direction, angle, and radial depth." },
-                                        { num: "04", title: "Direct Implantation (Choi Pen / DHI)", body: "Using original Choi implanter pens, sorted grafts are loaded and placed directly into channels for maximum density without scalp trauma." },
+                                        { num: "04", title: "Direct Implantation (Turkish Technique)", body: "Using original Choi implanter pens, sorted grafts are loaded and placed directly into channels for maximum density without scalp trauma." },
                                         { num: "05", title: "18-Month Growth & Follow-Up", body: "Free structured follow-up check-ups at months 1, 3, 6, 12, and 18 ensure your hair growth progress is fully tracked." },
                                     ].map((_, idx, arr) => {
                                         if (idx === arr.length - 1) return null;
@@ -1204,7 +1204,7 @@ export default function DoctorPageClient({ data }) {
                                     { num: "01", title: "Consultation & Hairline Design", body: "The doctor personally maps your new hairline according to facial symmetry and marks donor and recipient zones for lifetime natural framing." },
                                     { num: "02", title: "Graft Extraction (FUE)", body: "Follicular units are harvested one by one from the safe donor area using precision micro-punches (0.7–0.9mm) to protect viability." },
                                     { num: "03", title: "Recipient-Site Creation (Sapphire)", body: "Microscopic channels are opened using sharp gemstone sapphire blades, setting exact direction, angle, and radial depth." },
-                                    { num: "04", title: "Direct Implantation (Choi Pen / DHI)", body: "Using original Choi implanter pens, sorted grafts are loaded and placed directly into channels for maximum density without scalp trauma." },
+                                    { num: "04", title: "Direct Implantation (Turkish Technique)", body: "Using original Choi implanter pens, sorted grafts are loaded and placed directly into channels for maximum density without scalp trauma." },
                                     { num: "05", title: "18-Month Growth & Follow-Up", body: "Free structured follow-up check-ups at months 1, 3, 6, 12, and 18 ensure your hair growth progress is fully tracked." },
                                 ].map((step, idx) => {
                                     const isActive = activeStep === idx;
@@ -1250,7 +1250,7 @@ export default function DoctorPageClient({ data }) {
                                 { num: "01", title: "Consultation & Hairline Design", body: "The doctor personally maps your new hairline according to facial symmetry and marks donor and recipient zones for lifetime natural framing." },
                                 { num: "02", title: "Graft Extraction (FUE)", body: "Follicular units are harvested one by one from the safe donor area using precision micro-punches (0.7–0.9mm) to protect viability." },
                                 { num: "03", title: "Recipient-Site Creation (Sapphire)", body: "Microscopic channels are opened using sharp gemstone sapphire blades, setting exact direction, angle, and radial depth." },
-                                { num: "04", title: "Direct Implantation (Choi Pen / DHI)", body: "Using original Choi implanter pens, sorted grafts are loaded and placed directly into channels for maximum density without scalp trauma." },
+                                { num: "04", title: "Direct Implantation (Turkish Technique)", body: "Using original Choi implanter pens, sorted grafts are loaded and placed directly into channels for maximum density without scalp trauma." },
                                 { num: "05", title: "18-Month Growth & Follow-Up", body: "Free structured follow-up check-ups at months 1, 3, 6, 12, and 18 ensure your hair growth progress is fully tracked." },
                             ].map((step, idx) => {
                                 const isActive = activeStep === idx;

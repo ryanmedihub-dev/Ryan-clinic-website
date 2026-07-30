@@ -13,7 +13,7 @@ export default function HeroSection({
 
   return (
     <div className="space-y-4">
-      <h3 className="text-2xl font-bold underline mt-10 mb-5">Hero / Banner Section</h3>
+      <h3 className="text-2xl font-bold underline mt-10 mb-5">Section 8: Doctor Intro Spotlight (Best Hair Transplant Surgeon Banner)</h3>
 
       {/* Badge + Title */}
       <div className="flex gap-6 flex-col md:flex-row">

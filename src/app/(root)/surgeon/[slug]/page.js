@@ -1,4 +1,4 @@
-﻿import { notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import { cache } from "react";
 import { DBConnection } from "@/lib/db";
 import SurgeonPage from "@/models/Surgeon";

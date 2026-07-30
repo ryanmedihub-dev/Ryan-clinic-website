@@ -13,7 +13,7 @@ export default function LeadSurgeonSection({
 
   return (
     <div className="space-y-4">
-      <h3 className="text-2xl font-bold underline mt-10 mb-5">Lead Surgeon Profile Section</h3>
+      <h3 className="text-2xl font-bold underline mt-10 mb-5">Section 1: Lead Surgeon (Top Hero Section)</h3>
 
       <div className="flex gap-6 flex-col md:flex-row">
         <div className="w-full">

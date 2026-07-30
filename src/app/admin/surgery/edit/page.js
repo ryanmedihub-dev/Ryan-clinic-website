@@ -71,6 +71,7 @@ const initialState = {
     city: "",
     slug: "",
     status: "draft",
+    landingCardImage: { image: "", imageAlt: "" },
     seo: {
         metaTitle: "",
         metaDescription: "",
@@ -217,6 +218,7 @@ function EditSurgeryForm() {
                     pageName: d.pageName || "",
                     city: d.city || "",
                     slug: d.slug || "",
+                    landingCardImage: { ...initialState.landingCardImage, ...(d.landingCardImage || {}) },
                     seo: { ...initialState.seo, ...(d.seo || {}) },
                     hero: { ...initialState.hero, ...(d.hero || {}), stats: d.hero?.stats || [] },
                     introduction: { ...initialState.introduction, ...(d.introduction || {}), bottomStats: d.introduction?.bottomStats || [] },
@@ -418,6 +420,28 @@ function EditSurgeryForm() {
                             </p>
                         )}
                     </div>
+                </div>
+
+                {/* ─── LANDING CARD IMAGE ──────────────────────────────────── */}
+                <div className="mt-6 p-5 border-2 border-dashed border-red-200 rounded-2xl bg-red-50/40">
+                    <h4 className="text-base font-bold text-gray-800 mb-1 flex items-center gap-2">
+                        <span className="inline-block w-2.5 h-2.5 rounded-full bg-[#D32F2F]"></span>
+                        Landing Page Card Image
+                    </h4>
+                    <p className="text-xs text-gray-500 mb-4">
+                        This image appears on the <strong>/surgery</strong> landing page carousel card for this surgery. Upload a high-quality cover image that represents this surgery location.
+                    </p>
+                    <ImageUploader
+                        initialImage={formData.landingCardImage?.image}
+                        onUpload={(url) => handleTopLevelChange("landingCardImage", { ...formData.landingCardImage, image: url })}
+                    />
+                    <input
+                        type="text"
+                        value={formData.landingCardImage?.imageAlt || ""}
+                        onChange={(e) => handleTopLevelChange("landingCardImage", { ...formData.landingCardImage, imageAlt: e.target.value })}
+                        className="w-full mt-3 p-2 border rounded-md text-sm"
+                        placeholder="Card image alt text (e.g. Hair Transplant in Delhi)"
+                    />
                 </div>
 
                 {/* ─── SEO SECTION ─────────────────────────────────── */}

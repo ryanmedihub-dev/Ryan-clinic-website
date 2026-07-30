@@ -38,10 +38,12 @@ const locations = [
 const quickLinks = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
-  { label: "Our Gallery", href: "/hair-transplant-results-before-after-gallery" },
-  { label: "Our Videos", href: "/hair-transplant-results-before-after-gallery" },
+  { label: "Our Doctors", href: "/doctors" },
+  { label: "Surgeon Pages", href: "/surgeon" },
+  { label: "Surgery Guides", href: "/surgery" },
+  { label: "Cost & Pricing", href: "/cost" },
+  { label: "Our Gallery", href: "/gallery" },
   { label: "Blog", href: "/blog" },
-  { label: "Cost", href: "/cost" },
   { label: "Contact Us", href: "/contact" },
 ];
 

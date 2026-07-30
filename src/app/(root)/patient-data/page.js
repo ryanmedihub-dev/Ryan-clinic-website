@@ -306,10 +306,10 @@ export default function InternationalAppointmentPage() {
                     className="w-full pl-10 border border-gray-300 rounded-lg px-4 py-3 bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                   >
                     <option value="">Select Technique</option>
-                    <option value="Turkish DHI">Turkish DHI</option>
+                    <option value="Turkish Technique">Turkish Technique</option>
                     <option value="FUE">FUE</option>
                     <option value="Hybrid">Hybrid</option>
-                    <option value="Indian DHI">Indian DHI</option>
+                    <option value="Indian Technique">Indian Technique</option>
                     <option value="Other">Other</option>
                   </select>
                 </div>

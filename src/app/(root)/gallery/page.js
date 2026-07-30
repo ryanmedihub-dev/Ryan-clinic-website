@@ -21,7 +21,7 @@ const defaultMetadata = {
   ],
   alternates: {
     canonical:
-      "https://www.clinicryan.com/hair-transplant-results-before-after-gallery/",
+      "https://www.clinicryan.com/gallery/",
   },
 };
 

@@ -69,7 +69,7 @@ const surgicalJourney = [
     { num: "01", title: "Consultation & Hairline Design", body: "The surgeon assesses donor density, facial symmetry, and future loss patterns. A soft, micro-irregular hairline is drafted to frame your face naturally for life." },
     { num: "02", title: "Graft Extraction (FUE)", body: "The surgeon personally extracts follicular units using 0.7–0.9mm micro-punches. Proper punch depth and angle protect graft viability and prevent donor over-harvesting." },
     { num: "03", title: "Recipient-Site Creation (Sapphire)", body: "Using sharp gemstone sapphire blades, the surgeon opens microscopic channels — setting exact radial direction, depth, and angle for photorealistic growth." },
-    { num: "04", title: "Direct Implantation (Choi Pen / DHI)", body: "Single-hair grafts are positioned at the soft front edge and dense multi-hair units behind — achieving maximum density without scalp trauma." },
+    { num: "04", title: "Direct Implantation (Turkish Technique)", body: "Single-hair grafts are positioned at the soft front edge and dense multi-hair units behind — achieving maximum density without scalp trauma." },
     { num: "05", title: "18-Month Growth & Follow-Up", body: "Free follow-up check-ups at months 1, 3, 6, 12, and 18 ensure your hair growth progress is tracked through full maturation." },
 ];
 
@@ -126,7 +126,7 @@ const surgeonFeatures = [
 ];
 
 /* ─── Main Component ────────────────────────────────────────────────────── */
-export default function SurgeonPageClient({ pageData }) {
+export default function SurgeonPageClient({ pageData, slug }) {
     const trackCTA = useTrackCTA();
     const [open, setOpen] = useState(0);
     const [activeStep, setActiveStep] = useState(0);
@@ -144,8 +144,12 @@ export default function SurgeonPageClient({ pageData }) {
     const doctorImg = doctorCard.image?.url || pageData?.leadSurgeon?.doctorImage?.url || "/uploads/turkey-doctor.jpg";
     const doctorImgAlt = doctorCard.image?.alt || `${doctorName} Hair Transplant Surgeon Delhi`;
 
-    const leadSurgeonName = pageData?.leadSurgeon?.heading || doctorName;
-    const leadSurgeonDesc = pageData?.leadSurgeon?.description || `Dr. ${doctorName} is the founder of Ryan Clinic and India's foremost authority on Turkey's Sapphire FUE technique. Trained directly under Turkey's leading specialists in Istanbul, with 15+ years and 5,000+ procedures — personally performing every hairline design, graft extraction, and implantation step.`;
+    const cityFromSlug = (slug || pageData?.slug || "").split("-in-").pop()?.split("-")[0] || "";
+    const rawCityName = pageData?.general?.city || pageData?.city || cityFromSlug;
+    const cityName = rawCityName ? rawCityName.charAt(0).toUpperCase() + rawCityName.slice(1).toLowerCase() : "Mumbai";
+
+    const leadSurgeonName = pageData?.leadSurgeon?.heading || doctorName || "Dr. Pranendra Singh";
+    const leadSurgeonDesc = pageData?.leadSurgeon?.description || `Dr. ${leadSurgeonName} (MBBS AIIMS, MS PGIMER, Turkey FUE Fellowship) is India's foremost authority on Turkey's Sapphire FUE technique. With 15+ years and 5,000+ procedures, he personally performs every hairline design, graft extraction, and implantation step for ${cityName} patients.`;
     const leadSurgeonImg = pageData?.leadSurgeon?.doctorImage?.url || doctorImg;
 
     const activeFaqs = (pageData?.faq?.faqs?.length
@@ -158,129 +162,134 @@ export default function SurgeonPageClient({ pageData }) {
         <div className="bg-white text-gray-900 font-sans selection:bg-[#D32F2F] selection:text-white">
 
             {/* ═══════════════════════════════════════════════════════════════
-                SECTION 1: HERO — Enhanced Doctor Intro Hero
+                SECTION 1: OUR LEAD SURGEON (Image 2 - Placed as Top Hero)
             ═══════════════════════════════════════════════════════════════ */}
-            <section className="bg-gradient-to-br from-red-50/60 via-white to-[#fff5ec] py-16 md:py-24 relative overflow-hidden border-b border-red-100">
-                <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+            <section className="py-12 md:py-20 bg-[#fff5ec] relative overflow-hidden border-b border-orange-100/60">
+                <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                        {/* Left Content */}
-                        <div className="lg:col-span-7">
-                            <Reveal>
-                                <div className="flex flex-wrap items-center gap-2 mb-6">
-                                    <div className="inline-flex items-center gap-2 bg-[#D32F2F] text-white px-3.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest shadow-sm">
-                                        <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                                        {heroBadgeText}
-                                    </div>
-                                    <span className="text-gray-400 text-xs hidden sm:inline">•</span>
-                                    <span className="text-xs font-bold text-gray-600 bg-white border border-red-100 px-3 py-1 rounded-full shadow-xs">
-                                        {doctorQual.split("·")[0] || "Certified Specialist"}
-                                    </span>
+                    {/* Section label */}
+                    <div className="flex items-center gap-3 mb-6 md:mb-8">
+                        <span className="block w-8 h-px bg-[#D32F2F]" />
+                        <span className="text-[#D32F2F] text-[11px] font-bold tracking-[0.22em] uppercase">
+                            OUR LEAD SURGEON
+                        </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+
+                        {/* ── Left — Image Card */}
+                        <div className="relative">
+                            <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-xl border-2 border-white/80">
+                                <Image
+                                    src={leadSurgeonImg}
+                                    alt={`${leadSurgeonName} Lead Hair Transplant Surgeon`}
+                                    width={640}
+                                    height={480}
+                                    className="w-full h-80 md:h-[480px] object-cover object-top"
+                                    priority
+                                    unoptimized
+                                />
+                                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 60%, transparent 100%)" }} />
+                                <div className="absolute bottom-5 left-5 right-5 z-10">
+                                    <span className="block w-8 h-0.5 mb-2 rounded-full bg-[#FFC107]" />
+                                    <p className="text-white font-bold text-lg sm:text-xl leading-snug">
+                                        {leadSurgeonName} — Hair Transplant Surgeon
+                                    </p>
+                                    <p className="text-xs mt-1 text-[#FFC107] font-medium">{doctorQual}</p>
                                 </div>
-                            </Reveal>
+                            </div>
 
-                            <Reveal delay={70}>
-                                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-[1.12] tracking-tight mb-6">
-                                    {heroTitle}
-                                </h1>
-                            </Reveal>
+                            {/* Floating secondary collage image */}
+                            <div className="hidden md:block absolute -bottom-6 -right-6 w-52 h-44 rounded-2xl overflow-hidden shadow-2xl border-4 border-white bg-white z-20">
+                                <Image src="/uploads/about-one.jpg" alt="Ryan Clinic Surgery" fill className="object-cover" unoptimized />
+                            </div>
 
-                            <Reveal delay={130}>
-                                <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-8 max-w-xl font-normal">
-                                    {heroDesc}
-                                </p>
-                            </Reveal>
+                            {/* Red accent bar on top left */}
+                            <div className="absolute top-0 left-0 w-1.5 h-24 rounded-r-full bg-[#D32F2F] z-10" />
+                        </div>
 
-                            {/* Credentials Badges Bar */}
-                            <Reveal delay={160}>
-                                <div className="flex flex-wrap gap-2 mb-8">
-                                    {[
-                                        `${doctorName} (Lead Surgeon)`,
-                                        doctorCard.experience || "15+ Yrs Specialization",
-                                        "5,000+ Completed Surgeries",
-                                        "Turkey Sapphire FUE Certified",
-                                    ].map((badge, idx) => (
-                                        <span key={idx} className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-700 bg-white border border-gray-200 px-3 py-1.5 rounded-lg shadow-2xs">
-                                            <CheckCircle2 className="w-3.5 h-3.5 text-[#D32F2F]" />
-                                            {badge}
-                                        </span>
+                        {/* ── Right — Content */}
+                        <div className="lg:pl-4">
+                            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-[1.1] tracking-tight mb-5 text-gray-900">
+                                Lead Surgeon
+                                <br />
+                                <span className="text-[#D32F2F]">{leadSurgeonName} — Hair Transplant Surgeon</span>
+                            </h1>
+
+                            <p className="text-sm md:text-[15px] leading-relaxed mb-8 text-gray-600 font-normal">
+                                {leadSurgeonDesc}
+                            </p>
+
+                            {/* Highlight list */}
+                            <ul className="space-y-3 mb-8">
+                                {(pageData?.leadSurgeon?.qualifications?.length
+                                    ? pageData.leadSurgeon.qualifications.map(q => q.text)
+                                    : [
+                                        "MBBS — All India Institute of Medical Sciences (AIIMS)",
+                                        "MS — Post Graduate Institute of Medical Education and Research (PGIMER)",
+                                        "Turkey FUE Fellowship — Istanbul Hair Restoration Centre",
+                                        "Member — International Society of Hair Restoration Surgery (ISHRS)",
+                                    ]).map((item, i) => (
+                                        <li key={i} className="flex items-start gap-3">
+                                            <span className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 bg-[#D32F2F]">
+                                                <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                                </svg>
+                                            </span>
+                                            <span className="text-xs sm:text-sm font-semibold text-gray-800 leading-snug">{item}</span>
+                                        </li>
                                     ))}
-                                </div>
-                            </Reveal>
+                            </ul>
 
-                            <Reveal delay={190}>
-                                <div className="flex flex-wrap items-center gap-4 mb-10">
-                                    <a
-                                        href={WA}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-3 bg-[#D32F2F] hover:bg-red-700 text-white font-bold py-4 px-8 rounded-xl text-sm transition-all shadow-md shadow-red-700/20 hover:-translate-y-0.5"
-                                        onClick={() => trackCTA({ type: "whatsapp", ctaName: "Surgeon Hero Book", buttonLocation: "Surgeon Hero" })}
-                                    >
-                                        <MessageCircle className="w-4.5 h-4.5" /> Book Direct Surgical Assessment
-                                    </a>
-                                    <a
-                                        href={TEL}
-                                        className="inline-flex items-center gap-3 border-2 border-gray-200 hover:border-[#D32F2F] text-gray-800 hover:text-[#D32F2F] font-bold py-4 px-7 rounded-xl text-sm transition-all bg-white"
-                                        onClick={() => trackCTA({ type: "call", ctaName: "Surgeon Hero Call", buttonLocation: "Surgeon Hero" })}
-                                    >
-                                        <Phone className="w-4 h-4 text-[#D32F2F]" /> Call +91-9911111247
-                                    </a>
-                                </div>
-                            </Reveal>
-
-                            <Reveal delay={250}>
-                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                                    {(pageData?.hero?.stats?.length
-                                        ? pageData.hero.stats.map(s => ({ num: s.value, label: s.label }))
-                                        : [
-                                            { num: "15+", label: "Years Exp." },
-                                            { num: "5,000+", label: "Surgeries" },
-                                            { num: "95%+", label: "Graft Survival" },
-                                            { num: "4.9★", label: "Google Rating" },
-                                        ]).map((s, i) => (
-                                            <div key={i} className="bg-white border border-red-100 rounded-xl p-3.5 flex flex-col gap-0.5 shadow-2xs">
-                                                <span className="text-2xl font-black text-gray-900">{s.num}</span>
-                                                <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wider">{s.label}</span>
-                                            </div>
-                                        ))}
-                                </div>
-                            </Reveal>
-                        </div>
-
-                        {/* Right Surgeon Image Box (Enhanced Doctor Portrait) */}
-                        <div className="lg:col-span-5">
-                            <Reveal dir="right">
-                                <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white ring-1 ring-red-100 group">
-                                    <Image
-                                        src={doctorImg}
-                                        alt={doctorImgAlt}
-                                        width={640}
-                                        height={520}
-                                        className="w-full h-96 md:h-[520px] object-cover object-top group-hover:scale-103 transition-transform duration-700"
-                                        unoptimized
-                                        priority
-                                    />
-                                    <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.15) 50%, transparent 100%)" }} />
-                                    <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md rounded-xl px-3.5 py-1.5 shadow-md border border-white/50">
-                                        <span className="text-[#D32F2F] font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5">
-                                            <ShieldCheck className="w-4 h-4 text-[#D32F2F]" /> 100% Doctor Performed
-                                        </span>
-                                    </div>
-                                    <div className="absolute bottom-5 left-5 right-5 text-white">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <span className="w-6 h-0.5 rounded-full bg-[#FFC107]" />
-                                            <span className="text-[11px] font-bold text-[#FFC107] uppercase tracking-widest">{doctorCard.designation || "Lead Surgeon"}</span>
+                            {/* Stats row (4 cards) */}
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+                                {(pageData?.leadSurgeon?.stats?.length
+                                    ? pageData.leadSurgeon.stats.map(s => ({ num: s.value, label: s.label }))
+                                    : [
+                                        { num: "15+", label: "Years Experience" },
+                                        { num: "5,000+", label: "Procedures" },
+                                        { num: "AIIMS", label: "MBBS" },
+                                        { num: "Turkey", label: "FUE Certified" },
+                                    ]).map((s, idx) => (
+                                        <div key={idx} className="rounded-xl p-3.5 sm:p-4 text-center bg-white border border-gray-100 shadow-2xs">
+                                            <p className="text-xl sm:text-2xl font-black text-gray-900">{s.num}</p>
+                                            <p className="text-[11px] font-medium mt-0.5 text-gray-500">{s.label}</p>
                                         </div>
-                                        <p className="text-xl sm:text-2xl font-extrabold text-white leading-tight">{doctorName}</p>
-                                        <p className="text-xs text-red-100 font-medium mt-1">{doctorQual}</p>
-                                    </div>
-                                </div>
-                            </Reveal>
+                                    ))}
+                            </div>
+
+                            {/* CTA buttons */}
+                            <div className="flex flex-wrap items-center gap-3">
+                                <a
+                                    href={WA}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="inline-flex items-center gap-2.5 font-bold text-xs sm:text-sm py-4 px-6 sm:px-7 rounded-xl text-white transition-all hover:bg-red-700 bg-[#D32F2F] shadow-md shadow-red-700/20 hover:-translate-y-0.5"
+                                    onClick={() => trackCTA({ type: "whatsapp", ctaName: "Lead Surgeon Hero Book", buttonLocation: "Hero Section" })}
+                                >
+                                    Book Consultation with {leadSurgeonName} — Hair Transplant Surgeon
+                                    <ArrowRight className="w-4 h-4" />
+                                </a>
+                                <a
+                                    href={TEL}
+                                    className="inline-flex items-center gap-2.5 font-bold text-xs sm:text-sm py-4 px-6 rounded-xl border border-gray-300 text-gray-700 bg-white hover:border-[#D32F2F] hover:text-[#D32F2F] transition-all shadow-2xs"
+                                    onClick={() => trackCTA({ type: "call", ctaName: "Lead Surgeon Hero Call", buttonLocation: "Hero Section" })}
+                                >
+                                    <Phone className="w-4 h-4 text-[#D32F2F]" />
+                                    Call Now
+                                </a>
+                            </div>
+
+                            <p className="text-[11px] sm:text-xs mt-3.5 text-gray-500 font-medium">
+                                Free scalp analysis — Graft count — Full cost breakdown — zero obligation.
+                            </p>
                         </div>
+
                     </div>
                 </div>
             </section>
+
+
 
             {/* ═══════════════════════════════════════════════════════════════
                 SECTION 2: WHY SURGICAL SKILL MATTERS
@@ -584,7 +593,7 @@ export default function SurgeonPageClient({ pageData }) {
                 SECTION 5: THE SURGICAL JOURNEY — Interactive Stepper
             ═══════════════════════════════════════════════════════════════ */}
             <section className="py-16 md:py-24 bg-[#fff5ec] border-y border-red-100">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
                     {/* Section Label + Header */}
                     <div className="text-center max-w-3xl mx-auto mb-14">
@@ -604,7 +613,7 @@ export default function SurgeonPageClient({ pageData }) {
                     </div>
 
                     {/* ── Stepper Container ── */}
-                    <div className="bg-white rounded-3xl shadow-lg border border-red-100 overflow-hidden">
+                    <div className="bg-white rounded-xl overflow-hidden">
 
                         {/* ── Step Progress Bar (top row) ── */}
                         <div className="px-8 pt-10 pb-8 border-b border-gray-100">
@@ -880,130 +889,126 @@ export default function SurgeonPageClient({ pageData }) {
             </section>
 
             {/* ═══════════════════════════════════════════════════════════════
-                SECTION 8: MEET THE SURGEON (TurkeySpecialists layout)
+                SECTION 8: DOCTOR INTRO SPOTLIGHT (Image 1 layout)
             ═══════════════════════════════════════════════════════════════ */}
-            <section className="py-16 md:py-24 bg-[#fff5ec]">
-                <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+            <section className="bg-gradient-to-br from-red-50/60 via-white to-[#fff5ec] py-16 md:py-24 relative overflow-hidden border-t border-b border-red-100">
+                <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
 
-                    {/* Section label */}
-                    <div className="flex items-center gap-3 mb-4 md:mb-8">
-                        <span className="block w-8 h-px bg-[#D32F2F]" />
-                        <span className="text-[#D32F2F] text-[11px] font-semibold tracking-[0.22em] uppercase">
-                            Our Lead Surgeon
-                        </span>
-                    </div>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-
-                        {/* ── Left — image (exact pattern from turkeySpecialists.js) */}
-                        <div className="relative">
-                            <div className="relative rounded-2xl overflow-hidden shadow-xl">
-                                <Image
-                                    src={leadSurgeonImg}
-                                    alt={`${leadSurgeonName} Lead Hair Transplant Surgeon Delhi`}
-                                    width={640}
-                                    height={480}
-                                    className="w-full h-80 md:h-[480px] object-cover object-top"
-                                    loading="lazy"
-                                    unoptimized
-                                />
-                                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 60%, transparent 100%)" }} />
-                                <div className="absolute bottom-5 left-5 right-5">
-                                    <span className="block w-8 h-0.5 mb-2 rounded-full bg-[#FFC107]" />
-                                    <p className="text-white font-bold text-lg leading-snug">{leadSurgeonName}</p>
-                                    <p className="text-xs mt-1 text-[#FFC107]">{doctorQual}</p>
+                        {/* Left Content */}
+                        <div className="lg:col-span-7">
+                            <Reveal>
+                                <div className="flex flex-wrap items-center gap-2 mb-6">
+                                    <div className="inline-flex items-center gap-2 bg-[#D32F2F] text-white px-3.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest shadow-sm">
+                                        <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                                        {heroBadgeText}
+                                    </div>
+                                    <span className="text-gray-400 text-xs hidden sm:inline">•</span>
+                                    <span className="text-xs font-bold text-gray-600 bg-white border border-red-100 px-3 py-1 rounded-full shadow-xs">
+                                        {doctorQual.split("·")[0] || "Certified Specialist"}
+                                    </span>
                                 </div>
-                            </div>
+                            </Reveal>
 
-                            {/* Floating secondary image */}
-                            <div className="hidden md:block absolute -bottom-6 -right-6 w-52 h-44 rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
-                                <Image src="/uploads/about-one.jpg" alt="Ryan Clinic Surgery" fill className="object-cover" unoptimized />
-                            </div>
+                            <Reveal delay={70}>
+                                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-[1.12] tracking-tight mb-6">
+                                    {heroTitle}
+                                </h2>
+                            </Reveal>
 
-                            {/* Red accent bar */}
-                            <div className="absolute top-0 left-0 w-1 h-24 rounded-r-full bg-[#D32F2F]" />
+                            <Reveal delay={130}>
+                                <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-8 max-w-xl font-normal">
+                                    {heroDesc}
+                                </p>
+                            </Reveal>
+
+                            {/* Credentials Badges Bar */}
+                            <Reveal delay={160}>
+                                <div className="flex flex-wrap gap-2 mb-8">
+                                    {[
+                                        `${doctorName} (Lead Surgeon)`,
+                                        doctorCard.experience || "15+ Yrs Specialization",
+                                        "5,000+ Completed Surgeries",
+                                        "Turkey Sapphire FUE Certified",
+                                    ].map((badge, idx) => (
+                                        <span key={idx} className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-700 bg-white border border-gray-200 px-3 py-1.5 rounded-lg shadow-2xs">
+                                            <CheckCircle2 className="w-3.5 h-3.5 text-[#D32F2F]" />
+                                            {badge}
+                                        </span>
+                                    ))}
+                                </div>
+                            </Reveal>
+
+                            <Reveal delay={190}>
+                                <div className="flex flex-wrap items-center gap-4 mb-10">
+                                    <a
+                                        href={WA}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-3 bg-[#D32F2F] hover:bg-red-700 text-white font-bold py-4 px-8 rounded-xl text-sm transition-all shadow-md shadow-red-700/20 hover:-translate-y-0.5"
+                                        onClick={() => trackCTA({ type: "whatsapp", ctaName: "Surgeon Spotlight Book", buttonLocation: "Surgeon Spotlight" })}
+                                    >
+                                        <MessageCircle className="w-4.5 h-4.5" /> Book Direct Surgical Assessment
+                                    </a>
+                                    <a
+                                        href={TEL}
+                                        className="inline-flex items-center gap-3 border-2 border-gray-200 hover:border-[#D32F2F] text-gray-800 hover:text-[#D32F2F] font-bold py-4 px-7 rounded-xl text-sm transition-all bg-white"
+                                        onClick={() => trackCTA({ type: "call", ctaName: "Surgeon Spotlight Call", buttonLocation: "Surgeon Spotlight" })}
+                                    >
+                                        <Phone className="w-4 h-4 text-[#D32F2F]" /> Call +91-9911111247
+                                    </a>
+                                </div>
+                            </Reveal>
+
+                            <Reveal delay={250}>
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                    {(pageData?.hero?.stats?.length
+                                        ? pageData.hero.stats.map(s => ({ num: s.value, label: s.label }))
+                                        : [
+                                            { num: "15+", label: "Years Exp." },
+                                            { num: "5,000+", label: "Surgeries" },
+                                            { num: "95%+", label: "Graft Survival" },
+                                            { num: "4.9★", label: "Google Rating" },
+                                        ]).map((s, i) => (
+                                            <div key={i} className="bg-white border border-red-100 rounded-xl p-3.5 flex flex-col gap-0.5 shadow-2xs">
+                                                <span className="text-2xl font-black text-gray-900">{s.num}</span>
+                                                <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wider">{s.label}</span>
+                                            </div>
+                                        ))}
+                                </div>
+                            </Reveal>
                         </div>
 
-                        {/* ── Right — content */}
-                        <div className="lg:pl-4">
-                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-[1.1] tracking-tight mb-5 text-gray-900">
-                                {pageData?.leadSurgeon?.badge?.text || "India's Only"}
-                                <br />
-                                <span className="text-[#D32F2F]">{leadSurgeonName}</span>
-                            </h2>
-
-                            <p className="text-sm md:text-[15px] leading-relaxed mb-8 text-gray-500">
-                                {leadSurgeonDesc}
-                            </p>
-
-                            {/* Highlight list */}
-                            <ul className="space-y-3 mb-8">
-                                {(pageData?.leadSurgeon?.qualifications?.length
-                                    ? pageData.leadSurgeon.qualifications.map(q => q.text)
-                                    : [
-                                        "15+ Years Dedicated Hair Restoration Experience",
-                                        "5,000+ Completed Hair Transplant Surgeries",
-                                        "MBBS (AIIMS) & MS (PGIMER) Qualified",
-                                        "Turkey Sapphire FUE Fellowship Certified",
-                                    ]).map((item, i) => (
-                                        <li key={i} className="flex items-start gap-3">
-                                            <span className="mt-1 w-5 h-5 rounded-full flex items-center justify-center shrink-0 bg-[#D32F2F]">
-                                                <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                                </svg>
-                                            </span>
-                                            <span className="text-sm leading-snug text-gray-600">{item}</span>
-                                        </li>
-                                    ))}
-                            </ul>
-
-                            {/* Stats row */}
-                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
-                                {(pageData?.leadSurgeon?.stats?.length
-                                    ? pageData.leadSurgeon.stats.map(s => ({ num: s.value, label: s.label }))
-                                    : [
-                                        { num: "15+", label: "Years of Excellence" },
-                                        { num: "5K+", label: "Successful Surgeries" },
-                                        { num: "95%+", label: "Graft Survival Rate" },
-                                        { num: "4.9★", label: "Google Rating" },
-                                    ]).map((s) => (
-                                        <div key={s.label} className="rounded-xl p-4 text-center bg-white border border-gray-100">
-                                            <p className="text-xl font-bold text-gray-900">{s.num}</p>
-                                            <p className="text-[10px] font-medium mt-0.5 text-gray-400">{s.label}</p>
+                        {/* Right Surgeon Image Box (Enhanced Doctor Portrait) */}
+                        <div className="lg:col-span-5">
+                            <Reveal dir="right">
+                                <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white ring-1 ring-red-100 group">
+                                    <Image
+                                        src={doctorImg}
+                                        alt={doctorImgAlt}
+                                        width={640}
+                                        height={520}
+                                        className="w-full h-96 md:h-[520px] object-cover object-top group-hover:scale-103 transition-transform duration-700"
+                                        unoptimized
+                                        priority
+                                    />
+                                    <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.15) 50%, transparent 100%)" }} />
+                                    <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md rounded-xl px-3.5 py-1.5 shadow-md border border-white/50">
+                                        <span className="text-[#D32F2F] font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5">
+                                            <ShieldCheck className="w-4 h-4 text-[#D32F2F]" /> 100% Doctor Performed
+                                        </span>
+                                    </div>
+                                    <div className="absolute bottom-5 left-5 right-5 text-white">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <span className="w-6 h-0.5 rounded-full bg-[#FFC107]" />
+                                            <span className="text-[11px] font-bold text-[#FFC107] uppercase tracking-widest">{doctorCard.designation || "Lead Surgeon"}</span>
                                         </div>
-                                    ))}
-                            </div>
-
-                            {/* CTA */}
-                            <div className="flex flex-wrap gap-3">
-                                <a
-                                    href={WA}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="inline-flex items-center gap-2.5 font-semibold text-sm py-4 px-7 rounded-xl text-white transition-opacity hover:opacity-90 bg-[#D32F2F] shadow-md"
-                                    onClick={() => trackCTA({ type: "whatsapp", ctaName: "Meet Surgeon Book", buttonLocation: "Meet Surgeon Section" })}
-                                >
-                                    Book Consultation with {leadSurgeonName}
-                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-                                    </svg>
-                                </a>
-                                <a
-                                    href={TEL}
-                                    className="inline-flex items-center gap-2.5 font-semibold text-sm py-4 px-7 rounded-xl border border-gray-200 text-gray-600 hover:border-[#D32F2F] hover:text-[#D32F2F] transition-all"
-                                    onClick={() => trackCTA({ type: "call", ctaName: "Meet Surgeon Call", buttonLocation: "Meet Surgeon Section" })}
-                                >
-                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
-                                    </svg>
-                                    Call Now
-                                </a>
-                            </div>
-                            <p className="text-[11px] mt-3 text-gray-400">
-                                Free scalp analysis · Graft count · Full cost breakdown — zero obligation.
-                            </p>
+                                        <p className="text-xl sm:text-2xl font-extrabold text-white leading-tight">{doctorName}</p>
+                                        <p className="text-xs text-red-100 font-medium mt-1">{doctorQual}</p>
+                                    </div>
+                                </div>
+                            </Reveal>
                         </div>
-
                     </div>
                 </div>
             </section>
@@ -1325,7 +1330,7 @@ export default function SurgeonPageClient({ pageData }) {
                             </div>
 
                             <Link
-                                href="/hair-transplant-results-before-after-gallery"
+                                href="/gallery"
                                 className="inline-flex items-center justify-center gap-2 border border-gray-700 hover:border-[#FFC107] text-gray-300 hover:text-[#FFC107] font-semibold py-3.5 px-5 text-sm tracking-wide transition-all rounded-xl w-full"
                             >
                                 View All Patient Results →

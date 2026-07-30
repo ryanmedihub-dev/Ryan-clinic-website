@@ -1,8 +1,8 @@
 import { DBConnection } from "@/lib/db";
-import Doctor from "@/models/Doctors";
+import SurgeonPage from "@/models/Surgeon";
 import PageBanner from "@/components/layouts/pageBanner";
 import ContactForm from "@/components/pages/contactForm";
-import DoctorCarouselClient from "./DoctorCarouselClient";
+import SurgeonCarouselClient from "./SurgeonCarouselClient";
 import {
   ShieldCheck,
   Award,
@@ -12,50 +12,53 @@ import {
 /* ─── Metadata ───────────────────────────────────────────────────────────── */
 
 export const metadata = {
-  title: "Meet the Doctors Behind Your Results | Ryan Clinic",
+  title: "Hair Transplant Surgeons – Certified Surgical Experts | Ryan Clinic",
   description:
-    "Every procedure is performed exclusively by board-certified, Turkey-trained surgeons. No technicians. No shortcuts. Just world-class precision you can trust.",
+    "Meet Ryan Clinic's team of Turkey-certified, senior hair transplant surgeons. 100% doctor-led procedures, natural hairline artistry, zero technician handover.",
   keywords: [
-    "hair transplant doctors",
-    "turkey certified doctors india",
-    "best hair transplant doctors delhi",
+    "hair transplant surgeon",
+    "best hair transplant surgeon delhi",
     "doctor led hair transplant",
-    "ryan clinic medical team",
+    "turkey certified surgeon india",
+    "hair restoration doctor",
   ],
   alternates: {
-    canonical: "https://www.clinicryan.com/doctors",
+    canonical: "https://www.clinicryan.com/surgeon",
   },
   openGraph: {
-    title: "Meet the Doctors Behind Your Results | Ryan Clinic",
+    title: "Hair Transplant Surgeons – Certified Surgical Experts | Ryan Clinic",
     description:
-      "Every procedure is performed exclusively by board-certified, Turkey-trained surgeons. No technicians. No shortcuts. Just world-class precision you can trust.",
-    url: "https://www.clinicryan.com/doctors",
+      "100% doctor-led hair transplant procedures. Meet our senior surgeons across Delhi and branch clinics.",
+    url: "https://www.clinicryan.com/surgeon",
     siteName: "Ryan Clinic",
     locale: "en_IN",
     type: "website",
     images: [
       {
         url: "https://www.clinicryan.com/uploads/turkey-doctor.jpg",
-        alt: "Ryan Clinic Hair Restoration Doctors",
+        alt: "Ryan Clinic Hair Transplant Surgeons",
       },
     ],
   },
 };
 
-/* ─── Data Fetching (Dynamic MongoDB Query) ───────────────────────────────── */
+/* ─── Data Fetching ──────────────────────────────────────────────────────── */
 
-async function getAllDoctorsPages() {
+async function getAllSurgeonPages() {
   try {
     await DBConnection();
-    const doctors = await Doctor.find({
-      deletedAt: null,
-      status: "published",
+    const pages = await SurgeonPage.find({
+      "settings.status": "published",
+      "settings.isDeleted": { $ne: true },
     })
-      .sort({ displayOrder: 1, createdAt: -1 })
+      .sort({ "settings.displayOrder": 1, createdAt: -1 })
+      .select(
+        "title slug hero general leadSurgeon settings seo"
+      )
       .lean();
-    return JSON.parse(JSON.stringify(doctors));
+    return JSON.parse(JSON.stringify(pages));
   } catch (error) {
-    console.error("Failed to fetch doctors from MongoDB:", error);
+    console.error("Failed to fetch surgeon pages:", error);
     return [];
   }
 }
@@ -73,35 +76,35 @@ function SectionLabel({ text }) {
   );
 }
 
-/* ─── Main Doctors Page ──────────────────────────────────────────────────── */
+/* ─── Main Landing Page ──────────────────────────────────────────────────── */
 
-export default async function DoctorsPage() {
-  const dbDoctors = await getAllDoctorsPages();
+export default async function SurgeonIndexPage() {
+  const pages = await getAllSurgeonPages();
 
   return (
     <>
       {/* ── 1. Page Banner ───────────────────────────────────────────── */}
       <PageBanner
-        breadcrumb="Our Medical Team"
-        title="Meet the Doctors Behind Your Results"
-        description="Every procedure is performed exclusively by board-certified, Turkey-trained surgeons. No technicians. No shortcuts. Just world-class precision you can trust."
+        breadcrumb="Surgeon Directory"
+        title="Hair Transplant Surgeons & Surgical Leadership"
+        description="100% Doctor-Led Hair Restoration · ISHRS & Turkey Certified · Zero Technician Handover · Microscopic Natural Hairline Artistry"
         bgImage="/uploads/turkey-doctor.jpg"
-        alt="Ryan Clinic Expert Hair Transplant Doctors"
+        alt="Ryan Clinic Hair Transplant Surgeons"
       />
 
-      {/* ── 2. Interactive Spotlight Carousel & Dynamic Doctor Directory ── */}
-      <DoctorCarouselClient initialDoctors={dbDoctors} />
+      {/* ── 2. Interactive Carousel Spotlight & Directory ────────────── */}
+      <SurgeonCarouselClient dbPages={pages} />
 
-      {/* ── 3. Medical Standards & Excellence ────────────────────────── */}
+      {/* ── 3. Why Surgical Skill Matters ──────────────────────────── */}
       <section className="bg-white py-16 md:py-24 border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center max-w-3xl mx-auto">
             <SectionLabel text="Medical Standards & Excellence" />
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 leading-tight tracking-tight font-sans">
-              Why Choice of Doctor <span className="text-[#D32F2F]">Defines Your Result</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 leading-tight tracking-tight font-serif">
+              Why Choice of Surgeon <span className="italic text-[#D32F2F]">Defines Your Result</span>
             </h2>
             <p className="text-gray-600 text-sm md:text-base leading-relaxed mt-3 font-sans">
-              A hair transplant is a microscopic surgical procedure. Delegating extractions or channel creation to technicians can lead to donor depletion and unnatural results. Here is how our doctor-led care protects you.
+              A hair transplant is a microscopic surgical procedure. Delegating extractions or slit creation to technicians can lead to donor depletion and unnatural results. Here is how our surgeon-led care protects you.
             </p>
           </div>
 
@@ -111,11 +114,11 @@ export default async function DoctorsPage() {
                 <div className="w-12 h-12 rounded-2xl bg-red-100 text-[#D32F2F] flex items-center justify-center mb-6">
                   <UserCheck className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-bold font-sans text-gray-900 mb-3">
+                <h3 className="text-xl font-bold font-serif text-gray-900 mb-3">
                   0% Technician Handover
                 </h3>
                 <p className="text-gray-600 text-xs sm:text-sm leading-relaxed font-sans">
-                  From hairline drafting to graft harvesting and channel creation, every surgical step is personally executed by our board-certified doctor.
+                  From hairline drafting to graft harvesting and channel creation, every surgical step is personally executed by our board-certified surgeon.
                 </p>
               </div>
             </div>
@@ -125,7 +128,7 @@ export default async function DoctorsPage() {
                 <div className="w-12 h-12 rounded-2xl bg-red-100 text-[#D32F2F] flex items-center justify-center mb-6">
                   <Award className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-bold font-sans text-gray-900 mb-3">
+                <h3 className="text-xl font-bold font-serif text-gray-900 mb-3">
                   Natural Hairline Artistry
                 </h3>
                 <p className="text-gray-600 text-xs sm:text-sm leading-relaxed font-sans">
@@ -139,7 +142,7 @@ export default async function DoctorsPage() {
                 <div className="w-12 h-12 rounded-2xl bg-red-100 text-[#D32F2F] flex items-center justify-center mb-6">
                   <ShieldCheck className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-bold font-sans text-gray-900 mb-3">
+                <h3 className="text-xl font-bold font-serif text-gray-900 mb-3">
                   Maximum Follicle Survival
                 </h3>
                 <p className="text-gray-600 text-xs sm:text-sm leading-relaxed font-sans">
@@ -156,10 +159,10 @@ export default async function DoctorsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div>
-              <SectionLabel text="Direct Doctor Assessment" />
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 leading-tight tracking-tight mb-5 font-sans">
+              <SectionLabel text="Direct Surgeon Assessment" />
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 leading-tight tracking-tight mb-5 font-serif">
                 Consult Directly With <br />
-                <span className="text-[#D32F2F]">Our Senior Doctor</span>
+                <span className="italic text-[#D32F2F]">Our Senior Surgeon</span>
               </h2>
               <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-8 font-sans">
                 No sales representatives. Speak directly with a qualified doctor for an honest scalp assessment, precise graft calculation, and customized restoration plan.
@@ -167,13 +170,13 @@ export default async function DoctorsPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { n: "15+", l: "Years Doctor Care" },
+                  { n: "15+", l: "Years Surgical Exp." },
                   { n: "10,000+", l: "Surgeries Conducted" },
                   { n: "98.4%", l: "Graft Survival Rate" },
                   { n: "4.9 ★", l: "Patient Satisfaction" },
                 ].map((s) => (
                   <div key={s.n} className="bg-white rounded-2xl border border-[#F0E6DE] p-4 text-center shadow-xs">
-                    <p className="text-xl md:text-2xl font-bold text-[#D32F2F] font-sans">{s.n}</p>
+                    <p className="text-xl md:text-2xl font-bold text-[#D32F2F] font-serif">{s.n}</p>
                     <p className="text-xs text-gray-600 mt-1 font-medium font-sans">{s.l}</p>
                   </div>
                 ))}
@@ -191,7 +194,7 @@ export default async function DoctorsPage() {
       <div className="bg-[#F7F5F2] border-t border-gray-200 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-xs text-gray-500 leading-relaxed max-w-4xl font-sans">
-            <strong className="text-gray-700">Medical Disclaimer:</strong> All medical procedures carry individual health variables. Doctor qualifications and credentials listed on this site represent verified medical qualifications. Results and graft requirements vary by individual scalp condition.
+            <strong className="text-gray-700">Medical Disclaimer:</strong> All surgical procedures carry individual health variables. Surgeon qualifications and procedure details listed on this site represent verified medical credentials. Results and graft requirements vary by individual scalp condition.
           </p>
         </div>
       </div>

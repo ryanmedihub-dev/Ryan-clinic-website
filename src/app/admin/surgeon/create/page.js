@@ -67,15 +67,33 @@ export default function CreateSurgeonPage() {
 
         <GeneralSection          {...sectionProps} />
         <SEOSection              {...sectionProps} />
-        <HeroSection             {...sectionProps} />
-        <WhySkillSection         {...sectionProps} />
-        <BenefitsSection         {...sectionProps} />
-        <WhyClinicSection        {...sectionProps} />
-        <SurgeonRoleSection      {...sectionProps} />
-        <ComparisonSection       {...sectionProps} />
+
+        {/* UI Section 1: Lead Surgeon (Top Hero) */}
         <LeadSurgeonSection      {...sectionProps} />
-        <BookingChecklistSection {...sectionProps} />
+
+        {/* UI Section 2: Why Surgical Skill Matters */}
+        <WhySkillSection         {...sectionProps} />
+
+        {/* UI Section 3: Surgical Journey */}
+        <SurgeonRoleSection      {...sectionProps} />
+
+        {/* UI Section 4: Surgeon vs Technician Comparison */}
+        <ComparisonSection       {...sectionProps} />
+
+        {/* UI Section 5: What Makes A Great Surgeon */}
+        <BenefitsSection         {...sectionProps} />
+
+        {/* UI Section 6: Why Choose Ryan Clinic */}
+        <WhyClinicSection        {...sectionProps} />
+
+        {/* UI Section 7: Procedures & Techniques */}
         <ProceduresSection       {...sectionProps} />
+
+        {/* UI Section 8: Doctor Intro Spotlight (Best Hair Transplant Surgeon Banner) */}
+        <HeroSection             {...sectionProps} />
+
+        {/* UI Section 9: Due Diligence Checklist, CTA & FAQ */}
+        <BookingChecklistSection {...sectionProps} />
         <ConsultationCTASection  {...sectionProps} />
         <FAQSection              {...sectionProps} />
 

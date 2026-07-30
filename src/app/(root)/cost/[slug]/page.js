@@ -9,7 +9,6 @@ import FAQCostSection from "../FAQCostSection";
 import CTAButtons from "../CTAButtonsClient";
 import SurgeriesCostCardsClient from "../SurgeriesCostCardsClient";
 import GraftTierCards from "../GraftTierCards";
-import CostComparisonGrid from "../CostComparisonGrid";
 
 /* ═══════════════════════════════════════════════════════════════
    DATA FETCHING (Optimized with React cache)
@@ -612,73 +611,6 @@ export default async function DynamicCostPage({ params }) {
         </section>
       )}
 
-      {/* ════════════════════════════════════════════════════════════
-          SECTION 5: TECHNIQUE COMPARISON TABLE
-          - FIX 3: Enhanced comparison section with clean light card frame
-          - Highlighted Sapphire FUE column with rich Ryan Red header badge
-      ════════════════════════════════════════════════════════════ */}
-      {techniqueComparison?.rows?.length > 0 && techniqueComparison?.columns?.length > 1 ? (
-        <section className="py-16 md:py-24 bg-[#FAF6F3] border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-            <div className="text-center mb-12 max-w-2xl mx-auto">
-              <EyebrowLabel text={techniqueComparison.badge || "Technique Comparison"} />
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
-                {techniqueComparison.heading || "Compare Techniques"}
-              </h2>
-              {techniqueComparison.description && (
-                <p className="text-gray-500 text-xs sm:text-sm mt-2 max-w-xl mx-auto font-sans">{techniqueComparison.description}</p>
-              )}
-            </div>
-
-            <div className="overflow-x-auto rounded-3xl border border-[#E8E4DF] bg-white shadow-xl">
-              <table className="w-full text-xs sm:text-sm min-w-[640px]">
-                <thead>
-                  <tr className="border-b border-gray-200 bg-[#FAF6F3]">
-                    {techniqueComparison.columns.map((col, ci) => (
-                      <th
-                        key={ci}
-                        className={`px-6 py-5 text-left font-bold text-gray-900 ${col.highlighted ? "bg-[#e30a17] text-white" : ""
-                          }`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="font-bold text-sm">{col.name}</span>
-                          {col.badge && (
-                            <span className={`text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full ${col.highlighted ? "bg-white/20 text-white" : "bg-gray-200 text-gray-700"
-                              }`}>
-                              {col.badge}
-                            </span>
-                          )}
-                        </div>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {techniqueComparison.rows.map((row, ri) => (
-                    <tr key={ri} className="border-b border-gray-100 last:border-0 hover:bg-gray-50/50 transition-colors">
-                      <td className="px-6 py-4 font-semibold text-gray-700 text-xs uppercase tracking-wider">
-                        {row.label}
-                      </td>
-                      {row.values?.map((val, vi) => (
-                        <td
-                          key={vi}
-                          className={`px-6 py-4 text-gray-800 font-medium ${techniqueComparison.columns[vi + 1]?.highlighted ? "bg-red-50/40 font-bold text-gray-900" : ""
-                            }`}
-                        >
-                          {val.value}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-      ) : (
-        <CostComparisonGrid />
-      )}
 
       {/* ════════════════════════════════════════════════════════════
           SECTION 6: INCLUSIONS & GUARANTEE

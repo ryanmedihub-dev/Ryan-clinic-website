@@ -16,6 +16,7 @@ const handler = async (req) => {
       city,
       slug: rawSlug,
       status,
+      landingCardImage,
       seo,
       hero,
       introduction,
@@ -80,6 +81,7 @@ const handler = async (req) => {
     if (city !== undefined) surgeryPage.city = city.trim();
     surgeryPage.slug = newSlug;
     if (status !== undefined) surgeryPage.status = status;
+    if (landingCardImage !== undefined) surgeryPage.landingCardImage = landingCardImage;
     surgeryPage.seo = seo || {};
     surgeryPage.hero = hero || {};
     surgeryPage.introduction = introduction || {};

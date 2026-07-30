@@ -34,7 +34,7 @@ const SURGERIES_DATA = [
       "Zero prior channel slitting needed",
       "Ideal for hairline & crown density",
     ],
-    whatsappText: "Hi,%20I%20want%20to%20know%20more%20about%20DHI%20Choi%20Pen%20cost%20at%20Ryan%20Clinic",
+    whatsappText: "Hi,%20I%20want%20to%20know%20more%20about%20Turkish%20Technique%20cost%20at%20Ryan%20Clinic",
   },
   {
     id: "standard-fue",

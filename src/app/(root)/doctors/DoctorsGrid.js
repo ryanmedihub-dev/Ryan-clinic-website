@@ -223,83 +223,93 @@ function DoctorCard({ doctor }) {
         </p>
 
         {/* ── specializations ── */}
-        <div>
-          <SectionLabel>Specializations</SectionLabel>
-          <div className="flex flex-wrap gap-2">
-            {doctor.specializations.map((s) => (
-              <span
-                key={s}
-                className="text-[11px] font-semibold px-3 py-1.5 rounded-lg leading-none"
-                style={{
-                  background: "rgba(211,47,47,0.05)",
-                  color: "var(--primary-red)",
-                  border: "1px solid rgba(211,47,47,0.16)",
-                }}
-              >
-                {s}
-              </span>
-            ))}
+        {doctor.specializations?.length > 0 && (
+          <div>
+            <SectionLabel>Specializations</SectionLabel>
+            <div className="flex flex-wrap gap-2">
+              {doctor.specializations.map((s) => (
+                <span
+                  key={s}
+                  className="text-[11px] font-semibold px-3 py-1.5 rounded-lg leading-none"
+                  style={{
+                    background: "rgba(211,47,47,0.05)",
+                    color: "var(--primary-red)",
+                    border: "1px solid rgba(211,47,47,0.16)",
+                  }}
+                >
+                  {s}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* ── education ── */}
-        <div>
-          <SectionLabel>Education & Qualifications</SectionLabel>
-          <ul className="space-y-3">
-            {doctor.qualifications.map((q) => (
-              <li key={q.degree} className="flex items-start gap-2.5">
-                <TickIcon />
-                <div className="leading-tight">
-                  <span
-                    className="text-[13px] font-semibold block"
-                    style={{ color: "var(--text-primary)" }}
-                  >
-                    {q.degree}
-                  </span>
-                  <span className="text-[11.5px]" style={{ color: "var(--text-muted)" }}>
-                    {q.institute}
-                  </span>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {doctor.qualifications?.length > 0 && (
+          <div>
+            <SectionLabel>Education &amp; Qualifications</SectionLabel>
+            <ul className="space-y-3">
+              {doctor.qualifications.map((q, idx) => (
+                <li key={q.degree || idx} className="flex items-start gap-2.5">
+                  <TickIcon />
+                  <div className="leading-tight">
+                    <span
+                      className="text-[13px] font-semibold block"
+                      style={{ color: "var(--text-primary)" }}
+                    >
+                      {q.degree || q}
+                    </span>
+                    {q.institute && (
+                      <span className="text-[11.5px]" style={{ color: "var(--text-muted)" }}>
+                        {q.institute}
+                      </span>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* ── certifications ── */}
-        <div
-          className="rounded-xl p-4 sm:p-5"
-          style={{
-            background: "var(--bg-soft)",
-            border: "1px solid var(--border-light)",
-          }}
-        >
-          <SectionLabel>Certifications & Awards</SectionLabel>
-          <ul className="space-y-2.5">
-            {doctor.certifications.map((c) => (
-              <li key={c} className="flex items-start gap-2.5">
-                <TickIcon />
-                <span className="text-[12.5px] leading-snug" style={{ color: "var(--text-secondary)" }}>
-                  {c}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {doctor.certifications?.length > 0 && (
+          <div
+            className="rounded-xl p-4 sm:p-5"
+            style={{
+              background: "var(--bg-soft)",
+              border: "1px solid var(--border-light)",
+            }}
+          >
+            <SectionLabel>Certifications &amp; Awards</SectionLabel>
+            <ul className="space-y-2.5">
+              {doctor.certifications.map((c, idx) => (
+                <li key={idx} className="flex items-start gap-2.5">
+                  <TickIcon />
+                  <span className="text-[12.5px] leading-snug" style={{ color: "var(--text-secondary)" }}>
+                    {c}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* ── achievements ── */}
-        <div>
-          <SectionLabel>Notable Achievements</SectionLabel>
-          <ul className="space-y-2.5">
-            {doctor.achievements.map((a) => (
-              <li key={a} className="flex items-start gap-2.5">
-                <GoldStar />
-                <span className="text-[12.5px] leading-snug" style={{ color: "var(--text-secondary)" }}>
-                  {a}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {doctor.achievements?.length > 0 && (
+          <div>
+            <SectionLabel>Notable Achievements</SectionLabel>
+            <ul className="space-y-2.5">
+              {doctor.achievements.map((a, idx) => (
+                <li key={idx} className="flex items-start gap-2.5">
+                  <GoldStar />
+                  <span className="text-[12.5px] leading-snug" style={{ color: "var(--text-secondary)" }}>
+                    {a}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* ── footer: languages + CTA ── */}
         <div
@@ -310,7 +320,7 @@ function DoctorCard({ doctor }) {
           <div className="flex items-center gap-2 sm:flex-1">
             <LanguageIcon />
             <span className="text-[12px]" style={{ color: "var(--text-muted)" }}>
-              {doctor.languages.join("  ·  ")}
+              {(doctor.languages || ["English", "Hindi"]).join("  ·  ")}
             </span>
           </div>
 
@@ -347,10 +357,12 @@ function DoctorCard({ doctor }) {
 
 function normalizeDbDoctor(doc) {
   const b = doc.basicInfo || {};
+  const prof = doc.surgeonProfile || {};
   return {
     id: doc._id || doc.slug,
     name: b.doctorName || doc.pageName || "Dr. Specialist",
     designation: b.designation || "Hair Transplant Surgeon",
+    location: b.city || "Delhi",
     city: b.city || "Delhi",
     experience: b.yearsExperience ? `${b.yearsExperience}` : "15",
     procedures: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : "5,000+",
@@ -358,11 +370,23 @@ function normalizeDbDoctor(doc) {
     image: b.profileImage?.image || "/uploads/turkey-doctor.jpg",
     languages: b.languages?.length ? b.languages : ["English", "Hindi"],
     slug: doc.slug,
-    specialities: ["Sapphire FUE", "THI Hair Restoration", "Beard Transplant"],
-    qualifications: [
-      { degree: "MBBS", institute: "Recognized Medical Council" },
-      { degree: "Turkey Certification", institute: "International Hair Restoration Association" },
-    ],
+    specialtyBadge: b.designation || "Turkey Certified",
+    about: prof.about || b.shortDescription || "Board-certified hair transplant surgeon specializing in doctor-led Sapphire FUE.",
+    specializations: prof.specializations?.length
+      ? prof.specializations
+      : ["Sapphire FUE", "Turkish Technique Hair Restoration", "Beard & Eyebrow Transplant"],
+    qualifications: prof.qualifications?.length
+      ? prof.qualifications
+      : [
+          { degree: "MBBS", institute: "Recognized Medical Council" },
+          { degree: "Turkey Certification", institute: "International Hair Restoration Association" },
+        ],
+    certifications: prof.certifications?.length
+      ? prof.certifications
+      : ["Turkey Sapphire FUE Fellowship Certified", "ISHRS International Member"],
+    achievements: prof.achievements?.length
+      ? prof.achievements
+      : ["5,000+ Successful Hair Restoration Procedures", "98.4% Follicle Survival Rate"],
   };
 }
 

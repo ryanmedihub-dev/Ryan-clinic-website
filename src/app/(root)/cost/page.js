@@ -10,7 +10,7 @@ import { AlertTriangle, ArrowRight, ShieldCheck, MapPin, Phone, CheckCircle2, Sp
 export const metadata = {
   title: "Hair Transplant Cost – City-Wise Pricing Guide | Ryan Clinic",
   description:
-    "Compare hair transplant cost across Delhi, Mumbai & other cities. Per-graft pricing from ₹40, 0% EMI, doctor-led Sapphire FUE & DHI. Get your free scalp analysis today.",
+    "Compare hair transplant cost across Delhi, Mumbai & other cities. Per-graft pricing from ₹40, 0% EMI, doctor-led Sapphire FUE & Turkish Technique. Get your free scalp analysis today.",
   keywords: [
     "hair transplant cost",
     "hair transplant price india",
@@ -165,7 +165,7 @@ export default async function CostIndexPage() {
                       <div className="space-y-1.5 mb-6 text-xs text-gray-600 font-medium">
                         <div className="flex items-center gap-2">
                           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                          <span>Doctor-Led Sapphire FUE &amp; DHI</span>
+                          <span>Doctor-Led Sapphire FUE &amp; Turkish Technique</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />

@@ -901,6 +901,11 @@ const surgeryPageSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    // ── Card image shown on the /surgery landing page carousel ─────────────
+    landingCardImage: {
+      image: { type: String, trim: true, default: "" },
+      imageAlt: { type: String, trim: true, default: "" },
+    },
     city: {
       type: String,
       required: false,

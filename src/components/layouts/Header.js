@@ -74,7 +74,7 @@ const Header = () => {
       ]
       : []),
     { name: "Cost", href: "/cost" },
-    { name: "Gallery", href: "/hair-transplant-results-before-after-gallery" },
+    { name: "Gallery", href: "/gallery" },
     { name: "Contact us", href: "/contact" },
   ];
 
@@ -117,7 +117,7 @@ const Header = () => {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
-              src={Logo}
+              src={Logo}  
               alt="Ryan Clinic"
               width={160}
               height={40}
@@ -151,8 +151,8 @@ const Header = () => {
                         {/* Dropdown Panel */}
                         <div
                           className={`absolute top-full left-1/2 -translate-x-1/2 z-50 mt-1 bg-white rounded-xl shadow-2xl border border-gray-100 transition-all duration-200 ease-in-out ${openDropdown === item.key
-                              ? "opacity-100 visible translate-y-0"
-                              : "opacity-0 invisible -translate-y-2"
+                            ? "opacity-100 visible translate-y-0"
+                            : "opacity-0 invisible -translate-y-2"
                             }`}
                           style={{ width: "560px" }}
                         >
