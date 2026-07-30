@@ -91,6 +91,8 @@ function SectionLabel({ text, dark = false }) {
   );
 }
 
+
+
 export default function HairFallPageClient({ data }) {
   const hero = data?.hero ?? {};
   const introduction = data?.introduction ?? {};
