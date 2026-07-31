@@ -3,6 +3,7 @@ import Header from "@/components/layouts/Header";
 import Footer from "@/components/layouts/Footer";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import FloatingCTA from "@/components/layouts/FloatingCTA";
+import PopupForm from "@/components/common/PopupForm";
 import Script from "next/script";
 
 import { Outfit, DM_Sans } from "next/font/google";
@@ -175,6 +176,7 @@ export default function RootLayout({ children }) {
         {children}
         <Footer />
         <FloatingCTA />
+        <PopupForm />
       </body>
     </html>
   );
