@@ -184,7 +184,7 @@ export default function DifferencesSection({ features: featuresOverride }) {
             About FUT →
           </a>
           <a
-            href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20want%20to%20know%20which%20technique%20is%20right%20for%20me"
+            href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20know%20which%20technique%20is%20right%20for%20me"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-3 px-6 text-sm tracking-wide transition-colors rounded-xl"

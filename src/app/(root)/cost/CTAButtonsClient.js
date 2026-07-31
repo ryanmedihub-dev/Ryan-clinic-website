@@ -3,7 +3,7 @@
 import useTrackCTA from "@/lib/useTrackCTA";
 
 const WA =
-  "https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20want%20to%20know%20the%20exact%20hair%20transplant%20cost%20in%20Delhi";
+  "https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20know%20the%20exact%20hair%20transplant%20cost%20in%20Delhi";
 const TEL = "tel:+919911111247";
 
 export default function CTAButtonsClient({ primary = "Get Free Cost Estimate", center = false }) {

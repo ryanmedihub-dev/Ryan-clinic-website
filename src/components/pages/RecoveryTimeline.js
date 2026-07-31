@@ -224,7 +224,7 @@ export default function RecoveryTimeline({ phases }) {
         {/* ── CTA ── */}
         <div className="flex flex-wrap gap-3 justify-center">
           <a
-            href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20consultation"
+            href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20consultation"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2.5 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-4 px-7 text-sm tracking-wide transition-colors rounded-xl"

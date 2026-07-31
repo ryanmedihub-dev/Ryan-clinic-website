@@ -139,7 +139,7 @@ export default function CostComparisonGrid() {
               </div>
 
               <a
-                href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20want%20to%20compare%20techniques%20and%20costs%20at%20Ryan%20Clinic."
+                href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20compare%20techniques%20and%20costs%20at%20Ryan%20Clinic."
                 target="_blank"
                 rel="noreferrer"
                 className={`w-full inline-flex items-center justify-center text-xs font-bold py-3 px-4 rounded-xl transition-all ${item.highlight

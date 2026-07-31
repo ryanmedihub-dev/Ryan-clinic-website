@@ -8,7 +8,7 @@ import ContactForm from "@/components/pages/contactForm";
 import useTrackCTA from "@/lib/useTrackCTA";
 
 const WA_URL =
-  "https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20want%20to%20know%20more%20about%20PRP%20hair%20loss%20treatment%20in%20Delhi%20at%20Ryan%20Clinic";
+  "https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20know%20more%20about%20PRP%20hair%20loss%20treatment%20in%20Delhi%20at%20Ryan%20Clinic";
 const TEL_URL = "tel:+919911111247";
 
 /* Helper Section Badge */

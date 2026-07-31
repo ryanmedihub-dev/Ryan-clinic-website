@@ -188,7 +188,7 @@ export default function OurDoctorSection({ city = "Delhi", doctor }) {
             {/* CTA */}
             <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-gray-100">
               <a
-                href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi%2C%20I%27d%20like%20to%20book%20a%20consultation%20with%20Dr.%20Pranendra%20Singh"
+                href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%27d%20like%20to%20book%20a%20consultation%20with%20Dr.%20Pranendra%20Singh"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center justify-center gap-2.5 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-4 px-6 text-sm tracking-wide transition-colors rounded-xl"

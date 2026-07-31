@@ -23,7 +23,7 @@ import {
     Minus,
 } from "lucide-react";
 
-const WA = "https://api.whatsapp.com/send?phone=919911111247&text=Hi%2C%20I%20want%20to%20book%20a%20consultation%20with%20the%20best%20hair%20transplant%20surgeon%20in%20Delhi";
+const WA = "https://api.whatsapp.com/send?phone=919217958539&text=Hi%2C%20I%20want%20to%20book%20a%20consultation%20with%20the%20best%20hair%20transplant%20surgeon%20in%20Delhi";
 const TEL = "tel:+919911111247";
 
 /* ─── Scroll Animation Hook ──────────────────────────────────────────────── */

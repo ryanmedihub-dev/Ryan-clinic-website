@@ -4,7 +4,7 @@ import { useState } from "react";
 import useTrackCTA from "@/lib/useTrackCTA";
 
 const WA =
-    "https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20have%20a%20question%20about%20hair%20transplant%20surgery";
+    "https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20have%20a%20question%20about%20hair%20transplant%20surgery";
 
 export default function FAQSection({ faqs = [] }) {
     const [open, setOpen] = useState(null);

@@ -33,7 +33,7 @@ import {
 } from "lucide-react";
 
 const WA =
-    "https://api.whatsapp.com/send?phone=919911111247&text=Hi%2C%20I%20want%20a%20free%20consultation%20with%20the%20best%20hair%20transplant%20doctor%20in%20Delhi";
+    "https://api.whatsapp.com/send?phone=919217958539&text=Hi%2C%20I%20want%20a%20free%20consultation%20with%20the%20best%20hair%20transplant%20doctor%20in%20Delhi";
 const TEL = "tel:+919911111247";
 
 const branchData = {
@@ -126,7 +126,7 @@ function SectionLabel({ text, dark = false }) {
 function CTAButtons({ primary = "Book Free Consultation", center = false, doctorName = "" }) {
     const trackCTA = useTrackCTA();
     const waLink = doctorName
-        ? `https://api.whatsapp.com/send?phone=919911111247&text=Hi%2C%20I%20want%20a%20free%20consultation%20with%20${encodeURIComponent(doctorName)}`
+        ? `https://api.whatsapp.com/send?phone=919217958539&text=Hi%2C%20I%20want%20a%20free%20consultation%20with%20${encodeURIComponent(doctorName)}`
         : WA;
     return (
         <div className={`flex flex-wrap gap-3 ${center ? "justify-center" : ""}`}>
@@ -177,7 +177,7 @@ export default function DoctorPageClient({ data }) {
 
     const activeBranch = branchData[doctor.location] || branchData.Delhi;
     const waDoctorLink = doctor
-        ? `https://api.whatsapp.com/send?phone=919911111247&text=Hi%2C%20I%20want%20a%20free%20consultation%20with%20${encodeURIComponent(doctor.name)}`
+        ? `https://api.whatsapp.com/send?phone=919217958539&text=Hi%2C%20I%20want%20a%20free%20consultation%20with%20${encodeURIComponent(doctor.name)}`
         : WA;
 
     return (

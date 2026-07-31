@@ -3,7 +3,7 @@
 import useTrackCTA from "@/lib/useTrackCTA";
 
 const WA_URL =
-  "https://api.whatsapp.com/send?phone=+919911111247&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation";
+  "https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation";
 
 const CALL_URL = "tel:+919911111247";
 

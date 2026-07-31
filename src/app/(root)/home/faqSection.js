@@ -126,7 +126,7 @@ export default function FaqSection() {
 
             {/* CTA */}
             <a
-              href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi, I have a question about hair transplant at Ryan Clinic."
+              href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi, I have a question about hair transplant at Ryan Clinic."
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 font-semibold text-sm py-3.5 px-7 rounded-xl text-white w-full justify-center transition-opacity hover:opacity-90"
@@ -270,7 +270,7 @@ export default function FaqSection() {
             >
               Can't find your answer?{" "}
               <a
-                href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi, I have a question about hair transplant."
+                href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi, I have a question about hair transplant."
                 target="_blank"
                 rel="noreferrer"
                 className="font-semibold underline"

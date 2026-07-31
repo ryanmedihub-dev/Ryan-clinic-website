@@ -91,7 +91,7 @@ function RedCheck() {
   );
 }
 
-const WA_BASE = "https://api.whatsapp.com/send?phone=+919911111247&text=";
+const WA_BASE = "https://api.whatsapp.com/send?phone=+919217958539&text=";
 const TEL = "tel:+919911111247";
 
 /* ═══════════════════════════════════════════════════════════════
@@ -734,7 +734,7 @@ export default async function DynamicCostPage({ params }) {
               {/* Compact Action Buttons & Availability */}
               <div className="flex flex-wrap items-center gap-3">
                 <a
-                  href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20want%20to%20book%20a%20free%20consultation"
+                  href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20book%20a%20free%20consultation"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white text-xs font-bold py-3 px-5 rounded-xl transition-all shadow-md shadow-red-200 hover:-translate-y-0.5"

@@ -201,7 +201,7 @@ export function LeadForm() {
         });
         // Redirect current tab to WhatsApp after a brief timeout to avoid popup blockers
         setTimeout(() => {
-          window.location.href = "https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20scalp%20analysis";
+          window.location.href = "https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20scalp%20analysis";
         }, 100);
       } else {
         alert("⚠️ " + (data.message || "Something went wrong. Please call us directly."));
@@ -316,10 +316,10 @@ export default function GalleryPageClient() {
   const activeCase = lightboxIndex !== null ? lightboxImages[lightboxIndex] : null;
 
   const getWhatsAppLink = (c) => {
-    if (!c) return "https://api.whatsapp.com/send?phone=+919911111247";
+    if (!c) return "https://api.whatsapp.com/send?phone=+919217958539";
     const titleText = c.title || c.caption || "Case Detail";
     const text = `Hi, I am viewing Case #${c.id || "N/A"} (${titleText} - ${c.grafts || ""}, ${c.technique || ""}) in the Before & After gallery. I would like a free scalp analysis for similar results.`;
-    return `https://api.whatsapp.com/send?phone=+919911111247&text=${encodeURIComponent(text)}`;
+    return `https://api.whatsapp.com/send?phone=+919217958539&text=${encodeURIComponent(text)}`;
   };
 
   if (galleryLoading) {
@@ -426,7 +426,7 @@ export default function GalleryPageClient() {
 
               <div className="flex flex-wrap gap-3">
                 <a
-                  href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20scalp%20analysis"
+                  href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20scalp%20analysis"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-5 py-3 md:px-6 md:py-3.5 rounded-xl text-white font-bold text-sm transition-all hover:opacity-90 bg-[#D32F2F] shadow-md"
@@ -568,7 +568,7 @@ export default function GalleryPageClient() {
               <p className="text-xs text-white/70 mt-1">Get an expert medical evaluation on your required graft count based on your photos.</p>
             </div>
             <a
-              href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20scalp%20analysis"
+              href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20scalp%20analysis"
               target="_blank"
               rel="noopener noreferrer"
               className="flex-shrink-0 px-6 py-3.5 bg-white text-[#8B1414] hover:bg-stone-100 font-bold rounded-2xl text-xs sm:text-sm shadow-md transition-colors"
@@ -742,7 +742,7 @@ export default function GalleryPageClient() {
 
           <div className="text-center mt-12">
             <a
-              href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20have%20a%20question%20about%20hair%20transplant%20results"
+              href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20have%20a%20question%20about%20hair%20transplant%20results"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-white font-bold text-sm bg-[#D32F2F] hover:bg-red-700 shadow-md transition-colors"

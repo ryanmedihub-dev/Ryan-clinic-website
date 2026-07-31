@@ -53,7 +53,7 @@ export default function AboutSection() {
               expert services.
             </p>
             <a
-              href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi, I want to book a hair transplant consultation at Ryan Clinic."
+              href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi, I want to book a hair transplant consultation at Ryan Clinic."
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 font-semibold text-sm py-3.5 px-7 rounded-xl text-white transition-opacity hover:opacity-90"

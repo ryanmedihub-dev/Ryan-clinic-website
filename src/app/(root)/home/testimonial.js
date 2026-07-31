@@ -458,7 +458,7 @@ export default function Testimonials() {
           </p>
           <div className="flex flex-wrap gap-3 shrink-0">
             <a
-              href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi, I visited your website. I want a free consultation."
+              href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi, I visited your website. I want a free consultation."
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 font-semibold text-sm py-3 px-6 rounded-xl text-white transition-all hover:opacity-90"

@@ -94,7 +94,7 @@ export default function SurgeriesCostCardsClient() {
             </p>
           </div>
           <a
-            href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi,%20I%20want%20to%20compare%20all%20procedure%20costs"
+            href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20compare%20all%20procedure%20costs"
             target="_blank"
             rel="noreferrer"
             className="shrink-0 inline-flex items-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white text-xs font-bold py-3 px-6 rounded-full shadow-md transition-all"
@@ -164,7 +164,7 @@ export default function SurgeriesCostCardsClient() {
                 </div>
 
                 <a
-                  href={`https://api.whatsapp.com/send?phone=+919911111247&text=${card.whatsappText}`}
+                  href={`https://api.whatsapp.com/send?phone=+919217958539&text=${card.whatsappText}`}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center justify-center w-full gap-2 bg-[#e30a17] hover:bg-red-700 text-white font-bold py-3 px-4 text-xs transition-colors rounded-xl shadow-md shadow-red-600/20 mt-auto"

@@ -368,7 +368,7 @@ export default function OurResults({ city = "Delhi" }) {
         {/* CTA strip */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 px-4 pb-4">
           <a
-            href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation"
+            href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center justify-center gap-2 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-3.5 px-6 text-sm tracking-wide transition-colors rounded-xl w-full sm:w-auto"
@@ -444,7 +444,7 @@ export default function OurResults({ city = "Delhi" }) {
         {/* Desktop CTA strip */}
         <div className="flex items-center justify-center gap-4 mt-10 pb-4 px-12 md:px-20">
           <a
-            href="https://api.whatsapp.com/send?phone=+919911111247&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation"
+            href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-3.5 px-7 text-sm tracking-wide transition-colors rounded-xl"
