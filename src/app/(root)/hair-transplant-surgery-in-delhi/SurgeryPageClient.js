@@ -203,7 +203,7 @@ export default function SurgeryPageClient({ data }) {
   // ─── Hero ─────────────────────────────────────────────────────────────────
   const heroTitle = hero.title;
   const heroDesc = hero.description;
-  const heroBreadcrumb = hero.breadcrumb;
+  const heroBreadcrumb = hero.breadcrumb || "HOME > HAIR TRANSPLANT SURGERY > DELHI";
   const heroBgImage = hero.heroImage?.image;
   const heroWALink = hero.whatsappText?.link;
   const heroTelLink = hero.callText?.link;
@@ -1167,7 +1167,7 @@ export default function SurgeryPageClient({ data }) {
             </a>
 
             {pricingGuide && (
-              <a
+                      <a
                 href={pricingGuide}
                 className="inline-flex items-center gap-1.5 text-xs font-bold text-[#e30a17] hover:underline py-3 px-1"
               >
@@ -1223,68 +1223,54 @@ export default function SurgeryPageClient({ data }) {
         </div>
       </section>
 
-      {/* ── 12. Free Scalp Analysis & Quote ─────────────────────────────── */}
-      <section id="appointment-form" className="relative overflow-hidden bg-white">
-        <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[85vh]">
-
-          {/* Left Column — Clinic Image with overlay */}
-          <div className="relative flex flex-col justify-end overflow-hidden min-h-[420px] lg:min-h-0">
-            {/* Background Image */}
-            <img
-              src="/assets/ryan-clinic-interior.jpg"
-              alt="Ryan Clinic - Premium Hair Transplant Center in Delhi"
-              className="absolute inset-0 w-full h-full object-cover object-center"
-            />
-            {/* Dark gradient overlay — subtle, not blue */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10" />
-            {/* Red top accent line */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-[#e30a17]" />
-
-            {/* Content over image */}
-            <div className="relative z-10 p-8 md:p-12 lg:p-14">
-              <div className="mb-5">
-                <span className="inline-flex items-center gap-2 bg-[#e30a17]/90 border border-[#e30a17] rounded-full px-4 py-1.5 text-[11px] font-bold text-white uppercase tracking-widest backdrop-blur-sm">
-                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+      {/* ── 12. Consultation CTA & Form ─────────────────── */}
+      <section id="appointment-form" className="py-16 md:py-24 bg-[#FAF6F3] border-t border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+            {/* Left Column — Consultation Details */}
+            <div className="lg:col-span-5 space-y-6">
+              <div>
+                <div className="inline-flex items-center gap-2 bg-[#e30a17]/10 border border-[#e30a17]/20 text-[#e30a17] text-[11px] font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full mb-4">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#e30a17] animate-pulse" />
                   Consultation Booking
-                </span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 leading-tight tracking-tight mb-4">
+                  {consultHeading || "Book Your Free Consultation"}
+                </h2>
+                <p className="text-gray-600 text-sm md:text-base leading-relaxed font-sans">
+                  {consultDesc || "Speak directly with our senior surgeon. We'll assess your hair loss, show you before/after results of similar cases, and give you an honest graft count and cost estimate — no pressure, no obligations."}
+                </p>
               </div>
 
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-4">
-                {consultHeading}
-              </h2>
-              <p className="text-white/75 text-sm md:text-base leading-relaxed mb-8 max-w-md">
-                {consultDesc}
-              </p>
-
-              {/* Contact channels */}
-              <div className="space-y-2.5 mb-8">
+              {/* Direct Contact Cards */}
+              <div className="space-y-3">
                 {CONTACT_CARDS.map((item, i) => (
                   <a
                     key={i}
                     href={item.link}
                     target={item.ext ? "_blank" : undefined}
                     rel={item.ext ? "noopener noreferrer" : undefined}
-                    className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/10 border border-white/15 hover:bg-white/20 hover:border-white/30 transition-all duration-200 group backdrop-blur-sm"
+                    className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-gray-200/80 hover:border-[#e30a17]/40 shadow-xs hover:shadow-md transition-all duration-200 group"
                   >
-                    <span className="w-8 h-8 rounded-xl bg-[#e30a17] text-white flex items-center justify-center shrink-0">
+                    <span className="w-10 h-10 rounded-xl bg-[#e30a17]/10 text-[#e30a17] flex items-center justify-center shrink-0 group-hover:bg-[#e30a17] group-hover:text-white transition-colors duration-200">
                       {item.icon}
                     </span>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[10px] font-bold tracking-widest uppercase text-white/50">{item.title}</p>
-                      <p className="text-sm font-semibold text-white mt-0.5 truncate">{item.val}</p>
+                      <p className="text-[10px] font-bold tracking-widest uppercase text-gray-400">{item.title}</p>
+                      <p className="text-sm font-bold text-gray-900 mt-0.5 truncate group-hover:text-[#e30a17] transition-colors">{item.val}</p>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-white/40 group-hover:text-white/80 group-hover:translate-x-0.5 transition-all duration-200" />
+                    <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-[#e30a17] group-hover:translate-x-1 transition-all duration-200" />
                   </a>
                 ))}
               </div>
 
-              {/* Stats grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              {/* Stats badges */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
                 {CONSULT_STATS.length > 0 ? (
                   CONSULT_STATS.map((s, i) => (
-                    <div key={i} className="bg-white/10 border border-white/15 rounded-xl p-3 text-center backdrop-blur-sm">
+                    <div key={i} className="bg-white border border-gray-200/80 rounded-2xl p-3.5 text-center shadow-xs">
                       <p className="text-lg font-black text-[#e30a17]">{s.n}</p>
-                      <p className="text-[9px] font-bold text-white/50 mt-0.5 uppercase tracking-wider">{s.l}</p>
+                      <p className="text-[9px] font-bold text-gray-500 mt-0.5 uppercase tracking-wider">{s.l}</p>
                     </div>
                   ))
                 ) : (

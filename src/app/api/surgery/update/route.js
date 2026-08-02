@@ -20,17 +20,26 @@ const handler = async (req) => {
       seo,
       hero,
       introduction,
+      safetyInfo,
+      surgeryTypes,
+      bestSurgeryChecklist,
+      candidateSuitability,
+      beforeSurgeryTimeline,
       procedureScience,
       safety,
       techniques,
       qualityBenchmarks,
       procedureTimeline,
       recoveryTimeline,
+      surgicalRisks,
       doctors,
+      patientResults,
       pricing,
       visitClinic,
       consultation,
       faq,
+      internalLinks,
+      whyChooseUs,
     } = body;
 
     // The current slug is passed as a query param so we know which doc to update
@@ -81,21 +90,42 @@ const handler = async (req) => {
     if (city !== undefined) surgeryPage.city = city.trim();
     surgeryPage.slug = newSlug;
     if (status !== undefined) surgeryPage.status = status;
-    if (landingCardImage !== undefined) surgeryPage.landingCardImage = landingCardImage;
-    surgeryPage.seo = seo || {};
-    surgeryPage.hero = hero || {};
-    surgeryPage.introduction = introduction || {};
-    surgeryPage.procedureScience = procedureScience || {};
-    surgeryPage.safety = safety || {};
-    surgeryPage.techniques = techniques || {};
-    surgeryPage.qualityBenchmarks = qualityBenchmarks || {};
-    surgeryPage.procedureTimeline = procedureTimeline || {};
-    surgeryPage.recoveryTimeline = recoveryTimeline || {};
-    surgeryPage.doctors = doctors || {};
-    surgeryPage.pricing = pricing || {};
-    surgeryPage.visitClinic = visitClinic || {};
-    surgeryPage.consultation = consultation || {};
-    surgeryPage.faq = faq || {};
+
+    // Update all sections and use markModified so Mongoose properly detects
+    // changes in nested objects and sub-documents (critical for image fields, arrays, etc.)
+    const sections = {
+      landingCardImage,
+      seo,
+      hero,
+      introduction,
+      safetyInfo,
+      surgeryTypes,
+      bestSurgeryChecklist,
+      candidateSuitability,
+      beforeSurgeryTimeline,
+      procedureScience,
+      safety,
+      techniques,
+      qualityBenchmarks,
+      procedureTimeline,
+      recoveryTimeline,
+      surgicalRisks,
+      doctors,
+      patientResults,
+      pricing,
+      visitClinic,
+      consultation,
+      faq,
+      internalLinks,
+      whyChooseUs,
+    };
+
+    for (const [key, val] of Object.entries(sections)) {
+      if (val !== undefined) {
+        surgeryPage[key] = val;
+        surgeryPage.markModified(key);
+      }
+    }
 
     await surgeryPage.save();
 

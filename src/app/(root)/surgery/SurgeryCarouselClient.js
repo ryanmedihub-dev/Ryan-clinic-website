@@ -27,6 +27,9 @@ export default function SurgeryCarouselClient({ dbPages = [] }) {
       // Dedicated procedure/location image — admin-uploaded card image takes priority
       let image =
         page.landingCardImage?.image ||
+        page.hero?.heroImage?.image ||
+        page.seo?.openGraphImage?.image ||
+        page.introduction?.mainImage?.image ||
         page.hero?.bgImage ||
         page.hero?.doctorCard?.image?.url ||
         page.introduction?.image?.url;

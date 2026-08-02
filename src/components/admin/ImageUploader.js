@@ -2,14 +2,21 @@
 
 import { useState, useEffect } from 'react';
 
-export default function ImageUploader({ onUpload, initialImage }) {
-  const [imageURL, setImageURL] = useState(initialImage || '');
+export default function ImageUploader({ onUpload, onChange, initialImage, value }) {
+  const currentImage = value !== undefined ? (value || '') : (initialImage || '');
+  const [imageURL, setImageURL] = useState(currentImage);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    setImageURL(initialImage || '');
-  }, [initialImage]);
+    setImageURL(currentImage);
+  }, [currentImage]);
+
+  const notifyChange = (newUrl, publicId) => {
+    setImageURL(newUrl);
+    if (onUpload) onUpload(newUrl, publicId);
+    if (onChange) onChange(newUrl, publicId);
+  };
 
   const handleUpload = async (e) => {
     const file = e.target.files[0];
@@ -32,8 +39,7 @@ export default function ImageUploader({ onUpload, initialImage }) {
       const data = await res.json();
 
       if (res.ok && data.secure_url) {
-        setImageURL(data.secure_url);
-        if (onUpload) onUpload(data.secure_url, data.public_id);
+        notifyChange(data.secure_url, data.public_id);
       } else {
         setError(data.error?.message || 'Upload failed. Please try again.');
       }
@@ -74,12 +80,23 @@ export default function ImageUploader({ onUpload, initialImage }) {
         <p className="text-sm text-red-500">{error}</p>
       )}
 
+      {/* Manual URL Input Option */}
+      <div className="flex gap-2 items-center">
+        <input
+          type="text"
+          placeholder="Or paste image URL (e.g. /uploads/banner.jpg or https://...)"
+          value={imageURL}
+          onChange={(e) => notifyChange(e.target.value, null)}
+          className="w-full text-xs p-2 border rounded-md"
+        />
+      </div>
+
       {imageURL && (
         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={imageURL} alt="Preview" className="w-14 h-14 object-cover rounded-lg border border-gray-200 shrink-0" />
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold text-gray-600 mb-0.5">Uploaded</p>
+            <p className="text-xs font-semibold text-gray-600 mb-0.5">Uploaded / Selected</p>
             <a
               href={imageURL}
               target="_blank"
@@ -91,7 +108,7 @@ export default function ImageUploader({ onUpload, initialImage }) {
           </div>
           <button
             type="button"
-            onClick={() => { setImageURL(''); if (onUpload) onUpload('', null); }}
+            onClick={() => notifyChange('', null)}
             className="shrink-0 text-gray-400 hover:text-red-500 transition-colors"
             title="Remove image"
           >

@@ -141,7 +141,7 @@ const introductionSectionSchema = new mongoose.Schema(
       default: "",
     },
     description: {
-      type: String, // Supports HTML
+      type: String, // Supports HTML / SunEditor
       trim: true,
       default: "",
     },
@@ -149,6 +149,10 @@ const introductionSectionSchema = new mongoose.Schema(
       type: String, // Supports HTML
       trim: true,
       default: "",
+    },
+    honestPoints: {
+      type: [String],
+      default: [],
     },
     mainImage: {
       type: imageFieldSchema,
@@ -174,6 +178,113 @@ const introductionSectionSchema = new mongoose.Schema(
   { _id: false }
 );
 
+// SECTION 3 (NEW): Safety Info
+const safetyInfoCardSchema = new mongoose.Schema(
+  {
+    title: { type: String, trim: true, default: "" },
+    description: { type: String, trim: true, default: "" },
+    icon: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const safetyInfoSectionSchema = new mongoose.Schema(
+  {
+    badge: { type: String, trim: true, default: "" },
+    heading: { type: String, trim: true, default: "" },
+    description: { type: String, trim: true, default: "" },
+    safetyPoints: { type: [String], default: [] },
+    safetyCard: { type: safetyInfoCardSchema, default: () => ({}) },
+    metrics: { type: [statSchema], default: [] },
+  },
+  { _id: false }
+);
+
+// SECTION 4 (NEW): Types of Hair Transplant Surgery
+const typeCardSchema = new mongoose.Schema(
+  {
+    title: { type: String, trim: true, default: "" },
+    description: { type: String, trim: true, default: "" },
+    image: { type: imageFieldSchema, default: () => ({}) },
+    badge: { type: String, trim: true, default: "" },
+    cta: { type: buttonSchema, default: () => ({}) },
+    displayOrder: { type: Number, default: 0 },
+  },
+  { _id: false }
+);
+
+const surgeryTypesSectionSchema = new mongoose.Schema(
+  {
+    heading: { type: String, trim: true, default: "" },
+    description: { type: String, trim: true, default: "" },
+    cards: { type: [typeCardSchema], default: [] },
+  },
+  { _id: false }
+);
+
+// SECTION 5 (NEW): Best Surgery Checklist
+const checklistItemSchema = new mongoose.Schema(
+  {
+    title: { type: String, trim: true, default: "" },
+    description: { type: String, trim: true, default: "" },
+    icon: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const bestSurgeryChecklistSectionSchema = new mongoose.Schema(
+  {
+    heading: { type: String, trim: true, default: "" },
+    description: { type: String, trim: true, default: "" },
+    checklistItems: { type: [checklistItemSchema], default: [] },
+  },
+  { _id: false }
+);
+
+// SECTION 6 (NEW): Candidate Suitability & Norwood Table
+const norwoodStageSchema = new mongoose.Schema(
+  {
+    stage: { type: String, trim: true, default: "" },
+    description: { type: String, trim: true, default: "" },
+    grafts: { type: String, trim: true, default: "" },
+    image: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const candidateSuitabilitySectionSchema = new mongoose.Schema(
+  {
+    heading: { type: String, trim: true, default: "" },
+    description: { type: String, trim: true, default: "" },
+    suitableList: { type: [String], default: [] },
+    notSuitableList: { type: [String], default: [] },
+    norwoodTable: { type: [norwoodStageSchema], default: [] },
+  },
+  { _id: false }
+);
+
+// SECTION 7 (NEW): Before Surgery Timeline
+const beforeTimelineItemSchema = new mongoose.Schema(
+  {
+    stepNumber: { type: String, trim: true, default: "" },
+    badge: { type: String, trim: true, default: "" },
+    title: { type: String, trim: true, default: "" },
+    description: { type: String, trim: true, default: "" },
+    icon: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const beforeSurgeryTimelineSectionSchema = new mongoose.Schema(
+  {
+    heading: { type: String, trim: true, default: "" },
+    description: { type: String, trim: true, default: "" },
+    timelineItems: { type: [beforeTimelineItemSchema], default: [] },
+  },
+  { _id: false }
+);
+
+// SECTION 8: Procedure Science
 const scienceCardSchema = new mongoose.Schema(
   {
     icon: {
@@ -187,9 +298,23 @@ const scienceCardSchema = new mongoose.Schema(
       default: "",
     },
     description: {
+      type: String, // Supports HTML / SunEditor
+      trim: true,
+      default: "",
+    },
+    advantages: {
+      type: String, // Long description / advantages
+      trim: true,
+      default: "",
+    },
+    clinicalNotes: {
       type: String,
       trim: true,
       default: "",
+    },
+    stats: {
+      type: [statSchema],
+      default: [],
     },
     cardImage: {
       type: imageFieldSchema,
@@ -232,6 +357,7 @@ const procedureScienceSectionSchema = new mongoose.Schema(
   { _id: false }
 );
 
+// SECTION 9: Safety Standards
 const safetyCardSchema = new mongoose.Schema(
   {
     icon: {
@@ -311,6 +437,7 @@ const safetySectionSchema = new mongoose.Schema(
   { _id: false }
 );
 
+// SECTION 10: Surgical Techniques
 const techniqueSchema = new mongoose.Schema(
   {
     name: {
@@ -325,6 +452,20 @@ const techniqueSchema = new mongoose.Schema(
     },
     description: {
       type: String, // Supports HTML
+      trim: true,
+      default: "",
+    },
+    benefits: {
+      type: [String],
+      default: [],
+    },
+    idealCandidate: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    recoveryInfo: {
+      type: String,
       trim: true,
       default: "",
     },
@@ -405,6 +546,7 @@ const surgicalTechniquesSectionSchema = new mongoose.Schema(
   { _id: false }
 );
 
+// SECTION 11: Quality Benchmarks
 const qualityBenchmarkCardSchema = new mongoose.Schema(
   {
     number: {
@@ -445,6 +587,7 @@ const qualityBenchmarkSectionSchema = new mongoose.Schema(
   { _id: false }
 );
 
+// SECTION 12: Day of Surgery
 const timelineStepSchema = new mongoose.Schema(
   {
     stepNumber: {
@@ -509,6 +652,7 @@ const procedureTimelineSectionSchema = new mongoose.Schema(
   { _id: false }
 );
 
+// SECTION 13: Recovery Timeline
 const recoveryLeftHighlightSchema = new mongoose.Schema(
   {
     icon: {
@@ -588,6 +732,83 @@ const recoveryTimelineSectionSchema = new mongoose.Schema(
   { _id: false }
 );
 
+// SECTION 14 (NEW): Surgical Risks & Prevention
+const riskItemSchema = new mongoose.Schema(
+  {
+    riskTitle: { type: String, trim: true, default: "" },
+    riskDescription: { type: String, trim: true, default: "" },
+    severity: { type: String, trim: true, default: "Low" },
+  },
+  { _id: false }
+);
+
+const preventionPointSchema = new mongoose.Schema(
+  {
+    title: { type: String, trim: true, default: "" },
+    description: { type: String, trim: true, default: "" },
+    icon: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const surgicalRisksSectionSchema = new mongoose.Schema(
+  {
+    heading: { type: String, trim: true, default: "" },
+    description: { type: String, trim: true, default: "" },
+    risks: { type: [riskItemSchema], default: [] },
+    preventionPoints: { type: [preventionPointSchema], default: [] },
+  },
+  { _id: false }
+);
+
+// SECTION 15: Pricing
+const pricingSectionSchema = new mongoose.Schema(
+  {
+    heading: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    description: {
+      type: String, // Supports HTML
+      trim: true,
+      default: "",
+    },
+    warningText: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    pricingFactors: {
+      type: [String],
+      default: [],
+    },
+    notes: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    pricingStats: {
+      type: [statSchema],
+      default: [],
+    },
+    ctaTextWhatsApp: {
+      type: buttonSchema,
+      default: () => ({}),
+    },
+    ctaTextCall: {
+      type: buttonSchema,
+      default: () => ({}),
+    },
+    ctaTextGuide: {
+      type: buttonSchema,
+      default: () => ({}),
+    },
+  },
+  { _id: false }
+);
+
+// SECTION 16: Meet Your Surgeons
 const doctorSchema = new mongoose.Schema(
   {
     name: {
@@ -625,6 +846,18 @@ const doctorSchema = new mongoose.Schema(
     },
     specializations: {
       type: [String],
+      default: [],
+    },
+    credentials: {
+      type: [String],
+      default: [],
+    },
+    memberships: {
+      type: [String],
+      default: [],
+    },
+    gallery: {
+      type: [imageFieldSchema],
       default: [],
     },
     profileButtonText: {
@@ -665,43 +898,32 @@ const doctorsSectionSchema = new mongoose.Schema(
   { _id: false }
 );
 
-const pricingSectionSchema = new mongoose.Schema(
+// SECTION 17 (NEW): Real Patient Results
+const patientResultCaseSchema = new mongoose.Schema(
   {
-    heading: {
-      type: String,
-      trim: true,
-      default: "",
-    },
-    description: {
-      type: String, // Supports HTML
-      trim: true,
-      default: "",
-    },
-    warningText: {
-      type: String,
-      trim: true,
-      default: "",
-    },
-    pricingStats: {
-      type: [statSchema],
-      default: [],
-    },
-    ctaTextWhatsApp: {
-      type: buttonSchema,
-      default: () => ({}),
-    },
-    ctaTextCall: {
-      type: buttonSchema,
-      default: () => ({}),
-    },
-    ctaTextGuide: {
-      type: buttonSchema,
-      default: () => ({}),
-    },
+    patientName: { type: String, trim: true, default: "" },
+    city: { type: String, trim: true, default: "" },
+    graftCount: { type: String, trim: true, default: "" },
+    technique: { type: String, trim: true, default: "" },
+    recoveryTime: { type: String, trim: true, default: "" },
+    description: { type: String, trim: true, default: "" },
+    beforeImage: { type: imageFieldSchema, default: () => ({}) },
+    afterImage: { type: imageFieldSchema, default: () => ({}) },
+    displayOrder: { type: Number, default: 0 },
   },
   { _id: false }
 );
 
+const patientResultsSectionSchema = new mongoose.Schema(
+  {
+    heading: { type: String, trim: true, default: "" },
+    description: { type: String, trim: true, default: "" },
+    cases: { type: [patientResultCaseSchema], default: [] },
+  },
+  { _id: false }
+);
+
+// SECTION 18: Visit Clinic
 const infoCardSchema = new mongoose.Schema(
   {
     icon: {
@@ -731,9 +953,28 @@ const visitClinicSectionSchema = new mongoose.Schema(
       default: "",
     },
     description: {
+      type: String, // Supports HTML / Rich Text
+      trim: true,
+      default: "",
+    },
+    address: {
       type: String,
       trim: true,
       default: "",
+    },
+    contactPhone: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    mapEmbedUrl: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    nearbyLocations: {
+      type: [String],
+      default: [],
     },
     informationCards: {
       type: [infoCardSchema],
@@ -838,6 +1079,7 @@ const consultationSectionSchema = new mongoose.Schema(
   { _id: false }
 );
 
+// SECTION 20: FAQ
 const faqItemSchema = new mongoose.Schema(
   {
     question: {
@@ -846,9 +1088,13 @@ const faqItemSchema = new mongoose.Schema(
       default: "",
     },
     answer: {
-      type: String, // Supports HTML
+      type: String, // Supports HTML / SunEditor
       trim: true,
       default: "",
+    },
+    active: {
+      type: Boolean,
+      default: true,
     },
     displayOrder: {
       type: Number,
@@ -886,6 +1132,41 @@ const faqSchema = new mongoose.Schema(
   { _id: false }
 );
 
+// DYNAMIC INTERNAL LINKS SCHEMA
+const internalLinkItemSchema = new mongoose.Schema(
+  {
+    label: { type: String, trim: true, default: "" },
+    url: { type: String, trim: true, default: "" },
+    badge: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const internalLinksSectionSchema = new mongoose.Schema(
+  {
+    heading: { type: String, trim: true, default: "" },
+    links: { type: [internalLinkItemSchema], default: [] },
+  },
+  { _id: false }
+);
+
+const whyChoosePointSchema = new mongoose.Schema(
+  {
+    title: { type: String, trim: true, default: "" },
+    description: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const whyChooseUsSectionSchema = new mongoose.Schema(
+  {
+    heading: { type: String, trim: true, default: "" },
+    description: { type: String, trim: true, default: "" },
+    points: { type: [whyChoosePointSchema], default: [] },
+  },
+  { _id: false }
+);
+
 // ─── ROOT SCHEMA ─────────────────────────────────────────────────────────────
 
 const surgeryPageSchema = new mongoose.Schema(
@@ -901,7 +1182,6 @@ const surgeryPageSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    // ── Card image shown on the /surgery landing page carousel ─────────────
     landingCardImage: {
       image: { type: String, trim: true, default: "" },
       imageAlt: { type: String, trim: true, default: "" },
@@ -929,6 +1209,26 @@ const surgeryPageSchema = new mongoose.Schema(
       type: introductionSectionSchema,
       default: () => ({}),
     },
+    safetyInfo: {
+      type: safetyInfoSectionSchema,
+      default: () => ({}),
+    },
+    surgeryTypes: {
+      type: surgeryTypesSectionSchema,
+      default: () => ({}),
+    },
+    bestSurgeryChecklist: {
+      type: bestSurgeryChecklistSectionSchema,
+      default: () => ({}),
+    },
+    candidateSuitability: {
+      type: candidateSuitabilitySectionSchema,
+      default: () => ({}),
+    },
+    beforeSurgeryTimeline: {
+      type: beforeSurgeryTimelineSectionSchema,
+      default: () => ({}),
+    },
     procedureScience: {
       type: procedureScienceSectionSchema,
       default: () => ({}),
@@ -953,8 +1253,16 @@ const surgeryPageSchema = new mongoose.Schema(
       type: recoveryTimelineSectionSchema,
       default: () => ({}),
     },
+    surgicalRisks: {
+      type: surgicalRisksSectionSchema,
+      default: () => ({}),
+    },
     doctors: {
       type: doctorsSectionSchema,
+      default: () => ({}),
+    },
+    patientResults: {
+      type: patientResultsSectionSchema,
       default: () => ({}),
     },
     pricing: {
@@ -971,6 +1279,14 @@ const surgeryPageSchema = new mongoose.Schema(
     },
     faq: {
       type: faqSchema,
+      default: () => ({}),
+    },
+    internalLinks: {
+      type: internalLinksSectionSchema,
+      default: () => ({}),
+    },
+    whyChooseUs: {
+      type: whyChooseUsSectionSchema,
       default: () => ({}),
     },
   },

@@ -20,17 +20,26 @@ const handler = async (req) => {
       seo,
       hero,
       introduction,
+      safetyInfo,
+      surgeryTypes,
+      bestSurgeryChecklist,
+      candidateSuitability,
+      beforeSurgeryTimeline,
       procedureScience,
       safety,
       techniques,
       qualityBenchmarks,
       procedureTimeline,
       recoveryTimeline,
+      surgicalRisks,
       doctors,
+      patientResults,
       pricing,
       visitClinic,
       consultation,
       faq,
+      internalLinks,
+      whyChooseUs,
     } = body;
 
     if (!pageName) {
@@ -39,8 +48,6 @@ const handler = async (req) => {
         { status: 400 }
       );
     }
-
-
 
     // Use provided slug, or auto-generate from page name
     const slug = rawSlug ? generateSlug(rawSlug) : generateSlug(pageName);
@@ -63,17 +70,26 @@ const handler = async (req) => {
       seo: seo || {},
       hero: hero || {},
       introduction: introduction || {},
+      safetyInfo: safetyInfo || {},
+      surgeryTypes: surgeryTypes || {},
+      bestSurgeryChecklist: bestSurgeryChecklist || {},
+      candidateSuitability: candidateSuitability || {},
+      beforeSurgeryTimeline: beforeSurgeryTimeline || {},
       procedureScience: procedureScience || {},
       safety: safety || {},
       techniques: techniques || {},
       qualityBenchmarks: qualityBenchmarks || {},
       procedureTimeline: procedureTimeline || {},
       recoveryTimeline: recoveryTimeline || {},
+      surgicalRisks: surgicalRisks || {},
       doctors: doctors || {},
+      patientResults: patientResults || {},
       pricing: pricing || {},
       visitClinic: visitClinic || {},
       consultation: consultation || {},
       faq: faq || {},
+      internalLinks: internalLinks || {},
+      whyChooseUs: whyChooseUs || {},
     });
 
     await doc.save();

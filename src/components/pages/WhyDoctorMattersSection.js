@@ -33,7 +33,7 @@ const DEFAULT_COMPARISON = [
   { aspect: "Price signal", doctorLed: "₹40–₹120 per graft (transparent)", techLed: "₹15–25 per graft (corner-cutting)" },
 ];
 
-export default function WhyDoctorMattersSection({ risks: risksOverride, comparison: comparisonOverride }) {
+export default function WhyDoctorMattersSection({ risks: risksOverride, comparison: comparisonOverride, heading: headingOverride, description: descOverride }) {
   const trackCTA = useTrackCTA();
   const risks = risksOverride?.length
     ? risksOverride.map((r) => ({ ...r, icon: r.type === "warn" ? WARN_ICON : CHECK_ICON }))
@@ -54,12 +54,12 @@ export default function WhyDoctorMattersSection({ risks: risksOverride, comparis
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
           <div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-[1.1] tracking-tight mb-4">
-              Why a{" "}
-              <span className="text-[#D32F2F]">Doctor-Led</span>
-              {" "}Clinic Matters
+              {headingOverride || (
+                <>Why a{" "}<span className="text-[#D32F2F]">Doctor-Led</span>{" "}Clinic Matters</>
+              )}
             </h2>
             <p className="text-gray-500 text-sm md:text-base leading-relaxed max-w-2xl">
-              A hair transplant is permanent — so a poor result is too. The biggest risks come from clinics cutting corners to offer the lowest price. Here's how to protect yourself.
+              {descOverride || "A hair transplant is permanent — so a poor result is too. The biggest risks come from clinics cutting corners to offer the lowest price. Here's how to protect yourself."}
             </p>
           </div>
 
@@ -92,9 +92,9 @@ export default function WhyDoctorMattersSection({ risks: risksOverride, comparis
                     <span className={`text-[10px] font-black tracking-[0.15em] shrink-0 ${item.type === "warn" ? "text-amber-600" : "text-[#D32F2F]"}`}>
                       {item.number}
                     </span>
-                    <p className="font-bold text-sm text-gray-900 leading-snug">{item.title}</p>
+                    <p className="font-bold text-sm md:text-base text-gray-900 leading-snug">{item.title}</p>
                   </div>
-                  <p className="text-[13px] text-gray-500 leading-relaxed">{item.body}</p>
+                  <p className="text-sm text-gray-600 leading-relaxed">{item.body}</p>
                 </div>
               </div>
             ))}
@@ -107,7 +107,7 @@ export default function WhyDoctorMattersSection({ risks: risksOverride, comparis
               {/* Column headers */}
               <div className="grid grid-cols-3 border-b border-gray-100">
                 <div className="px-4 py-4 bg-gray-50 flex items-center">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-gray-400">Aspect</span>
+                  <span className="text-xs font-bold uppercase tracking-[0.18em] text-gray-500">Aspect</span>
                 </div>
 
                 {/* Doctor-led */}
@@ -117,9 +117,9 @@ export default function WhyDoctorMattersSection({ risks: risksOverride, comparis
                     <svg className="w-3 h-3 text-[#D32F2F]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#D32F2F]">Doctor-Led</p>
+                    <p className="text-xs font-black uppercase tracking-[0.14em] text-[#D32F2F]">Doctor-Led</p>
                   </div>
-                  <p className="text-[9px] text-gray-400">Ryan Clinic</p>
+                  <p className="text-[10px] text-gray-400">Ryan Clinic</p>
                 </div>
 
                 {/* Technician */}
@@ -128,9 +128,9 @@ export default function WhyDoctorMattersSection({ risks: risksOverride, comparis
                     <svg className="w-3 h-3 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
-                    <p className="text-[10px] font-black uppercase tracking-[0.14em] text-amber-700">Technician</p>
+                    <p className="text-xs font-black uppercase tracking-[0.14em] text-amber-700">Technician</p>
                   </div>
-                  <p className="text-[9px] text-gray-400">Common elsewhere</p>
+                  <p className="text-[10px] text-gray-400">Common elsewhere</p>
                 </div>
               </div>
 
@@ -138,16 +138,16 @@ export default function WhyDoctorMattersSection({ risks: risksOverride, comparis
               {comparison.map((row, i) => (
                 <div key={row.aspect} className="grid grid-cols-3 border-t border-gray-50">
                   <div className={`px-4 py-3.5 flex items-start ${i % 2 === 0 ? "bg-white" : "bg-gray-50/40"}`}>
-                    <span className="text-[12px] font-semibold text-gray-700 leading-snug">{row.aspect}</span>
+                    <span className="text-xs sm:text-sm font-semibold text-gray-800 leading-snug">{row.aspect}</span>
                   </div>
                   <div
                     className="px-4 py-3.5 border-l border-red-100"
                     style={{ background: i % 2 === 0 ? "rgba(211,47,47,0.025)" : "rgba(211,47,47,0.04)" }}
                   >
-                    <p className="text-[11.5px] leading-snug font-medium text-[#D32F2F]">{row.doctorLed}</p>
+                    <p className="text-xs sm:text-sm leading-snug font-medium text-[#D32F2F]">{row.doctorLed}</p>
                   </div>
                   <div className={`px-4 py-3.5 border-l border-gray-50 ${i % 2 === 0 ? "bg-amber-50/30" : "bg-amber-50/50"}`}>
-                    <p className="text-[11.5px] leading-snug text-amber-800">{row.techLed}</p>
+                    <p className="text-xs sm:text-sm leading-snug text-amber-800">{row.techLed}</p>
                   </div>
                 </div>
               ))}

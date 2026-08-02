@@ -4,6 +4,58 @@ import Image from "next/image";
 import { Fragment } from "react";
 import useTrackCTA from "@/lib/useTrackCTA";
 
+function formatBreadcrumbs(breadcrumb, title) {
+  let str = "";
+  if (typeof breadcrumb === "string") {
+    str = breadcrumb.trim();
+  } else if (Array.isArray(breadcrumb)) {
+    str = breadcrumb
+      .map((b) => (typeof b === "string" ? b : b?.label || b?.name || ""))
+      .filter(Boolean)
+      .join(" > ");
+  }
+
+  if (!str) {
+    str = title || "Surgery";
+  }
+
+  // Split by / or >
+  const parts = str
+    .split(/\s*[\/>]\s*/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+
+  const cleanParts = [];
+  for (const part of parts) {
+    const upper = part.toUpperCase();
+    // Skip duplicate "HOME"
+    if (upper === "HOME" && cleanParts.some((cp) => cp.toUpperCase() === "HOME")) {
+      continue;
+    }
+    // Skip exact consecutive duplicate
+    if (cleanParts.length > 0 && cleanParts[cleanParts.length - 1].toUpperCase() === upper) {
+      continue;
+    }
+    // Skip 'HAIR TRANSPLANT' if 'HAIR TRANSPLANT SURGERY' is also present
+    if (upper === "HAIR TRANSPLANT" && parts.some((p) => p.toUpperCase() === "HAIR TRANSPLANT SURGERY")) {
+      continue;
+    }
+    cleanParts.push(part);
+  }
+
+  // Ensure starts with HOME
+  if (cleanParts.length === 0 || cleanParts[0].toUpperCase() !== "HOME") {
+    cleanParts.unshift("HOME");
+  }
+
+  // If only "HOME", add page title
+  if (cleanParts.length === 1 && title) {
+    cleanParts.push(title);
+  }
+
+  return cleanParts.join(" > ").toUpperCase();
+}
+
 export default function PageBanner({
   breadcrumb,
   title,
@@ -14,11 +66,7 @@ export default function PageBanner({
   stats,
 }) {
   const trackCTA = useTrackCTA();
-  const breadcrumbText = typeof breadcrumb === "string"
-    ? breadcrumb
-    : Array.isArray(breadcrumb)
-      ? breadcrumb.map((b) => (typeof b === "string" ? b : b?.label || b?.name || "")).filter(Boolean).join(" / ")
-      : "";
+  const breadcrumbText = formatBreadcrumbs(breadcrumb, title);
   return (
     <header className="relative w-full overflow-hidden">
       <div className="hidden md:block">
@@ -64,7 +112,7 @@ export default function PageBanner({
                     className="text-xs uppercase tracking-widest text-white/60"
                     suppressHydrationWarning
                   >
-                    Home / hair transplant / {breadcrumbText}
+                    {breadcrumbText}
                   </p>
                 </div>
 
@@ -179,7 +227,7 @@ export default function PageBanner({
             className="text-[9px] uppercase tracking-[2.5px] text-white/45"
             suppressHydrationWarning
           >
-            Home / Hair Transplant / {breadcrumbText}
+            {breadcrumbText}
           </p>
         </div>
 
