@@ -137,6 +137,7 @@ export default function HairFallPageClient({ data }) {
   const otherCauses = [...(causes.otherCauses ?? [])].sort(
     (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
   );
+  
   const diagnosisSteps = [...(diagnosis.steps ?? [])].sort(
     (a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0),
   );
