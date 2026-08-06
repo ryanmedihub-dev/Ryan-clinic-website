@@ -7,9 +7,8 @@ const handler = async (req) => {
 
     try {
 
-        // const authError = await requireAdmin();
-
-        // if (authError) return authError;
+        const authError = await requireAdmin();
+        if (authError) return authError;
 
         const body = await req.json();
 

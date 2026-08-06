@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { withDB } from "@/lib/withDB";
 import SurgeonPage from "@/models/Surgeon";
 
@@ -26,12 +26,12 @@ const handler = async (req) => {
         if (id) {
             page = await SurgeonPage.findOne({
                 _id: id,
-                "settings.isDeleted": false,
+                "settings.isDeleted": { $ne: true },
             });
         } else {
             page = await SurgeonPage.findOne({
                 slug,
-                "settings.isDeleted": false,
+                "settings.isDeleted": { $ne: true },
             });
         }
 

@@ -21,11 +21,12 @@ const handler = async (req) => {
 
         const { searchParams } = new URL(req.url);
         const currentSlug = searchParams.get("slug");
+        const currentId = searchParams.get("id") || body._id;
 
-        if (!currentSlug) {
+        if (!currentId && !currentSlug && !body.slug) {
             return NextResponse.json(
                 {
-                    message: "Slug query parameter is required.",
+                    message: "Doctor ID or slug is required for update.",
                 },
                 {
                     status: 400,
@@ -77,10 +78,22 @@ const handler = async (req) => {
             );
         }
 
-        const doctor = await Doctor.findOne({
-            slug: currentSlug,
-            deletedAt: null,
-        });
+        let doctor = null;
+        if (currentId) {
+            doctor = await Doctor.findById(currentId);
+        }
+        if (!doctor && currentSlug) {
+            doctor = await Doctor.findOne({
+                slug: currentSlug,
+                deletedAt: { $ne: true },
+            });
+        }
+        if (!doctor && body.slug) {
+            doctor = await Doctor.findOne({
+                slug: body.slug,
+                deletedAt: { $ne: true },
+            });
+        }
 
         if (!doctor) {
             return NextResponse.json(
@@ -100,14 +113,13 @@ const handler = async (req) => {
         if (newSlug !== doctor.slug) {
             const duplicate = await Doctor.findOne({
                 slug: newSlug,
-                deletedAt: null,
                 _id: { $ne: doctor._id },
             });
 
             if (duplicate) {
                 return NextResponse.json(
                     {
-                        message: `Doctor page with slug "${newSlug}" already exists.`,
+                        message: `Doctor page with slug "${newSlug}" already exists in the database. Please choose a different slug.`,
                     },
                     {
                         status: 409,
@@ -120,6 +132,17 @@ const handler = async (req) => {
             ...body,
             pageName: pageName.trim(),
             slug: newSlug,
+        });
+
+        [
+            "basicInfo", "seo", "hero", "whyItMatters", "doctorStandards", "credentials",
+            "verification", "comparison", "surgeonProfile", "surgeryTimeline", "consultation",
+            "questionsToAsk", "greatDoctorQualities", "warningSigns", "proceduresPerformed",
+            "surgicalProcess", "pricing", "visitClinic", "faq"
+        ].forEach((key) => {
+            if (body[key] !== undefined) {
+                doctor.markModified(key);
+            }
         });
 
         await doctor.save();
@@ -140,6 +163,16 @@ const handler = async (req) => {
             }
         );
     } catch (error) {
+        if (error.code === 11000 || error.message?.includes("E11000")) {
+            return NextResponse.json(
+                {
+                    message: `A doctor page with that slug already exists in the database index. Please use a unique slug.`,
+                },
+                {
+                    status: 409,
+                }
+            );
+        }
         return NextResponse.json(
             {
                 message: error.message,

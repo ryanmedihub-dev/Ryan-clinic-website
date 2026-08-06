@@ -229,6 +229,13 @@ function EditDoctorContent() {
               faqs: [],
               ...(doc.faq || {}),
             },
+            proceduresPerformed: {
+              sectionLabel: "Procedures Offered",
+              heading: "",
+              description: "",
+              cards: [],
+              ...(doc.proceduresPerformed || {}),
+            },
           });
         } else {
           toast.error("Not Found", data.message || "Failed to load doctor page.");
@@ -314,7 +321,7 @@ function EditDoctorContent() {
     setSubmitting(true);
 
     try {
-      const res = await fetch(`/api/doctors/update?slug=${currentSlug}`, {
+      const res = await fetch(`/api/doctors/update?slug=${encodeURIComponent(currentSlug)}&id=${encodeURIComponent(formData._id || "")}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -1309,7 +1316,7 @@ function EditDoctorContent() {
                     Delete Package
                   </button>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700">Package Title</label>
                     <input type="text" value={pkg.title || ""} onChange={(e) => updateArrayItem("pricing", "packages", i, "title", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. Standard FUE" />
@@ -1322,6 +1329,34 @@ function EditDoctorContent() {
                     <label className="block text-sm font-semibold text-gray-700">Subtitle / Badge</label>
                     <input type="text" value={pkg.subtitle || ""} onChange={(e) => updateArrayItem("pricing", "packages", i, "subtitle", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. Recommended" />
                   </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700">Price Note</label>
+                    <input type="text" value={pkg.priceNote || ""} onChange={(e) => updateArrayItem("pricing", "packages", i, "priceNote", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. per graft onwards" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700">Button Text</label>
+                    <input type="text" value={pkg.buttonText || ""} onChange={(e) => updateArrayItem("pricing", "packages", i, "buttonText", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="Get Free Estimate" />
+                  </div>
+                  <div className="flex items-center gap-2 pt-6">
+                    <input
+                      type="checkbox"
+                      id={`pkg-featured-${i}`}
+                      checked={!!pkg.isFeatured}
+                      onChange={(e) => updateArrayItem("pricing", "packages", i, "isFeatured", e.target.checked)}
+                      className="w-4 h-4"
+                    />
+                    <label htmlFor={`pkg-featured-${i}`} className="text-sm font-semibold text-gray-700 cursor-pointer">Mark as Featured (Most Popular)</label>
+                  </div>
+                </div>
+                <div className="mt-3">
+                  <label className="block text-sm font-semibold text-gray-700">Features (one per line)</label>
+                  <textarea
+                    rows={4}
+                    value={(pkg.features || []).join("\n")}
+                    onChange={(e) => updateArrayItem("pricing", "packages", i, "features", e.target.value.split("\n").filter(f => f.trim()))}
+                    className="w-full mt-1.5 p-2 border rounded-md font-mono text-sm"
+                    placeholder={"Free consultation included\n18-month follow-up\n0% EMI available"}
+                  />
                 </div>
               </div>
             ))}
@@ -1397,6 +1432,90 @@ function EditDoctorContent() {
                     placeholder="Enter answer"
                     value={faq.answer || ""}
                     onChange={(e) => updateArrayItem("faq", "faqs", i, "answer", e.target.value)}
+                    className="w-full mt-1.5 p-2 border rounded-md"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* 20. PROCEDURES OUR DOCTORS PERFORM */}
+        <h3 className="text-2xl font-bold underline mt-10 mb-5">20. Procedures Our Hair Transplant Doctors Perform</h3>
+        <div className="flex gap-4 flex-col md:flex-row mb-4">
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
+            <input
+              type="text"
+              value={formData.proceduresPerformed?.sectionLabel || ""}
+              onChange={(e) => handleNestedChange("proceduresPerformed", "sectionLabel", e.target.value)}
+              className="w-full mt-2 p-2 border rounded-md"
+              placeholder="e.g. Procedures Offered"
+            />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
+            <input
+              type="text"
+              value={formData.proceduresPerformed?.heading || ""}
+              onChange={(e) => handleNestedChange("proceduresPerformed", "heading", e.target.value)}
+              className="w-full mt-2 p-2 border rounded-md font-semibold"
+              placeholder="e.g. Procedures our hair transplant doctors in Delhi perform"
+            />
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700">Description</label>
+          <textarea
+            rows={2}
+            value={formData.proceduresPerformed?.description || ""}
+            onChange={(e) => handleNestedChange("proceduresPerformed", "description", e.target.value)}
+            className="w-full mt-2 p-2 border rounded-md"
+            placeholder="Brief description of the procedures section"
+          />
+        </div>
+        <button
+          type="button"
+          onClick={() => addToArray("proceduresPerformed", "cards", { title: "", description: "" })}
+          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-4 cursor-pointer"
+        >
+          + Add Procedure Card
+        </button>
+        {(formData.proceduresPerformed?.cards || []).length === 0 ? (
+          <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center my-3">
+            <p className="text-gray-500">No procedure cards added yet. Click &quot;+ Add Procedure Card&quot; above.</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {(formData.proceduresPerformed?.cards || []).map((card, i) => (
+              <div key={i} className="border rounded-xl p-5 bg-white shadow-sm space-y-3">
+                <div className="flex justify-between items-center">
+                  <h4 className="font-semibold text-sm text-gray-800">Procedure #{i + 1}</h4>
+                  <button
+                    type="button"
+                    onClick={() => deleteFromArray("proceduresPerformed", "cards", i)}
+                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer"
+                  >
+                    Delete
+                  </button>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700">Procedure Title</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Sapphire FUE Hair Transplant"
+                    value={card.title || ""}
+                    onChange={(e) => updateArrayItem("proceduresPerformed", "cards", i, "title", e.target.value)}
+                    className="w-full mt-1.5 p-2 border rounded-md"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700">Description</label>
+                  <textarea
+                    rows={2}
+                    placeholder="Brief description of this procedure"
+                    value={card.description || ""}
+                    onChange={(e) => updateArrayItem("proceduresPerformed", "cards", i, "description", e.target.value)}
                     className="w-full mt-1.5 p-2 border rounded-md"
                   />
                 </div>

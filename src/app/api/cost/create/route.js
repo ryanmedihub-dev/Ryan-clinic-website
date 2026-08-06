@@ -26,6 +26,11 @@ const handler = async (req) => {
             consultation,
             faq,
             settings,
+            /* Generic / multi-type sections */
+            pricingOptions,
+            contentSections,
+            mythsFacts,
+            visitClinic,
         } = body;
 
         // Required validation
@@ -61,6 +66,22 @@ const handler = async (req) => {
             );
         }
 
+        const normalizedIncluded = includedSection ? {
+            ...includedSection,
+            items: includedSection.items?.length ? includedSection.items : (includedSection.hiddenCosts || []),
+            hiddenCosts: includedSection.items?.length ? includedSection.items : (includedSection.hiddenCosts || []),
+            disclosures: includedSection.disclosures?.length ? includedSection.disclosures : (includedSection.guarantees || []),
+            guarantees: includedSection.disclosures?.length ? includedSection.disclosures : (includedSection.guarantees || []),
+        } : includedSection;
+
+        const normalizedFaq = faq ? {
+            badge: faq.badge || "",
+            heading: faq.heading || "",
+            description: faq.description || "",
+            items: faq.items?.length ? faq.items : (faq.faqs || []),
+            faqs: faq.items?.length ? faq.items : (faq.faqs || []),
+        } : faq;
+
         // Create document
         const doc = new CostPage({
             title: title.trim(),
@@ -72,11 +93,16 @@ const handler = async (req) => {
             services,
             graftPricing,
             techniqueComparison,
-            includedSection,
+            includedSection: normalizedIncluded,
             priceFactors,
             consultation,
-            faq,
+            faq: normalizedFaq,
             settings,
+            /* Generic / multi-type sections */
+            ...(pricingOptions !== undefined && { pricingOptions }),
+            ...(contentSections !== undefined && { contentSections }),
+            ...(mythsFacts !== undefined && { mythsFacts }),
+            ...(visitClinic !== undefined && { visitClinic }),
         });
 
         await doc.save();

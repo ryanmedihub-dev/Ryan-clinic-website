@@ -298,6 +298,17 @@ const doctorSchema = new mongoose.Schema(
       bottomCTA: { type: bottomCtaSchema, default: () => ({}) },
     },
 
+    /* ── 14B. Procedures Our Doctors Perform ── */
+    proceduresPerformed: {
+      sectionLabel: { type: String, trim: true, default: "" },
+      heading: { type: String, trim: true, default: "" },
+      description: { type: String, trim: true, default: "" },
+      cards: {
+        type: [cardSchema],
+        default: [],
+      },
+    },
+
     /* ── 15. Surgical Process Steps ── */
     surgicalProcess: {
       sectionLabel: { type: String, trim: true, default: "" },

@@ -18,6 +18,21 @@ import {
 
 const WA_BASE = "https://api.whatsapp.com/send?phone=+919217958539&text=";
 
+/* ─── Image Helper ────────────────────────────────────────────────────────── */
+function getImageSrc(img, fallback = "/uploads/turkey-doctor.jpg") {
+    if (!img) return fallback;
+    if (typeof img === "string") {
+        const trimmed = img.trim();
+        return trimmed !== "" ? trimmed : fallback;
+    }
+    if (typeof img === "object") {
+        if (typeof img.url === "string" && img.url.trim() !== "") return img.url.trim();
+        if (typeof img.image === "string" && img.image.trim() !== "") return img.image.trim();
+        if (typeof img.src === "string" && img.src.trim() !== "") return img.src.trim();
+    }
+    return fallback;
+}
+
 /* ─── DEFAULT SURGEON DATA (used as fallback when DB has few records) ────── */
 const DEFAULT_SURGEONS = [
   {
@@ -242,7 +257,7 @@ export default function SurgeonCarouselClient({ dbPages = [] }) {
               {/* ── LEFT: Doctor Photo ── */}
               <div className="lg:col-span-5 relative aspect-[4/3] lg:aspect-auto min-h-[280px] sm:min-h-[340px] bg-gray-900 group overflow-hidden">
                 <Image
-                  src={activeSurgeon.image}
+                  src={getImageSrc(activeSurgeon?.image, "/uploads/turkey-doctor.jpg")}
                   alt={activeSurgeon.doctorName}
                   fill
                   className={`object-cover object-top transition-all duration-500 ease-out ${
@@ -408,7 +423,7 @@ export default function SurgeonCarouselClient({ dbPages = [] }) {
                   }`}
                 >
                   <div className="relative w-8 h-8 rounded-lg overflow-hidden shrink-0">
-                    <Image src={s.image} alt={s.doctorName} fill className="object-cover object-top" unoptimized />
+                    <Image src={getImageSrc(s.image, "/uploads/turkey-doctor.jpg")} alt={s.doctorName} fill className="object-cover object-top" unoptimized />
                   </div>
                   <div>
                     <p className={`text-xs font-bold ${isActive ? "text-[#D32F2F]" : "text-gray-800"}`}>
@@ -451,7 +466,7 @@ export default function SurgeonCarouselClient({ dbPages = [] }) {
                 <div>
                   <div className="flex items-center gap-3.5 mb-3.5">
                     <div className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-white shadow-xs">
-                      <Image src={s.image} alt={s.doctorName} fill className="object-cover object-top transition-transform duration-500 group-hover:scale-105" unoptimized />
+                      <Image src={getImageSrc(s.image, "/uploads/turkey-doctor.jpg")} alt={s.doctorName} fill className="object-cover object-top transition-transform duration-500 group-hover:scale-105" unoptimized />
                     </div>
                     <div>
                       <span className="inline-block text-[9.5px] font-bold uppercase tracking-wider text-[#D32F2F] bg-red-50 px-2 py-0.5 rounded-full mb-1">

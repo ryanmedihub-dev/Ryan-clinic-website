@@ -138,6 +138,53 @@ export const initialSurgeonFormState = {
     faqs: [],
   },
 
+  experienceSpecialization: {
+    badge: { text: "" },
+    heading: "",
+    description: "",
+    items: [],
+  },
+
+  skillEvaluation: {
+    badge: { text: "" },
+    heading: "",
+    description: "",
+    items: [],
+  },
+
+  hairlineArtistry: {
+    badge: { text: "" },
+    heading: "",
+    description: "",
+    image: { url: "", alt: "" },
+    items: [],
+  },
+
+  revisionRepair: {
+    badge: { text: "" },
+    heading: "",
+    description: "",
+    items: [],
+  },
+
+  costConsultation: {
+    badge: { text: "" },
+    heading: "",
+    description: "",
+    disclaimer: "",
+    items: [],
+  },
+
+  visitSurgeon: {
+    badge: { text: "" },
+    heading: "",
+    description: "",
+    address: "",
+    phone: "",
+    hours: "",
+    metro: "",
+  },
+
   settings: {
     status: "draft",
     featured: false,
@@ -408,6 +455,53 @@ export function useSurgeonForm({ mode = "create", id = null, toast }) {
               heading: p.faq?.heading || "",
               description: p.faq?.description || "",
               faqs: p.faq?.faqs || [],
+            },
+
+            experienceSpecialization: {
+              badge: { text: p.experienceSpecialization?.badge?.text || "" },
+              heading: p.experienceSpecialization?.heading || "",
+              description: p.experienceSpecialization?.description || "",
+              items: p.experienceSpecialization?.items || [],
+            },
+
+            skillEvaluation: {
+              badge: { text: p.skillEvaluation?.badge?.text || "" },
+              heading: p.skillEvaluation?.heading || "",
+              description: p.skillEvaluation?.description || "",
+              items: p.skillEvaluation?.items || [],
+            },
+
+            hairlineArtistry: {
+              badge: { text: p.hairlineArtistry?.badge?.text || "" },
+              heading: p.hairlineArtistry?.heading || "",
+              description: p.hairlineArtistry?.description || "",
+              image: { url: p.hairlineArtistry?.image?.url || "", alt: p.hairlineArtistry?.image?.alt || "" },
+              items: p.hairlineArtistry?.items || [],
+            },
+
+            revisionRepair: {
+              badge: { text: p.revisionRepair?.badge?.text || "" },
+              heading: p.revisionRepair?.heading || "",
+              description: p.revisionRepair?.description || "",
+              items: p.revisionRepair?.items || [],
+            },
+
+            costConsultation: {
+              badge: { text: p.costConsultation?.badge?.text || "" },
+              heading: p.costConsultation?.heading || "",
+              description: p.costConsultation?.description || "",
+              disclaimer: p.costConsultation?.disclaimer || "",
+              items: p.costConsultation?.items || [],
+            },
+
+            visitSurgeon: {
+              badge: { text: p.visitSurgeon?.badge?.text || "" },
+              heading: p.visitSurgeon?.heading || "",
+              description: p.visitSurgeon?.description || "",
+              address: p.visitSurgeon?.address || "",
+              phone: p.visitSurgeon?.phone || "",
+              hours: p.visitSurgeon?.hours || "",
+              metro: p.visitSurgeon?.metro || "",
             },
 
             settings: {

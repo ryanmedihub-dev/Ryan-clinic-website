@@ -6,7 +6,10 @@ import SurgeryPageClient from "@/components/surgery/SurgeryPageClient";
 
 const getSurgeryPage = cache(async (slug) => {
   await DBConnection();
-  const page = await SurgeryPageModel.findOne({ slug }).lean();
+  const page = await SurgeryPageModel.findOne({
+    slug,
+    isDeleted: { $ne: true },
+  }).lean();
   return page ? JSON.parse(JSON.stringify(page)) : null;
 });
 

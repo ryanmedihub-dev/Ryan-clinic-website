@@ -11,9 +11,13 @@ import HeroSection from "@/components/admin/cost/forms/HeroSection";
 import IntroSection from "@/components/admin/cost/forms/IntroSection";
 import ServicesSection from "@/components/admin/cost/forms/ServicesSection";
 import GraftPricingSection from "@/components/admin/cost/forms/GraftPricingSection";
+import PricingOptionsSection from "@/components/admin/cost/forms/PricingOptionsSection";
 import TechniqueComparisonSection from "@/components/admin/cost/forms/TechniqueComparisonSection";
 import IncludedSection from "@/components/admin/cost/forms/IncludedSection";
 import PriceFactorsSection from "@/components/admin/cost/forms/PriceFactorsSection";
+import ContentSectionsSection from "@/components/admin/cost/forms/ContentSectionsSection";
+import MythsFactsSection from "@/components/admin/cost/forms/MythsFactsSection";
+import VisitClinicSection from "@/components/admin/cost/forms/VisitClinicSection";
 import ConsultationSection from "@/components/admin/cost/forms/ConsultationSection";
 import FAQSection from "@/components/admin/cost/forms/FAQSection";
 
@@ -69,9 +73,13 @@ export default function CreateCostPage() {
         <IntroSection {...sectionProps} />
         <ServicesSection {...sectionProps} />
         <GraftPricingSection {...sectionProps} />
+        <PricingOptionsSection {...sectionProps} />
         <TechniqueComparisonSection {...sectionProps} />
         <IncludedSection {...sectionProps} />
         <PriceFactorsSection {...sectionProps} />
+        <ContentSectionsSection {...sectionProps} />
+        <MythsFactsSection {...sectionProps} />
+        <VisitClinicSection {...sectionProps} />
         <ConsultationSection {...sectionProps} />
         <FAQSection {...sectionProps} />
 

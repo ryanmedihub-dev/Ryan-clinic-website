@@ -3,14 +3,22 @@
 import { useState, useEffect } from 'react';
 
 export default function ImageUploader({ onUpload, onChange, initialImage, value }) {
-  const currentImage = value !== undefined ? (value || '') : (initialImage || '');
+  const getUrl = (val) => {
+    if (!val) return '';
+    if (typeof val === 'string') return val;
+    if (typeof val === 'object' && val.url) return val.url;
+    return '';
+  };
+
+  const rawImage = value !== undefined ? value : initialImage;
+  const currentImage = getUrl(rawImage);
   const [imageURL, setImageURL] = useState(currentImage);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    setImageURL(currentImage);
-  }, [currentImage]);
+    setImageURL(getUrl(rawImage));
+  }, [rawImage]);
 
   const notifyChange = (newUrl, publicId) => {
     setImageURL(newUrl);

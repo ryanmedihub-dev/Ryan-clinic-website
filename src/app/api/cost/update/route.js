@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { withDB } from "@/lib/withDB";
 import { requireAdmin } from "@/lib/requireAdmin";
 import { generateCostSlug } from "@/lib/costSlug";
@@ -26,6 +27,11 @@ const handler = async (req) => {
             consultation,
             faq,
             settings,
+            /* Generic / multi-type sections */
+            pricingOptions,
+            contentSections,
+            mythsFacts,
+            visitClinic,
         } = body;
 
         if (!_id) {
@@ -103,13 +109,60 @@ const handler = async (req) => {
         doc.services = services;
         doc.graftPricing = graftPricing;
         doc.techniqueComparison = techniqueComparison;
-        doc.includedSection = includedSection;
+
+        if (includedSection) {
+            const itemsList = includedSection.items?.length ? includedSection.items : (includedSection.hiddenCosts || []);
+            const discList = includedSection.disclosures?.length ? includedSection.disclosures : (includedSection.guarantees || []);
+            doc.includedSection = {
+                ...includedSection,
+                items: itemsList,
+                hiddenCosts: itemsList,
+                disclosures: discList,
+                guarantees: discList,
+            };
+        } else {
+            doc.includedSection = includedSection;
+        }
+
         doc.priceFactors = priceFactors;
         doc.consultation = consultation;
-        doc.faq = faq;
+
+        if (faq) {
+            const faqList = faq.items?.length ? faq.items : (faq.faqs || []);
+            doc.faq = {
+                badge: faq.badge || "",
+                heading: faq.heading || "",
+                description: faq.description || "",
+                items: faqList,
+                faqs: faqList,
+            };
+        } else {
+            doc.faq = faq;
+        }
+
         doc.settings = settings;
 
+        /* Generic / multi-type sections */
+        if (pricingOptions !== undefined) doc.pricingOptions = pricingOptions;
+        if (contentSections !== undefined) doc.contentSections = contentSections;
+        if (mythsFacts !== undefined) doc.mythsFacts = mythsFacts;
+        if (visitClinic !== undefined) doc.visitClinic = visitClinic;
+
+        /* Explicitly mark modified for sub-documents & arrays */
+        ["seo", "hero", "intro", "services", "graftPricing", "techniqueComparison", "includedSection", "priceFactors", "consultation", "faq", "settings", "pricingOptions", "contentSections", "mythsFacts", "visitClinic"].forEach((path) => {
+            doc.markModified(path);
+        });
+
         await doc.save();
+
+        try {
+            revalidatePath(`/cost/${doc.slug}`);
+            revalidatePath(`/cost/${newSlug}`);
+            revalidatePath("/cost/[slug]", "page");
+            revalidatePath("/cost");
+        } catch (e) {
+            console.error("Revalidation error:", e);
+        }
 
         return NextResponse.json(
             {

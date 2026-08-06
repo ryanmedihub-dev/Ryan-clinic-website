@@ -501,11 +501,10 @@ const techniqueComparisonSchema = new Schema(
 
 const hiddenCostItemSchema = new Schema(
   {
-    text: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+    icon: { type: String, default: "", trim: true },
+    title: { type: String, default: "", trim: true },
+    description: { type: String, default: "", trim: true },
+    text: { type: String, default: "", trim: true },
   },
   { _id: false }
 );
@@ -519,7 +518,12 @@ const guaranteeItemSchema = new Schema(
     },
     text: {
       type: String,
-      required: true,
+      default: "",
+      trim: true,
+    },
+    title: {
+      type: String,
+      default: "",
       trim: true,
     },
   },
@@ -543,12 +547,23 @@ const includedSectionSchema = new Schema(
       default: "",
       trim: true,
     },
+    /* Canonical items array — used by admin and frontend going forward.
+       hiddenCosts kept for backward compat with existing Hair Transplant docs. */
+    items: {
+      type: [hiddenCostItemSchema],
+      default: [],
+    },
     hiddenCosts: {
       type: [hiddenCostItemSchema],
       default: [],
     },
     guarantees: {
       type: [guaranteeItemSchema],
+      default: [],
+    },
+    /* Canonical disclosures — kept alongside existing guarantees */
+    disclosures: {
+      type: [hiddenCostItemSchema],
       default: [],
     },
     buttonText: {
@@ -578,7 +593,7 @@ const priceFactorItemSchema = new Schema(
     },
     title: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
     description: {
@@ -632,6 +647,11 @@ const priceFactorsSchema = new Schema(
       type: [priceFactorItemSchema],
       default: [],
     },
+    emiBadge: {
+      type: String,
+      default: "",
+      trim: true,
+    },
     emiHeading: {
       type: String,
       default: "0% EMI Available",
@@ -662,12 +682,12 @@ const consultationStatSchema = new Schema(
   {
     value: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
     label: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
   },
@@ -678,7 +698,7 @@ const consultationBenefitSchema = new Schema(
   {
     text: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
   },
@@ -689,18 +709,18 @@ const consultationButtonSchema = new Schema(
   {
     text: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
     link: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
     variant: {
       type: String,
-      enum: ["primary", "secondary"],
       default: "primary",
+      trim: true,
     },
   },
   { _id: false }
@@ -723,15 +743,9 @@ const consultationSchema = new Schema(
       default: "",
       trim: true,
     },
-    doctorImage: {
-      type: String,
-      default: "",
-      trim: true,
-    },
-    doctorImageAlt: {
-      type: String,
-      default: "",
-      trim: true,
+    features: {
+      type: [Schema.Types.Mixed],
+      default: [],
     },
     stats: {
       type: [consultationStatSchema],
@@ -745,6 +759,26 @@ const consultationSchema = new Schema(
       type: [consultationButtonSchema],
       default: [],
     },
+    buttonText: {
+      type: String,
+      default: "Book Free Consultation",
+      trim: true,
+    },
+    buttonLink: {
+      type: String,
+      default: "https://wa.me/919911111247",
+      trim: true,
+    },
+    image: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+    imageAlt: {
+      type: String,
+      default: "",
+      trim: true,
+    },
   },
   { _id: false }
 );
@@ -757,12 +791,12 @@ const faqItemSchema = new Schema(
   {
     question: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
     answer: {
       type: String,
-      required: true,
+      default: "",
     },
     displayOrder: {
       type: Number,
@@ -793,6 +827,10 @@ const faqSchema = new Schema(
       default: "",
       trim: true,
     },
+    items: {
+      type: [faqItemSchema],
+      default: [],
+    },
     faqs: {
       type: [faqItemSchema],
       default: [],
@@ -802,7 +840,131 @@ const faqSchema = new Schema(
 );
 
 /* ==============================================================================
-   11. Settings Schema
+   11. Generic Pricing Options Schema (PRP sessions, packages, future cost types)
+   — Hair Transplant pages use graftPricing; PRP and others use pricingOptions
+============================================================================== */
+
+const pricingOptionItemSchema = new Schema(
+  {
+    title: { type: String, required: true, trim: true },
+    subtitle: { type: String, default: "", trim: true },
+    price: { type: String, default: "", trim: true },
+    priceSuffix: { type: String, default: "", trim: true },
+    description: { type: String, default: "", trim: true },
+    badge: { type: String, default: "", trim: true },
+    features: { type: [{ type: String }], default: [] },
+    ctaText: { type: String, default: "Book Consultation", trim: true },
+    ctaLink: { type: String, default: "/contact", trim: true },
+    displayOrder: { type: Number, default: 0 },
+    active: { type: Boolean, default: true },
+  },
+  { _id: false }
+);
+
+const pricingOptionsSchema = new Schema(
+  {
+    badge: { type: String, default: "", trim: true },
+    heading: { type: String, default: "", trim: true },
+    description: { type: String, default: "", trim: true },
+    items: { type: [pricingOptionItemSchema], default: [] },
+  },
+  { _id: false }
+);
+
+/* ==============================================================================
+   12. Content Sections Schema (Generic multi-purpose CMS sections)
+   Supports: educational content, comparison tables, highlights, checklists
+   sectionKey identifies each section (e.g. "session-vs-package", "worth-it")
+============================================================================== */
+
+const contentSectionItemSchema = new Schema(
+  {
+    title: { type: String, default: "", trim: true },
+    subtitle: { type: String, default: "", trim: true },
+    description: { type: String, default: "", trim: true },
+    value: { type: String, default: "", trim: true },
+    label: { type: String, default: "", trim: true },
+    secondaryValue: { type: String, default: "", trim: true },
+    secondaryLabel: { type: String, default: "", trim: true },
+    badge: { type: String, default: "", trim: true },
+    icon: { type: String, default: "", trim: true },
+    ctaText: { type: String, default: "", trim: true },
+    ctaLink: { type: String, default: "", trim: true },
+    highlight: { type: Boolean, default: false },
+    type: { type: String, default: "", trim: true }, // e.g. "positive", "negative", "neutral"
+    displayOrder: { type: Number, default: 0 },
+    active: { type: Boolean, default: true },
+  },
+  { _id: false }
+);
+
+const contentSectionSchema = new Schema(
+  {
+    sectionKey: { type: String, required: true, trim: true },
+    badge: { type: String, default: "", trim: true },
+    heading: { type: String, default: "", trim: true },
+    description: { type: String, default: "", trim: true },
+    layout: {
+      type: String,
+      enum: ["content", "cards", "checklist", "highlight", "comparison", "timeline", "suitability"],
+      default: "cards",
+    },
+    items: { type: [contentSectionItemSchema], default: [] },
+    displayOrder: { type: Number, default: 0 },
+    enabled: { type: Boolean, default: true },
+  },
+  { _id: false }
+);
+
+/* ==============================================================================
+   13. Myths vs Facts Schema
+============================================================================== */
+
+const mythFactPairSchema = new Schema(
+  {
+    myth: { type: String, required: true, trim: true },
+    fact: { type: String, required: true, trim: true },
+    displayOrder: { type: Number, default: 0 },
+    active: { type: Boolean, default: true },
+  },
+  { _id: false }
+);
+
+const mythsFactsSchema = new Schema(
+  {
+    badge: { type: String, default: "", trim: true },
+    heading: { type: String, default: "", trim: true },
+    description: { type: String, default: "", trim: true },
+    pairs: { type: [mythFactPairSchema], default: [] },
+  },
+  { _id: false }
+);
+
+/* ==============================================================================
+   14. Visit Clinic Schema (location/address block)
+============================================================================== */
+
+const visitClinicSchema = new Schema(
+  {
+    badge: { type: String, default: "", trim: true },
+    heading: { type: String, default: "", trim: true },
+    description: { type: String, default: "", trim: true },
+    address: { type: String, default: "", trim: true },
+    city: { type: String, default: "", trim: true },
+    mapEmbedUrl: { type: String, default: "", trim: true },
+    phone: { type: String, default: "", trim: true },
+    whatsapp: { type: String, default: "", trim: true },
+    timings: { type: String, default: "", trim: true },
+    landmark: { type: String, default: "", trim: true },
+    nearbyAreas: { type: [String], default: [] },
+    buttonText: { type: String, default: "Get Directions", trim: true },
+    buttonLink: { type: String, default: "", trim: true },
+  },
+  { _id: false }
+);
+
+/* ==============================================================================
+   15. Settings Schema
 ============================================================================== */
 
 const settingsSchema = new Schema(
@@ -924,6 +1086,27 @@ const costPageSchema = new Schema(
       default: () => ({}),
     },
 
+    /* ---------- Generic / Multi-Type Sections ---------- */
+    pricingOptions: {
+      type: pricingOptionsSchema,
+      default: () => ({}),
+    },
+
+    contentSections: {
+      type: [contentSectionSchema],
+      default: [],
+    },
+
+    mythsFacts: {
+      type: mythsFactsSchema,
+      default: () => ({}),
+    },
+
+    visitClinic: {
+      type: visitClinicSchema,
+      default: () => ({}),
+    },
+
     /* ---------- Settings ---------- */
     settings: {
       type: settingsSchema,
@@ -937,8 +1120,19 @@ const costPageSchema = new Schema(
 
 /* ==============================================================================
    13. Model Export
+   NOTE: In development we always delete and re-register the model so that
+   hot-module-replacement schema changes take effect without a server restart.
+   In production the standard `models.X || model(...)` caching pattern is used.
 ============================================================================== */
 
-const CostPage = models.CostPage || model("CostPage", costPageSchema);
+const CostPage =
+  process.env.NODE_ENV === "development"
+    ? (() => {
+        if (models.CostPage) {
+          mongoose.deleteModel("CostPage");
+        }
+        return model("CostPage", costPageSchema);
+      })()
+    : models.CostPage || model("CostPage", costPageSchema);
 
 export default CostPage;

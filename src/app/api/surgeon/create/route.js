@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { withDB } from "@/lib/withDB";
 import { requireAdmin } from "@/lib/requireAdmin";
 import { generateSurgeonSlug } from "@/lib/surgeonSlug";
@@ -28,6 +28,12 @@ const handler = async (req) => {
             procedures,
             consultationCTA,
             faq,
+            experienceSpecialization,
+            skillEvaluation,
+            hairlineArtistry,
+            revisionRepair,
+            costConsultation,
+            visitSurgeon,
             settings,
         } = body;
 
@@ -82,6 +88,12 @@ const handler = async (req) => {
             procedures,
             consultationCTA,
             faq,
+            ...(experienceSpecialization !== undefined && { experienceSpecialization }),
+            ...(skillEvaluation !== undefined && { skillEvaluation }),
+            ...(hairlineArtistry !== undefined && { hairlineArtistry }),
+            ...(revisionRepair !== undefined && { revisionRepair }),
+            ...(costConsultation !== undefined && { costConsultation }),
+            ...(visitSurgeon !== undefined && { visitSurgeon }),
             settings,
         });
 

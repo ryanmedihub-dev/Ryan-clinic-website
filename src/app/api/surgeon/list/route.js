@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { withDB } from "@/lib/withDB";
 import { requireAdmin } from "@/lib/requireAdmin";
 import SurgeonPage from "@/models/Surgeon";
@@ -18,7 +18,7 @@ const handler = async (req) => {
         const skip = (page - 1) * limit;
 
         const query = {
-            "settings.isDeleted": false,
+            "settings.isDeleted": { $ne: true },
         };
 
         if (search) {

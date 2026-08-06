@@ -5,6 +5,8 @@ import SurgeonPage from "@/models/Surgeon";
 import PageBanner from "@/components/layouts/pageBanner";
 import SurgeonPageClient from "./SurgeonPageClient";
 
+// Cache invalidate: 2026-08-03T10:04:00Z
+
 // ─── Data Fetching ─────────────────────────────────────────────────────────────
 
 const getSurgeonPageData = cache(async (slug) => {
@@ -93,25 +95,39 @@ export default async function SurgeonDynamicPage({ params }) {
     notFound();
   }
 
+  const bannerTitle =
+    pageData.hero?.title ||
+    pageData.title ||
+    "Best Hair Transplant Surgeon";
+
+  const bannerDesc =
+    pageData.hero?.description ||
+    pageData.general?.shortDescription ||
+    "Book a free consultation with Ryan Clinic's certified hair transplant surgeon.";
+
+  const rawImage =
+    pageData.hero?.doctorCard?.image?.url ||
+    pageData.leadSurgeon?.doctorImage?.url ||
+    pageData.hero?.doctorCard?.image ||
+    pageData.leadSurgeon?.doctorImage;
+
+  const bannerImage =
+    typeof rawImage === "string" && rawImage.trim() !== ""
+      ? rawImage.trim()
+      : typeof rawImage === "object" && rawImage?.url
+      ? rawImage.url
+      : "/uploads/turkey-doctor.jpg";
+
   return (
     <>
       <PageBanner
-        title={
-          pageData?.hero?.title ||
-          pageData?.title ||
-          "Best Hair Transplant Surgeon"
-        }
-        description={
-          pageData?.hero?.description ||
-          "Your result depends less on the clinic name or machine used, and more on the hands and artistic eye of your surgeon."
-        }
-        breadcrumb={
-          pageData?.hero?.badge?.text ||
-          pageData?.title ||
-          "Hair Transplant Surgeon"
-        }
+        breadcrumb={`Surgeon / ${pageData.title || "Hair Transplant Surgeon"}`}
+        title={bannerTitle}
+        description={bannerDesc}
+        bgImage={bannerImage}
+        alt={pageData.title || "Hair Transplant Surgeon"}
       />
-      <SurgeonPageClient pageData={pageData} />
+      <SurgeonPageClient pageData={pageData} slug={slug} />
     </>
   );
 }

@@ -4,9 +4,8 @@ import Gallery from "@/models/gallery";
 import { requireAdmin } from "@/lib/requireAdmin";
 
 const handler = async (req) => {
-    // const authError = await requireAdmin();
-
-    //if (authError) return authError;
+    const authError = await requireAdmin();
+    if (authError) return authError;
 
     try {
         const body = await req.json();

@@ -6,18 +6,18 @@ import useTrackCTA from "@/lib/useTrackCTA";
 const WA =
     "https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20have%20a%20question%20about%20hair%20transplant%20surgery";
 
-export default function FAQSection({ faqs = [] }) {
+export default function FAQSection({ faqs = [], heading = "Frequently asked questions about hair transplant doctors in Delhi" }) {
     const [open, setOpen] = useState(null);
     const trackCTA = useTrackCTA();
 
     return (
-        <section className="py-16 md:py-24" style={{ background: "var(--bg-main)" }}>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="py-16 md:py-24" style={{ background: "var(--bg-main)" }} suppressHydrationWarning>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
                 {/* ── Two-column layout ── */}
-                <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-16 items-start">
+                <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-16 items-start" suppressHydrationWarning>
 
                     {/* ── Left sticky panel ── */}
-                    <div className="lg:col-span-2 lg:sticky lg:top-28">
+                    <div className="lg:col-span-2 lg:sticky lg:top-28" suppressHydrationWarning>
                         {/* Section label */}
                         <div className="flex items-center gap-3 mb-5">
                             <span
@@ -35,11 +35,9 @@ export default function FAQSection({ faqs = [] }) {
                         <h2
                             className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-5"
                             style={{ color: "var(--text-primary)" }}
+                            suppressHydrationWarning
                         >
-                            Frequently
-                            <br />
-                            Asked{" "}
-                            <span style={{ color: "var(--primary-red)" }}>Questions</span>
+                            {heading}
                         </h2>
 
                         <p
@@ -213,12 +211,19 @@ export default function FAQSection({ faqs = [] }) {
                                                     className="block w-6 h-0.5 mb-3 rounded-full"
                                                     style={{ background: "var(--primary-red)" }}
                                                 />
-                                                <p
-                                                    className="text-sm leading-relaxed"
-                                                    style={{ color: "var(--text-muted)" }}
-                                                >
-                                                    {answer}
-                                                </p>
+                                                {typeof answer === "string" && answer.includes("<") ? (
+                                                    <div
+                                                        className="text-sm leading-relaxed text-gray-600 prose max-w-none [&_p]:mb-2 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
+                                                        dangerouslySetInnerHTML={{ __html: answer }}
+                                                    />
+                                                ) : (
+                                                    <p
+                                                        className="text-sm leading-relaxed"
+                                                        style={{ color: "var(--text-muted)" }}
+                                                    >
+                                                        {answer}
+                                                    </p>
+                                                )}
                                             </div>
                                         </div>
                                     </div>

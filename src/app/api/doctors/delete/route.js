@@ -29,12 +29,12 @@ const handler = async (req) => {
         if (id) {
             doctor = await Doctor.findOne({
                 _id: id,
-                deletedAt: null,
+                $or: [{ deletedAt: null }, { deletedAt: { $exists: false } }],
             });
         } else {
             doctor = await Doctor.findOne({
                 slug: slug.trim().toLowerCase(),
-                deletedAt: null,
+                $or: [{ deletedAt: null }, { deletedAt: { $exists: false } }],
             });
         }
 

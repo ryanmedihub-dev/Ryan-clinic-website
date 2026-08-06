@@ -10,6 +10,9 @@ import CTAButtons from "../CTAButtonsClient";
 import SurgeriesCostCardsClient from "../SurgeriesCostCardsClient";
 import GraftTierCards from "../GraftTierCards";
 
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 /* ═══════════════════════════════════════════════════════════════
    DATA FETCHING (Optimized with React cache)
 ═══════════════════════════════════════════════════════════════ */
@@ -94,6 +97,290 @@ function RedCheck() {
 const WA_BASE = "https://api.whatsapp.com/send?phone=+919217958539&text=";
 const TEL = "tel:+919911111247";
 
+function GenericCostSection({ sec }) {
+  const items = (sec.items || []).filter((i) => i.active !== false);
+  const layout =
+    sec.layout ||
+    (sec.sectionKey === "session-vs-package"
+      ? "comparison"
+      : sec.sectionKey === "total-sessions-cost"
+      ? "timeline"
+      : sec.sectionKey === "worth-it"
+      ? "suitability"
+      : sec.sectionKey === "maintenance-cost"
+      ? "highlight"
+      : "cards");
+
+  return (
+    <section className="bg-[#FAF6F3] py-12 md:py-20 border-b border-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header Block */}
+        <div className="mb-8 max-w-3xl">
+          {sec.badge && <EyebrowLabel text={sec.badge} />}
+          {sec.heading && (
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+              {sec.heading}
+            </h2>
+          )}
+          {sec.description && (
+            <div className="text-gray-600 text-sm md:text-base leading-relaxed mt-3 font-sans space-y-3 whitespace-pre-line">
+              {sec.description}
+            </div>
+          )}
+        </div>
+
+        {/* 1. COMPARISON (Package Comparison: Single Session vs Course Package) */}
+        {(layout === "comparison" || sec.sectionKey === "session-vs-package") && items.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch mt-8">
+            {items.map((item, ii) => (
+              <div
+                key={ii}
+                className={`relative rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 ${
+                  item.highlight
+                    ? "bg-gradient-to-b from-red-50/60 to-white border-2 border-[#e30a17]/40 shadow-xl"
+                    : "bg-white border border-[#E8E4DF] shadow-sm hover:shadow-md"
+                }`}
+              >
+                {item.badge && (
+                  <span className={`absolute -top-3 left-6 text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full shadow-sm ${
+                    item.highlight ? "bg-[#e30a17] text-white" : "bg-gray-900 text-white"
+                  }`}>
+                    {item.badge}
+                  </span>
+                )}
+                <div>
+                  <div className="flex items-center gap-3 mb-3">
+                    {item.icon && <span className="text-2xl">{item.icon}</span>}
+                    <div>
+                      <h3 className="text-lg font-black text-gray-900">{item.title}</h3>
+                      {item.subtitle && <p className="text-xs text-gray-500 font-sans">{item.subtitle}</p>}
+                    </div>
+                  </div>
+
+                  {item.value && (
+                    <div className="my-4 pb-4 border-b border-gray-100 flex flex-wrap items-baseline gap-2">
+                      <span className="text-2xl sm:text-3xl font-black text-[#e30a17]">{item.value}</span>
+                      {item.label && <span className="text-xs text-gray-500">{item.label}</span>}
+                      {item.secondaryValue && (
+                        <span className="ml-auto text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                          {item.secondaryValue}
+                        </span>
+                      )}
+                    </div>
+                  )}
+
+                  {item.description && (
+                    <p className="text-xs text-gray-600 leading-relaxed mb-4 font-sans">{item.description}</p>
+                  )}
+
+                  {item.features?.length > 0 && (
+                    <ul className="space-y-2 mb-6">
+                      {item.features.map((feat, fi) => (
+                        <li key={fi} className="flex items-start gap-2 text-xs text-gray-700">
+                          <RedCheck />
+                          <span>{feat}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+
+                {item.ctaText && (
+                  <a
+                    href={item.ctaLink || "/contact"}
+                    className={`mt-4 inline-flex items-center justify-center gap-2 font-bold text-xs py-3 px-5 rounded-xl transition-all shadow-md ${
+                      item.highlight
+                        ? "bg-[#e30a17] hover:bg-red-700 text-white"
+                        : "bg-gray-900 hover:bg-black text-white"
+                    }`}
+                  >
+                    {item.ctaText} <ArrowIcon />
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* 2. TIMELINE / TREATMENT PLAN (Stage 1-2, Stage 3, Post-Transplant) */}
+        {(layout === "timeline" || sec.sectionKey === "total-sessions-cost") && items.length > 0 && (
+          <div className="space-y-6 mt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {items.map((item, ii) => (
+                <div key={ii} className="relative bg-white rounded-3xl border border-[#E8E4DF] p-6 shadow-sm hover:shadow-md hover:border-[#e30a17]/30 transition-all flex flex-col justify-between">
+                  {item.badge && (
+                    <span className="absolute -top-3 left-6 bg-[#e30a17] text-white text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full shadow-xs">
+                      {item.badge}
+                    </span>
+                  )}
+                  <div>
+                    <div className="flex items-center justify-between mb-3 pt-1">
+                      <span className="w-8 h-8 rounded-full bg-red-50 text-[#e30a17] font-black text-xs flex items-center justify-center border border-red-100">
+                        {item.icon || String(ii + 1).padStart(2, "0")}
+                      </span>
+                      {item.subtitle && <span className="text-[11px] font-semibold text-gray-400">{item.subtitle}</span>}
+                    </div>
+
+                    <h3 className="font-extrabold text-base text-gray-900 mb-3">{item.title}</h3>
+
+                    {item.value && (
+                      <div className="bg-[#FAF6F3] rounded-2xl p-3 mb-3 border border-gray-100 flex items-center justify-between">
+                        <div>
+                          <p className="text-[10px] uppercase font-bold text-gray-400">{item.label || "Initial Sessions"}</p>
+                          <p className="text-sm font-black text-gray-900">{item.value}</p>
+                        </div>
+                        {item.secondaryValue && (
+                          <div className="text-right border-l border-gray-200 pl-3">
+                            <p className="text-[10px] uppercase font-bold text-gray-400">{item.secondaryLabel || "Maintenance"}</p>
+                            <p className="text-xs font-bold text-[#e30a17]">{item.secondaryValue}</p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {item.description && (
+                      <p className="text-xs text-gray-600 leading-relaxed font-sans">{item.description}</p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Subtle Doctor Consultation Info Strip Below */}
+            <div className="bg-white rounded-2xl border border-[#E8E4DF] p-4 flex items-center gap-3 text-xs text-gray-600 shadow-xs">
+              <span className="w-7 h-7 rounded-xl bg-red-50 text-[#e30a17] flex items-center justify-center shrink-0 font-bold">🩺</span>
+              <p className="font-sans leading-snug">
+                <strong>Physician Assessment Note:</strong> Exact session requirement and interval are finalized by the doctor during your trichoscopy scalp audit.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* 3. SUITABILITY / CANDIDATE COMPARISON ("Good Candidate" vs "Limitations") */}
+        {(layout === "suitability" || sec.sectionKey === "worth-it") && items.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            {items.map((item, ii) => {
+              const isPositive = item.type === "positive" || ii === 0;
+              return (
+                <div
+                  key={ii}
+                  className={`rounded-3xl border p-6 sm:p-8 flex flex-col justify-between shadow-sm transition-all ${
+                    isPositive
+                      ? "bg-emerald-50/40 border-emerald-200"
+                      : "bg-amber-50/40 border-amber-200"
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black text-white shrink-0 ${
+                        isPositive ? "bg-emerald-600" : "bg-amber-600"
+                      }`}>
+                        {item.icon || (isPositive ? "✓" : "!")}
+                      </span>
+                      <div>
+                        <h3 className={`text-base font-black ${isPositive ? "text-emerald-950" : "text-amber-950"}`}>
+                          {item.title}
+                        </h3>
+                        {item.subtitle && <p className="text-xs font-semibold text-gray-500 mt-0.5">{item.subtitle}</p>}
+                      </div>
+                    </div>
+
+                    {item.description && (
+                      <p className="text-xs text-gray-700 leading-relaxed mb-4 font-sans">{item.description}</p>
+                    )}
+
+                    {item.features?.length > 0 && (
+                      <ul className="space-y-2.5">
+                        {item.features.map((feat, fi) => (
+                          <li key={fi} className="flex items-start gap-2.5 text-xs text-gray-800">
+                            <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold shrink-0 mt-0.5 ${
+                              isPositive ? "bg-emerald-200 text-emerald-800" : "bg-amber-200 text-amber-900"
+                            }`}>
+                              {isPositive ? "✓" : "!"}
+                            </span>
+                            <span className="font-medium">{feat}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* 4. HIGHLIGHT BANNER (e.g. Maintenance Cost) */}
+        {layout === "highlight" && items.length > 0 && (
+          <div className="bg-gradient-to-r from-[#1a0a0a] to-[#2d0d0d] rounded-3xl p-6 sm:p-8 text-white shadow-xl mt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {items.map((item, ii) => (
+                <div key={ii} className="flex items-start gap-4 bg-white/5 rounded-2xl p-4 border border-white/10">
+                  {item.icon && <span className="text-2xl shrink-0">{item.icon}</span>}
+                  <div>
+                    {item.title && <p className="font-bold text-sm text-white">{item.title}</p>}
+                    {item.description && <p className="text-xs text-white/70 mt-1 font-sans leading-relaxed">{item.description}</p>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* 5. CHECKLIST */}
+        {layout === "checklist" && items.length > 0 && (
+          <ul className="space-y-3 max-w-2xl mt-8">
+            {items.map((item, ii) => (
+              <li key={ii} className="flex items-start gap-3 bg-white rounded-2xl border border-[#E8E4DF] p-4 shadow-sm">
+                {item.icon && <span className="text-lg shrink-0">{item.icon}</span>}
+                <div>
+                  {item.title && <p className="font-bold text-sm text-gray-900">{item.title}</p>}
+                  {item.description && <p className="text-xs text-gray-500 mt-0.5 font-sans">{item.description}</p>}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {/* 6. DEFAULT CARDS GRID */}
+        {(layout === "cards" || (!["comparison", "timeline", "suitability", "highlight", "checklist"].includes(layout) && items.length > 0)) && items.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+            {items.map((item, ii) => (
+              <div key={ii} className="bg-white rounded-2xl border border-[#E8E4DF] p-5 sm:p-6 shadow-sm hover:shadow-md hover:border-[#e30a17]/30 transition-all flex flex-col justify-between">
+                <div>
+                  {item.icon && <span className="block text-2xl mb-3">{item.icon}</span>}
+                  {item.title && <h3 className="font-bold text-sm text-gray-900 mb-2">{item.title}</h3>}
+                  {item.description && <p className="text-xs text-gray-500 leading-relaxed font-sans">{item.description}</p>}
+                </div>
+                {item.ctaText && (
+                  <a
+                    href={item.ctaLink || "/contact"}
+                    className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-[#e30a17] hover:underline"
+                  >
+                    {item.ctaText} <ArrowIcon className="w-3 h-3" />
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Text-Only Card Layout when items are empty (Prevents empty whitespace!) */}
+        {items.length === 0 && (
+          <div className="mt-4 bg-white rounded-2xl border border-[#E8E4DF] border-l-4 border-l-[#e30a17] p-5 sm:p-6 shadow-xs">
+            <div className="flex items-center gap-3">
+              <span className="text-lg text-[#e30a17]">ℹ️</span>
+              <p className="text-xs font-semibold text-gray-700">
+                Detailed treatment terms &amp; package options are customized during your doctor scalp evaluation.
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 /* ═══════════════════════════════════════════════════════════════
    PAGE COMPONENT
 ═══════════════════════════════════════════════════════════════ */
@@ -107,9 +394,20 @@ export default async function DynamicCostPage({ params }) {
     hero, intro, services, graftPricing,
     techniqueComparison, includedSection,
     priceFactors, consultation, faq,
+    pricingOptions, contentSections, mythsFacts, visitClinic,
   } = page;
 
   const faqItems = faq?.faqs || faq?.items || [];
+
+  /* includedSection: canonical path is items[], with hiddenCosts[] fallback for legacy docs */
+  const includedItems =
+    (includedSection?.items?.length > 0)
+      ? includedSection.items
+      : (includedSection?.hiddenCosts || []);
+  const includedDisclosures =
+    (includedSection?.disclosures?.length > 0)
+      ? includedSection.disclosures
+      : (includedSection?.guarantees || []);
 
   const faqSchema = faqItems.length > 0 ? {
     "@context": "https://schema.org",
@@ -615,22 +913,22 @@ export default async function DynamicCostPage({ params }) {
       {/* ════════════════════════════════════════════════════════════
           SECTION 6: INCLUSIONS & GUARANTEE
       ════════════════════════════════════════════════════════════ */}
-      {(includedSection?.hiddenCosts?.length > 0 || includedSection?.guarantees?.length > 0) && (
+      {(includedItems.length > 0 || includedDisclosures.length > 0) && (
         <section className="bg-white py-16 md:py-24 border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div className="mb-12 max-w-xl">
-              <EyebrowLabel text={includedSection.badge || "Written Price Guarantee"} />
+              <EyebrowLabel text={includedSection?.badge || "Written Price Guarantee"} />
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
-                {includedSection.heading || "What's Included — Zero Surprise Charges"}
+                {includedSection?.heading || "What's Included — Zero Surprise Charges"}
               </h2>
-              {includedSection.description && (
+              {includedSection?.description && (
                 <p className="text-gray-500 text-xs sm:text-sm mt-2 font-sans">{includedSection.description}</p>
               )}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {includedSection.hiddenCosts?.length > 0 && (
+              {includedItems.length > 0 && (
                 <div className="bg-[#FAF6F3] rounded-3xl border border-[#E8E4DF] p-6 sm:p-8 shadow-sm">
                   <div className="flex items-center gap-3 mb-5">
                     <span className="w-9 h-9 rounded-xl bg-white border border-[#E8E4DF] flex items-center justify-center text-lg shadow-sm">📋</span>
@@ -639,17 +937,17 @@ export default async function DynamicCostPage({ params }) {
                     </h3>
                   </div>
                   <ul className="space-y-3">
-                    {includedSection.hiddenCosts.map((item, i) => (
+                    {includedItems.map((item, i) => (
                       <li key={i} className="flex items-start gap-3 text-xs sm:text-sm text-gray-700 py-2 border-b border-gray-100 last:border-0">
                         <span className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center text-white text-[8px] font-bold shrink-0 mt-0.5">✓</span>
-                        <span>{item.text}</span>
+                        <span>{item.text || item.title || item}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
               )}
 
-              {includedSection.guarantees?.length > 0 && (
+              {includedDisclosures.length > 0 && (
                 <div className="bg-gradient-to-br from-[#e30a17] to-[#b30812] rounded-3xl p-6 sm:p-8 text-white flex flex-col justify-between shadow-2xl shadow-red-200">
                   <div>
                     <span className="inline-block bg-white/20 text-white text-[9px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full mb-3 border border-white/30">
@@ -659,22 +957,22 @@ export default async function DynamicCostPage({ params }) {
                       100% Written Price Transparency
                     </h3>
                     <ul className="space-y-3 text-xs sm:text-sm text-white/90 mb-8">
-                      {includedSection.guarantees.map((item, i) => (
+                      {includedDisclosures.map((item, i) => (
                         <li key={i} className="flex items-center gap-3">
                           <span className="w-5 h-5 rounded-full bg-white/20 border border-white/30 flex items-center justify-center shrink-0 text-white text-xs font-bold">
                             {item.icon || "✓"}
                           </span>
-                          <span>{item.text}</span>
+                          <span>{item.text || item.title || item}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
                   <a
-                    href={includedSection.buttonLink || "/contact"}
+                    href={includedSection?.buttonLink || "/contact"}
                     className="inline-flex items-center justify-center gap-2 bg-white text-[#e30a17] hover:bg-gray-50 font-extrabold py-3.5 px-6 text-xs transition-all rounded-2xl shadow-lg hover:-translate-y-0.5"
                   >
-                    {includedSection.buttonText || "Get Written Graft Quote"} <ArrowIcon />
+                    {includedSection?.buttonText || "Get Written Graft Quote"} <ArrowIcon />
                   </a>
                 </div>
               )}
@@ -784,6 +1082,272 @@ export default async function DynamicCostPage({ params }) {
           </div>
         </div>
       </section>
+
+      {/* ════════════════════════════════════════════════════════════
+          PRICING OPTIONS — Generic per-session/package pricing
+          (PRP and future cost types; Hair Transplant uses graftPricing)
+      ════════════════════════════════════════════════════════════ */}
+      {pricingOptions?.items?.filter((i) => i.active !== false).length > 0 && (
+        <section className="bg-[#FAF6F3] py-16 md:py-24 border-b border-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-12 max-w-xl">
+              <EyebrowLabel text={pricingOptions.badge || "Transparent Pricing"} />
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+                {pricingOptions.heading || "Treatment Pricing"}
+              </h2>
+              {pricingOptions.description && (
+                <p className="text-gray-500 text-xs sm:text-sm mt-2 font-sans">{pricingOptions.description}</p>
+              )}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {pricingOptions.items.filter((i) => i.active !== false).sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)).map((item, i) => (
+                <div key={i} className="relative bg-white rounded-3xl border border-[#E8E4DF] p-6 sm:p-8 shadow-sm hover:shadow-xl hover:border-[#e30a17]/30 transition-all duration-300 flex flex-col">
+                  {item.badge && (
+                    <span className="absolute -top-3 left-6 bg-[#e30a17] text-white text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full shadow">
+                      {item.badge}
+                    </span>
+                  )}
+                  <div className="mb-4">
+                    <h3 className="text-lg font-black text-gray-900">{item.title}</h3>
+                    {item.subtitle && <p className="text-xs text-gray-500 mt-1 font-sans">{item.subtitle}</p>}
+                  </div>
+                  {item.price ? (
+                    <div className="mb-4">
+                      <span className="text-2xl sm:text-3xl font-black text-[#e30a17]">{item.price}</span>
+                      {item.priceSuffix && <span className="text-xs text-gray-500 ml-1">{item.priceSuffix}</span>}
+                    </div>
+                  ) : (
+                    <div className="mb-4">
+                      <span className="text-sm font-semibold text-gray-400 italic">Price confirmed after consultation</span>
+                    </div>
+                  )}
+                  {item.description && (
+                    <p className="text-xs text-gray-600 leading-relaxed mb-5 font-sans flex-1">{item.description}</p>
+                  )}
+                  {item.features?.length > 0 && (
+                    <ul className="space-y-2 mb-6">
+                      {item.features.map((feat, fi) => (
+                        <li key={fi} className="flex items-start gap-2 text-xs text-gray-700">
+                          <RedCheck />
+                          <span>{feat}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <a
+                    href={item.ctaLink || "/contact"}
+                    className="mt-auto inline-flex items-center justify-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white font-bold text-xs py-3 px-5 rounded-xl transition-all shadow-md"
+                  >
+                    {item.ctaText || "Book Consultation"} <ArrowIcon />
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════
+          TECHNIQUE / TREATMENT COMPARISON TABLE
+          (Was in model but had no frontend renderer — now rendered)
+      ════════════════════════════════════════════════════════════ */}
+      {techniqueComparison?.columns?.length > 0 && techniqueComparison?.rows?.length > 0 && (
+        <section className="bg-white py-16 md:py-24 border-b border-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-10 max-w-2xl">
+              <EyebrowLabel text={techniqueComparison.badge || "Comparison"} />
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+                {techniqueComparison.heading || "Treatment Comparison"}
+              </h2>
+              {techniqueComparison.description && (
+                <p className="text-gray-500 text-xs sm:text-sm mt-2 font-sans">{techniqueComparison.description}</p>
+              )}
+            </div>
+            <div className="overflow-x-auto rounded-2xl border border-[#E8E4DF] shadow-sm">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="bg-[#FAF6F3] border-b border-[#E8E4DF]">
+                    <th className="text-left px-5 py-4 text-xs font-extrabold text-gray-700 uppercase tracking-wider w-1/4">Feature</th>
+                    {techniqueComparison.columns.map((col, ci) => (
+                      <th key={ci} className={`px-5 py-4 text-center text-xs font-extrabold uppercase tracking-wider ${col.highlighted ? "bg-[#e30a17] text-white" : "text-gray-700"}`}>
+                        {col.name}
+                        {col.badge && (
+                          <span className={`block text-[9px] font-bold mt-0.5 ${col.highlighted ? "text-white/80" : "text-[#e30a17]"}`}>{col.badge}</span>
+                        )}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {techniqueComparison.rows.map((row, ri) => (
+                    <tr key={ri} className="border-b border-gray-100 last:border-0 hover:bg-gray-50/50 transition-colors">
+                      <td className="px-5 py-4 text-xs font-semibold text-gray-800">{row.label}</td>
+                      {techniqueComparison.columns.map((col, ci) => (
+                        <td key={ci} className={`px-5 py-4 text-xs text-center ${col.highlighted ? "font-bold text-[#e30a17]" : "text-gray-600"}`}>
+                          {row.values?.[ci]?.value || "—"}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════
+          CONTENT SECTIONS — Generic educational sections
+          (session-vs-package, maintenance, worth-it, with-transplant etc.)
+      ════════════════════════════════════════════════════════════ */}
+      {(contentSections || []).filter((sec) => sec.enabled !== false).sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)).map((sec, si) => (
+        <GenericCostSection key={sec.sectionKey || si} sec={sec} />
+      ))}
+
+      {/* ════════════════════════════════════════════════════════════
+          MYTHS VS FACTS
+      ════════════════════════════════════════════════════════════ */}
+      {mythsFacts?.pairs?.filter((p) => p.active !== false).length > 0 && (
+        <section className="bg-white py-16 md:py-24 border-b border-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-12 max-w-2xl">
+              <EyebrowLabel text={mythsFacts.badge || "Common Misconceptions"} />
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+                {mythsFacts.heading || "Myths vs Facts"}
+              </h2>
+              {mythsFacts.description && (
+                <p className="text-gray-500 text-xs sm:text-sm mt-2 font-sans">{mythsFacts.description}</p>
+              )}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {mythsFacts.pairs.filter((p) => p.active !== false).sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)).map((pair, pi) => (
+                <div key={pi} className="rounded-3xl border border-[#E8E4DF] overflow-hidden shadow-sm hover:shadow-md transition-all">
+                  <div className="bg-red-50 border-b border-red-100 px-6 py-4 flex items-start gap-3">
+                    <span className="w-6 h-6 rounded-full bg-[#e30a17] text-white text-xs font-extrabold flex items-center justify-center shrink-0 mt-0.5">✗</span>
+                    <div>
+                      <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#e30a17] block mb-1">Myth</span>
+                      <p className="text-sm font-semibold text-gray-800 leading-snug">{pair.myth}</p>
+                    </div>
+                  </div>
+                  <div className="bg-white px-6 py-4 flex items-start gap-3">
+                    <span className="w-6 h-6 rounded-full bg-emerald-500 text-white text-xs font-extrabold flex items-center justify-center shrink-0 mt-0.5">✓</span>
+                    <div>
+                      <span className="text-[10px] font-extrabold uppercase tracking-widest text-emerald-700 block mb-1">Fact</span>
+                      <p className="text-xs text-gray-600 leading-relaxed font-sans">{pair.fact}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════
+          VISIT CLINIC — Location / Address Block
+      ════════════════════════════════════════════════════════════ */}
+      {(visitClinic?.address || visitClinic?.heading) && (
+        <section className="bg-[#FAF6F3] py-16 md:py-20 border-b border-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+              <div>
+                {visitClinic.badge && <EyebrowLabel text={visitClinic.badge} />}
+                {visitClinic.heading && (
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 tracking-tight mb-4">
+                    {visitClinic.heading}
+                  </h2>
+                )}
+                {visitClinic.description && (
+                  <p className="text-gray-600 text-sm leading-relaxed mb-6 font-sans">{visitClinic.description}</p>
+                )}
+                <div className="bg-white rounded-2xl border border-[#E8E4DF] p-6 space-y-4 shadow-sm">
+                  {visitClinic.address && (
+                    <div className="flex items-start gap-3">
+                      <span className="text-[#e30a17] text-base shrink-0 mt-0.5">📍</span>
+                      <div>
+                        <p className="text-xs font-extrabold uppercase tracking-wider text-gray-500 mb-1">Address</p>
+                        <p className="text-sm font-semibold text-gray-800 whitespace-pre-line">{visitClinic.address}</p>
+                      </div>
+                    </div>
+                  )}
+                  {visitClinic.timings && (
+                    <div className="flex items-start gap-3 border-t border-gray-100 pt-4">
+                      <span className="text-[#e30a17] text-base shrink-0 mt-0.5">🕐</span>
+                      <div>
+                        <p className="text-xs font-extrabold uppercase tracking-wider text-gray-500 mb-1">Clinic Hours</p>
+                        <p className="text-sm font-semibold text-gray-800">{visitClinic.timings}</p>
+                      </div>
+                    </div>
+                  )}
+                  {visitClinic.landmark && (
+                    <div className="flex items-start gap-3 border-t border-gray-100 pt-4">
+                      <span className="text-[#e30a17] text-base shrink-0 mt-0.5">🏢</span>
+                      <div>
+                        <p className="text-xs font-extrabold uppercase tracking-wider text-gray-500 mb-1">Landmark</p>
+                        <p className="text-sm font-semibold text-gray-800">{visitClinic.landmark}</p>
+                      </div>
+                    </div>
+                  )}
+                  {visitClinic.nearbyAreas?.length > 0 && (
+                    <div className="border-t border-gray-100 pt-4">
+                      <p className="text-xs font-extrabold uppercase tracking-wider text-gray-500 mb-2">Nearby Areas</p>
+                      <div className="flex flex-wrap gap-2">
+                        {visitClinic.nearbyAreas.map((area, ai) => (
+                          <span key={ai} className="bg-[#FAF6F3] border border-[#E8E4DF] text-xs font-semibold text-gray-700 px-3 py-1 rounded-full">{area}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {(visitClinic.phone || visitClinic.whatsapp) && (
+                    <div className="border-t border-gray-100 pt-4 flex flex-wrap gap-3">
+                      {visitClinic.phone && (
+                        <a href={`tel:${visitClinic.phone}`} className="inline-flex items-center gap-2 bg-white border border-[#E8E4DF] text-gray-800 text-xs font-bold py-2.5 px-4 rounded-xl shadow-xs hover:border-gray-300 transition-all">
+                          📞 {visitClinic.phone}
+                        </a>
+                      )}
+                      {visitClinic.whatsapp && (
+                        <a href={`https://wa.me/${visitClinic.whatsapp.replace(/\D/g,"")}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 bg-[#e30a17] text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-md hover:bg-red-700 transition-all">
+                          💬 WhatsApp
+                        </a>
+                      )}
+                    </div>
+                  )}
+                  {visitClinic.buttonLink && (
+                    <div className="border-t border-gray-100 pt-4">
+                      <a
+                        href={visitClinic.buttonLink}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white font-bold text-xs py-3 px-6 rounded-xl transition-all shadow-md"
+                      >
+                        {visitClinic.buttonText || "Get Directions"} <ArrowIcon />
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </div>
+              {visitClinic.mapEmbedUrl ? (
+                <div className="rounded-3xl overflow-hidden border border-[#E8E4DF] shadow-sm h-80 lg:h-full min-h-[300px]">
+                  <iframe
+                    src={visitClinic.mapEmbedUrl}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title={`${visitClinic.city || "Clinic"} Location Map`}
+                  />
+                </div>
+              ) : (
+                <div className="rounded-3xl bg-white border border-dashed border-[#E8E4DF] h-64 lg:h-full min-h-[200px] flex items-center justify-center">
+                  <p className="text-xs text-gray-400">Map embed URL not configured</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ════════════════════════════════════════════════════════════
           FAQ SECTION

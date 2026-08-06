@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import mongoose from "mongoose";
 import { withDB } from "@/lib/withDB";
 import CostPage from "@/models/CostPage";
 
@@ -20,10 +21,17 @@ const handler = async (req) => {
             );
         }
 
-        const costPage = await CostPage.findOne({
+        let costPage = await CostPage.findOne({
             slug,
             "settings.isDeleted": { $ne: true },
         }).lean();
+
+        if (!costPage && mongoose.Types.ObjectId.isValid(slug)) {
+            costPage = await CostPage.findOne({
+                _id: slug,
+                "settings.isDeleted": { $ne: true },
+            }).lean();
+        }
 
         if (!costPage) {
             return NextResponse.json(

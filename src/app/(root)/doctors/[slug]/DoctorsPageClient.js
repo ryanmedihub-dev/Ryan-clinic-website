@@ -101,7 +101,7 @@ function RevealSection({ children, className = "", delay = 0 }) {
             suppressHydrationWarning
             style={{
                 opacity: isVisible ? 1 : 0,
-                transform: isVisible ? "translateY(0)" : "translateY(28px)",
+                transform: isVisible ? "none" : "translateY(28px)",
                 transition: `opacity 0.65s cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform 0.65s cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
             }}
         >
@@ -173,6 +173,23 @@ export default function DoctorPageClient({ data }) {
         nearbyAreas,
         faqs,
         doctor,
+        whyItMatters,
+        surgeonProfile,
+        pricingPackages,
+        pricingDisclaimer,
+        proceduresPerformed,
+        doctorStandards,
+        credentials,
+        verification,
+        comparison,
+        surgicalProcess,
+        questionsToAskSection,
+        greatDoctorQualities,
+        warningSigns,
+        pricing,
+        visitClinic,
+        consultation,
+        faqSection,
     } = data;
 
     const activeBranch = branchData[doctor.location] || branchData.Delhi;
@@ -336,6 +353,112 @@ export default function DoctorPageClient({ data }) {
             </section>
 
             {/* ═════════════════════════════════════════════════════════════════
+                SECTION 1B: Why Doctor-Led Hair Transplant Matters
+            ═════════════════════════════════════════════════════════════════ */}
+            {whyItMatters?.heading && (
+            <section className="bg-white py-16 md:py-24 border-b border-gray-100 overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-50/40 rounded-full blur-3xl pointer-events-none translate-x-1/2 -translate-y-1/4" />
+                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+                        {/* LEFT: Sticky Image */}
+                        <div className="lg:col-span-5 lg:sticky lg:top-24 self-start">
+                            <div className="relative rounded-3xl overflow-hidden shadow-xl aspect-[4/5] bg-gray-100">
+                                {whyItMatters.image ? (
+                                    <Image
+                                        src={whyItMatters.image}
+                                        alt={whyItMatters.imageAlt || `${doctor.name} — doctor-led hair transplant`}
+                                        fill
+                                        className="object-cover"
+                                        unoptimized
+                                    />
+                                ) : (
+                                    <Image
+                                        src="/uploads/turkey-doctor.jpg"
+                                        alt={`${doctor.name} — doctor-led hair transplant`}
+                                        fill
+                                        className="object-cover"
+                                        unoptimized
+                                    />
+                                )}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                                {whyItMatters.floatingStats?.length > 0 && (
+                                    <div className="absolute bottom-5 left-5 right-5 flex flex-wrap gap-2">
+                                        {whyItMatters.floatingStats.map((s, i) => (
+                                            <div key={i} className="bg-white/95 backdrop-blur-sm rounded-xl px-3.5 py-2 shadow-md border border-white/60">
+                                                <p className="text-[#D32F2F] font-black text-base leading-none">{s.value}</p>
+                                                <p className="text-[9px] text-gray-500 font-bold uppercase tracking-wider mt-0.5">{s.label}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* RIGHT: Scrolling Content */}
+                        <div className="lg:col-span-7 flex flex-col gap-8">
+                            <RevealSection>
+                                {whyItMatters.sectionLabel && <SectionLabel text={whyItMatters.sectionLabel} />}
+                                <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight mt-1 mb-4">
+                                    {whyItMatters.heading}
+                                </h2>
+                                {whyItMatters.description && (
+                                    <p className="text-gray-600 text-sm md:text-base leading-relaxed font-sans">
+                                        {whyItMatters.description}
+                                    </p>
+                                )}
+                            </RevealSection>
+
+                            {whyItMatters.secondaryDescription && (
+                                <RevealSection delay={80}>
+                                    <p className="text-gray-600 text-sm md:text-base leading-relaxed font-sans border-l-4 border-[#D32F2F] pl-5">
+                                        {whyItMatters.secondaryDescription}
+                                    </p>
+                                </RevealSection>
+                            )}
+
+                            {whyItMatters.highlightBox && (
+                                <RevealSection delay={120}>
+                                    <div className="bg-gradient-to-br from-[#D32F2F] to-red-700 text-white rounded-2xl p-6 shadow-lg shadow-red-700/20">
+                                        <p className="text-sm md:text-base font-bold leading-relaxed">
+                                            {whyItMatters.highlightBox}
+                                        </p>
+                                    </div>
+                                </RevealSection>
+                            )}
+
+                            {(whyItMatters.primaryCTA?.text || whyItMatters.secondaryCTA?.text) && (
+                                <RevealSection delay={160}>
+                                    <div className="flex flex-wrap gap-3">
+                                        {whyItMatters.primaryCTA?.text && (
+                                            <a
+                                                href={whyItMatters.primaryCTA.url || waDoctorLink}
+                                                className="inline-flex items-center gap-2 bg-[#D32F2F] hover:bg-red-700 text-white font-bold py-3.5 px-7 rounded-xl text-sm shadow-md hover:-translate-y-0.5 transition-all duration-200"
+                                                onClick={() => trackCTA({ type: "whatsapp", ctaName: whyItMatters.primaryCTA.text, buttonLocation: "Why It Matters" })}
+                                            >
+                                                {whyItMatters.primaryCTA.text} <ArrowRight className="w-4 h-4" />
+                                            </a>
+                                        )}
+                                        {whyItMatters.secondaryCTA?.text && (
+                                            <a
+                                                href={whyItMatters.secondaryCTA.url || TEL}
+                                                className="inline-flex items-center gap-2 border border-gray-200 hover:border-[#D32F2F] text-gray-700 hover:text-[#D32F2F] font-bold py-3.5 px-7 rounded-xl text-sm transition-all duration-200"
+                                                onClick={() => trackCTA({ type: "call", ctaName: whyItMatters.secondaryCTA.text, buttonLocation: "Why It Matters" })}
+                                            >
+                                                {whyItMatters.secondaryCTA.text}
+                                            </a>
+                                        )}
+                                    </div>
+                                </RevealSection>
+                            )}
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            )}
+
+            {/* ═════════════════════════════════════════════════════════════════
                 SECTION 2: Credentials & Verification (Redesigned & Clean)
             ═════════════════════════════════════════════════════════════════ */}
             <section className="bg-[#FAF6F3] py-16 md:py-24 border-b border-gray-200/80">
@@ -345,7 +468,7 @@ export default function DoctorPageClient({ data }) {
                     <div className="max-w-3xl mb-12 text-left">
                         <SectionLabel text="Verification & Credentials" />
                         <h2 className="text-3xl sm:text-4xl font-black text-gray-900 leading-tight tracking-tight mt-1 mb-3">
-                            Doctor Credentials &amp; Verification Guide
+                            {credentials?.heading || "Credentials to look for in a hair transplant doctor in Delhi"}
                         </h2>
                         <p className="text-gray-500 text-sm md:text-base font-sans leading-relaxed">
                             What matters is genuine hair-restoration training, real surgical experience, and verifiable qualifications in {doctor.location || "New Delhi"}.
@@ -455,7 +578,9 @@ export default function DoctorPageClient({ data }) {
                                 <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
                                     <div className="flex items-center gap-2">
                                         <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                                        <h3 className="text-lg font-bold text-gray-900">Patient Verification Checklist</h3>
+                                        <h2 className="text-lg font-bold text-gray-900">
+                                            {verification?.heading || "How to verify a hair transplant doctor's credentials in Delhi"}
+                                        </h2>
                                     </div>
                                     <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
                                         {progressPercent}% Verified
@@ -561,13 +686,13 @@ export default function DoctorPageClient({ data }) {
             ═════════════════════════════════════════════════════════════════ */}
             <section className="bg-white py-16 md:py-24 border-b border-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <SectionLabel text="The Standard" />
+                    <SectionLabel text={doctorStandards?.sectionLabel || "The Standard"} />
                     <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
                         <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight tracking-tight max-w-2xl">
-                            What makes a good hair transplant doctor in {doctor.location || "New Delhi"}?
+                            {doctorStandards?.heading || "What makes a good hair transplant doctor in Delhi?"}
                         </h2>
                         <p className="text-xs sm:text-sm text-gray-400 max-w-xs font-sans text-right md:text-right">
-                            These are the non-negotiables. Every box must be ticked before you consider booking.
+                            {doctorStandards?.description || "These are the non-negotiables. Every box must be ticked before you consider booking."}
                         </p>
                     </div>
 
@@ -594,6 +719,175 @@ export default function DoctorPageClient({ data }) {
                 </div>
             </section>
 
+            {/* ═════════════════════════════════════════════════════════════════
+                SECTION 3B: Surgeon Profile & Bio (Enhanced Layout)
+                Left: All Content (About, Philosophy, Achievements, Consultation Includes)
+                Right: Sticky Doctor Image Card with Achievements & Stats
+            ═════════════════════════════════════════════════════════════════ */}
+            {(surgeonProfile?.about || surgeonProfile?.achievements?.length > 0) && (
+            <section className="bg-[#FAF6F3] py-16 md:py-24 border-b border-gray-200/80 relative" suppressHydrationWarning>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start" suppressHydrationWarning>
+
+                        {/* LEFT: All Content (About, Philosophy, Key Achievements, Consultation Includes) */}
+                        <div className="lg:col-span-6 flex flex-col gap-6">
+                            <RevealSection>
+                                <SectionLabel text={surgeonProfile?.sectionLabel || "Your Surgeon"} />
+                                <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight mt-1 mb-5">
+                                    {surgeonProfile?.heading || "Meet the hair transplant doctors at Ryan Clinic, Delhi"}
+                                </h2>
+                                {surgeonProfile.about && (
+                                    <p className="text-gray-600 text-sm md:text-base leading-relaxed font-sans mb-6">
+                                        {surgeonProfile.about}
+                                    </p>
+                                )}
+                                {surgeonProfile.philosophy && (
+                                    <div className="bg-white rounded-2xl border border-[#E8E4DF] p-5.5 flex gap-4 items-start shadow-sm hover:shadow-md transition-shadow">
+                                        <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-[#D32F2F] shrink-0 mt-0.5">
+                                            <Sparkles className="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[11px] font-bold text-[#D32F2F] uppercase tracking-widest mb-1">Surgical Philosophy</p>
+                                            <p className="text-gray-700 text-sm leading-relaxed font-sans">{surgeonProfile.philosophy}</p>
+                                        </div>
+                                    </div>
+                                )}
+                            </RevealSection>
+
+                            {/* Key Achievements */}
+                            {surgeonProfile.achievements?.length > 0 && (
+                                <RevealSection delay={80}>
+                                    <div className="bg-white rounded-3xl border border-[#E8E4DF] p-6 sm:p-7 shadow-sm">
+                                        <h3 className="text-lg font-extrabold text-gray-900 mb-4 flex items-center gap-2">
+                                            <Award className="w-5 h-5 text-[#D32F2F]" />
+                                            Key Achievements
+                                        </h3>
+                                        <div className="space-y-3.5">
+                                            {surgeonProfile.achievements.map((ach, i) => (
+                                                <div key={i} className="flex items-start gap-3">
+                                                    <div className="w-6 h-6 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center shrink-0 mt-0.5">
+                                                        <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[3]" />
+                                                    </div>
+                                                    <p className="text-sm text-gray-700 font-sans leading-relaxed">
+                                                        {typeof ach === "string" ? ach : `${ach.title || ""}${ach.description ? `: ${ach.description}` : ""}`}
+                                                    </p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </RevealSection>
+                            )}
+
+                            {/* Consultation Includes */}
+                            <RevealSection delay={100}>
+                                <div className="bg-white rounded-3xl border border-[#E8E4DF] shadow-sm p-6 sm:p-7">
+                                    <div className="flex items-center gap-3 mb-5 pb-4 border-b border-gray-100">
+                                        <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-[#D32F2F] shrink-0">
+                                            <Stethoscope className="w-5 h-5" />
+                                        </div>
+                                        <h3 className="text-lg font-bold text-gray-900">Your Consultation Includes</h3>
+                                    </div>
+                                    {surgeonProfile.consultationIncludes?.length > 0 ? (
+                                        <div className="space-y-3.5 mb-6">
+                                            {surgeonProfile.consultationIncludes.map((item, i) => (
+                                                <div key={i} className="flex items-start gap-3">
+                                                    <span className="w-6 h-6 rounded-full bg-[#D32F2F] text-white flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">
+                                                        {String(i + 1).padStart(2, "0")}
+                                                    </span>
+                                                    <p className="text-sm text-gray-700 font-sans leading-snug">
+                                                        {typeof item === "string" ? item : (item.title || "")}
+                                                    </p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-3.5 mb-6">
+                                            {["Free scalp analysis & hair density assessment", "Exact graft count with personalized hairline design", "Transparent per-graft pricing — no hidden charges", "Full treatment roadmap & post-op protocol"].map((item, i) => (
+                                                <div key={i} className="flex items-start gap-3">
+                                                    <span className="w-6 h-6 rounded-full bg-[#D32F2F] text-white flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">{String(i + 1).padStart(2, "0")}</span>
+                                                    <p className="text-sm text-gray-700 font-sans leading-snug">{item}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                    <a
+                                        href={waDoctorLink}
+                                        className="inline-flex items-center justify-center gap-2 w-full bg-[#D32F2F] hover:bg-red-700 text-white font-bold py-3.5 px-6 rounded-2xl text-xs transition-all shadow-md hover:-translate-y-0.5"
+                                        onClick={() => trackCTA({ type: "whatsapp", ctaName: "Book Free Consultation Surgeon Profile", buttonLocation: "Surgeon Profile Section" })}
+                                    >
+                                        Book Free Consultation <ArrowRight className="w-4 h-4" />
+                                    </a>
+                                </div>
+                            </RevealSection>
+                        </div>
+
+                        {/* RIGHT: Enhanced Sticky Doctor Image Card with Achievements & Stats */}
+                        <div className="lg:col-span-6 sticky top-28 self-start z-20">
+                            <div className="relative rounded-[36px] overflow-hidden bg-gradient-to-b from-gray-900 via-gray-800 to-black border-4 border-white shadow-2xl group">
+                                
+                                {/* Top Doctor Badge */}
+                                <div className="absolute top-4 left-4 z-20">
+                                    <span className="inline-flex items-center gap-1.5 bg-[#D32F2F] text-white text-[10px] font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow-lg">
+                                        <ShieldCheck className="w-3.5 h-3.5" />
+                                        Verified Lead Surgeon
+                                    </span>
+                                </div>
+
+                                {/* Main Doctor Image */}
+                                <div className="relative w-full h-[460px] sm:h-[520px]">
+                                    <Image
+                                        src={doctor.image || "/uploads/turkey-doctor.jpg"}
+                                        alt={`${doctor.name} — Hair Transplant Surgeon`}
+                                        fill
+                                        className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                                        unoptimized
+                                        priority
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+                                </div>
+
+                                {/* Overlay Content & Stats at Bottom of Image */}
+                                <div className="absolute bottom-0 left-0 right-0 p-6 z-20 text-white space-y-4">
+                                    <div>
+                                        <h3 className="text-2xl font-black leading-tight text-white">{doctor.name}</h3>
+                                        <p className="text-red-300 text-xs font-semibold mt-0.5">{doctor.designation || "Chief Hair Restoration Surgeon"}</p>
+                                    </div>
+
+                                    {/* Floating Doctor Stat Badges Grid */}
+                                    <div className="grid grid-cols-3 gap-2 bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/15">
+                                        <div className="text-center">
+                                            <p className="text-base font-black text-amber-400 leading-none">{doctor.experience || "12+ Yrs"}</p>
+                                            <p className="text-[9px] text-gray-300 font-bold uppercase tracking-wider mt-1">Exp.</p>
+                                        </div>
+                                        <div className="text-center border-x border-white/15">
+                                            <p className="text-base font-black text-white leading-none">{doctor.proceduresCount || "4,500+"}</p>
+                                            <p className="text-[9px] text-gray-300 font-bold uppercase tracking-wider mt-1">Surgeries</p>
+                                        </div>
+                                        <div className="text-center">
+                                            <p className="text-base font-black text-emerald-400 leading-none">{doctor.successRate || "98%+"}</p>
+                                            <p className="text-[9px] text-gray-300 font-bold uppercase tracking-wider mt-1">Survival</p>
+                                        </div>
+                                    </div>
+
+                                    {/* Quick Action Button */}
+                                    <a
+                                        href={waDoctorLink}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center justify-center gap-2 w-full bg-[#D32F2F] hover:bg-red-700 text-white font-extrabold py-3 px-5 rounded-xl text-xs transition-all shadow-lg shadow-red-900/40 hover:-translate-y-0.5"
+                                    >
+                                        Consult {doctor.name} Directly <ArrowRight className="w-4 h-4" />
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            )}
+
             {/* ── 5. Comparison — Horizontal Split Cards ─────────────────── */}
             <section className="bg-[#F7F5F2] py-20 md:py-28 overflow-hidden relative">
                 {/* Background glows */}
@@ -607,10 +901,7 @@ export default function DoctorPageClient({ data }) {
                         <SectionLabel text="The Critical Difference" />
                         <div className="flex flex-col md:flex-row md:items-end gap-4 md:justify-between">
                             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight max-w-2xl">
-                                Doctor-led{" "}
-                                <span className="text-emerald-600">vs</span>{" "}
-                                technician-led surgery in{" "}
-                                <span className="text-[#D32F2F]">{doctor.location || "New Delhi"}</span>
+                                {comparison?.heading || "Doctor-led vs technician-led surgery in Delhi: the difference that defines your result"}
                             </h2>
                             <p className="text-gray-500 text-xs sm:text-sm leading-relaxed max-w-sm md:text-right font-sans">
                                 The person performing each step is what determines your result.
@@ -841,13 +1132,12 @@ export default function DoctorPageClient({ data }) {
 
                         {/* Left Column: Rich Interactive Questions Cards */}
                         <div className="lg:col-span-7">
-                            <SectionLabel text="Questions to Ask" />
+                            <SectionLabel text={questionsToAskSection?.sectionLabel || "Questions to Ask"} />
                             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight mb-3">
-                                Questions to ask your hair transplant doctor in {doctor.location || "Delhi"}{" "}
-                                <span className="text-[#D32F2F]">before booking</span>
+                                {questionsToAskSection?.heading || "Questions to ask your hair transplant doctor in Delhi before booking"}
                             </h2>
                             <p className="text-gray-500 text-xs sm:text-sm leading-relaxed mb-8 font-sans">
-                                The quality of a doctor&apos;s answers tells you almost everything. Below are the 5 non-negotiables to ask before committing to surgery.
+                                {questionsToAskSection?.description || "The quality of a doctor\u2019s answers tells you almost everything."}
                             </p>
 
                             {/* Question Cards List */}
@@ -994,8 +1284,7 @@ export default function DoctorPageClient({ data }) {
                         </div>
                         <div className="max-w-3xl mb-8 md:mb-12">
                             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
-                                What a Great Doctor Does.{" "}
-                                <span className="text-emerald-600">Differently.</span>
+                                {greatDoctorQualities?.heading || "What a great hair transplant doctor in Delhi does differently"}
                             </h2>
                             <p className="text-gray-500 text-sm md:text-base leading-relaxed mt-4 font-sans">
                                 Every stage of your treatment in {doctor.location || "New Delhi"} is personally performed with high medical rigor to guarantee lifetime natural density.
@@ -1043,8 +1332,7 @@ export default function DoctorPageClient({ data }) {
                         </div>
                         <div className="max-w-3xl mb-8 md:mb-12">
                             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
-                                Red Flags When Choosing a Doctor{" "}
-                                <span className="text-[#D32F2F]">in {doctor.location || "New Delhi"}</span>
+                                {warningSigns?.heading || "Red flags when choosing a hair transplant doctor in Delhi"}
                             </h2>
                             <p className="text-gray-500 text-sm md:text-base leading-relaxed mt-4 font-sans">
                                 If you encounter any of the following at a clinic, walk away. Corrective surgery after a poor procedure costs far more than getting it right the first time.
@@ -1149,6 +1437,41 @@ export default function DoctorPageClient({ data }) {
                 </div>
             </section>
 
+            {/* ── 11. Procedures Our Hair Transplant Doctors Perform ── */}
+            <section className="bg-white py-16 md:py-24 border-b border-gray-100">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <SectionLabel text={proceduresPerformed?.sectionLabel || "Procedures Offered"} />
+                    <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight mb-4">
+                        {proceduresPerformed?.heading || "Procedures our hair transplant doctors in Delhi perform"}
+                    </h2>
+                    <p className="text-gray-500 text-sm md:text-base leading-relaxed max-w-2xl font-sans mb-12">
+                        {proceduresPerformed?.description || "Advanced surgical hair restoration and non-surgical therapies personally performed by certified doctors."}
+                    </p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {(proceduresPerformed?.cards?.length > 0 ? proceduresPerformed.cards : [
+                            { title: "Sapphire FUE Hair Transplant", description: "Microscopic Sapphire blades creating dense, natural recipient channels." },
+                            { title: "Turkish Technique (THI) Direct Implantation", description: "Direct Choi implanter pen insertion with zero channel pre-cutting." },
+                            { title: "Hairline Design & Micro-Dense Packing", description: "Artistic single-hair front rank feathering tailored to facial symmetry." },
+                            { title: "Beard & Moustache Transplant", description: "Precision facial hair extraction and high-angle density restoration." },
+                            { title: "Eyebrow Micro-Restoration", description: "Single-follicle micro harvesting matching natural arch direction." },
+                            { title: "Revision Hair Transplant Repair", description: "Correcting pluggy hairlines, misdirected grafts, and depleted donor zones." },
+                        ]).map((p, i) => (
+                            <div key={i} className="bg-[#FAF6F3] rounded-3xl p-6 border border-[#E8E4DF] hover:border-red-200 shadow-sm hover:shadow-md transition-all">
+                                <div className="w-10 h-10 rounded-2xl bg-red-50 text-[#D32F2F] flex items-center justify-center mb-4">
+                                    <Scissors className="w-5 h-5" />
+                                </div>
+                                <h3 className="text-lg font-bold text-gray-900 mb-2">{p.title}</h3>
+                                <p className="text-xs text-gray-600 font-sans leading-relaxed mb-4">{p.desc || p.description}</p>
+                                <a href={waDoctorLink} className="inline-flex items-center gap-1.5 text-[#D32F2F] text-xs font-bold hover:underline">
+                                    Book Consultation <ArrowRight className="w-3.5 h-3.5" />
+                                </a>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
 
 
             {/* ── 11. Procedures Step-by-Step — Interactive Stepper ───────── */}
@@ -1164,8 +1487,7 @@ export default function DoctorPageClient({ data }) {
                             </span>
                         </div>
                         <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
-                            Hair Transplant Surgery Procedure: <br />
-                            <span className="text-[#D32F2F]">Step-by-Step</span>
+                            {surgicalProcess?.heading || "What your hair transplant doctor in Delhi does at every stage"}
                         </h2>
                         <p className="text-gray-500 text-sm md:text-base leading-relaxed mt-5 font-sans">
                             Every stage of your hair restoration procedure is personally performed by {doctor.name || "our lead surgeon"} to ensure 95%+ graft survival and natural hairline aesthetics.
@@ -1355,53 +1677,188 @@ export default function DoctorPageClient({ data }) {
                 </div>
             </section>
 
-            {/* SECTION 12: Cost Section */}
-            <section className="bg-white py-16 md:py-20">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                        <div>
-                            <SectionLabel text="Cost & Consultation" />
-                            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight tracking-tight mb-5">
-                                Cost of consulting a hair transplant doctor in Delhi
-                            </h2>
-                            <p className="text-gray-500 text-sm md:text-[15px] leading-relaxed mb-6">
-                                Consultation at Ryan Clinic includes a free scalp analysis — your doctor assesses your
-                                case and gives an exact graft count and transparent, per-graft cost. Surgery pricing
-                                starts from ₹40,000, with 0% EMI available.
-                            </p>
-                            <a
-                                href="/hair-transplant-cost-in-delhi"
-                                className="inline-flex items-center gap-2 text-[#D32F2F] font-semibold text-sm hover:underline mb-8"
-                            >
-                                Full cost breakdown <ArrowRight className="w-4 h-4" />
-                            </a>
-                            <CTAButtons primary="Get Free Cost Estimate" doctorName={doctor.name} />
+            {/* ═════════════════════════════════════════════════════════════════
+                SECTION 12: Cost Section (Enhanced & Attractive Layout)
+                Note: 100% of exact text and values are preserved.
+            ═════════════════════════════════════════════════════════════════ */}
+            <section id="pricing" className="bg-gradient-to-b from-gray-50/70 via-white to-red-50/20 py-16 md:py-24 relative overflow-hidden border-t border-gray-100">
+                {/* Background decorative glow */}
+                <div className="absolute top-1/2 left-0 w-[450px] h-[450px] bg-red-100/30 rounded-full blur-3xl pointer-events-none -translate-x-1/2 -translate-y-1/2" />
+
+                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+                        {/* LEFT: Text & CTAs */}
+                        <div className="lg:col-span-6">
+                            <RevealSection>
+                                <SectionLabel text="Cost & Consultation" />
+                                <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight mb-5">
+                                    {pricing?.heading || "Cost of consulting a hair transplant doctor in Delhi"}
+                                </h2>
+                                <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-6 font-sans">
+                                    Consultation at Ryan Clinic includes a free scalp analysis — your doctor assesses your
+                                    case and gives an exact graft count and transparent, per-graft cost. Surgery pricing
+                                    starts from ₹40,000, with 0% EMI available.
+                                </p>
+                                
+                                {/* Micro trust pills */}
+                                <div className="flex flex-wrap gap-2.5 mb-8">
+                                    <span className="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full">
+                                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                                        Free Scalp Analysis
+                                    </span>
+                                    <span className="inline-flex items-center gap-1.5 bg-red-50 border border-red-200 text-[#D32F2F] text-xs font-bold px-3 py-1 rounded-full">
+                                        <Sparkles className="w-3.5 h-3.5 text-[#D32F2F]" />
+                                        0% EMI Available
+                                    </span>
+                                    <span className="inline-flex items-center gap-1.5 bg-gray-100 border border-gray-200 text-gray-700 text-xs font-bold px-3 py-1 rounded-full">
+                                        <ShieldCheck className="w-3.5 h-3.5 text-gray-600" />
+                                        Written Estimate
+                                    </span>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <a
+                                        href="/hair-transplant-cost-in-delhi"
+                                        className="inline-flex items-center gap-2 text-[#D32F2F] font-bold text-sm hover:underline group"
+                                    >
+                                        Full cost breakdown <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                    </a>
+                                    <div>
+                                        <CTAButtons primary="Get Free Cost Estimate" doctorName={doctor.name} />
+                                    </div>
+                                </div>
+                            </RevealSection>
                         </div>
 
-                        <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-white">
-                            <table className="w-full text-sm">
-                                <tbody>
-                                    {[
-                                        ["Consultation", "Free scalp analysis — no obligation"],
-                                        ["Surgery starting from", "₹40,000"],
-                                        ["Per-graft rate", "₹40–₹120 (doctor-led Sapphire FUE)"],
-                                        ["0% EMI", "6 & 12-month plans via leading banks"],
-                                        ["Follow-up", "18 months included free"],
-                                        ["Pricing method", "Per graft — confirmed in writing"],
-                                    ].map(([label, value], i) => (
-                                        <tr key={i} className={i % 2 === 0 ? "bg-gray-50" : "bg-white"}>
-                                            <td className="px-5 py-3.5 font-semibold text-gray-800 w-[45%] text-[13px]">
-                                                {label}
-                                            </td>
-                                            <td className="px-5 py-3.5 text-gray-600 text-[13px]">{value}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                        {/* RIGHT: Enhanced Pricing Breakdown Card */}
+                        <div className="lg:col-span-6">
+                            <RevealSection delay={80}>
+                                <div className="rounded-3xl overflow-hidden border border-gray-200/90 shadow-xl bg-white p-2 md:p-3 hover:shadow-2xl transition-all duration-300">
+                                    <div className="bg-[#1a1430] text-white px-6 py-4 rounded-2xl flex items-center justify-between mb-2">
+                                        <div>
+                                            <p className="text-xs font-bold uppercase tracking-wider text-red-300 font-sans">Transparent Pricing Breakdown</p>
+                                            <h3 className="text-lg font-extrabold text-white mt-0.5">Consultation & Surgery Rates</h3>
+                                        </div>
+                                        <span className="bg-[#D32F2F] text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">
+                                            Ryan Clinic
+                                        </span>
+                                    </div>
+
+                                    <div className="divide-y divide-gray-100 font-sans">
+                                        {[
+                                            ["Consultation", "Free scalp analysis — no obligation"],
+                                            ["Surgery starting from", "₹40,000"],
+                                            ["Per-graft rate", "₹40–₹120 (doctor-led Sapphire FUE)"],
+                                            ["0% EMI", "6 & 12-month plans via leading banks"],
+                                            ["Follow-up", "18 months included free"],
+                                            ["Pricing method", "Per graft — confirmed in writing"],
+                                        ].map(([label, value], i) => (
+                                            <div
+                                                key={i}
+                                                className={`p-4 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 transition-colors ${
+                                                    i % 2 === 0 ? "bg-gray-50/60 rounded-xl" : "bg-white"
+                                                } hover:bg-red-50/30`}
+                                            >
+                                                <span className="font-bold text-gray-800 text-xs sm:text-sm w-full sm:w-[42%] flex items-center gap-2">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-[#D32F2F] shrink-0" />
+                                                    {label}
+                                                </span>
+                                                <span className={`text-xs sm:text-sm font-semibold ${
+                                                    value.includes("₹") ? "text-[#D32F2F] font-black" : "text-gray-600"
+                                                }`}>
+                                                    {value}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </RevealSection>
                         </div>
+
                     </div>
                 </div>
             </section>
+
+            {/* ═════════════════════════════════════════════════════════════════
+                SECTION 12B: Pricing & Packages
+            ═════════════════════════════════════════════════════════════════ */}
+            {pricingPackages?.length > 0 && (
+            <section className="bg-[#FAF6F3] py-16 md:py-24 border-t border-b border-gray-200/80">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <RevealSection>
+                        <div className="text-center max-w-2xl mx-auto mb-12">
+                            <SectionLabel text="Transparent Pricing" />
+                            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight mt-1 mb-3">
+                                Hair Transplant Cost in {doctor.location || "Delhi"}
+                            </h2>
+                            <p className="text-gray-500 text-sm md:text-base font-sans leading-relaxed">
+                                Per-graft pricing — confirmed in writing at your free consultation. Zero hidden charges.
+                            </p>
+                        </div>
+                    </RevealSection>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {pricingPackages.map((pkg, i) => (
+                            <RevealSection key={i} delay={i * 60}>
+                                <div className={`relative bg-white rounded-3xl border shadow-md p-7 flex flex-col h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
+                                    pkg.isFeatured ? "border-[#D32F2F] ring-2 ring-[#D32F2F]/20" : "border-[#E8E4DF]"
+                                }`}>
+                                    {pkg.isFeatured && (
+                                        <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                                            <span className="bg-[#D32F2F] text-white text-[10px] font-bold px-4 py-1 rounded-full uppercase tracking-wider shadow-md">
+                                                {pkg.subtitle || "Most Popular"}
+                                            </span>
+                                        </div>
+                                    )}
+                                    <div className="mb-5">
+                                        <h3 className="text-lg font-bold text-gray-900 mb-1">{pkg.title}</h3>
+                                        {pkg.subtitle && !pkg.isFeatured && (
+                                            <span className="inline-block bg-gray-100 text-gray-600 text-[10px] font-semibold px-3 py-0.5 rounded-full uppercase tracking-wider">
+                                                {pkg.subtitle}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className="mb-6">
+                                        <p className="text-3xl font-black text-[#D32F2F] leading-none">{pkg.price}</p>
+                                        <p className="text-xs text-gray-400 font-sans mt-1">{pkg.priceNote || "onwards"}</p>
+                                    </div>
+                                    {pkg.features?.length > 0 && (
+                                        <div className="space-y-2 mb-6 flex-1">
+                                            {pkg.features.map((f, j) => (
+                                                <div key={j} className="flex items-center gap-2">
+                                                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                                                    <span className="text-xs text-gray-700 font-sans">
+                                                        {typeof f === "string" ? f : (f.title || f.text || f.description || "")}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                    <a
+                                        href={waDoctorLink}
+                                        className={`mt-auto inline-flex items-center justify-center gap-2 font-bold py-3 px-5 rounded-xl text-xs transition-all ${
+                                            pkg.isFeatured
+                                                ? "bg-[#D32F2F] hover:bg-red-700 text-white shadow-md"
+                                                : "border border-gray-200 hover:border-[#D32F2F] text-gray-700 hover:text-[#D32F2F]"
+                                        }`}
+                                        onClick={() => trackCTA({ type: "whatsapp", ctaName: `Pricing: ${pkg.title}`, buttonLocation: "Pricing Section" })}
+                                    >
+                                        {pkg.buttonText || "Get Free Estimate"} <ArrowRight className="w-3.5 h-3.5" />
+                                    </a>
+                                </div>
+                            </RevealSection>
+                        ))}
+                    </div>
+
+                    {pricingDisclaimer && (
+                        <p className="text-center text-xs text-gray-400 font-sans mt-8 max-w-2xl mx-auto">
+                            {pricingDisclaimer}
+                        </p>
+                    )}
+                </div>
+            </section>
+            )}
 
             {/* ── 13. Location ─────────────────────────────────────────── */}
             <section className="bg-white py-16 md:py-24 border-t border-b border-gray-100">
@@ -1413,7 +1870,7 @@ export default function DoctorPageClient({ data }) {
                         </span>
                     </div>
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-12">
-                        Visiting Ryan Clinic in <span className="text-[#D32F2F]">{doctor.location || "New Delhi"}</span>
+                        {visitClinic?.heading || "Visiting Ryan Clinic in Delhi"}
                     </h2>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
@@ -1524,8 +1981,152 @@ export default function DoctorPageClient({ data }) {
                 </div>
             </section>
 
+            {/* ═════════════════════════════════════════════════════════════════
+                SECTION 13B: Split CTA 3-Card Section (Home Page Style)
+                Replaces the old dark consultation banner with the exact 3-card layout matching Image 1
+            ═════════════════════════════════════════════════════════════════ */}
+            <section className="bg-white py-16 md:py-24 border-t border-gray-100">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <RevealSection>
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+                            
+                            {/* ── Left Card: Main CTA Copy ── */}
+                            <div className="flex flex-col justify-between bg-[#FAF6F3] rounded-3xl p-7 md:p-8 border border-[#E8E4DF] shadow-md">
+                                <div>
+                                    {/* Label */}
+                                    <div className="flex items-center gap-2 mb-5">
+                                        <span className="w-2 h-2 rounded-full bg-[#D32F2F]" />
+                                        <span className="text-[11px] font-extrabold text-[#D32F2F] uppercase tracking-[0.18em]">
+                                            Ryan Clinic
+                                        </span>
+                                    </div>
+
+                                    <h2 className="text-2xl sm:text-3xl font-black text-gray-900 leading-[1.2] tracking-tight mb-4">
+                                        {consultation?.heading || "Book a consultation with our hair transplant doctor in Delhi"}
+                                    </h2>
+
+                                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-6 font-sans">
+                                        Turkey&apos;s exclusive Sapphire FUE, 10,000+ patients, 4.9★ Google rating. Get your free scalp analysis, exact graft count &amp; cost breakdown — zero obligation.
+                                    </p>
+
+                                    {/* Mini Stats */}
+                                    <div className="flex gap-6 mb-8">
+                                        <div>
+                                            <p className="text-2xl font-black text-[#D32F2F] leading-none">12+</p>
+                                            <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-1">Years</p>
+                                        </div>
+                                        <div className="border-l border-gray-200 pl-6">
+                                            <p className="text-2xl font-black text-gray-900 leading-none">4.9★</p>
+                                            <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-1">Rating</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col sm:flex-row gap-3">
+                                    <a
+                                        href={waDoctorLink}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="inline-flex items-center justify-center gap-2 bg-[#D32F2F] hover:bg-red-700 text-white font-bold py-3.5 px-5 text-xs tracking-wide transition-all rounded-xl shadow-md hover:-translate-y-0.5 flex-1"
+                                        onClick={() => trackCTA({ type: "whatsapp", ctaName: "Split CTA Book Consultation", buttonLocation: "Split CTA Section" })}
+                                    >
+                                        <MessageCircle className="w-4 h-4" />
+                                        Book Free Consultation
+                                    </a>
+                                    <a
+                                        href={TEL}
+                                        className="inline-flex items-center justify-center gap-2 border border-gray-300 hover:border-[#D32F2F] text-gray-800 hover:text-[#D32F2F] font-bold py-3.5 px-5 text-xs tracking-wide transition-all rounded-xl"
+                                        onClick={() => trackCTA({ type: "call", ctaName: "Split CTA Call Now", buttonLocation: "Split CTA Section" })}
+                                    >
+                                        <Phone className="w-4 h-4" />
+                                        Call Now
+                                    </a>
+                                </div>
+                            </div>
+
+                            {/* ── Center Card: Real Patient Result Image ── */}
+                            <div className="relative rounded-3xl overflow-hidden min-h-[380px] bg-red-950 border border-red-900 shadow-lg group">
+                                <Image
+                                    src="/uploads/images/image2.jpg"
+                                    alt="Real patient hair transplant result at Ryan Clinic"
+                                    fill
+                                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                                    unoptimized
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                                {/* Yellow Badge Top */}
+                                <div className="absolute top-4 left-4 z-10">
+                                    <span className="bg-[#FFC107] text-black text-[10px] font-black px-3 py-1.5 uppercase tracking-widest rounded-md shadow-md">
+                                        OUR SPECIALIST
+                                    </span>
+                                </div>
+
+                                {/* Bottom Overlay Info */}
+                                <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
+                                    <p className="text-white text-xs font-black uppercase tracking-wider">
+                                        REAL PATIENT RESULT
+                                    </p>
+                                    <p className="text-gray-300 text-[11px] font-sans mt-1">
+                                        3,200 grafts · Sapphire FUE · 14 months · Delhi
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* ── Right Card: Why Ryan Clinic Feature Highlight ── */}
+                            <div className="flex flex-col justify-between bg-gradient-to-br from-[#D32F2F] to-red-700 rounded-3xl p-7 md:p-8 text-white shadow-xl">
+                                <div>
+                                    <div className="flex items-center justify-between mb-6">
+                                        <span className="text-[11px] font-extrabold text-[#FFC107] uppercase tracking-[0.18em]">
+                                            WHY RYAN CLINIC?
+                                        </span>
+                                        <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                                            <ArrowRight className="w-4 h-4 text-white -rotate-45" />
+                                        </div>
+                                    </div>
+
+                                    <h3 className="text-xl sm:text-2xl font-black text-white leading-snug mb-3">
+                                        Results So Natural —<br />
+                                        <span className="text-[#FFC107]">Nobody Will Know</span>
+                                    </h3>
+
+                                    <p className="text-xs text-white/80 leading-relaxed mb-6 font-sans">
+                                        Every graft is placed with precise control over angle, depth &amp; direction — mimicking your natural hair growth pattern exactly.
+                                    </p>
+
+                                    <ul className="space-y-3 mb-8">
+                                        {[
+                                            "Original Turkey Choi Pen",
+                                            "90%+ graft survival rate",
+                                            "Zero visible scarring",
+                                            "Permanent for life",
+                                        ].map((item) => (
+                                            <li key={item} className="flex items-center gap-2.5 text-xs text-white font-semibold font-sans">
+                                                <span className="w-4.5 h-4.5 rounded-full bg-[#FFC107] flex items-center justify-center shrink-0">
+                                                    <Check className="w-3 h-3 text-black stroke-[3]" />
+                                                </span>
+                                                {item}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                <a
+                                    href={waDoctorLink}
+                                    className="inline-flex items-center justify-center gap-2 bg-white/15 hover:bg-white/25 text-white font-extrabold py-3.5 px-6 rounded-2xl text-xs transition-all border border-white/30 text-center"
+                                    onClick={() => trackCTA({ type: "whatsapp", ctaName: "View All Patient Results", buttonLocation: "Split CTA Right Card" })}
+                                >
+                                    View All Patient Results →
+                                </a>
+                            </div>
+
+                        </div>
+                    </RevealSection>
+                </div>
+            </section>
+
             {/* ── 14. FAQ ──────────────────────────────────────────────── */}
-            <FAQSection faqs={faqs} />
+            <FAQSection faqs={faqs} heading={faqSection?.heading || "Frequently asked questions about hair transplant doctors in Delhi"} />
         </>
     );
 }

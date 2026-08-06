@@ -74,12 +74,12 @@ export default function ConsultationSection({
       <div className="mt-4">
         <label className="block text-sm font-semibold text-gray-700 mb-2">Section Image</label>
         <ImageUploader
-          initialImage={cons.image || ""}
+          initialImage={typeof cons.image === "object" ? cons.image?.url || "" : cons.image || ""}
           onUpload={(url) => updateField("consultation.image", url)}
         />
         <input
           type="text"
-          value={cons.imageAlt || ""}
+          value={(typeof cons.image === "object" ? cons.image?.alt : cons.imageAlt) || ""}
           onChange={(e) => updateField("consultation.imageAlt", e.target.value)}
           className="w-full mt-2 p-2 border rounded-md"
           placeholder="Image Alt Text"

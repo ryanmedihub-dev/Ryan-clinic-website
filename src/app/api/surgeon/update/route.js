@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { withDB } from "@/lib/withDB";
 import { requireAdmin } from "@/lib/requireAdmin";
 import { generateSurgeonSlug } from "@/lib/surgeonSlug";
@@ -29,6 +29,12 @@ const handler = async (req) => {
             procedures,
             consultationCTA,
             faq,
+            experienceSpecialization,
+            skillEvaluation,
+            hairlineArtistry,
+            revisionRepair,
+            costConsultation,
+            visitSurgeon,
             settings,
         } = body;
 
@@ -77,7 +83,7 @@ const handler = async (req) => {
         const duplicate = await SurgeonPage.findOne({
             slug,
             _id: { $ne: _id },
-            "settings.isDeleted": false,
+            "settings.isDeleted": { $ne: true },
         });
 
         if (duplicate) {
@@ -93,20 +99,21 @@ const handler = async (req) => {
         }
 
         // Preserve slug history
+        const activeGeneral = general || {};
         if (page.slug !== slug) {
-            const history = general?.slugHistory || [];
+            const history = Array.isArray(activeGeneral.slugHistory) ? [...activeGeneral.slugHistory] : [];
 
             if (!history.includes(page.slug)) {
                 history.push(page.slug);
             }
 
-            general.slugHistory = history;
+            activeGeneral.slugHistory = history;
         }
 
         page.title = title.trim();
         page.slug = slug;
 
-        page.general = general;
+        page.general = activeGeneral;
         page.seo = seo;
         page.hero = hero;
         page.whySkill = whySkill;
@@ -119,6 +126,12 @@ const handler = async (req) => {
         page.procedures = procedures;
         page.consultationCTA = consultationCTA;
         page.faq = faq;
+        if (experienceSpecialization !== undefined) page.experienceSpecialization = experienceSpecialization;
+        if (skillEvaluation !== undefined) page.skillEvaluation = skillEvaluation;
+        if (hairlineArtistry !== undefined) page.hairlineArtistry = hairlineArtistry;
+        if (revisionRepair !== undefined) page.revisionRepair = revisionRepair;
+        if (costConsultation !== undefined) page.costConsultation = costConsultation;
+        if (visitSurgeon !== undefined) page.visitSurgeon = visitSurgeon;
         page.settings = settings;
 
         await page.save();

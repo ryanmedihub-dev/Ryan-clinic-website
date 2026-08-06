@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import mongoose from "mongoose";
 import { withDB } from "@/lib/withDB";
 import { requireAdmin } from "@/lib/requireAdmin";
@@ -41,6 +42,14 @@ const handler = async (req) => {
                 },
                 { status: 404 }
             );
+        }
+
+        try {
+            revalidatePath(`/cost/${page.slug}`);
+            revalidatePath("/cost/[slug]", "page");
+            revalidatePath("/cost");
+        } catch (e) {
+            console.error("Revalidation error:", e);
         }
 
         return NextResponse.json({

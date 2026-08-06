@@ -94,14 +94,6 @@ const nextConfig = {
         destination: "/treatments/hair-fall-loss-treatment-in-delhi",
         permanent: true,
       },
-
-      // The old hardcoded surgeon page has been replaced by the dynamic CMS route.
-      // Permanent 301 preserves SEO equity and existing backlinks.
-      {
-        source: "/hair-transplant-surgeon-in-delhi",
-        destination: "/surgeon/hair-transplant-surgeon-in-delhi",
-        permanent: true,
-      },
     ];
   },
 };

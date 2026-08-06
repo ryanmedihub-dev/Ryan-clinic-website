@@ -207,12 +207,19 @@ export default function FAQCostSection({ faqs = [] }) {
                           className="block w-6 h-0.5 mb-3 rounded-full"
                           style={{ background: "var(--primary-red, #D32F2F)" }}
                         />
-                        <p
-                          className="text-sm leading-relaxed"
-                          style={{ color: "#4B5563" }}
-                        >
-                          {faq.a}
-                        </p>
+                        {typeof faq.a === "string" && faq.a.includes("<") ? (
+                          <div
+                            className="text-sm leading-relaxed text-gray-600 prose max-w-none [&_p]:mb-2 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
+                            dangerouslySetInnerHTML={{ __html: faq.a }}
+                          />
+                        ) : (
+                          <p
+                            className="text-sm leading-relaxed"
+                            style={{ color: "#4B5563" }}
+                          >
+                            {faq.a}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>

@@ -18,6 +18,12 @@ import BookingChecklistSection from "@/components/admin/surgeon/forms/BookingChe
 import ProceduresSection     from "@/components/admin/surgeon/forms/ProceduresSection";
 import ConsultationCTASection from "@/components/admin/surgeon/forms/ConsultationCTASection";
 import FAQSection            from "@/components/admin/surgeon/forms/FAQSection";
+import ExperienceSpecializationSection from "@/components/admin/surgeon/forms/ExperienceSpecializationSection";
+import SkillEvaluationSection  from "@/components/admin/surgeon/forms/SkillEvaluationSection";
+import HairlineArtistrySection from "@/components/admin/surgeon/forms/HairlineArtistrySection";
+import RevisionRepairSection   from "@/components/admin/surgeon/forms/RevisionRepairSection";
+import CostConsultationSection from "@/components/admin/surgeon/forms/CostConsultationSection";
+import VisitSurgeonSection     from "@/components/admin/surgeon/forms/VisitSurgeonSection";
 
 function useToast() {
   const [toasts, setToasts] = useState([]);
@@ -96,6 +102,14 @@ export default function CreateSurgeonPage() {
         <BookingChecklistSection {...sectionProps} />
         <ConsultationCTASection  {...sectionProps} />
         <FAQSection              {...sectionProps} />
+
+        {/* New Marketing Sections */}
+        <ExperienceSpecializationSection {...sectionProps} />
+        <SkillEvaluationSection  {...sectionProps} />
+        <HairlineArtistrySection {...sectionProps} />
+        <RevisionRepairSection   {...sectionProps} />
+        <CostConsultationSection {...sectionProps} />
+        <VisitSurgeonSection     {...sectionProps} />
 
         <div className="pt-4">
           <button

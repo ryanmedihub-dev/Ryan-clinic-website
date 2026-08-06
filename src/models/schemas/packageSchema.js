@@ -42,6 +42,15 @@ export const packageSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    isFeatured: {
+      type: Boolean,
+      default: false,
+    },
+    priceNote: {
+      type: String,
+      trim: true,
+      default: "",
+    },
   },
   { _id: false }
 );

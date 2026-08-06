@@ -69,10 +69,9 @@ const handler = async (req) => {
             ? generateDoctorSlug(rawSlug)
             : generateDoctorSlug(pageName);
 
-        // Check duplicate slug
+        // Check duplicate slug across all docs
         const existingSlug = await Doctor.findOne({
             slug,
-            deletedAt: null,
         });
 
         if (existingSlug) {
@@ -128,6 +127,16 @@ const handler = async (req) => {
             },
         );
     } catch (error) {
+        if (error.code === 11000 || error.message?.includes("E11000")) {
+            return NextResponse.json(
+                {
+                    message: `A doctor page with that slug already exists in the database index. Please use a unique slug.`,
+                },
+                {
+                    status: 409,
+                }
+            );
+        }
         return NextResponse.json(
             {
                 message: error.message,

@@ -1,4 +1,4 @@
-﻿import mongoose from "mongoose";
+import mongoose from "mongoose";
 
 const { Schema, models, model } = mongoose;
 const imageSchema = new Schema(
@@ -1015,6 +1015,36 @@ const surgeonPageSchema = new Schema(
 
         faq: {
             type: faqSchema,
+            default: () => ({}),
+        },
+
+        experienceSpecialization: {
+            type: Schema.Types.Mixed,
+            default: () => ({}),
+        },
+
+        skillEvaluation: {
+            type: Schema.Types.Mixed,
+            default: () => ({}),
+        },
+
+        hairlineArtistry: {
+            type: Schema.Types.Mixed,
+            default: () => ({}),
+        },
+
+        revisionRepair: {
+            type: Schema.Types.Mixed,
+            default: () => ({}),
+        },
+
+        costConsultation: {
+            type: Schema.Types.Mixed,
+            default: () => ({}),
+        },
+
+        visitSurgeon: {
+            type: Schema.Types.Mixed,
             default: () => ({}),
         },
 

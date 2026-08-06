@@ -21,10 +21,36 @@ import {
     Compass,
     Plus,
     Minus,
+    Clock,
+    FileText,
+    Layers,
+    BadgeCheck,
+    PenTool,
+    Search,
+    UserCheck,
+    Calendar,
+    Star,
+    TrendingUp,
+    CreditCard,
 } from "lucide-react";
 
 const WA = "https://api.whatsapp.com/send?phone=919217958539&text=Hi%2C%20I%20want%20to%20book%20a%20consultation%20with%20the%20best%20hair%20transplant%20surgeon%20in%20Delhi";
-const TEL = "tel:+919911111247";
+const TEL = "tel:+919217958539";
+
+/* ─── Image Helper ────────────────────────────────────────────────────────── */
+function getImageSrc(img, fallback = "/uploads/gallery.jpg") {
+    if (!img) return fallback;
+    if (typeof img === "string") {
+        const trimmed = img.trim();
+        return trimmed !== "" ? trimmed : fallback;
+    }
+    if (typeof img === "object") {
+        if (typeof img.url === "string" && img.url.trim() !== "") return img.url.trim();
+        if (typeof img.image === "string" && img.image.trim() !== "") return img.image.trim();
+        if (typeof img.src === "string" && img.src.trim() !== "") return img.src.trim();
+    }
+    return fallback;
+}
 
 /* ─── Scroll Animation Hook ──────────────────────────────────────────────── */
 function useScrollReveal(options = {}) {
@@ -64,53 +90,62 @@ function Reveal({ children, className = "", delay = 0, dir = "up" }) {
     );
 }
 
-/* ─── Data ─────────────────────────────────────────────────────────────── */
-const surgicalJourney = [
+/* ─── Static Data ─────────────────────────────────────────────────────────── */
+const defaultSurgicalJourney = [
     { num: "01", title: "Consultation & Hairline Design", body: "The surgeon assesses donor density, facial symmetry, and future loss patterns. A soft, micro-irregular hairline is drafted to frame your face naturally for life." },
-    { num: "02", title: "Graft Extraction (FUE)", body: "The surgeon personally extracts follicular units using 0.7–0.9mm micro-punches. Proper punch depth and angle protect graft viability and prevent donor over-harvesting." },
-    { num: "03", title: "Recipient-Site Creation (Sapphire)", body: "Using sharp gemstone sapphire blades, the surgeon opens microscopic channels — setting exact radial direction, depth, and angle for photorealistic growth." },
-    { num: "04", title: "Direct Implantation (Turkish Technique)", body: "Single-hair grafts are positioned at the soft front edge and dense multi-hair units behind — achieving maximum density without scalp trauma." },
-    { num: "05", title: "18-Month Growth & Follow-Up", body: "Free follow-up check-ups at months 1, 3, 6, 12, and 18 ensure your hair growth progress is tracked through full maturation." },
+    { num: "02", title: "Graft Extraction (FUE)", body: "The surgeon extracts individual follicular units from the donor area using fine micro-punches, carefully controlling spacing, depth, and direction to protect graft quality and preserve the appearance of the donor zone." },
+    { num: "03", title: "Recipient-Site Creation (Sapphire)", body: "The surgeon creates each recipient site with precise control over angle, direction, depth, and distribution. This stage determines how naturally the transplanted hair will grow and how effectively the available grafts create visual density." },
+    { num: "04", title: "Direct Implantation (Turkish Technique)", body: "The surgeon places the prepared grafts according to the planned hairline, growth direction, and density pattern, handling each follicular unit carefully to protect graft viability and achieve a natural-looking result." },
+    { num: "05", title: "18-Month Growth & Follow-Up", body: "The surgeon monitors healing and hair-growth progress during follow-up, reviews the development of the transplanted area, and provides post-operative guidance as the final result gradually develops." },
 ];
 
-const whyItems = [
-    { title: "100% Doctor-Led Surgery — Never Technicians", body: "This is the most important thing to verify at any Delhi clinic. At Ryan Clinic, every surgical step — extraction, channel creation, and implantation — is performed by a certified hair transplant surgeon in Delhi. We never hand any part of your surgery to a technician." },
-    { title: "95%+ Graft Survival Rate", body: "Using the original Choi Pen and a careful graft-preservation protocol, our grafts spend minimal time outside the body. The result is a graft survival rate of 95%+ — well above the Indian industry average of roughly 60–70%." },
-    { title: "Sterile, Surgical-Grade Operating Theatre", body: "Every procedure is performed in a sterile operating theatre with single-use, surgical-grade instruments while following recognised safety standards. Patient safety, hygiene, and precision remain at the heart of every procedure." },
-    { title: "Transparent Pricing & 0% EMI", body: "Your complete cost — based on your exact graft count after a free scalp analysis — is confirmed before you commit. No hidden charges. Hair transplant surgery starts from ₹40,000, with 0% EMI available on 6 and 12-month plans." },
-    { title: "18-Month Follow-Up Support", body: "Ryan Clinic provides free follow-up consultations for 18 months after your procedure. Our WhatsApp support team is available 7 days a week to answer your questions and monitor progress." },
-    { title: "Fastest Recovery — Back to Work in 5–7 Days", body: "Our Sapphire FUE technique creates smaller, more precise recipient channels — resulting in less tissue trauma, less swelling, and faster scalp healing. Most patients return to desk work within 5–7 days." },
-    { title: "Completely Pain-Free Procedure", body: "Ryan Clinic's Sapphire FUE uses micro-instruments of just 0.7–0.9mm under premium local anaesthesia. The procedure is virtually pain-free throughout. Most patients watch movies or nap comfortably during the 6–8 hour surgery." },
-    { title: "Trusted by Celebrities, Influencers & NRI Patients", body: "Ryan Clinic has been trusted by Bollywood actors, Instagram influencers, and NRI patients from the UK, Dubai, USA, and Canada. Over 5,000 successful procedures with Dr. Pranendra Singh speak for themselves." },
-    { title: "Surgeon With a Verifiable Portfolio", body: "We share clear, unedited before-and-after photo portfolios of the surgeon's own patients — particularly hairlines and cases matching your Norwood hair loss stage and scalp type." },
-];
+/* whyItems / questionsList / faqList are defined inside the component so they
+   can reference the CMS-driven leadSurgeonName and cityName variables. */
 
-const questionsList = [
-    { q: "Will you personally perform my extraction and implantation, or will technicians?", ans: "In many high-volume clinics, technicians extract and implant while doctors only drop in. Unskilled technician handling damages graft roots.", std: "At Ryan Clinic, Dr. Pranendra Singh personally performs extraction, site creation, and implantation." },
-    { q: "How many hair transplant cases like mine have you done — can I see your own results?", ans: "Generic stock photos mean nothing. You need to verify past cases matching your Norwood hair loss stage and scalp type.", std: "We share clear, unedited before-and-after photo portfolios of the surgeon's own patients." },
-    { q: "How long have you focused on hair restoration?", ans: "Hair transplantation is an artistic surgical discipline. An occasional provider lacks the refined technique of a dedicated specialist.", std: "Dr. Pranendra Singh has 15+ years of dedicated hair restoration focus and 5,000+ completed procedures." },
-    { q: "Which technique do you recommend for me, and why?", ans: "Clinics that push one technique for everyone are prioritizing speed over your optimal outcome.", std: "We evaluate your scalp and offer Sapphire FUE or Turkish Technique Choi Pen based on your graft density needs." },
-    { q: "How will you design my hairline for a natural result now and in the future?", ans: "A straight, low hairline looks fake as you age. The surgeon must plan for future natural hair recession.", std: "We build a soft, multi-layered hairline gradient that suits your facial structure for life." },
-    { q: "Am I a good candidate, or should I consider medical therapy first?", ans: "Unethical clinics sell surgery to patients with active diffuse thinning or poor donor supply.", std: "We conduct a thorough trichological scalp analysis first and recommend medical management if surgery is premature." },
-    { q: "What's the total per-graft cost, and what does aftercare include?", ans: "Hidden charges for anesthesia, post-op wash kits, or follow-ups create unpleasant surprises.", std: "Transparent written per-graft pricing starting at ₹40,000 with 0% EMI and 18 months free follow-up." },
-];
+function buildWhyItems(surgeonName) {
+    return [
+        { title: "100% Doctor-Led Surgery — Never Technicians", body: `This is the most important thing to verify at any Ryan Clinic. Every surgical step — extraction, channel creation, and implantation — is performed personally by a certified hair transplant surgeon. We never hand any part of your surgery to a technician.` },
+        { title: "95%+ Graft Survival Rate", body: "Using the original Choi Pen and a careful graft-preservation protocol, our grafts spend minimal time outside the body. The result is a graft survival rate of 95%+ — well above the Indian industry average of roughly 60–70%." },
+        { title: "Sterile, Surgical-Grade Operating Theatre", body: "Every procedure is performed in a sterile operating theatre with single-use, surgical-grade instruments while following recognised safety standards. Patient safety, hygiene, and precision remain at the heart of every procedure." },
+        { title: "Transparent Pricing & 0% EMI", body: "Your complete cost — based on your exact graft count after a free scalp analysis — is confirmed before you commit. No hidden charges. Hair transplant surgery starts from ₹40,000, with 0% EMI available on 6 and 12-month plans." },
+        { title: "18-Month Follow-Up Support", body: "Ryan Clinic provides free follow-up consultations for 18 months after your procedure. Our WhatsApp support team is available 7 days a week to answer your questions and monitor progress." },
+        { title: "Fastest Recovery — Back to Work in 5–7 Days", body: "Our Sapphire FUE technique creates smaller, more precise recipient channels — resulting in less tissue trauma, less swelling, and faster scalp healing. Most patients return to desk work within 5–7 days." },
+        { title: "Completely Pain-Free Procedure", body: "Ryan Clinic's Sapphire FUE uses micro-instruments of just 0.7–0.9mm under premium local anaesthesia. The procedure is virtually pain-free throughout. Most patients watch movies or nap comfortably during the 6–8 hour surgery." },
+        { title: "Trusted by Celebrities, Influencers & NRI Patients", body: `Ryan Clinic has been trusted by Bollywood actors, Instagram influencers, and NRI patients from the UK, Dubai, USA, and Canada. Thousands of successful procedures with ${surgeonName} speak for themselves.` },
+        { title: "Surgeon With a Verifiable Portfolio", body: "We share clear, unedited before-and-after photo portfolios of the surgeon's own patients — particularly hairlines and cases matching your Norwood hair loss stage and scalp type." },
+    ];
+}
 
-const faqList = [
-    { q: "How do I find the best hair transplant surgeon in Delhi?", a: "Study the surgeon's own before-and-afters (especially hairlines and cases like yours), confirm the surgeon personally performs the surgery, check years and case volume in hair restoration, verify credentials and registration, and read genuine reviews." },
-    { q: "What makes a great hair transplant surgeon?", a: "A combination of surgical precision and aesthetic judgement — clean extraction, natural hairline design, well-distributed density, careful donor management — backed by focused experience and a real portfolio." },
-    { q: "What's the difference between a hair transplant surgeon and a technician?", a: "A qualified surgeon should perform the skilled steps — design, extraction, recipient-site creation, and implantation. In many clinics, technicians do much of this, which is a common cause of poor survival and unnatural results. At Ryan Clinic, the surgeon performs every step." },
-    { q: "How much experience should a hair transplant surgeon have?", a: "Look for documented years focused on hair restoration and real case volume — and, most importantly, a portfolio of the surgeon's own results with patients similar to you." },
-    { q: "Does the surgeon design my hairline?", a: "Yes — at Ryan Clinic the surgeon personally designs your hairline. Hairline design is the most artistic, result-defining part of the surgery and should never be left to a technician." },
-    { q: "Why does surgical skill affect graft survival and how natural the result looks?", a: "Gentle, precise extraction protects follicle viability, and correct angle, depth, and density at implantation create natural growth. Both depend directly on the surgeon's skill; rushed, delegated work puts them at risk." },
-    { q: "Should one surgeon perform the whole procedure?", a: "The surgeon should perform all the skilled surgical steps. Consistent, hands-on involvement is what produces a natural, lasting result." },
-    { q: "How can I judge a surgeon's skill before booking?", a: "Ask to see the surgeon's own before-and-afters — particularly hairlines — and cases similar to yours. A skilled hair transplant surgeon in Delhi will gladly show their portfolio." },
-    { q: "Who is the hair transplant surgeon at Ryan Clinic?", a: "Dr. Pranendra Singh (MBBS AIIMS, MS PGIMER, Turkey FUE Fellowship) is our lead surgeon with 15+ years experience and 5,000+ successful hair transplants." },
-    { q: "Is a hair transplant surgeon the same as a dermatologist or plastic surgeon?", a: "A hair transplant surgeon may come from different backgrounds. What matters most is genuine hair-restoration training, real surgical experience, and a portfolio that proves the skill — not one specific specialty." },
-    { q: "Can a skilled hair transplant surgeon repair a previous bad transplant?", a: "Often, yes. An experienced surgeon can refine an unnatural hairline, add density, or improve an over-harvested donor area. Revision work demands strong surgical judgement, so it's a good marker of skill." },
-    { q: "How much does a hair transplant surgeon in Delhi charge?", a: "It's priced per graft and depends mainly on graft count and technique. At Ryan Clinic the surgeon provides an exact, transparent quote after a free scalp analysis, starting from ₹40,000, with 0% EMI." },
-    { q: "Where can I meet the hair transplant surgeon in Delhi?", a: "At our Pitampura centre (CD 163, Block CD, Dakshini Pitampura, 110034), Mon–Sat, 9 AM–7 PM. Accessible via Pitampura Metro Station (Red Line)." },
-    { q: "How do I book a consultation with the surgeon?", a: "Call or WhatsApp +91-9911111247, or use the booking form. You'll get a scalp analysis, graft count, and cost breakdown with no obligation." },
-];
+function buildQuestionsList(surgeonName) {
+    return [
+        { q: "Will you personally perform my extraction and implantation, or will technicians?", ans: "In many high-volume clinics, technicians extract and implant while doctors only drop in. Unskilled technician handling damages graft roots.", std: `At Ryan Clinic, ${surgeonName} personally performs extraction, site creation, and implantation.` },
+        { q: "How many hair transplant cases like mine have you done — can I see your own results?", ans: "Generic stock photos mean nothing. You need to verify past cases matching your Norwood hair loss stage and scalp type.", std: "We share clear, unedited before-and-after photo portfolios of the surgeon's own patients." },
+        { q: "How long have you focused on hair restoration?", ans: "Hair transplantation is an artistic surgical discipline. An occasional provider lacks the refined technique of a dedicated specialist.", std: `${surgeonName} has 15+ years of dedicated hair restoration focus and 5,000+ completed procedures.` },
+        { q: "Which technique do you recommend for me, and why?", ans: "Clinics that push one technique for everyone are prioritizing speed over your optimal outcome.", std: "We evaluate your scalp and offer Sapphire FUE or Turkish Technique Choi Pen based on your graft density needs." },
+        { q: "How will you design my hairline for a natural result now and in the future?", ans: "A straight, low hairline looks fake as you age. The surgeon must plan for future natural hair recession.", std: "We build a soft, multi-layered hairline gradient that suits your facial structure for life." },
+        { q: "Am I a good candidate, or should I consider medical therapy first?", ans: "Unethical clinics sell surgery to patients with active diffuse thinning or poor donor supply.", std: "We conduct a thorough trichological scalp analysis first and recommend medical management if surgery is premature." },
+        { q: "What's the total per-graft cost, and what does aftercare include?", ans: "Hidden charges for anesthesia, post-op wash kits, or follow-ups create unpleasant surprises.", std: "Transparent written per-graft pricing starting at ₹40,000 with 0% EMI and 18 months free follow-up." },
+    ];
+}
+
+function buildFaqList(surgeonName, cityName) {
+    return [
+        { q: `How do I find the best hair transplant surgeon in ${cityName}?`, a: "Study the surgeon's own before-and-afters (especially hairlines and cases like yours), confirm the surgeon personally performs the surgery, check years and case volume in hair restoration, verify credentials and registration, and read genuine reviews." },
+        { q: "What makes a great hair transplant surgeon?", a: "A combination of surgical precision and aesthetic judgement — clean extraction, natural hairline design, well-distributed density, careful donor management — backed by focused experience and a real portfolio." },
+        { q: "What's the difference between a hair transplant surgeon and a technician?", a: "A qualified surgeon should perform the skilled steps — design, extraction, recipient-site creation, and implantation. In many clinics, technicians do much of this, which is a common cause of poor survival and unnatural results. At Ryan Clinic, the surgeon performs every step." },
+        { q: "How much experience should a hair transplant surgeon have?", a: "Look for documented years focused on hair restoration and real case volume — and, most importantly, a portfolio of the surgeon's own results with patients similar to you." },
+        { q: "Does the surgeon design my hairline?", a: `Yes — at Ryan Clinic the surgeon personally designs your hairline. Hairline design is the most artistic, result-defining part of the surgery and should never be left to a technician.` },
+        { q: "Why does surgical skill affect graft survival and how natural the result looks?", a: "Gentle, precise extraction protects follicle viability, and correct angle, depth, and density at implantation create natural growth. Both depend directly on the surgeon's skill; rushed, delegated work puts them at risk." },
+        { q: "Should one surgeon perform the whole procedure?", a: "The surgeon should perform all the skilled surgical steps. Consistent, hands-on involvement is what produces a natural, lasting result." },
+        { q: `How can I judge a surgeon's skill before booking?`, a: `Ask to see the surgeon's own before-and-afters — particularly hairlines — and cases similar to yours. A skilled hair transplant surgeon in ${cityName} will gladly show their portfolio.` },
+        { q: "Who is the hair transplant surgeon at Ryan Clinic?", a: `${surgeonName} is our lead surgeon with extensive experience and thousands of successful hair transplants to their name.` },
+        { q: "Is a hair transplant surgeon the same as a dermatologist or plastic surgeon?", a: "A hair transplant surgeon may come from different backgrounds. What matters most is genuine hair-restoration training, real surgical experience, and a portfolio that proves the skill — not one specific specialty." },
+        { q: "Can a skilled hair transplant surgeon repair a previous bad transplant?", a: "Often, yes. An experienced surgeon can refine an unnatural hairline, add density, or improve an over-harvested donor area. Revision work demands strong surgical judgement, so it's a good marker of skill." },
+        { q: `How much does a hair transplant surgeon in ${cityName} charge?`, a: `It's priced per graft and depends mainly on graft count and technique. At Ryan Clinic the surgeon provides an exact, transparent quote after a free scalp analysis, starting from ₹40,000, with 0% EMI.` },
+        { q: `Where can I meet the hair transplant surgeon in ${cityName}?`, a: `Visit our Ryan Clinic centre in ${cityName} to meet the surgeon in person. Check our clinic location details below for the full address, phone, and opening hours.` },
+        { q: "How do I book a consultation with the surgeon?", a: "Call or WhatsApp +91-9911111247, or use the booking form. You'll get a scalp analysis, graft count, and cost breakdown with no obligation." },
+    ];
+}
 
 /* ─── Feature cards (matching featuresOverview.js 9-cell grid) ──────────── */
 const surgeonFeatures = [
@@ -133,36 +168,54 @@ export default function SurgeonPageClient({ pageData, slug }) {
     const [openQuestion, setOpenQuestion] = useState(0);
     const [openFaq, setOpenFaq] = useState(null);
 
+    // Resolve city first so heroTitle fallback can reference it
+    const cityFromSlug = (slug || pageData?.slug || "").split("-in-").pop()?.replace(/-/g, " ") || "";
+    const rawCityName = pageData?.general?.city || pageData?.city || cityFromSlug;
+    // Capitalise each word (e.g. "new delhi" → "New Delhi")
+    const cityName = rawCityName
+        ? rawCityName.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ")
+        : "Delhi";
+
     // Dynamic CMS Data bindings with fallbacks
-    const heroTitle = pageData?.hero?.title || pageData?.title || "Best Hair Transplant Surgeon in Delhi";
-    const heroDesc = pageData?.hero?.description || "Your result depends less on the clinic name or machine used, and more on the hands and artistic eye of your surgeon. At Ryan Clinic in Pitampura, your hair transplant is 100% surgeon-led from start to finish — never delegated to technicians.";
+    const heroTitle = pageData?.hero?.title || pageData?.title || `Best Hair Transplant Surgeon in ${cityName}`;
+    const heroDesc = pageData?.hero?.description || "Your result depends less on the clinic name or machine used, and more on the hands and artistic eye of your surgeon. At Ryan Clinic, your hair transplant is 100% surgeon-led from start to finish — never delegated to technicians.";
     const heroBadgeText = pageData?.hero?.badge?.text || "Ryan Clinic · Surgical Excellence";
 
     const doctorCard = pageData?.hero?.doctorCard || {};
-    const doctorName = doctorCard.doctorName || pageData?.leadSurgeon?.heading || "Dr. Pranendra Singh";
+    const doctorName = doctorCard.doctorName || pageData?.leadSurgeon?.doctorName || pageData?.doctorName || "Dr. Pranendra Singh";
     const doctorQual = doctorCard.qualification || "MBBS (AIIMS) · MS (PGIMER) · Turkey FUE Specialist";
-    const doctorImg = doctorCard.image?.url || pageData?.leadSurgeon?.doctorImage?.url || "/uploads/turkey-doctor.jpg";
-    const doctorImgAlt = doctorCard.image?.alt || `${doctorName} Hair Transplant Surgeon Delhi`;
+    const doctorImg = getImageSrc(doctorCard.image || pageData?.leadSurgeon?.doctorImage, "/uploads/turkey-doctor.jpg");
+    const doctorImgAlt = doctorCard.image?.alt || `${doctorName} Hair Transplant Surgeon ${cityName}`;
 
-    const cityFromSlug = (slug || pageData?.slug || "").split("-in-").pop()?.split("-")[0] || "";
-    const rawCityName = pageData?.general?.city || pageData?.city || cityFromSlug;
-    const cityName = rawCityName ? rawCityName.charAt(0).toUpperCase() + rawCityName.slice(1).toLowerCase() : "Mumbai";
+    const leadSurgeonName = doctorName;
+    const leadSurgeonDesc = pageData?.leadSurgeon?.description || `${leadSurgeonName} is India's foremost authority on Turkey's Sapphire FUE technique. With 15+ years and 5,000+ procedures, the surgeon personally performs every hairline design, graft extraction, and implantation step for ${cityName} patients.`;
+    const leadSurgeonImg = getImageSrc(pageData?.leadSurgeon?.doctorImage, doctorImg);
 
-    const leadSurgeonName = pageData?.leadSurgeon?.heading || doctorName || "Dr. Pranendra Singh";
-    const leadSurgeonDesc = pageData?.leadSurgeon?.description || `Dr. ${leadSurgeonName} (MBBS AIIMS, MS PGIMER, Turkey FUE Fellowship) is India's foremost authority on Turkey's Sapphire FUE technique. With 15+ years and 5,000+ procedures, he personally performs every hairline design, graft extraction, and implantation step for ${cityName} patients.`;
-    const leadSurgeonImg = pageData?.leadSurgeon?.doctorImage?.url || doctorImg;
+    // Dynamic lists — built using CMS-resolved surgeon name and city
+    const cmsSteps = pageData?.surgeonRole?.steps;
+    const surgicalJourney = (cmsSteps && cmsSteps.length > 0)
+        ? cmsSteps.map((s, idx) => ({
+            num: s.num || String(s.stepNumber || idx + 1).padStart(2, "0"),
+            title: s.title || defaultSurgicalJourney[idx]?.title || "",
+            body: s.body || s.description || defaultSurgicalJourney[idx]?.body || "",
+        }))
+        : defaultSurgicalJourney;
+
+    const whyItems = buildWhyItems(leadSurgeonName);
+    const questionsList = buildQuestionsList(leadSurgeonName);
 
     const activeFaqs = (pageData?.faq?.faqs?.length
         ? pageData.faq.faqs.map(f => ({ q: f.question || f.q, a: f.answer || f.a }))
         : (pageData?.faq?.items?.length
             ? pageData.faq.items.map(f => ({ q: f.question || f.q, a: f.answer || f.a }))
-            : faqList));
+            : buildFaqList(leadSurgeonName, cityName)));
 
     return (
         <div className="bg-white text-gray-900 font-sans selection:bg-[#D32F2F] selection:text-white">
 
             {/* ═══════════════════════════════════════════════════════════════
-                SECTION 1: OUR LEAD SURGEON (Image 2 - Placed as Top Hero)
+                SECTION 1: OUR LEAD SURGEON (Top Hero)
+                Mandatory SEO Heading 1: "Best Hair Transplant Surgeon in Delhi"
             ═══════════════════════════════════════════════════════════════ */}
             <section className="py-12 md:py-20 bg-[#fff5ec] relative overflow-hidden border-b border-orange-100/60">
                 <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -171,7 +224,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
                     <div className="flex items-center gap-3 mb-6 md:mb-8">
                         <span className="block w-8 h-px bg-[#D32F2F]" />
                         <span className="text-[#D32F2F] text-[11px] font-bold tracking-[0.22em] uppercase">
-                            OUR LEAD SURGEON
+                            {pageData?.leadSurgeon?.badge?.text || "OUR LEAD SURGEON"}
                         </span>
                     </div>
 
@@ -182,7 +235,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
                             <div className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-xl border-2 border-white/80">
                                 <Image
                                     src={leadSurgeonImg}
-                                    alt={`${leadSurgeonName} Lead Hair Transplant Surgeon`}
+                                    alt={`${leadSurgeonName} Hair Transplant Surgeon ${cityName}`}
                                     width={640}
                                     height={480}
                                     className="w-full h-80 md:h-[480px] object-cover object-top"
@@ -210,10 +263,8 @@ export default function SurgeonPageClient({ pageData, slug }) {
 
                         {/* ── Right — Content */}
                         <div className="lg:pl-4">
-                            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-[1.1] tracking-tight mb-5 text-gray-900">
-                                Lead Surgeon
-                                <br />
-                                <span className="text-[#D32F2F]">{leadSurgeonName} — Hair Transplant Surgeon</span>
+                            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-[1.15] tracking-tight mb-5 text-gray-900">
+                                {pageData?.leadSurgeon?.heading || `Best Hair Transplant Surgeon in ${cityName}`}
                             </h1>
 
                             <p className="text-sm md:text-[15px] leading-relaxed mb-8 text-gray-600 font-normal">
@@ -293,7 +344,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
 
             {/* ═══════════════════════════════════════════════════════════════
                 SECTION 2: WHY SURGICAL SKILL MATTERS
-                → Swapped Card 1 and Card 2 images
+                Mandatory SEO Heading 2: "Why Surgical Skill Matters for Your Hair Transplant"
             ═══════════════════════════════════════════════════════════════ */}
             <section className="py-16 md:py-24 bg-[#fff5ec]">
                 <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -302,82 +353,68 @@ export default function SurgeonPageClient({ pageData, slug }) {
                     <div className="flex items-center gap-3 mb-4 md:mb-8">
                         <span className="block w-8 h-px bg-[#D32F2F]" />
                         <span className="text-[#D32F2F] text-[11px] font-semibold tracking-[0.22em] uppercase">
-                            Why Surgical Skill Matters
+                            {pageData?.whySkill?.badge?.text || "Why Surgical Skill Matters"}
                         </span>
                     </div>
 
                     <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10">
-                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight max-w-lg">
-                            What Makes Us<br />The Best
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-[1.15] tracking-tight max-w-2xl">
+                            {pageData?.whySkill?.heading || `Why a skilled hair transplant surgeon in ${cityName} matters more than anything else`}
                         </h2>
 
                         {/* Enhanced right text block */}
                         <div className="max-w-md border-l-4 border-[#D32F2F] pl-5 py-2 bg-white/70 rounded-r-2xl border border-y-0 border-r-0 border-red-100 shadow-2xs">
                             <p className="text-gray-800 text-sm md:text-[15px] leading-relaxed font-medium">
-                                At Ryan Clinic, <span className="text-[#D32F2F] font-bold">excellence is not a promise — it's our track record</span>. From Turkey's finest techniques to 5,000+ successful patient outcomes, here is why patients trust our surgical leadership.
+                                {pageData?.whySkill?.description || (
+                                    <>At Ryan Clinic, <span className="text-[#D32F2F] font-bold">excellence is not a promise — it's our track record</span>. From Turkey's finest techniques to 5,000+ successful patient outcomes, here is why patients trust our surgical leadership.</>
+                                )}
                             </p>
                         </div>
                     </div>
 
-                    {/* 4-card horizontal image track */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-
-                        {/* Card 1: Wide featured card (Image swapped to turkey-doctor.jpg) */}
-                        <div className="relative rounded-2xl overflow-hidden h-80 group shadow-sm sm:col-span-2 lg:col-span-1">
-                            <Image src="/uploads/turkey-doctor.jpg" alt="Turkey's Best Technique" fill className="object-cover object-top group-hover:scale-105 transition-transform duration-700" unoptimized />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#D32F2F]/90 via-[#D32F2F]/50 to-transparent" />
-                            <div className="absolute bottom-5 left-5 right-5 text-white">
-                                <span className="text-4xl font-bold text-[#FFC107] block mb-1">01</span>
-                                <h3 className="text-base font-bold text-white mb-1">Turkey's Best Technique</h3>
-                                <p className="text-xs text-white/80 leading-relaxed mb-4">
-                                    We bring Turkey's most advanced hair restoration methods to India, delivering precise, natural-looking results that set us apart.
-                                </p>
-                                <a href={WA} className="inline-flex items-center gap-1.5 bg-[#FFC107] hover:bg-amber-400 text-black font-bold text-[11px] px-4 py-2 rounded-lg transition-all">
-                                    BOOK FREE CONSULT →
-                                </a>
+                    {/* Dynamic skill-reason cards — sourced from pageData.whySkill.cards (MongoDB) */}
+                    {(() => {
+                        const defaultCards = [
+                            { num: "01", title: "Graft Survival", body: "Careful extraction, minimal handling, correct preservation, and precise implantation all protect follicle viability. Each of these steps is a direct reflection of surgical skill and directly influences how many grafts survive and grow.", image: "/uploads/turkey-doctor.jpg", gradient: "from-[#D32F2F]/90 via-[#D32F2F]/50", showCta: true },
+                            { num: "02", title: "Hairline Artistry", body: "The surgeon determines the shape, irregularity, direction and angle of each graft at the frontal edge — creating an aesthetic design that complements your facial proportions and looks completely natural.", image: "/uploads/1752734248947-Hair Transplant 1.jpg", gradient: "from-black/85 via-black/30" },
+                            { num: "03", title: "Density & Coverage", body: "A limited donor supply must be strategically distributed across the scalp. Surgical planning determines how grafts are placed to achieve the most visually effective density and coverage for your pattern of loss.", image: "/uploads/about-one.jpg", gradient: "from-[#D32F2F]/85 via-black/30" },
+                            { num: "04", title: "Donor Management", body: "Donor hair is finite and cannot be replaced. A skilled surgeon extracts strategically — protecting the donor area from over-harvesting while ensuring enough grafts are available for both current and any future restoration.", image: "/uploads/service-two.jpg", gradient: "from-black/85 via-black/30" },
+                            { num: "05", title: "Patient Safety", body: "Qualified surgical oversight, sterile protocols, sound patient selection and careful planning protect safety throughout the procedure. Good surgical judgement — not just equipment — is what keeps patients safe.", image: "/uploads/gallery.jpg", gradient: "from-black/85 via-black/30" },
+                        ];
+                        const cards = pageData?.whySkill?.cards?.length ? pageData.whySkill.cards : defaultCards;
+                        return (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                                {cards.map((card, i) => (
+                                    <div key={i} className="relative rounded-2xl overflow-hidden h-80 group shadow-sm">
+                                        <Image
+                                            src={getImageSrc(card.image || card.image?.url, defaultCards[i % defaultCards.length]?.image || "/uploads/gallery.jpg")}
+                                            alt={card.title || "Surgical skill"}
+                                            fill
+                                            className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                                            unoptimized
+                                        />
+                                        <div className={`absolute inset-0 bg-gradient-to-t ${card.gradient || defaultCards[i % defaultCards.length]?.gradient || "from-black/85 via-black/30"} to-transparent`} />
+                                        <div className="absolute bottom-5 left-5 right-5 text-white">
+                                            <span className="text-4xl font-bold text-[#FFC107] block mb-1">{card.num || String(i + 1).padStart(2, "0")}</span>
+                                            <h3 className="text-base font-bold text-white mb-1">{card.title}</h3>
+                                            <p className="text-xs text-white/80 leading-relaxed" style={{ marginBottom: card.showCta ? "1rem" : undefined }}>{card.body}</p>
+                                            {(card.showCta || i === 0) && (
+                                                <a href={WA} className="inline-flex items-center gap-1.5 bg-[#FFC107] hover:bg-amber-400 text-black font-bold text-[11px] px-4 py-2 rounded-lg transition-all">
+                                                    BOOK FREE CONSULT →
+                                                </a>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                        </div>
-
-                        {/* Card 2 (Image swapped to 1752734248947-Hair Transplant 1.jpg) */}
-                        <div className="relative rounded-2xl overflow-hidden h-80 group shadow-sm">
-                            <Image src="/uploads/1752734248947-Hair Transplant 1.jpg" alt="95% Graft Survival" fill className="object-cover object-top group-hover:scale-105 transition-transform duration-700" unoptimized />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-                            <div className="absolute bottom-5 left-5 right-5 text-white">
-                                <span className="text-4xl font-bold text-[#FFC107] block mb-1">02</span>
-                                <h3 className="text-base font-bold text-white">95% Graft Survival</h3>
-                                <p className="text-xs text-gray-300 mt-1">Gentle, precise extraction protects follicle viability.</p>
-                            </div>
-                        </div>
-
-                        {/* Card 3 */}
-                        <div className="relative rounded-2xl overflow-hidden h-80 group shadow-sm">
-                            <Image src="/uploads/about-one.jpg" alt="Completely Pain-Free" fill className="object-cover group-hover:scale-105 transition-transform duration-700" unoptimized />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#D32F2F]/85 via-black/30 to-transparent" />
-                            <div className="absolute bottom-5 left-5 right-5 text-white">
-                                <span className="text-4xl font-bold text-[#FFC107] block mb-1">03</span>
-                                <h3 className="text-base font-bold text-white">Completely Pain-Free</h3>
-                                <p className="text-xs text-gray-300 mt-1">Premium local anaesthesia throughout your procedure.</p>
-                            </div>
-                        </div>
-
-                        {/* Card 4 */}
-                        <div className="relative rounded-2xl overflow-hidden h-80 group shadow-sm">
-                            <Image src="/uploads/service-two.jpg" alt="12 Years Strong" fill className="object-cover group-hover:scale-105 transition-transform duration-700" unoptimized />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-                            <div className="absolute bottom-5 left-5 right-5 text-white">
-                                <span className="text-4xl font-bold text-[#FFC107] block mb-1">04</span>
-                                <h3 className="text-base font-bold text-white">12 Years Strong</h3>
-                                <p className="text-xs text-gray-300 mt-1">Delhi's most experienced surgeon-led hair clinic.</p>
-                            </div>
-                        </div>
-
-                    </div>
+                        );
+                    })()}
                 </div>
             </section>
 
             {/* ═══════════════════════════════════════════════════════════════
-                SECTION 3: WHAT MAKES A GREAT SURGEON
-                → Adjusted heading size to text-2xl sm:text-3xl md:text-4xl font-bold
+                SECTION 3: WHAT MAKES A QUALIFIED SURGEON
+                Mandatory SEO Heading 3: "What Makes a Qualified Hair Transplant Surgeon?"
             ═══════════════════════════════════════════════════════════════ */}
             <section className="bg-white py-16 md:py-24">
                 <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -386,78 +423,61 @@ export default function SurgeonPageClient({ pageData, slug }) {
                     <div className="flex items-center gap-3 mb-4 md:mb-8">
                         <span className="block w-8 h-px bg-[#D32F2F]" />
                         <span className="text-[#D32F2F] text-[11px] font-semibold tracking-[0.22em] uppercase">
-                            Trusted by 5,000+ Patients
+                            {pageData?.benefits?.badge?.text || "Trusted by 5,000+ Patients"}
                         </span>
                     </div>
 
                     {/* Heading + intro */}
                     <div className="max-w-3xl mb-8 md:mb-12">
                         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-[1.2] tracking-tight">
-                            What Makes a Great Surgeon.{" "}
-                            <span className="text-[#D32F2F]">
-                                India's Only Turkey Technique.
-                            </span>
+                            {pageData?.benefits?.heading || `What makes the best hair transplant surgeon in ${cityName}`}
                         </h2>
                         <p className="text-gray-500 text-xs md:text-sm leading-relaxed my-4 font-normal">
-                            Ryan Clinic's surgeon combines Turkey's most advanced Sapphire FUE technique with 15+ years of dedicated hair restoration experience — delivering results that last a lifetime with precision that sets a new standard.
+                            {pageData?.benefits?.description || "Ryan Clinic's surgeon combines Turkey's most advanced Sapphire FUE technique with 15+ years of dedicated hair restoration experience — delivering results that last a lifetime with precision that sets a new standard."}
                         </p>
                     </div>
 
-                    {/* 9-cell bordered grid with BOTH Column and Row lines */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 border border-red-200 rounded-2xl overflow-hidden divide-y divide-red-200">
-                        {/* Row 1 (Items 0, 1, 2) */}
-                        <div className="grid grid-cols-1 sm:grid-cols-3 sm:col-span-3 divide-y sm:divide-y-0 sm:divide-x divide-red-200">
-                            {surgeonFeatures.slice(0, 3).map((f, i) => (
-                                <div key={i} className="group bg-white hover:bg-[#D32F2F] transition-all duration-400 p-8 flex flex-col gap-5">
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-3xl font-light text-red-300 group-hover:text-white/30 transition-colors tracking-tight">{f.number}</span>
-                                        <div className="w-10 h-10 rounded-full bg-red-50 group-hover:bg-white/15 flex items-center justify-center text-[#D32F2F] group-hover:text-white transition-all duration-300">{f.icon}</div>
+                    {/* Dynamic surgeon-quality cards — sourced from pageData.benefits.items (MongoDB) */}
+                    {(() => {
+                        const defaultItems = [
+                            { number: "01", title: "Hands-On Mastery", text: "The surgeon personally performs or directly controls every critical surgical stage — extraction, recipient-site creation, and implantation — rather than delegating essential surgical work to technicians.", icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg> },
+                            { number: "02", title: "Aesthetic Judgement", text: "The surgeon understands facial proportions, age, natural growth direction and long-term hair-loss patterns — and applies that understanding when designing the hairline and distributing grafts for a result that looks natural.", icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg> },
+                            { number: "03", title: "Deep Focused Experience", text: "Meaningful experience comes from sustained focus on hair restoration and real exposure to a wide range of hair-loss patterns and case types — not occasional procedures performed alongside unrelated treatments.", icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg> },
+                            { number: "04", title: "Technical Range", text: "A skilled surgeon understands multiple hair restoration techniques — FUE, Sapphire FUE, DHI — and selects the most appropriate method based on your individual scalp, graft count, and density needs, rather than applying one approach to every patient.", icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg> },
+                            { number: "05", title: "Honesty & Patient Selection", text: "A responsible surgeon assesses whether each patient is a suitable surgical candidate, sets realistic expectations, explains limitations honestly, and recommends non-surgical management when surgery is not yet appropriate — without applying pressure to proceed.", icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg> },
+                            { number: "06", title: "Real Patient Portfolio", text: "Patients should be able to review genuine before-and-after cases showing hairline design, density distribution, donor zone management, and natural results across a range of hair-loss patterns — not stock imagery or unverifiable claims.", icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg> },
+                        ];
+                        const items = pageData?.benefits?.items?.length
+                            ? pageData.benefits.items.map((item, i) => ({ ...defaultItems[i], ...item, icon: defaultItems[i]?.icon }))
+                            : defaultItems;
+                        const rows = [items.slice(0, 3), items.slice(3, 6)];
+                        return (
+                            <div className="grid grid-cols-1 sm:grid-cols-3 border border-red-200 rounded-2xl overflow-hidden divide-y divide-red-200">
+                                {rows.map((row, ri) => (
+                                    <div key={ri} className="grid grid-cols-1 sm:grid-cols-3 sm:col-span-3 divide-y sm:divide-y-0 sm:divide-x divide-red-200">
+                                        {row.map((f, i) => (
+                                            <div key={i} className="group bg-white hover:bg-[#D32F2F] transition-all duration-400 p-8 flex flex-col gap-5">
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-3xl font-light text-red-300 group-hover:text-white/30 transition-colors tracking-tight">{f.number || f.num || String(ri * 3 + i + 1).padStart(2, "0")}</span>
+                                                    <div className="w-10 h-10 rounded-full bg-red-50 group-hover:bg-white/15 flex items-center justify-center text-[#D32F2F] group-hover:text-white transition-all duration-300">{f.icon}</div>
+                                                </div>
+                                                <div>
+                                                    <h3 className="text-base font-bold text-gray-900 group-hover:text-white mb-2 transition-colors leading-snug">{f.title}</h3>
+                                                    <p className="text-xs text-gray-500 group-hover:text-red-100 leading-relaxed transition-colors">{f.text}</p>
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
-                                    <div>
-                                        <h3 className="text-base font-bold text-gray-900 group-hover:text-white mb-2 transition-colors leading-snug">{f.title}</h3>
-                                        <p className="text-xs text-gray-500 group-hover:text-red-100 leading-relaxed transition-colors">{f.text}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Row 2 (Items 3, 4, 5) */}
-                        <div className="grid grid-cols-1 sm:grid-cols-3 sm:col-span-3 divide-y sm:divide-y-0 sm:divide-x divide-red-200">
-                            {surgeonFeatures.slice(3, 6).map((f, i) => (
-                                <div key={i} className="group bg-white hover:bg-[#D32F2F] transition-all duration-400 p-8 flex flex-col gap-5">
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-3xl font-light text-red-300 group-hover:text-white/30 transition-colors tracking-tight">{f.number}</span>
-                                        <div className="w-10 h-10 rounded-full bg-red-50 group-hover:bg-white/15 flex items-center justify-center text-[#D32F2F] group-hover:text-white transition-all duration-300">{f.icon}</div>
-                                    </div>
-                                    <div>
-                                        <h3 className="text-base font-bold text-gray-900 group-hover:text-white mb-2 transition-colors leading-snug">{f.title}</h3>
-                                        <p className="text-xs text-gray-500 group-hover:text-red-100 leading-relaxed transition-colors">{f.text}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Row 3 (Items 6, 7, 8) */}
-                        <div className="grid grid-cols-1 sm:grid-cols-3 sm:col-span-3 divide-y sm:divide-y-0 sm:divide-x divide-red-200">
-                            {surgeonFeatures.slice(6, 9).map((f, i) => (
-                                <div key={i} className="group bg-white hover:bg-[#D32F2F] transition-all duration-400 p-8 flex flex-col gap-5">
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-3xl font-light text-red-300 group-hover:text-white/30 transition-colors tracking-tight">{f.number}</span>
-                                        <div className="w-10 h-10 rounded-full bg-red-50 group-hover:bg-white/15 flex items-center justify-center text-[#D32F2F] group-hover:text-white transition-all duration-300">{f.icon}</div>
-                                    </div>
-                                    <div>
-                                        <h3 className="text-base font-bold text-gray-900 group-hover:text-white mb-2 transition-colors leading-snug">{f.title}</h3>
-                                        <p className="text-xs text-gray-500 group-hover:text-red-100 leading-relaxed transition-colors">{f.text}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+                                ))}
+                            </div>
+                        );
+                    })()}
                 </div>
             </section>
 
             {/* ═══════════════════════════════════════════════════════════════
-                SECTION 4: WHY RYAN CLINIC (Smaller stat cards + Increased image height)
+                SECTION 4: WHY CHOOSE LEAD SURGEON
+                Mandatory SEO Heading 4: "Why Choose Dr. Pranendra Singh as Your Hair Transplant Surgeon in Delhi?"
             ═══════════════════════════════════════════════════════════════ */}
             <section className="py-16 md:py-24 bg-[#fff5ec]">
                 <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -466,26 +486,20 @@ export default function SurgeonPageClient({ pageData, slug }) {
                     <div className="flex items-center gap-3 mb-4 md:mb-8">
                         <span className="block w-8 h-px bg-[#D32F2F]" />
                         <span className="text-[#D32F2F] text-[11px] font-semibold tracking-[0.22em] uppercase">
-                            Why Choose Ryan Clinic
+                            {pageData?.whyClinic?.badge?.text || "Why Choose Ryan Clinic"}
                         </span>
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
 
-                        {/* ── Left panel (sticky) — Smaller stat cards & Increased image height */}
+                        {/* ── Left panel (sticky) */}
                         <div className="lg:sticky lg:top-28">
-                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-5">
-                                Why Ryan Clinic Is
-                                <br />
-                                <span className="text-[#D32F2F]">
-                                    The Best Hair Transplant
-                                    <br />
-                                </span>
-                                Surgeon In Delhi
+                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-[1.15] tracking-tight mb-5">
+                                {pageData?.whyClinic?.heading || `Why Choose ${leadSurgeonName} as Your Hair Transplant Surgeon in ${cityName}?`}
                             </h2>
 
                             <p className="text-gray-500 text-sm md:text-[15px] leading-relaxed mb-6 max-w-md">
-                                Among the many options for a hair transplant surgeon in Delhi, here's what makes Ryan Clinic the choice of 5,000+ patients.
+                                {pageData?.whyClinic?.description || `Among the many options for a hair transplant surgeon in ${cityName}, here's what makes ${leadSurgeonName} at Ryan Clinic the choice of 5,000+ patients.`}
                             </p>
 
                             {/* Smaller, compact stat cards */}
@@ -503,11 +517,11 @@ export default function SurgeonPageClient({ pageData, slug }) {
                                 ))}
                             </div>
 
-                            {/* Increased clinic image height (h-80 sm:h-96 lg:h-[400px]) */}
+                            {/* Clinic image */}
                             <div className="relative rounded-2xl overflow-hidden h-80 sm:h-96 lg:h-[400px] shadow-md border border-gray-100">
                                 <img
                                     src="/uploads/gallery.jpg"
-                                    alt="Ryan Clinic Hair Transplant Surgeon Delhi"
+                                    alt={`${leadSurgeonName} Hair Transplant Surgeon ${cityName}`}
                                     className="w-full h-full object-cover object-top"
                                 />
                                 <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)" }} />
@@ -515,7 +529,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
                                 <div className="absolute bottom-0 inset-x-0 p-5">
                                     <span className="block w-6 h-0.5 mb-2 rounded-full bg-yellow-400/80" />
                                     <p className="text-base font-extrabold text-white leading-snug">Trusted By 5,000+ Patients</p>
-                                    <p className="text-xs text-white/70 mt-0.5">Delhi Hair Transplant Specialists</p>
+                                    <p className="text-xs text-white/70 mt-0.5">{cityName} Hair Transplant Specialists</p>
                                 </div>
                             </div>
                         </div>
@@ -590,7 +604,8 @@ export default function SurgeonPageClient({ pageData, slug }) {
             </section>
 
             {/* ═══════════════════════════════════════════════════════════════
-                SECTION 5: THE SURGICAL JOURNEY — Interactive Stepper
+                SECTION 5: THE SURGICAL JOURNEY
+                Mandatory SEO Heading 5: "The Role of the Surgeon in Every Step of Your Hair Transplant"
             ═══════════════════════════════════════════════════════════════ */}
             <section className="py-16 md:py-24 bg-[#fff5ec] border-y border-red-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -600,15 +615,14 @@ export default function SurgeonPageClient({ pageData, slug }) {
                         <div className="inline-flex items-center gap-2 bg-white border border-red-200 px-4 py-1.5 rounded-full mb-5 shadow-sm">
                             <span className="w-2 h-2 rounded-full bg-[#D32F2F]" />
                             <span className="text-[#D32F2F] text-xs font-extrabold tracking-widest uppercase">
-                                Step-By-Step Surgical Excellence
+                                {pageData?.surgeonRole?.badge?.text || "Step-By-Step Surgical Excellence"}
                             </span>
                         </div>
-                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
-                            The Surgeon's Role At <br />
-                            <span className="text-[#D32F2F]">Every Step Of Your Procedure</span>
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-[1.15] tracking-tight">
+                            {pageData?.surgeonRole?.heading || `The hair transplant surgeon's role at every step in ${cityName}`}
                         </h2>
                         <p className="text-gray-500 text-sm md:text-base leading-relaxed mt-5">
-                            A great hair transplant surgeon is hands-on at every stage because each step directly shapes your final hairline and graft survival rate.
+                            {pageData?.surgeonRole?.description || "A great hair transplant surgeon is hands-on at every stage because each step directly shapes your final hairline and graft survival rate."}
                         </p>
                     </div>
 
@@ -759,7 +773,8 @@ export default function SurgeonPageClient({ pageData, slug }) {
 
 
             {/* ═══════════════════════════════════════════════════════════════
-                SECTION 7: SURGEON VS TECHNICIAN (Dual Compare Cards)
+                SECTION 6: SURGEON VS TECHNICIAN
+                Mandatory SEO Heading 6: "Hair Transplant Surgeon vs Technician: Why Doctor-Led Surgery Matters"
             ═══════════════════════════════════════════════════════════════ */}
             <section className="bg-white py-16 md:py-24">
                 <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -767,19 +782,16 @@ export default function SurgeonPageClient({ pageData, slug }) {
                     <div className="flex items-center gap-3 mb-4 md:mb-8">
                         <span className="block w-8 h-px bg-[#D32F2F]" />
                         <span className="text-[#D32F2F] text-[11px] font-bold tracking-[0.22em] uppercase">
-                            The Critical Difference
+                            {pageData?.comparison?.badge?.text || "The Critical Difference"}
                         </span>
                     </div>
 
                     <div className="max-w-3xl mb-8 md:mb-14">
-                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
-                            Hair Transplant Surgeon vs Technician.{" "}
-                            <span className="text-[#D32F2F]">
-                                Why It Matters for Your Result.
-                            </span>
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-[1.15] tracking-tight">
+                            {pageData?.comparison?.heading || `Hair transplant surgeon vs technician in ${cityName}: the difference that defines your result`}
                         </h2>
                         <p className="text-gray-500 text-sm md:text-base leading-relaxed my-6 font-normal">
-                            In high-volume "graft mills," technicians perform extraction and implantation. At Ryan Clinic, every skilled surgical step is performed by a qualified surgeon — protecting your graft survival and natural hairline.
+                            {pageData?.comparison?.description || "In high-volume 'graft mills,' technicians perform extraction and implantation. At Ryan Clinic, every skilled surgical step is performed by a qualified surgeon — protecting your graft survival and natural hairline."}
                         </p>
                     </div>
 
@@ -889,132 +901,226 @@ export default function SurgeonPageClient({ pageData, slug }) {
             </section>
 
             {/* ═══════════════════════════════════════════════════════════════
-                SECTION 8: DOCTOR INTRO SPOTLIGHT (Image 1 layout)
+                SECTION 7 (NEW): EXPERIENCE & SPECIALIZATION
+                Mandatory SEO Heading 7: "Experience and Specialization: What to Look for in a Hair Transplant Doctor"
             ═══════════════════════════════════════════════════════════════ */}
-            <section className="bg-gradient-to-br from-red-50/60 via-white to-[#fff5ec] py-16 md:py-24 relative overflow-hidden border-t border-b border-red-100">
-                <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+            <section className="py-16 md:py-24 bg-[#fff5ec] border-t border-red-100">
+                <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex items-center gap-3 mb-4 md:mb-8">
+                        <span className="block w-8 h-px bg-[#D32F2F]" />
+                        <span className="text-[#D32F2F] text-[11px] font-bold tracking-[0.22em] uppercase">
+                            {pageData?.experienceSpecialization?.badge?.text || "SURGEON CREDENTIALS"}
+                        </span>
+                    </div>
 
-                        {/* Left Content */}
-                        <div className="lg:col-span-7">
-                            <Reveal>
-                                <div className="flex flex-wrap items-center gap-2 mb-6">
-                                    <div className="inline-flex items-center gap-2 bg-[#D32F2F] text-white px-3.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest shadow-sm">
-                                        <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                                        {heroBadgeText}
+                    <div className="max-w-3xl mb-8 md:mb-12">
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-[1.15] tracking-tight">
+                            {pageData?.experienceSpecialization?.heading || `Experience and specialization to look for in a hair transplant surgeon in ${cityName}`}
+                        </h2>
+                        <p className="text-gray-500 text-sm md:text-base leading-relaxed my-4">
+                            {pageData?.experienceSpecialization?.description || "Evaluating surgical credentials, case volume, and sub-specialty fellowship training ensures you select a doctor who delivers safe, natural, and long-lasting hair restoration."}
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {(pageData?.experienceSpecialization?.items?.length
+                            ? pageData.experienceSpecialization.items
+                            : [
+                                { title: "15+ Years Dedicated Focus", description: "Exclusive focus on hair restoration surgery rather than general plastic procedures." },
+                                { title: "Turkey Fellowship Training", description: "Advanced specialization in Sapphire FUE and direct graft implantation methods." },
+                                { title: "5,000+ Verifiable Cases", description: "A proven track record covering Norwood stages 2 to 7 with high density outcomes." }
+                            ]).map((item, i) => {
+                                const specIcons = [
+                                    <Clock key="1" className="w-5 h-5 text-[#D32F2F]" />,
+                                    <FileText key="2" className="w-5 h-5 text-[#D32F2F]" />,
+                                    <Layers key="3" className="w-5 h-5 text-[#D32F2F]" />,
+                                    <BadgeCheck key="4" className="w-5 h-5 text-[#D32F2F]" />,
+                                    <PenTool key="5" className="w-5 h-5 text-[#D32F2F]" />,
+                                    <Sparkles key="6" className="w-5 h-5 text-[#D32F2F]" />
+                                ];
+                                return (
+                                    <div key={i} className="bg-white p-6 rounded-2xl border border-red-100 shadow-2xs">
+                                        <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center mb-4 border border-red-100 shadow-2xs">
+                                            {specIcons[i % specIcons.length]}
+                                        </div>
+                                        <h3 className="text-lg font-extrabold text-gray-900 mb-2">{item.title}</h3>
+                                        <p className="text-xs text-gray-500 leading-relaxed">{item.description}</p>
                                     </div>
-                                    <span className="text-gray-400 text-xs hidden sm:inline">•</span>
-                                    <span className="text-xs font-bold text-gray-600 bg-white border border-red-100 px-3 py-1 rounded-full shadow-xs">
-                                        {doctorQual.split("·")[0] || "Certified Specialist"}
-                                    </span>
+                                );
+                            })}
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════════════════════════════
+                SECTION 8 (NEW): SKILL EVALUATION & METRICS
+                Mandatory SEO Heading 8: "How to Evaluate a Surgeon's Hair Transplant Skill and Results"
+            ═══════════════════════════════════════════════════════════════ */}
+            <section className="py-16 md:py-24 bg-white border-t border-red-100">
+                <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex items-center gap-3 mb-4 md:mb-8">
+                        <span className="block w-8 h-px bg-[#D32F2F]" />
+                        <span className="text-[#D32F2F] text-[11px] font-bold tracking-[0.22em] uppercase">
+                            {pageData?.skillEvaluation?.badge?.text || "SKILL ASSESSMENT"}
+                        </span>
+                    </div>
+
+                    <div className="max-w-3xl mb-8 md:mb-12">
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-[1.15] tracking-tight">
+                            {pageData?.skillEvaluation?.heading || `How to judge a hair transplant surgeon's skill in ${cityName} before booking`}
+                        </h2>
+                        <p className="text-gray-500 text-sm md:text-base leading-relaxed my-4">
+                            {pageData?.skillEvaluation?.description || "Key metrics to review when assessing a hair transplant surgeon's craftsmanship include graft survival rates, hairline naturalness, and donor zone preservation."}
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {(() => {
+                            const skillEvalIcons = [
+                                <Search key="0" className="w-5 h-5 text-[#D32F2F]" />,
+                                <UserCheck key="1" className="w-5 h-5 text-[#D32F2F]" />,
+                                <Calendar key="2" className="w-5 h-5 text-[#D32F2F]" />,
+                                <BadgeCheck key="3" className="w-5 h-5 text-[#D32F2F]" />,
+                                <Star key="4" className="w-5 h-5 text-[#D32F2F]" />,
+                            ];
+                            const defaultSkillItems = [
+                                { title: "Review Before-and-After Photos", description: "Examine unedited high-resolution photos of past patients, paying close attention to hairline irregularity, natural swirl, and donor area appearance." },
+                                { title: "Ask Who Performs Each Step", description: "Ask directly whether the surgeon performs graft extraction and channel creation personally, or delegates them to technicians." },
+                                { title: "Verify Case Volume", description: "Ask how many years the surgeon has focused on hair transplantation and how many procedures they perform." },
+                                { title: "Check Medical Registration", description: "Verify the doctor's full name, qualifications (e.g. MBBS, MS, Fellowship), and medical council registration number on the official register." },
+                                { title: "Read Verified Patient Reviews", description: "Read verified patient reviews on Google and independent medical portals to judge patient care, transparency, and post-op support." },
+                            ];
+                            const items = pageData?.skillEvaluation?.items?.length
+                                ? pageData.skillEvaluation.items
+                                : defaultSkillItems;
+                            return items.map((item, i) => (
+                                <div key={i} className="bg-[#fff5ec] p-6 rounded-2xl border border-red-100 flex flex-col gap-4">
+                                    <div className="w-10 h-10 rounded-xl bg-white border border-red-100 flex items-center justify-center shrink-0 shadow-2xs">
+                                        {skillEvalIcons[i % skillEvalIcons.length]}
+                                    </div>
+                                    <div>
+                                        <h3 className="text-sm font-extrabold text-gray-900 mb-1.5 leading-snug">{item.title || item.label}</h3>
+                                        <p className="text-xs text-gray-500 leading-relaxed">{item.description}</p>
+                                    </div>
                                 </div>
-                            </Reveal>
+                            ));
+                        })()}
+                    </div>
+                </div>
+            </section>
 
-                            <Reveal delay={70}>
-                                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-[1.12] tracking-tight mb-6">
-                                    {heroTitle}
-                                </h2>
-                            </Reveal>
 
-                            <Reveal delay={130}>
-                                <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-8 max-w-xl font-normal">
-                                    {heroDesc}
-                                </p>
-                            </Reveal>
+<section className="py-16 md:py-24 bg-[#fff5ec] border-t border-red-100">
+                <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex items-center gap-3 mb-4 md:mb-8">
+                        <span className="block w-8 h-px bg-[#D32F2F]" />
+                        <span className="text-[#D32F2F] text-[11px] font-bold tracking-[0.22em] uppercase">
+                            {pageData?.hairlineArtistry?.badge?.text || "AESTHETIC DESIGN"}
+                        </span>
+                    </div>
 
-                            {/* Credentials Badges Bar */}
-                            <Reveal delay={160}>
-                                <div className="flex flex-wrap gap-2 mb-8">
-                                    {[
-                                        `${doctorName} (Lead Surgeon)`,
-                                        doctorCard.experience || "15+ Yrs Specialization",
-                                        "5,000+ Completed Surgeries",
-                                        "Turkey Sapphire FUE Certified",
-                                    ].map((badge, idx) => (
-                                        <span key={idx} className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-700 bg-white border border-gray-200 px-3 py-1.5 rounded-lg shadow-2xs">
-                                            <CheckCircle2 className="w-3.5 h-3.5 text-[#D32F2F]" />
-                                            {badge}
-                                        </span>
-                                    ))}
-                                </div>
-                            </Reveal>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+                        <div>
+                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-[1.15] tracking-tight mb-5">
+                                {pageData?.hairlineArtistry?.heading || `The artistry of hairline design: what surgical skill looks like in ${cityName}`}
+                            </h2>
+                            <p className="text-gray-500 text-sm md:text-base leading-relaxed mb-6">
+                                {pageData?.hairlineArtistry?.description || "A natural hairline requires artistic vision, taking into consideration your facial proportions, temporal angles, and long-term age progression."}
+                            </p>
 
-                            <Reveal delay={190}>
-                                <div className="flex flex-wrap items-center gap-4 mb-10">
-                                    <a
-                                        href={WA}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-3 bg-[#D32F2F] hover:bg-red-700 text-white font-bold py-4 px-8 rounded-xl text-sm transition-all shadow-md shadow-red-700/20 hover:-translate-y-0.5"
-                                        onClick={() => trackCTA({ type: "whatsapp", ctaName: "Surgeon Spotlight Book", buttonLocation: "Surgeon Spotlight" })}
-                                    >
-                                        <MessageCircle className="w-4.5 h-4.5" /> Book Direct Surgical Assessment
-                                    </a>
-                                    <a
-                                        href={TEL}
-                                        className="inline-flex items-center gap-3 border-2 border-gray-200 hover:border-[#D32F2F] text-gray-800 hover:text-[#D32F2F] font-bold py-4 px-7 rounded-xl text-sm transition-all bg-white"
-                                        onClick={() => trackCTA({ type: "call", ctaName: "Surgeon Spotlight Call", buttonLocation: "Surgeon Spotlight" })}
-                                    >
-                                        <Phone className="w-4 h-4 text-[#D32F2F]" /> Call +91-9911111247
-                                    </a>
-                                </div>
-                            </Reveal>
-
-                            <Reveal delay={250}>
-                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                                    {(pageData?.hero?.stats?.length
-                                        ? pageData.hero.stats.map(s => ({ num: s.value, label: s.label }))
-                                        : [
-                                            { num: "15+", label: "Years Exp." },
-                                            { num: "5,000+", label: "Surgeries" },
-                                            { num: "95%+", label: "Graft Survival" },
-                                            { num: "4.9★", label: "Google Rating" },
-                                        ]).map((s, i) => (
-                                            <div key={i} className="bg-white border border-red-100 rounded-xl p-3.5 flex flex-col gap-0.5 shadow-2xs">
-                                                <span className="text-2xl font-black text-gray-900">{s.num}</span>
-                                                <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wider">{s.label}</span>
+                            <div className="space-y-4">
+                                {(pageData?.hairlineArtistry?.items?.length
+                                    ? pageData.hairlineArtistry.items
+                                    : [
+                                        { title: "Soft, Irregular Front Edge", description: "Builds a soft, irregular front edge rather than a straight, 'pluggy' line." },
+                                        { title: "Natural Micro Gradient", description: "Sets fine single-hair grafts at the hairline and denser units behind for a natural gradient." },
+                                        { title: "Facial Proportion Matching", description: "Matches the hairline to your face shape, age, and natural growth direction." },
+                                        { title: "Future Loss Planning", description: "Plans for future hair loss, so the result still looks natural years later." },
+                                        { title: "Donor Area Protection", description: "Manages the donor area so it never looks over-harvested." },
+                                    ]).map((item, i) => (
+                                        <div key={i} className="flex items-start gap-3 bg-white p-4.5 rounded-xl border border-red-100 shadow-2xs">
+                                            <div className="w-7 h-7 rounded-lg bg-red-50 text-[#D32F2F] flex items-center justify-center shrink-0 mt-0.5 border border-red-100">
+                                                <CheckCircle2 className="w-4 h-4" />
                                             </div>
-                                        ))}
-                                </div>
-                            </Reveal>
+                                            <div>
+                                                <h3 className="text-sm font-bold text-gray-900">{item.title}</h3>
+                                                <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">{item.description}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                            </div>
                         </div>
 
-                        {/* Right Surgeon Image Box (Enhanced Doctor Portrait) */}
-                        <div className="lg:col-span-5">
-                            <Reveal dir="right">
-                                <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white ring-1 ring-red-100 group">
-                                    <Image
-                                        src={doctorImg}
-                                        alt={doctorImgAlt}
-                                        width={640}
-                                        height={520}
-                                        className="w-full h-96 md:h-[520px] object-cover object-top group-hover:scale-103 transition-transform duration-700"
-                                        unoptimized
-                                        priority
-                                    />
-                                    <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.15) 50%, transparent 100%)" }} />
-                                    <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md rounded-xl px-3.5 py-1.5 shadow-md border border-white/50">
-                                        <span className="text-[#D32F2F] font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5">
-                                            <ShieldCheck className="w-4 h-4 text-[#D32F2F]" /> 100% Doctor Performed
-                                        </span>
-                                    </div>
-                                    <div className="absolute bottom-5 left-5 right-5 text-white">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <span className="w-6 h-0.5 rounded-full bg-[#FFC107]" />
-                                            <span className="text-[11px] font-bold text-[#FFC107] uppercase tracking-widest">{doctorCard.designation || "Lead Surgeon"}</span>
-                                        </div>
-                                        <p className="text-xl sm:text-2xl font-extrabold text-white leading-tight">{doctorName}</p>
-                                        <p className="text-xs text-red-100 font-medium mt-1">{doctorQual}</p>
-                                    </div>
-                                </div>
-                            </Reveal>
+                        {/* Sticky right image container */}
+                        <div className="lg:sticky lg:top-28">
+                            <div className="relative rounded-3xl overflow-hidden shadow-xl border-4 border-white h-80 sm:h-96 lg:h-[480px]">
+                                <Image
+                                    src={getImageSrc(pageData?.hairlineArtistry?.image, "/uploads/gallery.jpg")}
+                                    alt={pageData?.hairlineArtistry?.image?.alt || "Hairline Artistry Design"}
+                                    fill
+                                    className="object-cover"
+                                    unoptimized
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* ═══════════════════════════════════════════════════════════════
-                SECTION 9: QUESTIONS TO ASK & RED FLAGS
+                SECTION 10 (NEW): REVISION & REPAIR SURGERY
+                Mandatory SEO Heading 10: "Revision and Repair Hair Transplants by an Experienced Surgeon"
+            ═══════════════════════════════════════════════════════════════ */}
+            <section className="py-16 md:py-24 bg-white border-t border-red-100">
+                <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex items-center gap-3 mb-4 md:mb-8">
+                        <span className="block w-8 h-px bg-[#D32F2F]" />
+                        <span className="text-[#D32F2F] text-[11px] font-bold tracking-[0.22em] uppercase">
+                            {pageData?.revisionRepair?.badge?.text || "CORRECTIVE SURGERY"}
+                        </span>
+                    </div>
+
+                    <div className="max-w-3xl mb-8 md:mb-12">
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-[1.15] tracking-tight">
+                            {pageData?.revisionRepair?.heading || `Revision and repair work by a hair transplant surgeon in ${cityName}`}
+                        </h2>
+                        <p className="text-gray-500 text-sm md:text-base leading-relaxed my-4">
+                            {pageData?.revisionRepair?.description || "Repairing botched hair transplants from technician-led clinics requires advanced surgical expertise to soften plugs, refine unnatural hairlines, and restore depleted donor areas."}
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {(pageData?.revisionRepair?.items?.length
+                            ? pageData.revisionRepair.items
+                            : [
+                                { title: "Plug Graft Extraction", description: "Removing large, unnatural plug grafts and re-implanting them as soft singles." },
+                                { title: "Hairline Softening & Lowering", description: "Re-establishing natural temporal peaks and soft transition zones." },
+                                { title: "Donor Scar Camouflage", description: "FUE harvesting and SMP repair for depleted or scarred donor areas." }
+                            ]).map((item, i) => (
+                                <div key={i} className="bg-[#fff5ec] p-6 rounded-2xl border border-red-100">
+                                    <h3 className="text-base font-bold text-gray-900 mb-2">{item.title}</h3>
+                                    <p className="text-xs text-gray-500 leading-relaxed">{item.description}</p>
+                                </div>
+                            ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════════════════════════════
+                SECTION 11 (NEW): COST & CONSULTATION
+                Mandatory SEO Heading 11: "Hair Transplant Surgeon Consultation and Cost in Delhi"
+            ═══════════════════════════════════════════════════════════════ */}
+            
+            {/* ═══════════════════════════════════════════════════════════════
+                SECTION 12: DOCTOR INTRO SPOTLIGHT
+                Mandatory SEO Heading 1 (Alternate placement): Best Hair Transplant Surgeon
+            ═══════════════════════════════════════════════════════════════ */}
+            
+            {/* ═══════════════════════════════════════════════════════════════
+                SECTION 13: QUESTIONS TO ASK & RED FLAGS
+                Mandatory SEO Headings 12 & 13:
+                12: "Questions to Ask Your Hair Transplant Surgeon Before Booking"
+                13: "Red Flags When Choosing a Hair Transplant Surgeon in Delhi"
             ═══════════════════════════════════════════════════════════════ */}
             <section className="py-16 md:py-24 bg-white">
                 <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1022,7 +1128,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
                     <div className="flex items-center gap-3 mb-4 md:mb-8">
                         <span className="block w-8 h-px bg-[#D32F2F]" />
                         <span className="text-[#D32F2F] text-[11px] font-semibold tracking-[0.22em] uppercase">
-                            Due Diligence Checklist
+                            {pageData?.bookingChecklist?.badge?.text || "Due Diligence Checklist"}
                         </span>
                     </div>
 
@@ -1030,10 +1136,8 @@ export default function SurgeonPageClient({ pageData, slug }) {
 
                         {/* Questions accordion */}
                         <div>
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-8">
-                                Questions To Ask A Surgeon
-                                <br />
-                                <span className="text-[#D32F2F]">Before Booking</span>
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-[1.15] tracking-tight mb-8">
+                                {pageData?.bookingChecklist?.questionsHeading || `Questions to ask a hair transplant surgeon in ${cityName} before booking`}
                             </h2>
 
                             <div className="divide-y divide-gray-100">
@@ -1073,12 +1177,10 @@ export default function SurgeonPageClient({ pageData, slug }) {
                             </div>
                         </div>
 
-                        {/* Red Flags card — right side sticky solid red */}
+                        {/* Red Flags card */}
                         <div className="lg:sticky lg:top-28">
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-8">
-                                Red Flags To Avoid
-                                <br />
-                                <span className="text-[#D32F2F]">When Choosing a Surgeon</span>
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-[1.15] tracking-tight mb-8">
+                                {pageData?.bookingChecklist?.redFlagsHeading || `Red flags when choosing a hair transplant surgeon in ${cityName}`}
                             </h2>
 
                             <div className="flex flex-col justify-between bg-red-700 rounded-2xl p-7 md:p-8">
@@ -1126,7 +1228,10 @@ export default function SurgeonPageClient({ pageData, slug }) {
             </section>
 
             {/* ═══════════════════════════════════════════════════════════════
-                SECTION 10: PROCEDURES, COST & LOCATION
+                SECTION 14 & 15: PROCEDURES & VISIT SURGEON LOCATION
+                Mandatory SEO Headings 14 & 15:
+                14: "Procedures Offered by Our Lead Hair Transplant Surgeon"
+                15: "Visit Our Hair Transplant Surgeon in Delhi"
             ═══════════════════════════════════════════════════════════════ */}
             <section className="py-16 md:py-24 bg-[#fff5ec]">
                 <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1134,17 +1239,16 @@ export default function SurgeonPageClient({ pageData, slug }) {
                     <div className="flex items-center gap-3 mb-4 md:mb-8">
                         <span className="block w-8 h-px bg-[#D32F2F]" />
                         <span className="text-[#D32F2F] text-[11px] font-semibold tracking-[0.22em] uppercase">
-                            Procedures & Location
+                            {pageData?.procedures?.badge?.text || "Procedures & Location"}
                         </span>
                     </div>
 
                     <div className="max-w-3xl mb-8 md:mb-14">
-                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
-                            Procedures Performed By Our Surgeon.{" "}
-                            <span className="text-[#D32F2F]">Starting From ₹40,000.</span>
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-[1.15] tracking-tight">
+                            {pageData?.procedures?.heading || `Procedures performed by our hair transplant surgeon in ${cityName}`}
                         </h2>
                         <p className="text-gray-500 text-sm md:text-base leading-relaxed my-6">
-                            Free scalp analysis included. Transparent per-graft pricing confirmed after your consultation — before you commit. 0% EMI available.
+                            {pageData?.procedures?.description || "Free scalp analysis included. Transparent per-graft pricing confirmed after your consultation — before you commit. 0% EMI available."}
                         </p>
                     </div>
 
@@ -1171,22 +1275,231 @@ export default function SurgeonPageClient({ pageData, slug }) {
                         ))}
                     </div>
 
-                    {/* Internal links + Location */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div className="bg-white p-6 rounded-2xl border border-gray-100">
-                            <p className="text-xs font-bold text-gray-700 mb-3">Related Pages</p>
-                            <div className="flex flex-wrap gap-2">
-                                <Link href="/hair-transplant-surgery-in-delhi" className="text-[#D32F2F] hover:underline font-semibold text-xs">Hair Transplant Surgery in Delhi</Link>
-                                <span className="text-gray-300">·</span>
-                                <Link href="/cost/hair-transplant-cost-in-delhi" className="text-[#D32F2F] hover:underline font-semibold text-xs">Hair Transplant Cost in Delhi</Link>
-                                <span className="text-gray-300">·</span>
-                                <Link href="/prp-hair-loss-treatment-in-delhi" className="text-[#D32F2F] hover:underline font-semibold text-xs">PRP Treatment in Delhi</Link>
-                            </div>
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════════════════════════════
+                SECTION 13: COST & CONSULTATION
+                Mandatory SEO Heading 13: "Cost of consulting a hair transplant surgeon in Mumbai"
+            ═══════════════════════════════════════════════════════════════ */}
+            <section className="py-16 md:py-24 bg-[#fff5ec] border-t border-red-100">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    
+                    {/* Centered Section Header */}
+                    <div className="text-center max-w-3xl mx-auto mb-12">
+                        <div className="inline-flex items-center gap-2 mb-3">
+                            <span className="w-2 h-2 rounded-full bg-[#D32F2F] animate-pulse" />
+                            <span className="text-[#D32F2F] text-[11px] font-bold tracking-[0.22em] uppercase">
+                                {pageData?.costConsultation?.badge?.text || "PRICING & CONSULTATION"}
+                            </span>
                         </div>
-                        <div className="bg-white p-6 rounded-2xl border border-gray-100">
-                            <p className="text-xs font-bold text-gray-900 mb-1">Visit Our Surgeon In Delhi</p>
-                            <p className="text-xs text-gray-500 mb-2">CD 163, Block CD, Dakshini Pitampura, New Delhi – 110034. Accessible via Pitampura Metro Station (Red Line).</p>
-                            <p className="text-xs font-bold text-[#D32F2F]">+91-9911111247 · Mon–Sat, 9 AM – 7 PM</p>
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-[1.15] tracking-tight mb-3">
+                            {pageData?.costConsultation?.heading || `Cost of consulting a hair transplant surgeon in ${cityName}`}
+                        </h2>
+                        <p className="text-gray-600 text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
+                            {pageData?.costConsultation?.description || "Per-graft pricing — confirmed in writing at your free consultation. Zero hidden charges."}
+                        </p>
+                    </div>
+
+                    {/* 3 Vertical Cards Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch mb-10">
+                        
+                        {/* Card 1: Free Consultation */}
+                        <div className="bg-white rounded-3xl border border-gray-200/80 shadow-md p-7 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                            <div>
+                                <h3 className="text-xl font-bold text-gray-900 mb-2">Free Consultation</h3>
+                                <span className="inline-block bg-gray-100 text-gray-600 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-6">
+                                    SCALP ANALYSIS & HONEST ASSESSMENT
+                                </span>
+                                
+                                <div className="mb-6">
+                                    <div className="text-3xl sm:text-4xl font-bold text-[#D32F2F] leading-none mb-1">₹0</div>
+                                    <p className="text-xs font-medium text-gray-400">No charge</p>
+                                </div>
+
+                                <div className="space-y-3 mb-8">
+                                    {[
+                                        `Donor density & pattern analysis by ${doctorName}`,
+                                        "Exact graft count recommendation",
+                                        "Technique suitability assessment",
+                                        "Transparent per-graft cost breakdown",
+                                        "0% EMI options discussed",
+                                    ].map((feat, idx) => (
+                                        <div key={idx} className="flex items-start gap-2.5">
+                                            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                                            <span className="text-xs text-gray-700 font-medium leading-relaxed">{feat}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <a
+                                href={WA}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-full inline-flex items-center justify-center gap-2 border-2 border-gray-200 hover:border-[#D32F2F] text-gray-800 hover:text-[#D32F2F] font-bold py-3.5 px-5 rounded-2xl text-xs transition-all bg-white shadow-2xs"
+                                onClick={() => trackCTA({ type: "whatsapp", ctaName: "Pricing Card: Free Consult", buttonLocation: "Pricing 3-Cards" })}
+                            >
+                                Book Free Consult <ArrowRight className="w-3.5 h-3.5" />
+                            </a>
+                        </div>
+
+                        {/* Card 2: Sapphire FUE (Featured / Popular) */}
+                        <div className="relative bg-white rounded-3xl border-2 border-[#D32F2F] shadow-xl ring-4 ring-red-500/10 p-7 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+                            {/* Floating Badge */}
+                            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap z-10">
+                                <span className="bg-[#D32F2F] text-white text-[10px] font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-md flex items-center gap-1.5">
+                                    <Sparkles className="w-3 h-3 text-amber-300 fill-amber-300" />
+                                    MOST POPULAR — NATURAL, DOCTOR-LED RESULT
+                                </span>
+                            </div>
+
+                            <div>
+                                <h3 className="text-xl font-bold text-gray-900 mb-2 mt-2">Sapphire FUE</h3>
+                                <span className="inline-block bg-red-50 text-[#D32F2F] text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-6">
+                                    SAPPHIRE MICRO-BLADE EXTRACTION
+                                </span>
+
+                                <div className="mb-6">
+                                    <div className="flex items-baseline gap-1">
+                                        <span className="text-3xl sm:text-4xl font-bold text-[#D32F2F] leading-none">₹35</span>
+                                        <span className="text-xs font-semibold text-gray-500">per graft onwards</span>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-3 mb-8">
+                                    {[
+                                        "Doctor performs every surgical step",
+                                        "Sapphire micro-blade extraction",
+                                        "Custom hairline design",
+                                        "Sterile OT suite",
+                                        "12–18 month structured follow-up",
+                                        "0% EMI available",
+                                    ].map((feat, idx) => (
+                                        <div key={idx} className="flex items-start gap-2.5">
+                                            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                                            <span className="text-xs text-gray-700 font-medium leading-relaxed">{feat}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <a
+                                href={WA}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-full inline-flex items-center justify-center gap-2 bg-[#D32F2F] hover:bg-red-700 text-white font-bold py-3.5 px-5 rounded-2xl text-xs transition-all shadow-md shadow-red-700/20"
+                                onClick={() => trackCTA({ type: "whatsapp", ctaName: "Pricing Card: Sapphire FUE", buttonLocation: "Pricing 3-Cards" })}
+                            >
+                                Get Exact Quote <ArrowRight className="w-3.5 h-3.5" />
+                            </a>
+                        </div>
+
+                        {/* Card 3: THI Technique / Turkish Choi Pen */}
+                        <div className="bg-white rounded-3xl border border-gray-200/80 shadow-md p-7 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                            <div>
+                                <h3 className="text-xl font-bold text-gray-900 mb-2">THI Technique</h3>
+                                <span className="inline-block bg-gray-100 text-gray-600 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-6">
+                                    CHOI PEN IMPLANTATION — HIGHEST PRECISION
+                                </span>
+
+                                <div className="mb-6">
+                                    <div className="flex items-baseline gap-1">
+                                        <span className="text-3xl sm:text-4xl font-bold text-[#D32F2F] leading-none">₹40</span>
+                                        <span className="text-xs font-semibold text-gray-500">per graft onwards</span>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-3 mb-8">
+                                    {[
+                                        "Original Turkish Choi Pen technique",
+                                        "No-shave option available",
+                                        "Maximum density in single session",
+                                        "Doctor-performed end-to-end",
+                                        "Structured aftercare included",
+                                        "0% EMI available",
+                                    ].map((feat, idx) => (
+                                        <div key={idx} className="flex items-start gap-2.5">
+                                            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                                            <span className="text-xs text-gray-700 font-medium leading-relaxed">{feat}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <a
+                                href={WA}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-full inline-flex items-center justify-center gap-2 border-2 border-gray-200 hover:border-[#D32F2F] text-gray-800 hover:text-[#D32F2F] font-bold py-3.5 px-5 rounded-2xl text-xs transition-all bg-white shadow-2xs"
+                                onClick={() => trackCTA({ type: "whatsapp", ctaName: "Pricing Card: THI Technique", buttonLocation: "Pricing 3-Cards" })}
+                            >
+                                Get Exact Quote <ArrowRight className="w-3.5 h-3.5" />
+                            </a>
+                        </div>
+                    </div>
+
+                    {/* Bottom Disclaimer Note */}
+                    <p className="text-center text-xs text-gray-400 font-medium max-w-3xl mx-auto leading-relaxed">
+                        Prices are per-graft starting rates. Your exact cost depends on graft count determined at consultation. All prices include anaesthesia, OT charges, post-op kit, and first follow-up visit. 0% EMI available on all packages.
+                    </p>
+
+                </div>
+            </section>
+
+            {/* ═══════════════════════════════════════════════════════════════
+                SECTION 14: LOCATION & RELATED PAGES
+                Mandatory SEO Heading 14: "Visiting our hair transplant surgeon in Mumbai"
+            ═══════════════════════════════════════════════════════════════ */}
+            <section className="py-12 bg-white border-t border-gray-100">
+                <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        {/* Visit Card */}
+                        <div className="bg-[#fff5ec] p-6 rounded-2xl border border-red-100 flex flex-col justify-between">
+                            <div>
+                                <div className="flex items-center gap-2 mb-2">
+                                    <span className="w-2 h-2 rounded-full bg-[#D32F2F]" />
+                                    <span className="text-[11px] font-bold text-[#D32F2F] uppercase tracking-widest">Clinic Location</span>
+                                </div>
+                                <h2 className="text-lg font-bold text-gray-900 mb-2">
+                                    {pageData?.visitSurgeon?.heading || `Visiting our hair transplant surgeon in ${cityName}`}
+                                </h2>
+                                <p className="text-xs text-gray-600 leading-relaxed mb-3">
+                                    {pageData?.visitSurgeon?.address || `Visit our ${cityName} Ryan Clinic centre to meet the surgeon in person. Full address and directions available below.`}
+                                </p>
+                            </div>
+                            <p className="text-xs font-bold text-[#D32F2F]">
+                                {pageData?.visitSurgeon?.phone || "+91-9217958539"} · {pageData?.visitSurgeon?.hours || "Mon–Sat, 9 AM – 7 PM"}
+                            </p>
+                        </div>
+
+                        {/* Related Pages Card */}
+                        <div className="bg-[#fff5ec] p-6 rounded-2xl border border-red-100 flex flex-col justify-between">
+                            <div>
+                                <div className="flex items-center gap-2 mb-2">
+                                    <span className="w-2 h-2 rounded-full bg-[#D32F2F]" />
+                                    <span className="text-[11px] font-bold text-[#D32F2F] uppercase tracking-widest">Explore More</span>
+                                </div>
+                                <p className="text-lg font-bold text-gray-900 mb-2">Related Pages</p>
+                                <p className="text-xs text-gray-500 mb-4">Quick links to treatment guides and cost breakdowns in {cityName}:</p>
+                            </div>
+                            <div className="flex flex-wrap gap-2">
+                                {(pageData?.procedures?.relatedLinks?.length
+                                    ? pageData.procedures.relatedLinks
+                                    : pageData?.relatedLinks?.length
+                                        ? pageData.relatedLinks
+                                        : [
+                                            { label: `Hair Transplant Surgery in ${cityName}`, href: `/hair-transplant-surgery-in-${(rawCityName || "delhi").toLowerCase().replace(/\s+/g, "-")}` },
+                                            { label: `Hair Transplant Cost in ${cityName}`, href: `/cost/hair-transplant-cost-in-${(rawCityName || "delhi").toLowerCase().replace(/\s+/g, "-")}` },
+                                            { label: `PRP Treatment in ${cityName}`, href: `/prp-hair-loss-treatment-in-${(rawCityName || "delhi").toLowerCase().replace(/\s+/g, "-")}` },
+                                        ]
+                                ).map((link, li) => (
+                                    <span key={li} className="inline-flex items-center gap-1.5">
+                                        {li > 0 && <span className="text-gray-300">·</span>}
+                                        <Link href={link.href || link.link || "#"} className="text-[#D32F2F] hover:underline font-semibold text-xs">{link.label || link.text}</Link>
+                                    </span>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1210,11 +1523,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
                                 </div>
 
                                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-[1.2] tracking-tight mb-4">
-                                    Start Your Hair
-                                    <br />
-                                    Transplant Journey
-                                    <br />
-                                    <span className="text-[#D32F2F]">Today — Free Consult</span>
+                                    {pageData?.ctaSection?.heading || `Book a consultation with a hair transplant surgeon in ${cityName}`}
                                 </h2>
 
                                 <p className="text-sm text-gray-500 leading-relaxed mb-7">
@@ -1282,7 +1591,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
                                     Real Patient Result
                                 </p>
                                 <p className="text-gray-400 text-[10px] mt-1">
-                                    3,200 grafts · Sapphire FUE · 14 months · Delhi
+                                    3,200 grafts · Sapphire FUE · 14 months · {cityName}
                                 </p>
                             </div>
                         </div>
@@ -1342,9 +1651,8 @@ export default function SurgeonPageClient({ pageData, slug }) {
             </section>
 
             {/* ═══════════════════════════════════════════════════════════════
-                SECTION 11: FAQ — Exact Homepage faqSection.js Design
-                2-col: Left sticky panel (label + h2 + desc + stats + CTA)
-                Right: Bordered accordion (numbered, red toggle, red accent rule)
+                SECTION 16: FAQ
+                Mandatory SEO Heading 16: "Frequently Asked Questions About Hair Transplant Surgeons in Delhi"
             ═══════════════════════════════════════════════════════════════ */}
             <section className="py-16 md:py-24 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1357,19 +1665,16 @@ export default function SurgeonPageClient({ pageData, slug }) {
                             <div className="flex items-center gap-3 mb-5">
                                 <span className="block w-8 h-px bg-[#D32F2F]" />
                                 <span className="text-[11px] font-semibold tracking-[0.22em] uppercase text-[#D32F2F]">
-                                    Got Questions?
+                                    {pageData?.faq?.badge?.text || "Got Questions?"}
                                 </span>
                             </div>
 
                             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-5 text-gray-900">
-                                Frequently
-                                <br />
-                                Asked{" "}
-                                <span className="text-[#D32F2F]">Questions</span>
+                                {pageData?.faq?.heading || `Hair transplant surgeon in ${cityName} — frequently asked questions`}
                             </h2>
 
                             <p className="text-sm md:text-base leading-relaxed mb-8 text-gray-500">
-                                Everything you need to know about choosing the right hair transplant surgeon in Delhi — credentials, technique, cost, and results. Still have a question? Our surgeon answers within 24 hours.
+                                {pageData?.faq?.description || `Everything you need to know about choosing the right hair transplant surgeon in ${cityName} — credentials, technique, cost, and results. Still have a question? Our surgeon answers within 24 hours.`}
                             </p>
 
                             {/* Stats card */}
@@ -1510,4 +1815,5 @@ export default function SurgeonPageClient({ pageData, slug }) {
         </div>
     );
 }
+
 

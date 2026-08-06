@@ -719,10 +719,11 @@ export default function SurgeryPageClient({ data }) {
       {/* ── NEW SECTION 1: Is Hair Transplant Surgery Safe? ─────────────────── */}
       <section className="bg-white py-16 md:py-24 border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Left: Image with rich overlays & increased height */}
-            <Reveal direction="left">
-              <div className="relative w-full h-[520px] md:h-[620px] rounded-3xl overflow-hidden shadow-2xl group border border-gray-100">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+            {/* Left: Sticky image section with rich overlays */}
+            <div className="lg:sticky lg:top-28 self-start">
+              <Reveal direction="left">
+                <div className="relative w-full h-[520px] md:h-[620px] rounded-3xl overflow-hidden shadow-2xl group border border-gray-100">
                 <Image
                   src="/uploads/1752667815707-fue-banner_ro9ae6.webp"
                   alt="Sterile operating theatre at Ryan Clinic Delhi"
@@ -772,6 +773,7 @@ export default function SurgeryPageClient({ data }) {
                 </div>
               </div>
             </Reveal>
+          </div>
 
             {/* Right: Content */}
             <Reveal direction="right" delay={120}>
@@ -1593,35 +1595,37 @@ export default function SurgeryPageClient({ data }) {
               </Reveal>
             </div>
 
-            {/* Right: Image */}
-            <Reveal direction="right" delay={120}>
-              <div className="relative w-full h-[400px] md:h-[600px] rounded-3xl overflow-hidden shadow-2xl">
-                <Image
-                  src="/uploads/1752734248947-Hair Transplant 1.jpg"
-                  alt="Doctor-led hair transplant procedure at Ryan Clinic Delhi — sterile OT"
-                  fill
-                  className="object-cover object-center"
-                  unoptimized
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1a1430]/90 via-[#1a1430]/30 to-transparent" />
-                {/* Badge */}
-                <div className="absolute top-5 right-5">
-                  <span className="inline-flex items-center gap-2 bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
-                    <ShieldCheck className="w-3 h-3" /> Doctor-Led Only
-                  </span>
-                </div>
-                {/* Bottom card */}
-                <div className="absolute bottom-5 left-5 right-5">
-                  <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 border border-gray-100 shadow-xl">
-                    <p className="text-[10px] font-bold text-[#e30a17] uppercase tracking-wider mb-2">Why Operator Skill Matters Most</p>
-                    <p className="text-xs text-gray-700 leading-relaxed">
-                      Poor results from technician-led surgery is exactly why doctor-led work, sterile OT, and natural design are the most important factors in your outcome.
-                    </p>
+            {/* Right: Sticky Image */}
+            <div className="lg:sticky lg:top-28 self-start">
+              <Reveal direction="right" delay={120}>
+                <div className="relative w-full h-[400px] md:h-[600px] rounded-3xl overflow-hidden shadow-2xl">
+                  <Image
+                    src="/uploads/1752734248947-Hair Transplant 1.jpg"
+                    alt="Doctor-led hair transplant procedure at Ryan Clinic Delhi — sterile OT"
+                    fill
+                    className="object-cover object-center"
+                    unoptimized
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1a1430]/90 via-[#1a1430]/30 to-transparent" />
+                  {/* Badge */}
+                  <div className="absolute top-5 right-5">
+                    <span className="inline-flex items-center gap-2 bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
+                      <ShieldCheck className="w-3 h-3" /> Doctor-Led Only
+                    </span>
+                  </div>
+                  {/* Bottom card */}
+                  <div className="absolute bottom-5 left-5 right-5">
+                    <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 border border-gray-100 shadow-xl">
+                      <p className="text-[10px] font-bold text-[#e30a17] uppercase tracking-wider mb-2">Why Operator Skill Matters Most</p>
+                      <p className="text-xs text-gray-700 leading-relaxed">
+                        Poor results from technician-led surgery is exactly why doctor-led work, sterile OT, and natural design are the most important factors in your outcome.
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Reveal>
+              </Reveal>
+            </div>
           </div>
         </div>
       </section>

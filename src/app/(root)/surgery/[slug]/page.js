@@ -8,7 +8,10 @@ import SurgeryPageClient from "@/components/surgery/SurgeryPageClient";
 
 const getSurgeryPage = cache(async (slug) => {
   await DBConnection();
-  const page = await SurgeryPageModel.findOne({ slug }).lean();
+  const page = await SurgeryPageModel.findOne({
+    slug,
+    isDeleted: { $ne: true },
+  }).lean();
   // Serialize Mongoose document to a plain JS object before passing to client
   return page ? JSON.parse(JSON.stringify(page)) : null;
 });

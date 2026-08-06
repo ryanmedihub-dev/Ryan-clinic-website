@@ -55,8 +55,6 @@ export default function InternationalAppointmentPage() {
 
     setLoading(true);
 
-    console.log(formData);
-
     try {
       const response = await fetch("/api/send-international", {
         method: "POST",

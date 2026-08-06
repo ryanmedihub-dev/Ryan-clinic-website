@@ -1018,6 +1018,36 @@ const surgeonPageSchema = new Schema(
             default: () => ({}),
         },
 
+        experienceSpecialization: {
+            type: Schema.Types.Mixed,
+            default: () => ({}),
+        },
+
+        skillEvaluation: {
+            type: Schema.Types.Mixed,
+            default: () => ({}),
+        },
+
+        hairlineArtistry: {
+            type: Schema.Types.Mixed,
+            default: () => ({}),
+        },
+
+        revisionRepair: {
+            type: Schema.Types.Mixed,
+            default: () => ({}),
+        },
+
+        costConsultation: {
+            type: Schema.Types.Mixed,
+            default: () => ({}),
+        },
+
+        visitSurgeon: {
+            type: Schema.Types.Mixed,
+            default: () => ({}),
+        },
+
         settings: {
             type: settingsSchema,
             default: () => ({}),

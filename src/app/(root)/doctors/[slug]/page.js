@@ -2,23 +2,11 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import DoctorsPageClient from "./DoctorsPageClient";
 import PageBanner from "@/components/layouts/pageBanner";
-import { doctors as staticDoctors } from "@/lib/doctorsData";
 import Doctor from "@/models/Doctors";
 import { DBConnection } from "@/lib/db";
 
 // Revalidate page dynamically
 export const revalidate = 60;
-
-// Helper to find doctor by slug from static data
-function getStaticDoctorBySlug(slug) {
-  return staticDoctors.find(
-    (d) =>
-      d.name
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)/g, "") === slug
-  );
-}
 
 function normalizeDoctor(dbDoc) {
   if (!dbDoc) return null;
@@ -54,28 +42,23 @@ function normalizeDoctor(dbDoc) {
 const getDoctorData = cache(async (slug) => {
   try {
     const cleanSlug = slug.toLowerCase().trim();
-    let dbDoctor = null;
 
-    try {
-      await DBConnection();
-      dbDoctor = await Doctor.findOne({
-        slug: cleanSlug,
-        deletedAt: null,
-      }).lean();
-    } catch (err) {
-      console.error("Database query failed in DoctorPage:", err);
-    }
+    await DBConnection();
+    const dbDoctor = await Doctor.findOne({
+      slug: cleanSlug,
+      $or: [{ deletedAt: null }, { deletedAt: { $exists: false } }],
+    }).lean();
 
     if (dbDoctor) {
       const plainDoc = JSON.parse(JSON.stringify(dbDoctor));
       return normalizeDoctor(plainDoc);
     }
 
-    // Fallback to static data
-    return getStaticDoctorBySlug(cleanSlug);
+    // No static fallback — only DB-managed doctors are shown
+    return null;
   } catch (err) {
     console.error("Error fetching doctor data:", err);
-    return getStaticDoctorBySlug(slug);
+    return null;
   }
 });
 
@@ -353,6 +336,58 @@ export default async function DoctorPage({ params }) {
     }));
   }
 
+  // ── NEW: whyItMatters normalization ──
+  let whyItMatters = null;
+  if (doctor.whyItMatters?.heading) {
+    const wim = doctor.whyItMatters;
+    whyItMatters = {
+      sectionLabel: wim.sectionLabel || "Why It Matters",
+      heading: wim.heading || "",
+      description: wim.description || "",
+      secondaryDescription: wim.secondaryDescription || "",
+      highlightBox: wim.highlightBox || "",
+      image: wim.image?.image || "",
+      imageAlt: wim.image?.alt || "",
+      floatingStats: Array.isArray(wim.floatingStats) ? wim.floatingStats.map(s => ({ value: s.value || "", label: s.label || "" })) : [],
+      primaryCTA: { text: wim.primaryCTA?.text || "", url: wim.primaryCTA?.url || "" },
+      secondaryCTA: { text: wim.secondaryCTA?.text || "", url: wim.secondaryCTA?.url || "" },
+    };
+  }
+
+  // ── NEW: surgeonProfile normalization ──
+  let surgeonProfileData = null;
+  if (doctor.surgeonProfile?.about || doctor.surgeonProfile?.achievements?.length) {
+    const sp = doctor.surgeonProfile;
+    surgeonProfileData = {
+      sectionLabel: sp.sectionLabel || "Your Surgeon",
+      heading: sp.heading || `Meet ${doctor.name}`,
+      about: sp.about || "",
+      philosophy: sp.philosophy || "",
+      achievements: sp.achievements?.length ? sp.achievements : [],
+      consultationIncludes: sp.consultationIncludes?.length ? sp.consultationIncludes : [],
+    };
+  }
+
+  // ── NEW: pricing normalization ──
+  let pricingPackages = [];
+  let pricingDisclaimer = "";
+  if (doctor.pricing?.packages?.length) {
+    pricingPackages = doctor.pricing.packages.map((p, i) => ({
+      title: p.title || `Package ${i + 1}`,
+      price: p.price || "",
+      priceNote: p.priceNote || "onwards",
+      subtitle: p.subtitle || "",
+      isFeatured: !!p.isFeatured,
+      features: Array.isArray(p.features)
+        ? p.features.map((f) =>
+            typeof f === "string" ? f : f.title || f.text || f.description || ""
+          ).filter(Boolean)
+        : [],
+      buttonText: p.buttonText || "Get Free Estimate",
+    }));
+    pricingDisclaimer = doctor.pricing.disclaimer || "";
+  }
+
   const bannerTitle = doctor.hero?.title || doctor.name;
   const bannerDesc = doctor.hero?.description || `${doctor.designation} at Ryan Clinic. Experienced hair restoration specialist.`;
   const bannerImage = doctor.hero?.heroImage?.image || "/uploads/1752667815707-fue-banner_ro9ae6.webp";
@@ -382,6 +417,23 @@ export default async function DoctorPage({ params }) {
           nearbyAreas: NEARBY_AREAS,
           faqs,
           doctor,
+          whyItMatters,
+          surgeonProfile: surgeonProfileData,
+          pricingPackages,
+          pricingDisclaimer,
+          proceduresPerformed: doctor.proceduresPerformed || null,
+          doctorStandards: doctor.doctorStandards || null,
+          credentials: doctor.credentials || null,
+          verification: doctor.verification || null,
+          comparison: doctor.comparison || null,
+          surgicalProcess: doctor.surgicalProcess || doctor.surgeryTimeline || null,
+          questionsToAskSection: doctor.questionsToAsk || null,
+          greatDoctorQualities: doctor.greatDoctorQualities || null,
+          warningSigns: doctor.warningSigns || null,
+          pricing: doctor.pricing || null,
+          visitClinic: doctor.visitClinic || null,
+          consultation: doctor.consultation || null,
+          faqSection: doctor.faq || null,
         }}
       />
     </>
