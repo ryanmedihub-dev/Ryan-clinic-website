@@ -11,6 +11,7 @@ const getSurgeryPage = cache(async (slug) => {
   const page = await SurgeryPageModel.findOne({
     slug,
     isDeleted: { $ne: true },
+    status: { $ne: "draft" },
   }).lean();
   // Serialize Mongoose document to a plain JS object before passing to client
   return page ? JSON.parse(JSON.stringify(page)) : null;

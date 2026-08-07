@@ -262,7 +262,7 @@ export default function DoctorListingPage() {
                             </a>
 
                             <Link
-                              href={`/admin/doctors/edit?slug=${doc.slug}`}
+                              href={`/admin/doctors/edit/${doc.slug}`}
                               className="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 rounded-md text-xs font-bold transition-all"
                             >
                               Edit

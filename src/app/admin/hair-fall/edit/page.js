@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, useParams } from "next/navigation";
 import AdminHeader from "@/components/admin/adminHeader";
 import ImageUploader from "@/components/admin/ImageUploader";
 import ToastContainer from "@/components/admin/Toast";
@@ -192,7 +192,8 @@ function EditHairFallForm() {
     const toast = useToast();
     const router = useRouter();
     const searchParams = useSearchParams();
-    const slug = searchParams.get("slug");
+    const params = useParams();
+    const slug = params?.slug || searchParams.get("slug");
 
     const [submitting, setSubmitting] = useState(false);
     const [loading, setLoading] = useState(true);

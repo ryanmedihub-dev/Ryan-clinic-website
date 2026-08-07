@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import useTrackCTA from "@/lib/useTrackCTA";
 
 const DEFAULT_WA =
-  "https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20have%20a%20question%20about%20hair%20fall%20treatment";
+  "https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation";
 
 const DEFAULT_STATS = [
   { num: "8+", label: "Causes We Screen For" },

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, useParams } from "next/navigation";
 import AdminHeader from "@/components/admin/adminHeader";
 import ImageUploader from "@/components/admin/ImageUploader";
 import ToastContainer from "@/components/admin/Toast";
@@ -73,7 +73,9 @@ function EditSurgeryContent() {
     const toast = useToast();
     const router = useRouter();
     const searchParams = useSearchParams();
-    const querySlug = searchParams.get("slug");
+    const params = useParams();
+    // Support both /admin/surgery/edit/[slug] (path param) and /admin/surgery/edit?slug= (query param)
+    const querySlug = params?.slug || searchParams.get("slug");
 
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
@@ -209,12 +211,26 @@ function EditSurgeryContent() {
 
                 {/* Sticky Save Bar */}
                 <div className="sticky top-4 z-40 flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-3 shadow-sm">
-                    <p className="text-sm font-semibold text-gray-700">Slug: <span className="font-mono text-blue-600">/{formData.slug}</span></p>
+                    <div className="flex items-center gap-3">
+                        <p className="text-sm font-semibold text-gray-700">Public URL: <span className="font-mono text-blue-600">/surgery/{formData.slug}</span></p>
+                        {formData.slug && (
+                            <a
+                                href={`/surgery/${formData.slug}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-xs font-semibold text-gray-500 hover:text-blue-600 border border-gray-200 hover:border-blue-300 bg-gray-50 px-2.5 py-1.5 rounded-lg transition-colors"
+                            >
+                                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                View Live
+                            </a>
+                        )}
+                    </div>
                     <div className="flex items-center gap-3">
                         <button type="button" onClick={() => router.push("/admin/surgery")} className="px-4 py-2 text-sm font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-md">Cancel</button>
                         <button type="submit" disabled={submitting} className="px-6 py-2 text-sm font-bold text-white bg-[#e30a17] hover:bg-red-700 rounded-md disabled:opacity-50">{submitting ? "Saving..." : "Save Changes"}</button>
                     </div>
                 </div>
+
 
                 {/* 1. GENERAL INFO */}
                 <h3 className={sectionHeadingCls}>1. General Info</h3>

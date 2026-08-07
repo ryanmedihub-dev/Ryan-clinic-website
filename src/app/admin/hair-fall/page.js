@@ -141,7 +141,7 @@ export default function HairFallListingPage() {
                                                     </a>
                                                 )}
                                                 <Link
-                                                    href={`/admin/hair-fall/edit?slug=${page.slug}`}
+                                                    href={`/admin/hair-fall/edit/${page.slug}`}
                                                     title="Edit page"
                                                     className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
                                                 >

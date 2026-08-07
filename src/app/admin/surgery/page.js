@@ -231,7 +231,7 @@ export default function SurgeryListingPage() {
                                             </td>
                                             <td className="px-5 py-4">
                                                 <span className="inline-block font-mono text-xs text-gray-600 bg-gray-100 border border-gray-200 px-2 py-1 rounded-md max-w-[200px] truncate">
-                                                    /surgery/{page.slug}
+                                                    /{page.slug}
                                                 </span>
                                             </td>
                                             <td className="px-5 py-4">
@@ -244,7 +244,7 @@ export default function SurgeryListingPage() {
                                             </td>
                                             <td className="px-5 py-4">
                                                 <span className="text-xs text-gray-500">
-                                                    {formatDate(page.createdAt)}
+                                                    {formatDate(page.createdAt || page.updatedAt)}
                                                 </span>
                                             </td>
                                             <td className="px-5 py-4">
@@ -262,7 +262,7 @@ export default function SurgeryListingPage() {
                                                         View
                                                     </Link>
                                                     <Link
-                                                        href={`/admin/surgery/edit?slug=${page.slug}`}
+                                                        href={`/admin/surgery/edit/${page.slug}`}
                                                         className="inline-flex items-center gap-1 text-xs font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-2.5 py-1.5 rounded-lg transition-colors"
                                                     >
                                                         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

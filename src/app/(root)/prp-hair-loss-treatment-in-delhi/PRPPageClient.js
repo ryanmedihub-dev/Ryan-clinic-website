@@ -1219,7 +1219,7 @@ export default function PRPPageClient() {
             </Link>
             <span>•</span>
             <Link
-              href="/hair-transplant-surgery-in-delhi"
+              href="/surgery/hair-transplant-surgery-in-delhi"
               className="text-[#D32F2F] hover:underline"
             >
               Hair Transplant Surgery in Delhi
@@ -1245,7 +1245,7 @@ export default function PRPPageClient() {
 
               <div className="flex flex-wrap gap-4">
                 <Link
-                  href="/hair-transplant-surgery-in-delhi"
+                  href="/surgery/hair-transplant-surgery-in-delhi"
                   className="bg-[#D32F2F] hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-xl transition-all shadow-md"
                   onClick={() =>
                     trackCTA({

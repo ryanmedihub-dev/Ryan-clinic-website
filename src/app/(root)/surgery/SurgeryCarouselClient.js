@@ -12,10 +12,7 @@ export default function SurgeryCarouselClient({ dbPages = [] }) {
 
     return dbPages.map((page, idx) => {
       const rawSlug = (page.slug || "").replace(/^\/+/, "").replace(/^surgery\//, "");
-      const targetHref =
-        rawSlug === "hair-transplant-surgery-in-delhi" || rawSlug === "hair-transplant-surgery-in-mumbai"
-          ? `/${rawSlug}`
-          : `/surgery/${rawSlug}`;
+      const targetHref = `/surgery/${rawSlug}`;
 
       const title = page.pageName || page.hero?.title || `Hair Transplant Surgery`;
       const description =

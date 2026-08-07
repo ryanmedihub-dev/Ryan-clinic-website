@@ -19,11 +19,40 @@ export default withAuth(
     }
 
     // Block unauthenticated writes to admin API routes → return 401
-    // GET is intentionally allowed so public pages can still fetch content
     const isWrite = ["POST", "PUT", "PATCH", "DELETE"].includes(req.method);
     if (!token && isWrite) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
+
+    // ── SURGERY ROUTING ─────────────────────────────────────────────────────
+    //
+    // FINAL PUBLIC URL FORMAT: /surgery/[slug]
+    //
+    // Old root surgery URLs (e.g. /hair-transplant-surgery-in-mumbai)
+    // → 308 Permanent Redirect to /surgery/[slug]
+    //
+    // /surgery/[slug] requests pass through normally — this IS the final URL.
+    // No rewrite, no redirect needed.
+    // ────────────────────────────────────────────────────────────────────────
+
+    // Detect root-level surgery slug patterns:
+    //   /hair-transplant-surgery-in-*
+    //   /beard-transplant-surgery-in-*
+    //   etc.
+    if (
+      !pathname.startsWith("/surgery") &&
+      !pathname.startsWith("/api/") &&
+      !pathname.startsWith("/_next/") &&
+      !pathname.startsWith("/admin") &&
+      !pathname.startsWith("/uploads/") &&
+      !pathname.includes(".") &&
+      /^\/([\w-]+-surgery-in-[\w-]+)/.test(pathname)
+    ) {
+      const slug = pathname.replace(/^\//, "");
+      return NextResponse.redirect(new URL(`/surgery/${slug}`, req.url), 308);
+    }
+
+    return NextResponse.next();
   },
   {
     callbacks: {
@@ -34,11 +63,7 @@ export default withAuth(
 
 export const config = {
   matcher: [
-    "/admin/:path*",
-    "/login",
-    "/api/blog/:path*",
-    "/api/service/:path*",
-    "/api/sliders/:path*",
-    "/api/upload/:path*",
+    "/((?!_next/static|_next/image|favicon.ico|uploads/).*)",
   ],
 };
+
