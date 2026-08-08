@@ -14,6 +14,9 @@ const handler = async (req) => {
         const {
             title,
             slug: rawSlug,
+            pageType,
+            sectionVisibility,
+            pricing,
 
             seo,
             hero,
@@ -45,6 +48,10 @@ const handler = async (req) => {
                 }
             );
         }
+
+        // Validate pageType if provided
+        const validPageTypes = ["hair-transplant", "prp", "dhi", "beard-transplant", "other"];
+        const normalizedPageType = validPageTypes.includes(pageType) ? pageType : "hair-transplant";
 
         // Generate slug
         const slug = rawSlug
@@ -86,6 +93,19 @@ const handler = async (req) => {
         const doc = new CostPage({
             title: title.trim(),
             slug,
+            pageType: normalizedPageType,
+            sectionVisibility: sectionVisibility || {
+                hero: true,
+                intro: true,
+                services: true,
+                pricing: true,
+                graftPricing: true,
+                priceFactors: true,
+                includedSection: true,
+                consultation: true,
+                faq: true,
+                clinic: true,
+            },
 
             seo,
             hero,
@@ -99,6 +119,7 @@ const handler = async (req) => {
             faq: normalizedFaq,
             settings,
             /* Generic / multi-type sections */
+            ...(pricing !== undefined && { pricing }),
             ...(pricingOptions !== undefined && { pricingOptions }),
             ...(contentSections !== undefined && { contentSections }),
             ...(mythsFacts !== undefined && { mythsFacts }),

@@ -371,7 +371,14 @@ export default function SurgeryPageClient({ data }) {
   const leftCardStats = leftCard.statistics ?? [];
   const leftCardDuration = leftCard.icon || "18 Months";
   const recoveryStages = recoveryTimeline.recoveryStages ?? [];
-  const RECOVERY = recoveryStages.map((s, i) => ({
+  // If no recovery stages saved yet, fall back to leftHighlightCard.statistics
+  // so existing data always renders on the right-side cards
+  const recoveryStagesResolved = recoveryStages.length > 0
+    ? recoveryStages
+    : (leftCardStats.length > 0
+        ? leftCardStats.map((s) => ({ duration: s.value, title: s.value, description: s.label }))
+        : []);
+  const RECOVERY = recoveryStagesResolved.map((s, i) => ({
     time: s.duration || s.title || "",
     label: s.title || "",
     desc: s.description || "",
@@ -1139,105 +1146,6 @@ export default function SurgeryPageClient({ data }) {
         </div>
       </section>
 
-      {/* ── 5. Surgical Techniques (Left Aligned Heading) ─────────────────── */}
-      <section className="bg-white py-16 md:py-24">
-        <div className="w-full px-4 sm:px-6 lg:px-12 xl:px-20">
-          <RevealSection>
-            <div className="text-left max-w-4xl mb-12">
-              <SectionLabel text="Surgical Techniques" />
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#302658] leading-tight tracking-tight mt-2 mb-4 text-left font-outfit">
-                {techHeading || "Surgical Techniques We Offer"}
-              </h2>
-              {/* Introductory overview paragraph — matches SEO brief */}
-              {techDesc ? (
-                <p className="text-gray-500 text-base md:text-lg leading-relaxed text-left font-sans">{techDesc}</p>
-              ) : (
-                <p className="text-gray-500 text-base md:text-lg leading-relaxed text-left font-sans">
-                  We offer the three gold-standard hair transplant techniques, each selected based on the patient&apos;s individual hair loss pattern, donor area, and expected density goals.
-                </p>
-              )}
-            </div>
-          </RevealSection>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 border border-gray-200 rounded-3xl overflow-hidden shadow-sm">
-            {TECHNIQUES_DATA.length > 0 ? (
-              TECHNIQUES_DATA.map((tech, i) => {
-                const isFeatured = tech.featured;
-                const isLast = i === TECHNIQUES_DATA.length - 1;
-                return (
-                  <AnimatedCard
-                    key={i}
-                    delay={i * 100}
-                    className={
-                      isFeatured
-                        ? "relative bg-[#1a1430] p-8 lg:p-10 border-b lg:border-b-0 " + (isLast ? "" : "lg:border-r") + " border-gray-200 flex flex-col text-white overflow-hidden"
-                        : "bg-white p-8 lg:p-10 border-b lg:border-b-0 " + (isLast ? "" : "lg:border-r") + " border-gray-200 flex flex-col"
-                    }
-                  >
-                    {isFeatured && <div className="absolute top-0 right-0 w-48 h-48 bg-[#e30a17]/15 rounded-full blur-3xl pointer-events-none" />}
-                    <div className="relative z-10 flex flex-col h-full">
-                      <div className="flex items-center gap-3 mb-6">
-                        {isFeatured ? (
-                          <div className="inline-flex items-center gap-2 bg-[#e30a17] rounded-full px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white">
-                            <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                            {tech.badge || "Most Popular"}
-                          </div>
-                        ) : (
-                          <div className="w-10 h-10 rounded-xl bg-[#302658]/8 flex items-center justify-center shrink-0">
-                            {TECHNIQUE_ICONS[i % TECHNIQUE_ICONS.length]}
-                          </div>
-                        )}
-                        <span className={isFeatured ? "text-white/30 text-[10px] font-bold uppercase tracking-widest" : "text-gray-400 text-[10px] font-bold uppercase tracking-widest"}>
-                          Method {String(i + 1).padStart(2, "0")}
-                        </span>
-                      </div>
-                      <h3 className={isFeatured ? "text-2xl font-black text-white mb-1" : "text-2xl font-black text-[#302658] mb-1"}>{tech.name}</h3>
-                      <p className={isFeatured ? "text-sm text-white/50 font-semibold mb-4" : "text-sm text-gray-400 font-semibold mb-4"}>{tech.subtitle}</p>
-                      <div className={isFeatured ? "text-white/70 text-sm leading-relaxed flex-1" : "text-gray-500 text-sm leading-relaxed flex-1"} dangerouslySetInnerHTML={{ __html: sanitizeContent(tech.description) }} />
-
-                      {tech.bulletPoints && tech.bulletPoints.length > 0 && (
-                        <div className={"mt-8 pt-6 border-t " + (isFeatured ? "border-white/10" : "border-gray-100") + " space-y-2.5"}>
-                          {tech.bulletPoints.map((f, fidx) => (
-                            <div key={fidx} className={"flex items-center gap-2.5 text-sm font-medium " + (isFeatured ? "text-white" : "text-[#302658]")}>
-                              <CheckCircle2 className="w-4 h-4 text-[#e30a17] shrink-0" /> {f}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-
-                      <a href={tech.ctaText?.link || heroWALink} className="inline-flex items-center gap-1.5 text-sm font-bold text-[#e30a17] mt-6 hover:underline">
-                        {tech.ctaText?.text || "See pricing"} <ArrowRight className="w-3.5 h-3.5" />
-                      </a>
-                    </div>
-                  </AnimatedCard>
-                );
-              })
-            ) : null}
-          </div>
-
-          <div className="mt-10 bg-[#F7F5F2] rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-5 border border-gray-200">
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-[#e30a17] mb-1">{bottomCTAHeading}</p>
-              <h4 className="text-lg md:text-xl font-bold text-[#302658]">{bottomCTADesc}</h4>
-            </div>
-            <div className="shrink-0">
-              <CTAButtons primary={bottomCTAWALabel} waLink={bottomCTAWA} telLink={heroTelLink} />
-            </div>
-          </div>
-
-          {/* "Want the full technical breakdown" guide link */}
-          <div className="mt-6 text-center">
-            <a
-              href="/hair-transplant-in-delhi"
-              className="inline-flex items-center gap-2 text-sm font-bold text-[#e30a17] hover:underline"
-            >
-              Want the full technical breakdown of FUE vs THI and recovery?
-              <span className="font-normal text-gray-500">→ Hair Transplant in Delhi</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </a>
-          </div>
-        </div>
-      </section>
 
       {/* ── 6. Quality Benchmarks (Left Headings & Rich 8-Card Grid) ────── */}
       <section className="bg-white py-16 md:py-24">

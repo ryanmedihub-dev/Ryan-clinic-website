@@ -6,7 +6,7 @@ export default function GeneralSection({ formData, updateField, errors = {} }) {
       <h3 className="text-2xl font-bold underline mb-5">General Info</h3>
       
       <div className="flex gap-6 flex-col md:flex-row">
-        <div className="w-full">
+        <div className="w-full md:w-1/2">
           <label className="block text-sm font-semibold text-gray-700">
             Page Title *
           </label>
@@ -21,7 +21,22 @@ export default function GeneralSection({ formData, updateField, errors = {} }) {
           {errors.title && <p className="text-xs text-red-500 mt-1">{errors.title}</p>}
         </div>
 
-        <div className="w-full">
+        <div className="w-full md:w-1/4">
+          <label className="block text-sm font-semibold text-gray-700">Page Type *</label>
+          <select
+            value={formData.pageType || "hair-transplant"}
+            onChange={(e) => updateField("pageType", e.target.value)}
+            className="w-full mt-2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500 font-semibold"
+          >
+            <option value="hair-transplant">Hair Transplant Cost</option>
+            <option value="prp">PRP Hair Treatment Cost</option>
+            <option value="dhi">DHI Treatment Cost</option>
+            <option value="beard-transplant">Beard Transplant Cost</option>
+            <option value="other">Other Treatment Cost</option>
+          </select>
+        </div>
+
+        <div className="w-full md:w-1/4">
           <label className="block text-sm font-semibold text-gray-700">Status</label>
           <select
             value={formData.settings?.status || "draft"}

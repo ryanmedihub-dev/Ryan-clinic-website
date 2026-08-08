@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1739" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Ryan CRM" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" />
+  <title>Ryan Autopilot CRM</title>
+  <style>
+    :root {
+      --navy: #0b1739;
+      --navy-2: #101f49;
+      --blue: #246bfd;
+      --cyan: #22c7e8;
+      --gold: #f2b84b;
+      --green: #0f9f6e;
+      --red: #e34b4b;
+      --orange: #e98424;
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #15213b;
+      --muted: #71809d;
+      --line: #e6ebf4;
+      --shadow: 0 14px 36px rgba(17, 34, 75, 0.10);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #dfe7f4; color: var(--text); font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+
+    .phone-shell {
+      width: min(100%, 430px);
+      min-height: 100vh;
+      margin: 0 auto;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 50px rgba(22, 40, 82, .20);
+    }
+
+    .statusbar {
+      height: calc(26px + env(safe-area-inset-top));
+      padding-top: env(safe-area-inset-top);
+      background: var(--navy);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-left: 20px;
+      padding-right: 20px;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: .3px;
+    }
+
+    .topbar {
+      background: linear-gradient(145deg, var(--navy), var(--navy-2));
+      color: white;
+      padding: 14px 20px 24px;
+      border-bottom-left-radius: 28px;
+      border-bottom-right-radius: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .topbar::after {
+      content: "";
+      width: 180px; height: 180px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 50%;
+      position: absolute; right: -65px; top: -95px;
+    }
+    .topline { display: flex; align-items: center; justify-content: space-between; gap: 12px; position: relative; z-index: 2; }
+    .brand { display: flex; align-items: center; gap: 11px; }
+    .logo { width: 42px; height: 42px; border-radius: 14px; background: linear-gradient(135deg, var(--cyan), var(--blue)); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:17px; box-shadow: 0 8px 25px rgba(36,107,253,.35); }
+    .brand-title { font-weight: 850; letter-spacing: .3px; font-size: 17px; }
+    .brand-sub { font-size: 11px; color: #b8c7ea; margin-top: 2px; }
+    .avatar { width: 38px; height: 38px; border-radius: 50%; background: #fff; color: var(--navy); display:flex; align-items:center; justify-content:center; font-weight:850; border: 2px solid rgba(255,255,255,.35); }
+
+    .content { padding: 16px 16px 106px; }
+    .screen { display: none; animation: fade .20s ease; }
+    .screen.active { display: block; }
+    @keyframes fade { from { opacity: .25; transform: translateY(4px);} to { opacity: 1; transform: translateY(0);} }
+
+    .welcome { margin-top: -4px; margin-bottom: 16px; }
+    .welcome h1 { font-size: 22px; line-height: 1.2; margin: 0 0 5px; }
+    .welcome p { margin: 0; color: var(--muted); font-size: 13px; }
+
+    .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .kpi { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 13px 14px; box-shadow: 0 5px 18px rgba(17,34,75,.055); }
+    .kpi .label { color: var(--muted); font-size: 11px; font-weight: 700; }
+    .kpi .value { font-weight: 900; font-size: 21px; margin-top: 5px; }
+    .kpi .delta { font-size: 10px; font-weight: 750; color: var(--green); margin-top: 4px; }
+
+    .section-title { display:flex; justify-content:space-between; align-items:center; margin: 19px 2px 10px; }
+    .section-title h2 { margin: 0; font-size: 15px; }
+    .section-title span { font-size: 11px; color: var(--blue); font-weight: 750; }
+
+    .lead-card, .card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--line); box-shadow: var(--shadow); padding: 16px; }
+    .lead-card { position: relative; overflow: hidden; }
+    .lead-card::before { content:""; position:absolute; top:0; left:0; right:0; height:5px; background: linear-gradient(90deg, var(--cyan), var(--blue)); }
+    .lead-top { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+    .patient { display:flex; gap:11px; align-items:center; }
+    .patient-photo { width: 48px; height:48px; border-radius:16px; background:#edf2ff; display:flex; align-items:center; justify-content:center; font-weight:900; color:var(--blue); }
+    .patient h3 { margin:0 0 3px; font-size:16px; }
+    .patient p { margin:0; color:var(--muted); font-size:11px; }
+    .score { width:52px; height:52px; border-radius:50%; background: conic-gradient(var(--green) 0 86%, #e9eef6 86% 100%); display:grid; place-items:center; flex:none; }
+    .score::before { content:""; width:40px; height:40px; border-radius:50%; background:white; position:absolute; }
+    .score span { z-index:1; font-size:13px; font-weight:900; }
+
+    .chips { display:flex; flex-wrap:wrap; gap:7px; margin:14px 0 12px; }
+    .chip { font-size:10px; font-weight:800; padding:7px 9px; border-radius:999px; background:#eef3ff; color:#36599f; }
+    .chip.hot { background:#e7f8f2; color:#087854; }
+    .chip.warn { background:#fff1df; color:#a95a08; }
+
+    .ai-box { background: linear-gradient(135deg, #edf3ff, #f5fbff); border:1px solid #dfe9ff; border-radius:16px; padding:12px; margin:10px 0 14px; }
+    .ai-title { color:var(--blue); font-weight:850; font-size:11px; display:flex; gap:6px; align-items:center; }
+    .ai-box p { margin:6px 0 0; font-size:12px; line-height:1.45; }
+
+    .primary { width:100%; border:0; border-radius:17px; padding:15px 16px; color:#fff; background: linear-gradient(135deg, var(--blue), #174fd0); font-weight:850; box-shadow: 0 10px 25px rgba(36,107,253,.28); display:flex; align-items:center; justify-content:center; gap:8px; }
+    .secondary-row { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-top:9px; }
+    .secondary { border:1px solid var(--line); border-radius:15px; padding:12px; background:white; color:var(--text); font-weight:800; font-size:12px; }
+
+    .automation-strip { margin-top:14px; background:var(--navy); color:white; border-radius:18px; padding:13px 14px; display:flex; align-items:center; justify-content:space-between; }
+    .automation-strip strong { font-size:12px; display:block; }
+    .automation-strip small { color:#aebee2; font-size:10px; }
+    .pulse { width:9px; height:9px; background:#39d98a; border-radius:50%; box-shadow:0 0 0 5px rgba(57,217,138,.15); }
+
+    .queue-item { background:white; border:1px solid var(--line); border-radius:17px; padding:13px; display:flex; align-items:center; gap:11px; margin-bottom:9px; }
+    .queue-icon { width:38px; height:38px; border-radius:13px; display:grid; place-items:center; background:#eef3ff; }
+    .queue-main { flex:1; min-width:0; }
+    .queue-main strong { display:block; font-size:13px; }
+    .queue-main span { display:block; color:var(--muted); font-size:10px; margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .queue-time { font-weight:850; font-size:11px; color:var(--orange); }
+
+    .bottom-nav { position:fixed; left:50%; transform:translateX(-50%); bottom:0; width:min(100%,430px); background:rgba(255,255,255,.96); backdrop-filter:blur(16px); border-top:1px solid var(--line); padding:9px 8px calc(9px + env(safe-area-inset-bottom)); display:grid; grid-template-columns:repeat(4,1fr); z-index:20; }
+    .nav-btn { border:0; background:transparent; padding:5px 2px; color:#8a96ad; display:flex; flex-direction:column; align-items:center; gap:3px; font-size:9px; font-weight:750; }
+    .nav-btn .ico { font-size:20px; line-height:1; }
+    .nav-btn.active { color:var(--blue); }
+
+    .call-screen { position:fixed; inset:0; margin:auto; width:min(100%,430px); z-index:60; background:linear-gradient(180deg,#081431,#142a58); color:white; display:none; flex-direction:column; min-height:100vh; }
+    .call-screen.active { display:flex; }
+    .call-head { padding:calc(28px + env(safe-area-inset-top)) 22px 14px; display:flex; justify-content:space-between; align-items:center; }
+    .call-head button { border:0; color:white; background:rgba(255,255,255,.11); width:38px; height:38px; border-radius:50%; }
+    .calling-person { text-align:center; padding:24px 20px 16px; }
+    .big-avatar { width:98px; height:98px; border-radius:32px; margin:0 auto 16px; background:linear-gradient(135deg,#dfe9ff,#86abff); color:var(--navy); display:grid; place-items:center; font-size:33px; font-weight:900; box-shadow:0 20px 45px rgba(0,0,0,.24); }
+    .calling-person h2 { margin:0 0 5px; font-size:25px; }
+    .calling-person p { margin:0; color:#acbddf; font-size:13px; }
+    .timer { margin-top:10px; font-size:14px; font-variant-numeric:tabular-nums; color:#66f1c3; font-weight:800; }
+    .live-ai { margin:14px 17px; background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.12); border-radius:20px; padding:14px; }
+    .live-ai .head { font-size:11px; color:#78cfff; font-weight:850; }
+    .live-ai p { margin:8px 0 0; line-height:1.45; font-size:13px; }
+    .call-controls { margin:auto 22px calc(22px + env(safe-area-inset-bottom)); display:grid; grid-template-columns:repeat(3,1fr); gap:15px; text-align:center; }
+    .control button { width:62px; height:62px; border-radius:50%; border:0; background:rgba(255,255,255,.11); color:white; font-size:20px; }
+    .control span { display:block; margin-top:7px; color:#b8c7e5; font-size:10px; }
+    .control.end button { background:#ef5350; }
+
+    .modal-wrap { position:fixed; inset:0; width:min(100%,430px); margin:auto; background:rgba(6,16,39,.62); z-index:80; display:none; align-items:flex-end; }
+    .modal-wrap.active { display:flex; }
+    .modal { width:100%; background:white; border-radius:28px 28px 0 0; padding:18px 18px calc(22px + env(safe-area-inset-bottom)); max-height:90vh; overflow:auto; }
+    .handle { width:45px; height:5px; border-radius:99px; background:#dbe1ec; margin:0 auto 17px; }
+    .modal h2 { margin:0 0 6px; font-size:20px; }
+    .modal-sub { margin:0 0 15px; color:var(--muted); font-size:12px; }
+    .detected { border:1px solid #dce7ff; background:#f5f8ff; border-radius:18px; padding:14px; }
+    .detected-row { display:flex; justify-content:space-between; gap:15px; padding:8px 0; border-bottom:1px solid #e5ebf7; font-size:12px; }
+    .detected-row:last-child { border-bottom:0; }
+    .detected-row span { color:var(--muted); }
+    .detected-row strong { text-align:right; }
+    .action-box { margin:13px 0; border-left:4px solid var(--green); border-radius:13px; background:#ecfaf5; padding:12px; font-size:12px; line-height:1.45; }
+
+    .progress-card { background:white; border-radius:20px; padding:15px; border:1px solid var(--line); margin-bottom:11px; }
+    .progress-top { display:flex; justify-content:space-between; font-size:12px; font-weight:800; }
+    .bar { height:8px; background:#edf1f7; border-radius:99px; margin-top:10px; overflow:hidden; }
+    .bar > span { height:100%; display:block; border-radius:99px; background:linear-gradient(90deg,var(--cyan),var(--blue)); }
+
+    .exception { background:white; border-radius:17px; border:1px solid var(--line); padding:13px; margin-bottom:9px; display:flex; gap:11px; }
+    .alert-dot { width:10px; height:10px; border-radius:50%; background:var(--red); margin-top:4px; flex:none; }
+    .exception strong { font-size:12px; }
+    .exception p { margin:4px 0 0; color:var(--muted); font-size:10px; line-height:1.4; }
+
+    .role-switch { border:1px solid rgba(255,255,255,.18); color:white; background:rgba(255,255,255,.08); border-radius:999px; padding:7px 10px; font-size:10px; font-weight:800; }
+    .hidden { display:none !important; }
+  </style>
+</head>
+<body>
+<div class="phone-shell">
+  <div class="statusbar"><span id="clock">9:41</span><span>●●● 5G&nbsp;&nbsp;▰</span></div>
+  <header class="topbar">
+    <div class="topline">
+      <div class="brand">
+        <div class="logo">RC</div>
+        <div><div class="brand-title">RYAN CLINIC</div><div class="brand-sub">Autopilot Telesales CRM</div></div>
+      </div>
+      <button class="role-switch" id="roleSwitch">Agent View</button>
+      <div class="avatar">AV</div>
+    </div>
+  </header>
+
+  <main class="content">
+    <section class="screen active" id="homeScreen">
+      <div class="welcome"><h1>Good afternoon, Ayesha 👋</h1><p>AI has arranged your highest-conversion opportunities.</p></div>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="label">Calls connected</div><div class="value" id="callsKpi">18</div><div class="delta">↑ 22% vs yesterday</div></div>
+        <div class="kpi"><div class="label">Consultations</div><div class="value" id="consultKpi">5</div><div class="delta">3 confirmed</div></div>
+        <div class="kpi"><div class="label">Sales today</div><div class="value">₹1.2L</div><div class="delta">60% of target</div></div>
+        <div class="kpi"><div class="label">Incentive</div><div class="value">₹3,000</div><div class="delta">Live calculation</div></div>
+      </div>
+
+      <div class="section-title"><h2>Next best lead</h2><span>AI priority #1</span></div>
+      <div class="lead-card">
+        <div class="lead-top">
+          <div class="patient"><div class="patient-photo">RS</div><div><h3>Rahul Sharma</h3><p>Delhi • Google Search • 2 min ago</p></div></div>
+          <div class="score"><span>86</span></div>
+        </div>
+        <div class="chips"><span class="chip hot">🔥 Super Hot</span><span class="chip">Photos received</span><span class="chip warn">Within 7 days</span><span class="chip">₹50k–₹80k</span></div>
+        <div class="ai-box"><div class="ai-title">✦ AI CONVERSION BRIEF</div><p>Patient wants treatment this week, has shared photos and asked about Sapphire FUE. Build trust, confirm Delhi visit, then offer today 6:30 PM or tomorrow 11:00 AM.</p></div>
+        <button class="primary" id="startCall">☎ &nbsp;START SMART CALL</button>
+        <div class="secondary-row"><button class="secondary" id="waBtn">💬 WhatsApp</button><button class="secondary" id="photosBtn">🖼 View Photos</button></div>
+      </div>
+
+      <div class="automation-strip"><div><strong>Autopilot is active</strong><small>Scoring, WhatsApp, follow-ups and reassignment</small></div><div class="pulse"></div></div>
+
+      <div class="section-title"><h2>AI-managed queue</h2><span>12 actions</span></div>
+      <div class="queue-item"><div class="queue-icon">📞</div><div class="queue-main"><strong>Return missed call — Sameer</strong><span>Hot lead • Hyderabad • owner unavailable</span></div><div class="queue-time">Now</div></div>
+      <div class="queue-item"><div class="queue-icon">📷</div><div class="queue-main"><strong>Photos received — Neeraj</strong><span>Doctor assessment generated automatically</span></div><div class="queue-time">Auto</div></div>
+      <div class="queue-item"><div class="queue-icon">📅</div><div class="queue-main"><strong>Confirm visit — Danish</strong><span>Appointment today at 5:30 PM</span></div><div class="queue-time">4:00 PM</div></div>
+    </section>
+
+    <section class="screen" id="followScreen">
+      <div class="welcome"><h1>Smart follow-ups</h1><p>Only leads requiring human conversation are shown.</p></div>
+      <div class="queue-item"><div class="queue-icon">🔥</div><div class="queue-main"><strong>Vikas — Call now</strong><span>Opened package message twice • surgery within 10 days</span></div><div class="queue-time">P1</div></div>
+      <div class="queue-item"><div class="queue-icon">📞</div><div class="queue-main"><strong>Arjun — Requested callback</strong><span>AI detected: “call me after lunch”</span></div><div class="queue-time">2:30 PM</div></div>
+      <div class="queue-item"><div class="queue-icon">💳</div><div class="queue-main"><strong>Mohit — Token link opened</strong><span>Payment incomplete • senior closer notified</span></div><div class="queue-time">High</div></div>
+      <div class="queue-item"><div class="queue-icon">🏥</div><div class="queue-main"><strong>Faisal — No-show recovery</strong><span>New slots already sent on WhatsApp</span></div><div class="queue-time">Today</div></div>
+      <div class="card" style="margin-top:16px"><div class="ai-title">✦ 94 LEADS HANDLED BY AI</div><p style="font-size:12px;line-height:1.5;margin-bottom:0">Cold, future-planning and no-response leads are being nurtured automatically. You will receive them only when buying intent increases.</p></div>
+    </section>
+
+    <section class="screen" id="performanceScreen">
+      <div class="welcome"><h1>My performance</h1><p>Today • automatically calculated from calls and conversions.</p></div>
+      <div class="progress-card"><div class="progress-top"><span>Connected calls</span><span>18 / 30</span></div><div class="bar"><span style="width:60%"></span></div></div>
+      <div class="progress-card"><div class="progress-top"><span>Consultation bookings</span><span>5 / 7</span></div><div class="bar"><span style="width:71%"></span></div></div>
+      <div class="progress-card"><div class="progress-top"><span>Patient landings</span><span>3 / 5</span></div><div class="bar"><span style="width:60%"></span></div></div>
+      <div class="progress-card"><div class="progress-top"><span>Sales target</span><span>₹1.2L / ₹2L</span></div><div class="bar"><span style="width:60%"></span></div></div>
+      <div class="card" style="margin-top:14px"><div class="ai-title">✦ AI COACHING</div><p style="font-size:12px;line-height:1.5">Your strongest skill is trust building. Improvement: ask the treatment timeline before giving package details. Suggested practice call is ready.</p></div>
+      <div class="section-title"><h2>Call quality</h2><span>82 / 100</span></div>
+      <div class="kpi-grid"><div class="kpi"><div class="label">Need discovery</div><div class="value">88</div></div><div class="kpi"><div class="label">Objection handling</div><div class="value">76</div></div><div class="kpi"><div class="label">Confidence</div><div class="value">86</div></div><div class="kpi"><div class="label">Closing attempt</div><div class="value">78</div></div></div>
+    </section>
+
+    <section class="screen" id="managerScreen">
+      <div class="welcome"><h1>Conversion control room</h1><p>Only exceptions and revenue leaks require attention.</p></div>
+      <div class="kpi-grid"><div class="kpi"><div class="label">Live agents</div><div class="value">37</div><div class="delta">4 branches</div></div><div class="kpi"><div class="label">SLA compliance</div><div class="value">92%</div><div class="delta">↑ 7%</div></div><div class="kpi"><div class="label">Today revenue</div><div class="value">₹8.4L</div><div class="delta">70% run rate</div></div><div class="kpi"><div class="label">Hot leads</div><div class="value">64</div><div class="delta">11 need action</div></div></div>
+      <div class="section-title"><h2>Critical conversion leaks</h2><span>11 alerts</span></div>
+      <div class="exception"><div class="alert-dot"></div><div><strong>4 super-hot leads not called within 5 minutes</strong><p>System is reassigning them to available Team A agents.</p></div></div>
+      <div class="exception"><div class="alert-dot" style="background:var(--orange)"></div><div><strong>7 consultations are not reconfirmed</strong><p>AI reminders sent; 3 require human callback before 6 PM.</p></div></div>
+      <div class="exception"><div class="alert-dot" style="background:var(--gold)"></div><div><strong>Agent Rahul’s call quality fell to 54</strong><p>12 connected calls had no consultation attempt. Micro-coaching assigned.</p></div></div>
+      <div class="exception"><div class="alert-dot" style="background:var(--blue)"></div><div><strong>Google campaign G-Delhi-04 is producing stronger leads</strong><p>Token conversion 2.3× Meta average. Budget recommendation prepared.</p></div></div>
+      <div class="card" style="margin-top:14px"><div class="ai-title">✦ AI RECOMMENDATION</div><p style="font-size:12px;line-height:1.5;margin-bottom:0">Move 15% of evening team capacity to Google Delhi leads between 6:30–9:00 PM. Predicted additional consultations: 9–13 weekly.</p></div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-target="homeScreen"><span class="ico">⌂</span>Home</button>
+    <button class="nav-btn" data-target="followScreen"><span class="ico">↻</span>Follow-ups</button>
+    <button class="nav-btn" data-target="performanceScreen"><span class="ico">▥</span>Performance</button>
+    <button class="nav-btn" data-target="managerScreen"><span class="ico">⚡</span>Manager</button>
+  </nav>
+
+  <section class="call-screen" id="callScreen">
+    <div class="call-head"><button id="closeCall">‹</button><strong>Ryan Smart Dialer</strong><button>⋯</button></div>
+    <div class="calling-person"><div class="big-avatar">RS</div><h2>Rahul Sharma</h2><p>Delhi • Super Hot • Photos received</p><div class="timer" id="timer">Connecting…</div></div>
+    <div class="live-ai"><div class="head">✦ LIVE AI ASSISTANT</div><p id="livePrompt">Start with his treatment timeline, then confirm if he is available for a free consultation today.</p></div>
+    <div class="call-controls">
+      <div class="control"><button>🎙</button><span>Mute</span></div>
+      <div class="control"><button>🔊</button><span>Speaker</span></div>
+      <div class="control"><button>⌨</button><span>Keypad</span></div>
+      <div class="control"><button>💬</button><span>WhatsApp</span></div>
+      <div class="control"><button>⇄</button><span>Transfer</span></div>
+      <div class="control end"><button id="endCall">☎</button><span>End call</span></div>
+    </div>
+  </section>
+
+  <div class="modal-wrap" id="summaryModal">
+    <div class="modal"><div class="handle"></div><h2>Call processed by AI</h2><p class="modal-sub">Recording, transcript, disposition and next action are ready.</p>
+      <div class="detected">
+        <div class="detected-row"><span>Intent</span><strong>Highly interested</strong></div>
+        <div class="detected-row"><span>Timeline</span><strong>Within 7 days</strong></div>
+        <div class="detected-row"><span>Objection</span><strong>Trust / results</strong></div>
+        <div class="detected-row"><span>Preferred visit</span><strong>Tomorrow, 11:00 AM</strong></div>
+        <div class="detected-row"><span>Stage</span><strong>Consultation booked</strong></div>
+      </div>
+      <div class="action-box"><strong>Actions running automatically:</strong><br>Appointment created • Maps and confirmation sent • Counsellor assigned • reminder sequence started.</div>
+      <button class="primary" id="confirmSummary">✓ Looks correct — continue</button>
+      <button class="secondary" style="width:100%;margin-top:9px" id="correctSummary">Correct AI summary</button>
+    </div>
+  </div>
+</div>
+<script>
+  const screens = [...document.querySelectorAll('.screen')];
+  const navBtns = [...document.querySelectorAll('.nav-btn')];
+  navBtns.forEach(btn => btn.addEventListener('click', () => {
+    screens.forEach(s => s.classList.remove('active'));
+    navBtns.forEach(n => n.classList.remove('active'));
+    document.getElementById(btn.dataset.target).classList.add('active');
+    btn.classList.add('active');
+  }));
+
+  const callScreen = document.getElementById('callScreen');
+  const summaryModal = document.getElementById('summaryModal');
+  const timerEl = document.getElementById('timer');
+  const livePrompt = document.getElementById('livePrompt');
+  let seconds = 0, interval;
+  const prompts = [
+    'Patient asked about price. First confirm graft requirement and desired timeline.',
+    'Trust concern detected. Share surgeon involvement and relevant before/after results.',
+    'Buying signal detected. Offer today 6:30 PM or tomorrow 11:00 AM.',
+    'Patient prefers tomorrow. Confirm branch and book the slot now.'
+  ];
+
+  document.getElementById('startCall').onclick = () => {
+    callScreen.classList.add('active');
+    seconds = 0;
+    timerEl.textContent = 'Connecting…';
+    setTimeout(() => timerEl.textContent = '00:00', 900);
+    interval = setInterval(() => {
+      seconds++;
+      const m = String(Math.floor(seconds/60)).padStart(2,'0');
+      const s = String(seconds%60).padStart(2,'0');
+      timerEl.textContent = `${m}:${s}`;
+      if ([5,10,15,20].includes(seconds)) livePrompt.textContent = prompts[Math.min(seconds/5-1, prompts.length-1)];
+    }, 1000);
+  };
+  const end = () => { clearInterval(interval); callScreen.classList.remove('active'); summaryModal.classList.add('active'); };
+  document.getElementById('endCall').onclick = end;
+  document.getElementById('closeCall').onclick = end;
+  document.getElementById('confirmSummary').onclick = () => {
+    summaryModal.classList.remove('active');
+    document.getElementById('callsKpi').textContent = '19';
+    document.getElementById('consultKpi').textContent = '6';
+    alert('Automation completed: consultation booked, WhatsApp confirmation sent and reminders scheduled.');
+  };
+  document.getElementById('correctSummary').onclick = () => alert('In production, the agent can correct only the wrong field using voice or one tap.');
+  document.getElementById('waBtn').onclick = () => alert('AI-selected WhatsApp template: Photo received + consultation invitation.');
+  document.getElementById('photosBtn').onclick = () => alert('Patient photos open here with doctor assessment and graft estimate.');
+
+  const roleSwitch = document.getElementById('roleSwitch');
+  roleSwitch.onclick = () => {
+    screens.forEach(s => s.classList.remove('active'));
+    navBtns.forEach(n => n.classList.remove('active'));
+    document.getElementById('managerScreen').classList.add('active');
+    navBtns[3].classList.add('active');
+    roleSwitch.textContent = roleSwitch.textContent === 'Agent View' ? 'Manager View' : 'Agent View';
+  };
+
+  const updateClock = () => {
+    const d = new Date();
+    document.getElementById('clock').textContent = d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  };
+  updateClock(); setInterval(updateClock, 30000);
+  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
+</script>
+</body>
+</html>

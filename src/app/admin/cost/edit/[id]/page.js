@@ -6,6 +6,7 @@ import ToastContainer from "@/components/admin/Toast";
 import AdminHeader from "@/components/admin/adminHeader";
 
 import GeneralSection from "@/components/admin/cost/forms/GeneralSection";
+import SectionVisibilitySection from "@/components/admin/cost/forms/SectionVisibilitySection";
 import SEOSection from "@/components/admin/cost/forms/SEOSection";
 import HeroSection from "@/components/admin/cost/forms/HeroSection";
 import IntroSection from "@/components/admin/cost/forms/IntroSection";
@@ -51,6 +52,7 @@ export default function EditCostPage({ params }) {
     updateArrayItem,
     addItem,
     removeItem,
+    resetSectionVisibilityDefaults,
     handleSubmit,
   } = useCostForm({ mode: "edit", id, toast });
 
@@ -60,6 +62,7 @@ export default function EditCostPage({ params }) {
     updateArrayItem,
     addItem,
     removeItem,
+    resetSectionVisibilityDefaults,
     errors,
   };
 
@@ -87,6 +90,7 @@ export default function EditCostPage({ params }) {
       <form onSubmit={handleSubmit} className="space-y-6 px-6 mx-auto" suppressHydrationWarning>
 
         <GeneralSection {...sectionProps} />
+        <SectionVisibilitySection {...sectionProps} />
         <SEOSection {...sectionProps} />
         <HeroSection {...sectionProps} />
         <IntroSection {...sectionProps} />
