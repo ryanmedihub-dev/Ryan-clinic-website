@@ -4,11 +4,44 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 /* ─── Initial Form State ─────────────────────────────────────────────────── */
+/* ─── Initial Form State ─────────────────────────────────────────────────── */
+export const defaultSectionVisibility = {
+  hero: true,
+  intro: true,
+  services: true,
+  pricing: true,
+  graftPricing: true,
+  priceFactors: true,
+  includedSection: true,
+  consultation: true,
+  faq: true,
+  clinic: true,
+};
+
+export function getRecommendedSectionVisibility(pageType) {
+  switch (pageType) {
+    case "prp":
+    case "dhi":
+    case "beard-transplant":
+    case "other":
+      return {
+        ...defaultSectionVisibility,
+        graftPricing: false,
+      };
+    case "hair-transplant":
+    default:
+      return {
+        ...defaultSectionVisibility,
+      };
+  }
+}
+
 export const initialCostFormState = {
   title: "",
   slug: "",
   slugManual: false,
-  pageType: "cost-page",
+  pageType: "hair-transplant",
+  sectionVisibility: { ...defaultSectionVisibility },
   seo: {
     metaTitle: "",
     metaDescription: "",
@@ -34,6 +67,11 @@ export const initialCostFormState = {
   },
   services: {
     badge: "",
+    heading: "",
+    description: "",
+    cards: [],
+  },
+  pricing: {
     heading: "",
     description: "",
     cards: [],
@@ -147,6 +185,7 @@ export function useCostForm({ mode = "create", id = null, toast }) {
   const [loading, setLoading] = useState(mode === "edit");
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
+  const hasUserCustomizedVisibility = useRef(false);
 
   /* ── Keep a stable ref to toast so useEffect doesn't re-run on every render ── */
   const toastRef = useRef(toast);
@@ -160,6 +199,18 @@ export function useCostForm({ mode = "create", id = null, toast }) {
       .replace(/[^\w\s-]/g, "")
       .replace(/\s+/g, "-");
   };
+
+  /* ── Reset section visibility to recommended defaults for current pageType ── */
+  const resetSectionVisibilityDefaults = useCallback((overridePageType) => {
+    setFormData((prev) => {
+      const pType = overridePageType || prev.pageType || "hair-transplant";
+      const recommended = getRecommendedSectionVisibility(pType);
+      return {
+        ...prev,
+        sectionVisibility: { ...recommended },
+      };
+    });
+  }, []);
 
   /* ── Field Update Helpers ── */
   const updateField = useCallback((path, value) => {
@@ -179,6 +230,16 @@ export function useCostForm({ mode = "create", id = null, toast }) {
         next.slugManual = true;
       }
 
+      // Track manual visibility changes
+      if (path.startsWith("sectionVisibility.")) {
+        hasUserCustomizedVisibility.current = true;
+      }
+
+      // When pageType changes on a newly created page, apply recommended defaults if user hasn't customized toggles yet
+      if (path === "pageType" && mode === "create" && !hasUserCustomizedVisibility.current) {
+        next.sectionVisibility = getRecommendedSectionVisibility(value);
+      }
+
       return next;
     });
 
@@ -191,7 +252,7 @@ export function useCostForm({ mode = "create", id = null, toast }) {
       }
       return prevErrs;
     });
-  }, []);
+  }, [mode]);
 
   const updateArrayItem = useCallback((path, index, itemKeyOrValue, value) => {
     setFormData((prev) => {
@@ -246,12 +307,21 @@ export function useCostForm({ mode = "create", id = null, toast }) {
 
         if (res.ok && data.success && data.costPage) {
           const p = data.costPage;
+          const validTypes = ["hair-transplant", "prp", "dhi", "beard-transplant", "other"];
+          const fetchedPageType = validTypes.includes(p.pageType) ? p.pageType : "hair-transplant";
+
+          const fetchedVisibility = {
+            ...defaultSectionVisibility,
+            ...(p.sectionVisibility || {}),
+          };
+
           setFormData({
             _id: p._id,
             title: p.title || "",
             slug: p.slug || "",
             slugManual: true,
-            pageType: p.pageType || "cost-page",
+            pageType: fetchedPageType,
+            sectionVisibility: fetchedVisibility,
             seo: {
               metaTitle: p.seo?.metaTitle || "",
               metaDescription: p.seo?.metaDescription || "",
@@ -280,6 +350,11 @@ export function useCostForm({ mode = "create", id = null, toast }) {
               heading: p.services?.heading || "",
               description: p.services?.description || "",
               cards: p.services?.cards || [],
+            },
+            pricing: {
+              heading: p.pricing?.heading || p.pricingOptions?.heading || "",
+              description: p.pricing?.description || p.pricingOptions?.description || "",
+              cards: p.pricing?.cards?.length ? p.pricing.cards : (p.pricingOptions?.items || []),
             },
             graftPricing: {
               badge: p.graftPricing?.badge || "",
@@ -441,6 +516,7 @@ export function useCostForm({ mode = "create", id = null, toast }) {
     addItem,
     removeItem,
     moveItem,
+    resetSectionVisibilityDefaults,
     handleSubmit,
   };
 }

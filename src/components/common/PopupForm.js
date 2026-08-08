@@ -1,10 +1,78 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { X, Check, User, Mail, Phone, HelpCircle, MessageSquare, Loader2 } from "lucide-react";
 import { WHATSAPP_SUBMIT_URL } from "@/lib/constants";
+
+const PopupBanner = memo(function PopupBanner() {
+  const [imgSrc, setImgSrc] = useState("/uploads/turkey-doctor.jpg");
+
+  return (
+    <div className="relative md:col-span-5 min-h-[220px] md:min-h-[520px] flex flex-col justify-between p-6 text-white overflow-hidden bg-gradient-to-br from-[#8B0000] to-[#e30a17]">
+      {/* Background Surgeon Image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={imgSrc}
+          alt="Ryan Clinic Turkey Hair Specialists"
+          fill
+          className="object-cover object-center"
+          priority
+          sizes="(max-width: 768px) 100vw, 40vw"
+          onError={() => {
+            if (imgSrc !== "/uploads/turkey-1.jpeg") {
+              setImgSrc("/uploads/turkey-1.jpeg");
+            }
+          }}
+        />
+        {/* Gradient Dark Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#70050c] via-[#70050c]/75 via-50% to-black/30" />
+      </div>
+
+      {/* Top Badge */}
+      <div className="relative z-10">
+        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#FFD700] text-black font-extrabold text-[11px] tracking-wider uppercase shadow-lg">
+          ⚡ SPECIAL OFFER
+        </span>
+      </div>
+
+      {/* Bottom Content Overlay */}
+      <div className="relative z-10 mt-auto pt-8">
+        <h4 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight font-outfit drop-shadow-md">
+          Welcome Gift!
+        </h4>
+        <p className="text-xs sm:text-sm text-white/95 mt-1.5 font-medium leading-relaxed drop-shadow">
+          FREE Hair Analysis Worth ₹5,000 for First-Time Visitors
+        </p>
+
+        <hr className="border-t border-dashed border-white/40 my-3.5" />
+
+        {/* Checkmark Bullets */}
+        <ul className="space-y-2 text-xs sm:text-sm font-medium">
+          <li className="flex items-center gap-2.5">
+            <span className="w-5 h-5 rounded-full bg-white text-[#e30a17] flex items-center justify-center shrink-0 shadow-sm">
+              <Check className="w-3.5 h-3.5 stroke-[3]" />
+            </span>
+            <span>100% Free Consultation</span>
+          </li>
+          <li className="flex items-center gap-2.5">
+            <span className="w-5 h-5 rounded-full bg-white text-[#e30a17] flex items-center justify-center shrink-0 shadow-sm">
+              <Check className="w-3.5 h-3.5 stroke-[3]" />
+            </span>
+            <span>Expert Turkish Specialists</span>
+          </li>
+          <li className="flex items-center gap-2.5">
+            <span className="w-5 h-5 rounded-full bg-white text-[#e30a17] flex items-center justify-center shrink-0 shadow-sm">
+              <Check className="w-3.5 h-3.5 stroke-[3]" />
+            </span>
+            <span>No Obligation Required</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+});
 
 export default function PopupForm() {
   const [isOpen, setIsOpen] = useState(false);
@@ -120,65 +188,8 @@ export default function PopupForm() {
           <X className="w-5 h-5" />
         </button>
 
-        {/* LEFT COLUMN: Visual Banner (First Image Design & Pattern) */}
-        <div className="relative md:col-span-5 min-h-[220px] md:min-h-[520px] flex flex-col justify-between p-6 text-white overflow-hidden bg-gradient-to-br from-[#8B0000] to-[#e30a17]">
-          {/* Background Surgeon Image */}
-          <div className="absolute inset-0 z-0">
-            <Image
-              src="/uploads/turkey-doctor.jpg"
-              alt="Ryan Clinic Turkey Hair Specialists"
-              fill
-              className="object-cover object-center"
-              priority
-              onError={(e) => {
-                e.currentTarget.srcset = "/uploads/turkey-1.jpeg";
-              }}
-            />
-            {/* Gradient Dark Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#70050c] via-[#70050c]/75 via-50% to-black/30" />
-          </div>
-
-          {/* Top Badge */}
-          <div className="relative z-10">
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#FFD700] text-black font-extrabold text-[11px] tracking-wider uppercase shadow-lg">
-              ⚡ SPECIAL OFFER
-            </span>
-          </div>
-
-          {/* Bottom Content Overlay */}
-          <div className="relative z-10 mt-auto pt-8">
-            <h4 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight font-outfit drop-shadow-md">
-              Welcome Gift!
-            </h4>
-            <p className="text-xs sm:text-sm text-white/95 mt-1.5 font-medium leading-relaxed drop-shadow">
-              FREE Hair Analysis Worth ₹5,000 for First-Time Visitors
-            </p>
-
-            <hr className="border-t border-dashed border-white/40 my-3.5" />
-
-            {/* Checkmark Bullets */}
-            <ul className="space-y-2 text-xs sm:text-sm font-medium">
-              <li className="flex items-center gap-2.5">
-                <span className="w-5 h-5 rounded-full bg-white text-[#e30a17] flex items-center justify-center shrink-0 shadow-sm">
-                  <Check className="w-3.5 h-3.5 stroke-[3]" />
-                </span>
-                <span>100% Free Consultation</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <span className="w-5 h-5 rounded-full bg-white text-[#e30a17] flex items-center justify-center shrink-0 shadow-sm">
-                  <Check className="w-3.5 h-3.5 stroke-[3]" />
-                </span>
-                <span>Expert Turkish Specialists</span>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <span className="w-5 h-5 rounded-full bg-white text-[#e30a17] flex items-center justify-center shrink-0 shadow-sm">
-                  <Check className="w-3.5 h-3.5 stroke-[3]" />
-                </span>
-                <span>No Obligation Required</span>
-              </li>
-            </ul>
-          </div>
-        </div>
+        {/* LEFT COLUMN: Visual Banner */}
+        <PopupBanner />
 
         {/* RIGHT COLUMN: Form Features (Second Image Fields) */}
         <div className="md:col-span-7 p-6 sm:p-7 flex flex-col justify-center bg-white">

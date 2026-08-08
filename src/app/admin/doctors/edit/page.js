@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, useParams } from "next/navigation";
 import AdminHeader from "@/components/admin/adminHeader";
 import ImageUploader from "@/components/admin/ImageUploader";
 import ToastContainer from "@/components/admin/Toast";
@@ -26,7 +26,8 @@ function useToast() {
 function EditDoctorContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const currentSlug = searchParams.get("slug");
+  const params = useParams();
+  const currentSlug = params?.slug || searchParams.get("slug");
 
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(true);

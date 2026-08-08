@@ -429,369 +429,452 @@ export default async function DynamicCostPage({ params }) {
     ],
   };
 
+  const vis = page.sectionVisibility || {};
+
+  // Use pricingOptions.items as primary source for per-session/package pricing.
+  // Fall back to page.pricing.cards only if pricingOptions.items is empty (legacy support).
+  // Never merge both — that would render every card twice.
+  const genericPricingItems = (
+    pricingOptions?.items?.length > 0
+      ? pricingOptions.items
+      : (page.pricing?.cards || [])
+  ).filter((i) => i.active !== false);
+
   return (
     <>
       {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
-      {/* ── Page Banner (untouched) ─────────── */}
-      <PageBanner
-        breadcrumb={page.title}
-        title={hero?.title || page.title}
-        description={hero?.pricingLine || ""}
-        bgImage={hero?.heroImage || "/uploads/1752667815707-fue-banner_ro9ae6.webp"}
-        alt={hero?.heroImageAlt || page.title}
-      />
+      {/* ── Page Banner (Hero Banner) ─────────── */}
+      {vis.hero !== false && (
+        <PageBanner
+          breadcrumb={page.title}
+          title={hero?.title || page.title}
+          description={hero?.pricingLine || ""}
+          bgImage={hero?.heroImage || "/uploads/1752667815707-fue-banner_ro9ae6.webp"}
+          alt={hero?.heroImageAlt || page.title}
+        />
+      )}
 
       {/* ════════════════════════════════════════════════════════════
-          SECTION 1: HERO & INTRO — Premium Two-Column Layout
+          SECTION 1: INTRO — Premium Two-Column Layout
       ════════════════════════════════════════════════════════════ */}
-      <section className="bg-white py-14 md:py-20 border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_460px] gap-14 lg:gap-20 items-center">
+      {vis.intro !== false && (
+        <section className="bg-white py-14 md:py-20 border-b border-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_460px] gap-14 lg:gap-20 items-center">
 
-            {/* Left: Headline + trust + CTA */}
-            <div>
-              <EyebrowLabel text={intro?.badge || "Mumbai Pricing Guide"} />
+              {/* Left: Headline + trust + CTA */}
+              <div>
+                <EyebrowLabel text={intro?.badge || "Mumbai Pricing Guide"} />
 
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 leading-tight tracking-tight mb-5">
-                {intro?.heading || page.title}
-              </h2>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 leading-tight tracking-tight mb-5">
+                  {intro?.heading || page.title}
+                </h2>
 
-              {/* Description — properly rendered with dangerouslySetInnerHTML */}
-              {intro?.description && (
-                <div
-                  className="text-gray-500 text-sm md:text-base leading-relaxed mb-8 max-w-xl font-sans prose prose-sm"
-                  dangerouslySetInnerHTML={{ __html: intro.description }}
-                />
-              )}
+                {/* Description — properly rendered with dangerouslySetInnerHTML */}
+                {intro?.description && (
+                  <div
+                    className="text-gray-500 text-sm md:text-base leading-relaxed mb-8 max-w-xl font-sans prose prose-sm"
+                    dangerouslySetInnerHTML={{ __html: intro.description }}
+                  />
+                )}
 
-              {/* Trust badges strip */}
-              <div className="flex flex-wrap gap-2 mb-8">
-                {[
-                  "Doctor-Led Surgery",
-                  "Written Cost Guarantee",
-                  "0% EMI Available",
-                  "Free Scalp Analysis",
-                ].map((t) => (
-                  <span key={t} className="inline-flex items-center gap-1.5 bg-[#FAF6F3] border border-[#E8E4DF] text-gray-700 text-[10px] font-semibold px-3 py-1.5 rounded-full shadow-sm">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                    {t}
-                  </span>
-                ))}
-              </div>
-
-              {/* CTA row */}
-              <div className="flex flex-wrap gap-3 items-center">
-                <CTAButtons primary="Book Free Doctor Assessment" />
-              </div>
-            </div>
-
-            {/* Right: Refined Summary Card */}
-            {intro?.summaryRows?.length > 0 && (
-              <div className="relative">
-                <div className="bg-white rounded-3xl border border-[#E8E4DF] shadow-2xl shadow-gray-100/80 overflow-hidden">
-
-                  {/* Card header */}
-                  <div className="px-6 py-4 bg-[#FAF6F3] border-b border-[#E8E4DF] flex items-center justify-between">
-                    <div>
-                      <span className="text-[9px] font-extrabold text-[#e30a17] tracking-[0.22em] uppercase">Quick Reference</span>
-                      <h3 className="text-sm font-bold text-gray-900 mt-0.5">Cost Summary Highlights</h3>
-                    </div>
-                    <span className="w-8 h-8 rounded-xl bg-[#e30a17]/10 border border-[#e30a17]/20 flex items-center justify-center text-[#e30a17] font-black text-sm shadow-sm">
-                      ✓
+                {/* Trust badges strip */}
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {[
+                    "Doctor-Led Surgery",
+                    "Written Cost Guarantee",
+                    "0% EMI Available",
+                    "Free Scalp Analysis",
+                  ].map((t) => (
+                    <span key={t} className="inline-flex items-center gap-1.5 bg-[#FAF6F3] border border-[#E8E4DF] text-gray-700 text-[10px] font-semibold px-3 py-1.5 rounded-full shadow-sm">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                      {t}
                     </span>
-                  </div>
-
-                  {/* Rows */}
-                  <div className="divide-y divide-gray-100">
-                    {intro.summaryRows.map((row, i) => (
-                      <div key={i} className={`flex items-center justify-between px-6 py-3.5 ${i % 2 === 0 ? "bg-white" : "bg-[#FAF6F3]/50"}`}>
-                        <span className="flex items-center gap-2 text-[11px] font-semibold text-gray-500 tracking-wide uppercase">
-                          {row.icon && <span className="text-base">{row.icon}</span>}
-                          {row.label}
-                        </span>
-                        <span className="text-xs font-bold text-gray-900 text-right max-w-[55%]">{row.value}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Verified footer */}
-                  <div className="px-6 py-3 bg-emerald-50/80 border-t border-emerald-100 flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-[10px] text-emerald-800 font-semibold">Confirmed after free scalp analysis</span>
-                  </div>
+                  ))}
                 </div>
 
-                {/* Subtle floating badge — top right corner */}
-                <div className="absolute -top-3 -right-3 bg-[#e30a17] text-white text-[9px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg shadow-red-200">
-                  No Hidden Fees
+                {/* CTA row */}
+                <div className="flex flex-wrap gap-3 items-center">
+                  <CTAButtons primary="Book Free Doctor Assessment" />
                 </div>
               </div>
-            )}
+
+              {/* Right: Refined Summary Card */}
+              {intro?.summaryRows?.length > 0 && (
+                <div className="relative">
+                  <div className="bg-white rounded-3xl border border-[#E8E4DF] shadow-2xl shadow-gray-100/80 overflow-hidden">
+
+                    {/* Card header */}
+                    <div className="px-6 py-4 bg-[#FAF6F3] border-b border-[#E8E4DF] flex items-center justify-between">
+                      <div>
+                        <span className="text-[9px] font-extrabold text-[#e30a17] tracking-[0.22em] uppercase">Quick Reference</span>
+                        <h3 className="text-sm font-bold text-gray-900 mt-0.5">Cost Summary Highlights</h3>
+                      </div>
+                      <span className="w-8 h-8 rounded-xl bg-[#e30a17]/10 border border-[#e30a17]/20 flex items-center justify-center text-[#e30a17] font-black text-sm shadow-sm">
+                        ✓
+                      </span>
+                    </div>
+
+                    {/* Rows */}
+                    <div className="divide-y divide-gray-100">
+                      {intro.summaryRows.map((row, i) => (
+                        <div key={i} className={`flex items-center justify-between px-6 py-3.5 ${i % 2 === 0 ? "bg-white" : "bg-[#FAF6F3]/50"}`}>
+                          <span className="flex items-center gap-2 text-[11px] font-semibold text-gray-500 tracking-wide uppercase">
+                            {row.icon && <span className="text-base">{row.icon}</span>}
+                            {row.label}
+                          </span>
+                          <span className="text-xs font-bold text-gray-900 text-right max-w-[55%]">{row.value}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Verified footer */}
+                    <div className="px-6 py-3 bg-emerald-50/80 border-t border-emerald-100 flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      <span className="text-[10px] text-emerald-800 font-semibold">Confirmed after free scalp analysis</span>
+                    </div>
+                  </div>
+
+                  {/* Subtle floating badge — top right corner */}
+                  <div className="absolute -top-3 -right-3 bg-[#e30a17] text-white text-[9px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg shadow-red-200">
+                    No Hidden Fees
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ════════════════════════════════════════════════════════════
           SECTION 2: PROCEDURES AVAILABLE CARDS — Premium Cards
       ════════════════════════════════════════════════════════════ */}
-      {services?.cards?.length > 0 ? (
-        <section className="py-16 md:py-24 bg-[#FAF6F3] border-b border-gray-100">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {vis.services !== false && (
+        services?.cards?.length > 0 ? (
+          <section className="py-16 md:py-24 bg-[#FAF6F3] border-b border-gray-100">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            {/* Section Header */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-              <div>
-                <EyebrowLabel text={services.badge || "Our Services"} />
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
-                  {services.heading || "Procedures Available"}
-                </h2>
-                {services.description && (
-                  <p className="text-gray-500 text-xs sm:text-sm mt-2 max-w-lg font-sans leading-relaxed">
-                    {services.description}
-                  </p>
-                )}
+              {/* Section Header */}
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                <div>
+                  <EyebrowLabel text={services.badge || "Our Services"} />
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+                    {services.heading || "Procedures Available"}
+                  </h2>
+                  {services.description && (
+                    <p className="text-gray-500 text-xs sm:text-sm mt-2 max-w-lg font-sans leading-relaxed">
+                      {services.description}
+                    </p>
+                  )}
+                </div>
+                <a
+                  href={`${WA_BASE}Hi,%20I%20want%20to%20compare%20all%20procedure%20costs`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="shrink-0 inline-flex items-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white text-xs font-bold py-3 px-6 rounded-full shadow-lg shadow-red-200 transition-all hover:-translate-y-0.5"
+                >
+                  Compare All Procedures <ArrowIcon />
+                </a>
               </div>
-              <a
-                href={`${WA_BASE}Hi,%20I%20want%20to%20compare%20all%20procedure%20costs`}
-                target="_blank"
-                rel="noreferrer"
-                className="shrink-0 inline-flex items-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white text-xs font-bold py-3 px-6 rounded-full shadow-lg shadow-red-200 transition-all hover:-translate-y-0.5"
-              >
-                Compare All Procedures <ArrowIcon />
-              </a>
-            </div>
 
-            {/* Enhanced Card Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {services.cards
-                .filter((c) => c.active !== false)
-                .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0))
-                .slice(0, 4)
-                .map((card, i) => (
-                  <div
-                    key={i}
-                    className="group bg-white rounded-3xl border border-[#E8E4DF] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 flex flex-col"
-                  >
-                    {/* Image Container — taller, deeper gradient */}
-                    {card.image && (
-                      <div className="relative h-60 w-full overflow-hidden bg-gray-100 shrink-0">
-                        <Image
-                          src={card.image}
-                          alt={card.title}
-                          fill
-                          className="object-cover object-top group-hover:scale-108 transition-transform duration-700"
-                          unoptimized
-                        />
-                        {/* Deep gradient for strong text contrast */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+              {/* Enhanced Card Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {services.cards
+                  .filter((c) => c.active !== false)
+                  .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0))
+                  .slice(0, 4)
+                  .map((card, i) => (
+                    <div
+                      key={i}
+                      className="group bg-white rounded-3xl border border-[#E8E4DF] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 flex flex-col"
+                    >
+                      {/* Image Container — taller, deeper gradient */}
+                      {card.image && (
+                        <div className="relative h-60 w-full overflow-hidden bg-gray-100 shrink-0">
+                          <Image
+                            src={card.image}
+                            alt={card.title}
+                            fill
+                            className="object-cover object-top group-hover:scale-108 transition-transform duration-700"
+                            unoptimized
+                          />
+                          {/* Deep gradient for strong text contrast */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
-                        {/* Card number — top left */}
-                        <span className="absolute top-3.5 left-3.5 w-6 h-6 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white text-[10px] font-black">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-
-                        {/* Badge — top right */}
-                        {card.badge && (
-                          <span className="absolute top-3.5 right-3.5 bg-[#e30a17] text-white text-[9px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full shadow-md">
-                            {card.badge}
+                          {/* Card number — top left */}
+                          <span className="absolute top-3.5 left-3.5 w-6 h-6 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white text-[10px] font-black">
+                            {String(i + 1).padStart(2, "0")}
                           </span>
-                        )}
 
-                        {/* Price glass chip — bottom left */}
-                        {card.startingPrice && (
-                          <div className="absolute bottom-4 left-4">
-                            <p className="text-white/70 text-[9px] font-bold uppercase tracking-widest mb-0.5">Starting From</p>
-                            <p className="text-2xl font-black text-white leading-none drop-shadow-lg">{card.startingPrice}</p>
-                          </div>
-                        )}
+                          {/* Badge — top right */}
+                          {card.badge && (
+                            <span className="absolute top-3.5 right-3.5 bg-[#e30a17] text-white text-[9px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full shadow-md">
+                              {card.badge}
+                            </span>
+                          )}
+
+                          {/* Price glass chip — bottom left */}
+                          {card.startingPrice && (
+                            <div className="absolute bottom-4 left-4">
+                              <p className="text-white/70 text-[9px] font-bold uppercase tracking-widest mb-0.5">Starting From</p>
+                              <p className="text-2xl font-black text-white leading-none drop-shadow-lg">{card.startingPrice}</p>
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Body */}
+                      <div className="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                          {/* Title */}
+                          <h3 className="font-black text-base text-gray-900 mb-1.5 leading-snug">
+                            {card.title}
+                          </h3>
+
+                          {/* Description */}
+                          {card.description && (
+                            <p className="text-gray-500 text-[11px] leading-relaxed line-clamp-2 mb-3 font-sans">
+                              {card.description}
+                            </p>
+                          )}
+
+                          {/* Divider */}
+                          <div className="border-t border-gray-100 mb-3" />
+
+                          {/* Features */}
+                          {card.features?.length > 0 && (
+                            <ul className="space-y-1.5 mb-4">
+                              {card.features.slice(0, 4).map((f, fi) => (
+                                <li key={fi} className="flex items-start gap-2 text-[11px] text-gray-700 leading-snug">
+                                  <span className="w-3.5 h-3.5 rounded-full bg-[#e30a17] flex items-center justify-center text-white text-[8px] font-bold shrink-0 mt-0.5">✓</span>
+                                  <span>{f.text}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+
+                        {/* CTA Button */}
+                        <a
+                          href={card.button?.link || `${WA_BASE}Hi,%20I%20am%20interested%20in%20${encodeURIComponent(card.title)}`}
+                          className="inline-flex items-center justify-center w-full gap-2 bg-[#e30a17] hover:bg-red-700 text-white font-bold py-2.5 px-4 text-[11px] transition-all duration-200 rounded-xl shadow-md shadow-red-100 hover:shadow-red-200 mt-auto group-hover:-translate-y-0.5"
+                        >
+                          {card.button?.text || "Book Consultation"} <ArrowIcon />
+                        </a>
                       </div>
-                    )}
-
-                    {/* Body */}
-                    <div className="p-5 flex-1 flex flex-col justify-between">
-                      <div>
-                        {/* Title */}
-                        <h3 className="font-black text-base text-gray-900 mb-1.5 leading-snug">
-                          {card.title}
-                        </h3>
-
-                        {/* Description */}
-                        {card.description && (
-                          <p className="text-gray-500 text-[11px] leading-relaxed line-clamp-2 mb-3 font-sans">
-                            {card.description}
-                          </p>
-                        )}
-
-                        {/* Divider */}
-                        <div className="border-t border-gray-100 mb-3" />
-
-                        {/* Features */}
-                        {card.features?.length > 0 && (
-                          <ul className="space-y-1.5 mb-4">
-                            {card.features.slice(0, 4).map((f, fi) => (
-                              <li key={fi} className="flex items-start gap-2 text-[11px] text-gray-700 leading-snug">
-                                <span className="w-3.5 h-3.5 rounded-full bg-[#e30a17] flex items-center justify-center text-white text-[8px] font-bold shrink-0 mt-0.5">✓</span>
-                                <span>{f.text}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-
-                      {/* CTA Button */}
-                      <a
-                        href={card.button?.link || `${WA_BASE}Hi,%20I%20am%20interested%20in%20${encodeURIComponent(card.title)}`}
-                        className="inline-flex items-center justify-center w-full gap-2 bg-[#e30a17] hover:bg-red-700 text-white font-bold py-2.5 px-4 text-[11px] transition-all duration-200 rounded-xl shadow-md shadow-red-100 hover:shadow-red-200 mt-auto group-hover:-translate-y-0.5"
-                      >
-                        {card.button?.text || "Book Consultation"} <ArrowIcon />
-                      </a>
                     </div>
-                  </div>
-                ))}
+                  ))}
+              </div>
             </div>
-          </div>
-        </section>
-      ) : (
-        <SurgeriesCostCardsClient />
+          </section>
+        ) : (
+          // Only show hair-transplant fallback for hair-transplant page type
+          (page.pageType === "hair-transplant" || !page.pageType) ? <SurgeriesCostCardsClient /> : null
+        )
       )}
 
       {/* ════════════════════════════════════════════════════════════
           SECTION 3: GRAFT PRICING TIERS — Premium Pricing Cards
       ════════════════════════════════════════════════════════════ */}
-      {graftPricing?.cards?.length > 0 ? (
-        <section className="py-16 md:py-24 bg-white border-b border-gray-100">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {vis.graftPricing !== false && (
+        graftPricing?.cards?.length > 0 ? (
+          <section className="py-16 md:py-24 bg-white border-b border-gray-100">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-              <div>
-                <EyebrowLabel text={graftPricing.badge || "Graft Pricing Tiers"} />
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
-                  {graftPricing.heading || "Hair Transplant Cost by Number of Grafts"}
-                </h2>
-                {graftPricing.description && (
-                  <p className="text-gray-500 text-xs sm:text-sm mt-2 max-w-xl font-sans leading-relaxed">
-                    {graftPricing.description}
-                  </p>
-                )}
+              {/* Header */}
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                <div>
+                  <EyebrowLabel text={graftPricing.badge || "Graft Pricing Tiers"} />
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+                    {graftPricing.heading || "Hair Transplant Cost by Number of Grafts"}
+                  </h2>
+                  {graftPricing.description && (
+                    <p className="text-gray-500 text-xs sm:text-sm mt-2 max-w-xl font-sans leading-relaxed">
+                      {graftPricing.description}
+                    </p>
+                  )}
+                </div>
+                <div className="shrink-0 bg-[#FAF6F3] p-1.5 rounded-full border border-[#E8E4DF] shadow-sm inline-flex items-center gap-1">
+                  <span className="bg-[#e30a17] text-white text-[10px] font-extrabold px-4 py-1.5 rounded-full shadow-sm">
+                    Graft Packages
+                  </span>
+                  <span className="text-gray-600 text-[10px] font-semibold px-3 py-1">
+                    0% EMI Available
+                  </span>
+                </div>
               </div>
-              <div className="shrink-0 bg-[#FAF6F3] p-1.5 rounded-full border border-[#E8E4DF] shadow-sm inline-flex items-center gap-1">
-                <span className="bg-[#e30a17] text-white text-[10px] font-extrabold px-4 py-1.5 rounded-full shadow-sm">
-                  Graft Packages
-                </span>
-                <span className="text-gray-600 text-[10px] font-semibold px-3 py-1">
-                  0% EMI Available
-                </span>
-              </div>
-            </div>
 
-            {/* Premium Pricing Card Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {graftPricing.cards
-                .filter((c) => c.active !== false)
-                .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0))
-                .slice(0, 4)
-                .map((tier, i) => {
-                  const isFeatured = tier.featured || i === 1;
-                  return (
-                    <div
-                      key={i}
-                      className={`relative bg-white flex flex-col transition-all duration-300 hover:-translate-y-1.5 rounded-3xl ${isFeatured
-                          ? "border-2 border-[#e30a17] shadow-2xl shadow-red-100 ring-4 ring-[#e30a17]/8"
-                          : "border border-[#E8E4DF] shadow-md hover:shadow-xl"
-                        }`}
-                    >
-                      {/* Most Popular floating pill */}
-                      {isFeatured && (
-                        <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#e30a17] text-white text-[9px] font-extrabold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-md whitespace-nowrap">
-                          ★ Most Popular
-                        </span>
-                      )}
-
-                      <div className="p-6 flex flex-col flex-1">
-                        {/* Title row */}
-                        <div className="flex items-center gap-2 mb-3">
-                          <span className="w-2 h-2 rounded-full bg-[#e30a17]" />
-                          <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#e30a17]">
-                            {tier.title}
+              {/* Premium Pricing Card Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {graftPricing.cards
+                  .filter((c) => c.active !== false)
+                  .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0))
+                  .slice(0, 4)
+                  .map((tier, i) => {
+                    const isFeatured = tier.featured || i === 1;
+                    return (
+                      <div
+                        key={i}
+                        className={`relative bg-white flex flex-col transition-all duration-300 hover:-translate-y-1.5 rounded-3xl ${isFeatured
+                            ? "border-2 border-[#e30a17] shadow-2xl shadow-red-100 ring-4 ring-[#e30a17]/8"
+                            : "border border-[#E8E4DF] shadow-md hover:shadow-xl"
+                          }`}
+                      >
+                        {/* Most Popular floating pill */}
+                        {isFeatured && (
+                          <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#e30a17] text-white text-[9px] font-extrabold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-md whitespace-nowrap">
+                            ★ Most Popular
                           </span>
-                        </div>
-
-                        {/* Price — reduced font size */}
-                        <div className="mb-3">
-                          <span className="text-xl font-black tracking-tight text-[#e30a17] leading-tight">
-                            {tier.price}
-                          </span>
-                          <p className="text-xs font-medium mt-0.5 text-gray-500">
-                            {tier.graftRange}
-                          </p>
-                        </div>
-
-                        {/* Description */}
-                        {tier.description && (
-                          <p className="text-[11px] leading-relaxed mb-4 font-sans border-b pb-3 text-gray-500 border-gray-100">
-                            {tier.description}
-                          </p>
                         )}
 
-                        {/* Inclusions */}
-                        <div className="flex-1 mb-5">
-                          <p className="text-[9px] font-extrabold uppercase tracking-[0.18em] mb-3 text-gray-400">
-                            Inclusions
-                          </p>
-                          <ul className="space-y-2">
-                            {tier.coverage && (
-                              <li className="flex items-start gap-2 text-[11px] text-gray-700">
-                                <span className="w-3.5 h-3.5 rounded-full flex items-center justify-center text-[8px] font-bold shrink-0 mt-0.5 bg-[#e30a17] text-white">✓</span>
-                                <span><strong className="text-gray-900">Coverage:</strong> {tier.coverage}</span>
-                              </li>
-                            )}
-                            {tier.duration && (
-                              <li className="flex items-start gap-2 text-[11px] text-gray-700">
-                                <span className="w-3.5 h-3.5 rounded-full flex items-center justify-center text-[8px] font-bold shrink-0 mt-0.5 bg-[#e30a17] text-white">✓</span>
-                                <span><strong className="text-gray-900">Duration:</strong> {tier.duration}</span>
-                              </li>
-                            )}
-                            {tier.features?.map((f, fi) => (
-                              <li key={fi} className="flex items-start gap-2 text-[11px] text-gray-700">
-                                <span className="w-3.5 h-3.5 rounded-full flex items-center justify-center text-[8px] font-bold shrink-0 mt-0.5 bg-[#e30a17] text-white">✓</span>
-                                <span>{f.text}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                        <div className="p-6 flex flex-col flex-1">
+                          {/* Title row */}
+                          <div className="flex items-center gap-2 mb-3">
+                            <span className="w-2 h-2 rounded-full bg-[#e30a17]" />
+                            <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#e30a17]">
+                              {tier.title}
+                            </span>
+                          </div>
 
-                        {/* CTA Button */}
-                        <a
-                          href={tier.buttonLink || "/contact"}
-                          className={`inline-flex items-center justify-center w-full gap-2 font-bold py-3 px-4 text-xs transition-all duration-200 rounded-xl mt-auto ${isFeatured
-                              ? "bg-[#e30a17] text-white hover:bg-red-700 shadow-lg shadow-red-200"
-                              : "bg-[#e30a17] text-white hover:bg-red-700 shadow-md shadow-red-100"
-                            }`}
-                        >
-                          {tier.buttonText || "Get Free Quote"} <ArrowIcon />
-                        </a>
+                          {/* Price — reduced font size */}
+                          <div className="mb-3">
+                            <span className="text-xl font-black tracking-tight text-[#e30a17] leading-tight">
+                              {tier.price}
+                            </span>
+                            <p className="text-xs font-medium mt-0.5 text-gray-500">
+                              {tier.graftRange}
+                            </p>
+                          </div>
+
+                          {/* Description */}
+                          {tier.description && (
+                            <p className="text-[11px] leading-relaxed mb-4 font-sans border-b pb-3 text-gray-500 border-gray-100">
+                              {tier.description}
+                            </p>
+                          )}
+
+                          {/* Inclusions */}
+                          <div className="flex-1 mb-5">
+                            <p className="text-[9px] font-extrabold uppercase tracking-[0.18em] mb-3 text-gray-400">
+                              Inclusions
+                            </p>
+                            <ul className="space-y-2">
+                              {tier.coverage && (
+                                <li className="flex items-start gap-2 text-[11px] text-gray-700">
+                                  <span className="w-3.5 h-3.5 rounded-full flex items-center justify-center text-[8px] font-bold shrink-0 mt-0.5 bg-[#e30a17] text-white">✓</span>
+                                  <span><strong className="text-gray-900">Coverage:</strong> {tier.coverage}</span>
+                                </li>
+                              )}
+                              {tier.duration && (
+                                <li className="flex items-start gap-2 text-[11px] text-gray-700">
+                                  <span className="w-3.5 h-3.5 rounded-full flex items-center justify-center text-[8px] font-bold shrink-0 mt-0.5 bg-[#e30a17] text-white">✓</span>
+                                  <span><strong className="text-gray-900">Duration:</strong> {tier.duration}</span>
+                                </li>
+                              )}
+                              {tier.features?.map((f, fi) => (
+                                <li key={fi} className="flex items-start gap-2 text-[11px] text-gray-700">
+                                  <span className="w-3.5 h-3.5 rounded-full flex items-center justify-center text-[8px] font-bold shrink-0 mt-0.5 bg-[#e30a17] text-white">✓</span>
+                                  <span>{f.text}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          {/* CTA Button */}
+                          <a
+                            href={tier.buttonLink || "/contact"}
+                            className={`inline-flex items-center justify-center w-full gap-2 font-bold py-3 px-4 text-xs transition-all duration-200 rounded-xl mt-auto ${isFeatured
+                                ? "bg-[#e30a17] text-white hover:bg-red-700 shadow-lg shadow-red-200"
+                                : "bg-[#e30a17] text-white hover:bg-red-700 shadow-md shadow-red-100"
+                              }`}
+                          >
+                            {tier.buttonText || "Get Free Quote"} <ArrowIcon />
+                          </a>
+                        </div>
                       </div>
+                    );
+                  })}
+              </div>
+            </div>
+          </section>
+        ) : (
+          // Only show hair-transplant fallback for hair-transplant page type
+          (page.pageType === "hair-transplant" || !page.pageType) ? <GraftTierCards /> : null
+        )
+      )}
+
+      {/* ════════════════════════════════════════════════════════════
+          PRICING OPTIONS — Generic per-session/package pricing
+          (PRP, DHI, and future cost types; Hair Transplant uses graftPricing)
+      ════════════════════════════════════════════════════════════ */}
+      {vis.pricing !== false && genericPricingItems.length > 0 && (
+        <section className="bg-[#FAF6F3] py-16 md:py-24 border-b border-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-12 max-w-xl">
+              <EyebrowLabel text={page.pricing?.badge || pricingOptions?.badge || "Transparent Pricing"} />
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+                {page.pricing?.heading || pricingOptions?.heading || "Treatment Pricing & Packages"}
+              </h2>
+              {(page.pricing?.description || pricingOptions?.description) && (
+                <p className="text-gray-500 text-xs sm:text-sm mt-2 font-sans">
+                  {page.pricing?.description || pricingOptions?.description}
+                </p>
+              )}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {genericPricingItems.sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)).map((item, i) => (
+                <div key={i} className="relative bg-white rounded-3xl border border-[#E8E4DF] p-6 sm:p-8 shadow-sm hover:shadow-xl hover:border-[#e30a17]/30 transition-all duration-300 flex flex-col">
+                  {item.badge && (
+                    <span className="absolute -top-3 left-6 bg-[#e30a17] text-white text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full shadow">
+                      {item.badge}
+                    </span>
+                  )}
+                  <div className="mb-4">
+                    <h3 className="text-lg font-black text-gray-900">{item.title}</h3>
+                    {item.subtitle && <p className="text-xs text-gray-500 mt-1 font-sans">{item.subtitle}</p>}
+                  </div>
+                  {item.price ? (
+                    <div className="mb-4">
+                      <span className="text-2xl sm:text-3xl font-black text-[#e30a17]">{item.price}</span>
+                      {item.priceSuffix && <span className="text-xs text-gray-500 ml-1">{item.priceSuffix}</span>}
                     </div>
-                  );
-                })}
+                  ) : (
+                    <div className="mb-4">
+                      <span className="text-sm font-semibold text-gray-400 italic">Price confirmed after consultation</span>
+                    </div>
+                  )}
+                  {item.description && (
+                    <p className="text-xs text-gray-600 leading-relaxed mb-5 font-sans flex-1">{item.description}</p>
+                  )}
+                  {item.features?.length > 0 && (
+                    <ul className="space-y-2 mb-6">
+                      {item.features.map((feat, fi) => (
+                        <li key={fi} className="flex items-start gap-2 text-xs text-gray-700">
+                          <RedCheck />
+                          <span>{typeof feat === "object" ? feat.text : feat}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <a
+                    href={item.ctaLink || item.buttonLink || "/contact"}
+                    className="mt-auto inline-flex items-center justify-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white font-bold text-xs py-3 px-5 rounded-xl transition-all shadow-md"
+                  >
+                    {item.ctaText || item.buttonText || "Book Consultation"} <ArrowIcon />
+                  </a>
+                </div>
+              ))}
             </div>
           </div>
         </section>
-      ) : (
-        <GraftTierCards />
       )}
 
       {/* ════════════════════════════════════════════════════════════
           SECTION 4: PRICE FACTORS PROCESS (Image 2 Timeline Design)
-          - Curved horizontal wavy step timeline connecting step circles!
-          - Image 2 layout: Badge + Title left, Pill CTA button right!
-          - Circular step nodes (01, 02, 03) connected by wavy track line
-          - White factor cards below in theme Red (#e30a17)!
       ════════════════════════════════════════════════════════════ */}
-      {(priceFactors?.factors?.length > 0 || priceFactors?.emiPlans?.length > 0) && (
+      {vis.priceFactors !== false && (priceFactors?.factors?.length > 0 || priceFactors?.emiPlans?.length > 0) && (
         <section className="py-16 md:py-24 bg-white border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -800,7 +883,7 @@ export default async function DynamicCostPage({ params }) {
               <div>
                 <EyebrowLabel text={priceFactors.badge || "Our Specialized Process"} />
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
-                  {priceFactors.heading || "What Determines Hair Transplant Cost?"}
+                  {priceFactors.heading || "What Determines Treatment Cost?"}
                 </h2>
                 {priceFactors.description && (
                   <p className="text-gray-500 text-xs sm:text-sm mt-2 max-w-2xl font-sans">
@@ -811,7 +894,7 @@ export default async function DynamicCostPage({ params }) {
 
               {/* Schedule Appointment Pill Button (Theme Red #e30a17) */}
               <a
-                href={`${WA_BASE}Hi,%20I%20want%20to%20schedule%20an%20appointment%20to%20assess%20my%20hair%20transplant%20cost`}
+                href={`${WA_BASE}Hi,%20I%20want%20to%20schedule%20an%20appointment%20to%20assess%20my%20treatment%20cost`}
                 target="_blank"
                 rel="noreferrer"
                 className="shrink-0 inline-flex items-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white font-bold px-6 py-3 rounded-full text-xs shadow-md transition-all"
@@ -909,11 +992,10 @@ export default async function DynamicCostPage({ params }) {
         </section>
       )}
 
-
       {/* ════════════════════════════════════════════════════════════
           SECTION 6: INCLUSIONS & GUARANTEE
       ════════════════════════════════════════════════════════════ */}
-      {(includedItems.length > 0 || includedDisclosures.length > 0) && (
+      {vis.includedSection !== false && (includedItems.length > 0 || includedDisclosures.length > 0) && (
         <section className="bg-white py-16 md:py-24 border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -984,164 +1066,102 @@ export default async function DynamicCostPage({ params }) {
       {/* ════════════════════════════════════════════════════════════
           SECTION 7: CONSULTATION & FORM — Premium Professional Layout
       ════════════════════════════════════════════════════════════ */}
-      <section className="bg-[#FAF6F3] py-16 md:py-24 border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_440px] gap-12 lg:gap-16 items-center">
+      {vis.consultation !== false && (
+        <section className="bg-[#FAF6F3] py-16 md:py-24 border-t border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_440px] gap-12 lg:gap-16 items-center">
 
-            {/* ── Left Column: Headline, Benefits & Contact ── */}
-            <div>
-              <EyebrowLabel text={consultation?.badge || "Book Free Consultation"} />
+              {/* ── Left Column: Headline, Benefits & Contact ── */}
+              <div>
+                <EyebrowLabel text={consultation?.badge || "Book Free Consultation"} />
 
-              <h2 className="text-3xl sm:text-4xl font-black text-gray-900 leading-tight tracking-tight mb-4">
-                {consultation?.heading || "Get Your Free Hair Transplant Consultation in Mumbai"}
-              </h2>
+                <h2 className="text-3xl sm:text-4xl font-black text-gray-900 leading-tight tracking-tight mb-4">
+                  {consultation?.heading || "Get Your Free Consultation in Mumbai"}
+                </h2>
 
-              {consultation?.description ? (
-                <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-8 max-w-xl font-sans">
-                  {consultation.description}
-                </p>
-              ) : (
-                <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-8 max-w-xl font-sans">
-                  Meet our expert doctors at our Mumbai centre for a detailed scalp analysis, graft count estimation, and personalised cost plan — completely free of charge.
-                </p>
-              )}
+                {consultation?.description ? (
+                  <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-8 max-w-xl font-sans">
+                    {consultation.description}
+                  </p>
+                ) : (
+                  <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-8 max-w-xl font-sans">
+                    Meet our expert doctors at our Mumbai centre for a detailed scalp assessment, graft count estimation, and personalised cost plan — completely free of charge.
+                  </p>
+                )}
 
-              {/* Benefits 2x2 Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                {(consultation?.features?.length > 0
-                  ? consultation.features.map((f) => f.text || f)
-                  : [
-                    "Free Scalp Assessment & Graft Audit",
-                    "Direct Consultation with Senior Surgeon",
-                    "Written Cost Quote with Zero Hidden Fees",
-                    "Personalised Recovery & Care Plan",
-                  ]
-                ).map((text, i) => (
-                  <div
-                    key={i}
-                    className="bg-white rounded-2xl p-4 border border-[#E8E4DF] shadow-xs flex items-start gap-3 hover:shadow-md hover:border-[#e30a17]/30 transition-all duration-200"
+                {/* Benefits 2x2 Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                  {(consultation?.features?.length > 0
+                    ? consultation.features.map((f) => f.text || f)
+                    : [
+                      "Free Scalp Assessment & Audit",
+                      "Direct Consultation with Senior Surgeon",
+                      "Written Cost Quote with Zero Hidden Fees",
+                      "Personalised Recovery & Care Plan",
+                    ]
+                  ).map((text, i) => (
+                    <div
+                      key={i}
+                      className="bg-white rounded-2xl p-4 border border-[#E8E4DF] shadow-xs flex items-start gap-3 hover:shadow-md hover:border-[#e30a17]/30 transition-all duration-200"
+                    >
+                      <span className="w-6 h-6 rounded-full bg-red-50 text-[#e30a17] flex items-center justify-center shrink-0 font-bold text-xs mt-0.5 border border-red-100">
+                        ✓
+                      </span>
+                      <span className="text-xs font-semibold text-gray-800 leading-snug">{text}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Compact Action Buttons & Availability */}
+                <div className="flex flex-wrap items-center gap-3">
+                  <a
+                    href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20book%20a%20free%20consultation"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white text-xs font-bold py-3 px-5 rounded-xl transition-all shadow-md shadow-red-200 hover:-translate-y-0.5"
                   >
-                    <span className="w-6 h-6 rounded-full bg-red-50 text-[#e30a17] flex items-center justify-center shrink-0 font-bold text-xs mt-0.5 border border-red-100">
-                      ✓
-                    </span>
-                    <span className="text-xs font-semibold text-gray-800 leading-snug">{text}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Compact Action Buttons & Availability */}
-              <div className="flex flex-wrap items-center gap-3">
-                <a
-                  href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20book%20a%20free%20consultation"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white text-xs font-bold py-3 px-5 rounded-xl transition-all shadow-md shadow-red-200 hover:-translate-y-0.5"
-                >
-                  💬 WhatsApp Us
-                </a>
-                <a
-                  href="tel:+919911111247"
-                  className="inline-flex items-center gap-2 bg-white border border-[#E8E4DF] hover:border-gray-300 text-gray-800 text-xs font-bold py-3 px-5 rounded-xl transition-all shadow-xs hover:-translate-y-0.5"
-                >
-                  📞 Call +91-9911111247
-                </a>
-                <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50/80 px-3 py-2 rounded-xl border border-emerald-200/60">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Doctors Available Today
-                </span>
-              </div>
-            </div>
-
-            {/* ── Right Column: Clean Sleek Form Card ── */}
-            <div>
-              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E8E4DF] shadow-2xl shadow-gray-200/60 relative">
-
-                {/* Form Header */}
-                <div className="mb-5 pb-4 border-b border-gray-100 flex items-center justify-between">
-                  <div>
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-900">Schedule Your Free Consultation</h3>
-                    <p className="text-xs text-gray-500 mt-0.5">Takes less than 60 seconds · No obligation</p>
-                  </div>
-                  <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shrink-0">
+                    💬 WhatsApp Us
+                  </a>
+                  <a
+                    href="tel:+919911111247"
+                    className="inline-flex items-center gap-2 bg-white border border-[#E8E4DF] hover:border-gray-300 text-gray-800 text-xs font-bold py-3 px-5 rounded-xl transition-all shadow-xs hover:-translate-y-0.5"
+                  >
+                    📞 Call +91-9911111247
+                  </a>
+                  <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50/80 px-3 py-2 rounded-xl border border-emerald-200/60">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    Secure
+                    Doctors Available Today
                   </span>
                 </div>
+              </div>
 
-                {/* Form Body */}
-                <ContactForm plain />
+              {/* ── Right Column: Clean Sleek Form Card ── */}
+              <div>
+                <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E8E4DF] shadow-2xl shadow-gray-200/60 relative">
 
-                {/* Trust Footer */}
-                <div className="mt-4 pt-3 border-t border-gray-100 flex items-center gap-2 text-xs text-gray-400 leading-snug">
-                  <span className="text-emerald-600 text-sm">🔒</span>
-                  <p className="text-[11px]">100% private &amp; confidential. Never shared with third parties.</p>
+                  {/* Form Header */}
+                  <div className="mb-5 pb-4 border-b border-gray-100 flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-900">Schedule Your Free Consultation</h3>
+                      <p className="text-xs text-gray-500 mt-0.5">Takes less than 60 seconds · No obligation</p>
+                    </div>
+                    <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shrink-0">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      Secure
+                    </span>
+                  </div>
+
+                  {/* Form Body */}
+                  <ContactForm plain />
+
+                  {/* Trust Footer */}
+                  <div className="mt-4 pt-3 border-t border-gray-100 flex items-center gap-2 text-xs text-gray-400 leading-snug">
+                    <span className="text-emerald-600 text-sm">🔒</span>
+                    <p className="text-[11px]">100% private &amp; confidential. Never shared with third parties.</p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-          </div>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════════════════════════
-          PRICING OPTIONS — Generic per-session/package pricing
-          (PRP and future cost types; Hair Transplant uses graftPricing)
-      ════════════════════════════════════════════════════════════ */}
-      {pricingOptions?.items?.filter((i) => i.active !== false).length > 0 && (
-        <section className="bg-[#FAF6F3] py-16 md:py-24 border-b border-gray-100">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-12 max-w-xl">
-              <EyebrowLabel text={pricingOptions.badge || "Transparent Pricing"} />
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
-                {pricingOptions.heading || "Treatment Pricing"}
-              </h2>
-              {pricingOptions.description && (
-                <p className="text-gray-500 text-xs sm:text-sm mt-2 font-sans">{pricingOptions.description}</p>
-              )}
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {pricingOptions.items.filter((i) => i.active !== false).sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)).map((item, i) => (
-                <div key={i} className="relative bg-white rounded-3xl border border-[#E8E4DF] p-6 sm:p-8 shadow-sm hover:shadow-xl hover:border-[#e30a17]/30 transition-all duration-300 flex flex-col">
-                  {item.badge && (
-                    <span className="absolute -top-3 left-6 bg-[#e30a17] text-white text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full shadow">
-                      {item.badge}
-                    </span>
-                  )}
-                  <div className="mb-4">
-                    <h3 className="text-lg font-black text-gray-900">{item.title}</h3>
-                    {item.subtitle && <p className="text-xs text-gray-500 mt-1 font-sans">{item.subtitle}</p>}
-                  </div>
-                  {item.price ? (
-                    <div className="mb-4">
-                      <span className="text-2xl sm:text-3xl font-black text-[#e30a17]">{item.price}</span>
-                      {item.priceSuffix && <span className="text-xs text-gray-500 ml-1">{item.priceSuffix}</span>}
-                    </div>
-                  ) : (
-                    <div className="mb-4">
-                      <span className="text-sm font-semibold text-gray-400 italic">Price confirmed after consultation</span>
-                    </div>
-                  )}
-                  {item.description && (
-                    <p className="text-xs text-gray-600 leading-relaxed mb-5 font-sans flex-1">{item.description}</p>
-                  )}
-                  {item.features?.length > 0 && (
-                    <ul className="space-y-2 mb-6">
-                      {item.features.map((feat, fi) => (
-                        <li key={fi} className="flex items-start gap-2 text-xs text-gray-700">
-                          <RedCheck />
-                          <span>{feat}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  <a
-                    href={item.ctaLink || "/contact"}
-                    className="mt-auto inline-flex items-center justify-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white font-bold text-xs py-3 px-5 rounded-xl transition-all shadow-md"
-                  >
-                    {item.ctaText || "Book Consultation"} <ArrowIcon />
-                  </a>
-                </div>
-              ))}
             </div>
           </div>
         </section>
@@ -1149,9 +1169,8 @@ export default async function DynamicCostPage({ params }) {
 
       {/* ════════════════════════════════════════════════════════════
           TECHNIQUE / TREATMENT COMPARISON TABLE
-          (Was in model but had no frontend renderer — now rendered)
       ════════════════════════════════════════════════════════════ */}
-      {techniqueComparison?.columns?.length > 0 && techniqueComparison?.rows?.length > 0 && (
+      {vis.priceFactors !== false && techniqueComparison?.columns?.length > 0 && techniqueComparison?.rows?.length > 0 && (
         <section className="bg-white py-16 md:py-24 border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-10 max-w-2xl">
@@ -1198,7 +1217,6 @@ export default async function DynamicCostPage({ params }) {
 
       {/* ════════════════════════════════════════════════════════════
           CONTENT SECTIONS — Generic educational sections
-          (session-vs-package, maintenance, worth-it, with-transplant etc.)
       ════════════════════════════════════════════════════════════ */}
       {(contentSections || []).filter((sec) => sec.enabled !== false).sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)).map((sec, si) => (
         <GenericCostSection key={sec.sectionKey || si} sec={sec} />
@@ -1246,7 +1264,7 @@ export default async function DynamicCostPage({ params }) {
       {/* ════════════════════════════════════════════════════════════
           VISIT CLINIC — Location / Address Block
       ════════════════════════════════════════════════════════════ */}
-      {(visitClinic?.address || visitClinic?.heading) && (
+      {vis.clinic !== false && (visitClinic?.address || visitClinic?.heading) && (
         <section className="bg-[#FAF6F3] py-16 md:py-20 border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
@@ -1352,7 +1370,7 @@ export default async function DynamicCostPage({ params }) {
       {/* ════════════════════════════════════════════════════════════
           FAQ SECTION
       ════════════════════════════════════════════════════════════ */}
-      {faqItems.length > 0 && (
+      {vis.faq !== false && faqItems.length > 0 && (
         <FAQCostSection faqs={faqItems.map((item) => ({ q: item.question, a: item.answer }))} />
       )}
 

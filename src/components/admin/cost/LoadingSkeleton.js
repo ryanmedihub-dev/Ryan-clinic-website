@@ -32,6 +32,8 @@ function CellSkeleton({ columnKey }) {
       );
     case "slug":
       return <Shimmer className="h-6 w-36 rounded-lg" />;
+    case "pageType":
+      return <Shimmer className="h-6 w-24 rounded-full" />;
     case "status":
       return <Shimmer className="h-6 w-20 rounded-full" />;
     case "featured":
@@ -66,12 +68,12 @@ export default function LoadingSkeleton({ columns = [], rows = 7 }) {
         }
       `}</style>
 
-      <div className="overflow-x-auto w-full">
-        <table className="w-full min-w-[720px]">
+      <div className="overflow-x-auto w-full" suppressHydrationWarning>
+        <table className="w-full min-w-[720px]" suppressHydrationWarning>
 
           {/* Header */}
-          <thead className="bg-gray-50 border-b border-gray-200">
-            <tr>
+          <thead className="bg-gray-50 border-b border-gray-200" suppressHydrationWarning>
+            <tr suppressHydrationWarning>
               {columns.map((col) => (
                 <th
                   key={col.key}

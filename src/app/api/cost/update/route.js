@@ -16,6 +16,9 @@ const handler = async (req) => {
             _id,
             title,
             slug: rawSlug,
+            pageType,
+            sectionVisibility,
+            pricing,
             seo,
             hero,
             intro,
@@ -103,10 +106,34 @@ const handler = async (req) => {
 
         doc.title = title.trim();
 
+        if (pageType !== undefined) {
+            const validTypes = ["hair-transplant", "prp", "dhi", "beard-transplant", "other"];
+            doc.pageType = validTypes.includes(pageType) ? pageType : "hair-transplant";
+        }
+
+        if (sectionVisibility !== undefined) {
+            const currentVis = doc.sectionVisibility?.toObject ? doc.sectionVisibility.toObject() : (doc.sectionVisibility || {});
+            doc.sectionVisibility = {
+                hero: true,
+                intro: true,
+                services: true,
+                pricing: true,
+                graftPricing: true,
+                priceFactors: true,
+                includedSection: true,
+                consultation: true,
+                faq: true,
+                clinic: true,
+                ...currentVis,
+                ...sectionVisibility,
+            };
+        }
+
         doc.seo = seo;
         doc.hero = hero;
         doc.intro = intro;
         doc.services = services;
+        if (pricing !== undefined) doc.pricing = pricing;
         doc.graftPricing = graftPricing;
         doc.techniqueComparison = techniqueComparison;
 
@@ -149,7 +176,7 @@ const handler = async (req) => {
         if (visitClinic !== undefined) doc.visitClinic = visitClinic;
 
         /* Explicitly mark modified for sub-documents & arrays */
-        ["seo", "hero", "intro", "services", "graftPricing", "techniqueComparison", "includedSection", "priceFactors", "consultation", "faq", "settings", "pricingOptions", "contentSections", "mythsFacts", "visitClinic"].forEach((path) => {
+        ["pageType", "sectionVisibility", "pricing", "seo", "hero", "intro", "services", "graftPricing", "techniqueComparison", "includedSection", "priceFactors", "consultation", "faq", "settings", "pricingOptions", "contentSections", "mythsFacts", "visitClinic"].forEach((path) => {
             doc.markModified(path);
         });
 

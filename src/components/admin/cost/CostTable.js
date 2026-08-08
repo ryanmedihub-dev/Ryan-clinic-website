@@ -12,11 +12,11 @@
  */
 export default function CostTable({ columns = [], data = [] }) {
   return (
-    <div className="overflow-x-auto w-full">
-      <table className="w-full min-w-[720px] border-collapse">
+    <div className="overflow-x-auto w-full" suppressHydrationWarning>
+      <table className="w-full min-w-[720px] border-collapse" suppressHydrationWarning>
 
         {/* ── Sticky Header ─────────────────────────────────────────── */}
-        <thead className="sticky top-0 z-10">
+        <thead className="sticky top-0 z-10" suppressHydrationWarning>
           <tr className="bg-gray-50 border-b border-gray-200">
             {columns.map((col) => (
               <th

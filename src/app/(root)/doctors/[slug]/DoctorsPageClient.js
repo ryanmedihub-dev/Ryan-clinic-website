@@ -33,7 +33,7 @@ import {
 } from "lucide-react";
 
 const WA =
-    "https://api.whatsapp.com/send?phone=919217958539&text=Hi%2C%20I%20want%20a%20free%20consultation%20with%20the%20best%20hair%20transplant%20doctor%20in%20Delhi";
+    "https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation";
 const TEL = "tel:+919911111247";
 
 const branchData = {
@@ -126,7 +126,7 @@ function SectionLabel({ text, dark = false }) {
 function CTAButtons({ primary = "Book Free Consultation", center = false, doctorName = "" }) {
     const trackCTA = useTrackCTA();
     const waLink = doctorName
-        ? `https://api.whatsapp.com/send?phone=919217958539&text=Hi%2C%20I%20want%20a%20free%20consultation%20with%20${encodeURIComponent(doctorName)}`
+        ? `https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation`
         : WA;
     return (
         <div className={`flex flex-wrap gap-3 ${center ? "justify-center" : ""}`}>
@@ -194,7 +194,7 @@ export default function DoctorPageClient({ data }) {
 
     const activeBranch = branchData[doctor.location] || branchData.Delhi;
     const waDoctorLink = doctor
-        ? `https://api.whatsapp.com/send?phone=919217958539&text=Hi%2C%20I%20want%20a%20free%20consultation%20with%20${encodeURIComponent(doctor.name)}`
+        ? `https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation`
         : WA;
 
     return (
@@ -996,8 +996,11 @@ export default function DoctorPageClient({ data }) {
 
                                 {/* CTA */}
                                 <a
-                                    href="#appointment-form"
+                                    href={waDoctorLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="self-start inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5"
+                                    onClick={() => trackCTA({ type: "whatsapp", ctaName: "Book with Ryan Clinic - Doctor-Led Card", buttonLocation: "Doctor-Led Comparison Section" })}
                                 >
                                     Book with Ryan Clinic <ArrowRight className="w-3.5 h-3.5" />
                                 </a>

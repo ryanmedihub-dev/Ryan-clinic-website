@@ -128,12 +128,12 @@ const summaryRowSchema = new Schema(
   {
     label: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
     value: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
     icon: {
@@ -149,12 +149,12 @@ const introButtonSchema = new Schema(
   {
     text: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
     link: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
     variant: {
@@ -203,7 +203,7 @@ const serviceFeatureSchema = new Schema(
   {
     text: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
   },
@@ -214,12 +214,12 @@ const serviceButtonSchema = new Schema(
   {
     text: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
     link: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
   },
@@ -245,7 +245,7 @@ const serviceCardSchema = new Schema(
     },
     title: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
     description: {
@@ -311,7 +311,7 @@ const graftFeatureSchema = new Schema(
   {
     text: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
   },
@@ -322,7 +322,7 @@ const graftPricingCardSchema = new Schema(
   {
     title: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
     graftRange: {
@@ -424,7 +424,7 @@ const comparisonValueSchema = new Schema(
   {
     value: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
   },
@@ -435,7 +435,7 @@ const comparisonRowSchema = new Schema(
   {
     label: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
     values: {
@@ -450,7 +450,7 @@ const techniqueColumnSchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
+      default: "",
       trim: true,
     },
     badge: {
@@ -840,13 +840,67 @@ const faqSchema = new Schema(
 );
 
 /* ==============================================================================
+   10.1 Section Visibility Schema
+============================================================================== */
+
+const sectionVisibilitySchema = new Schema(
+  {
+    hero: { type: Boolean, default: true },
+    intro: { type: Boolean, default: true },
+    services: { type: Boolean, default: true },
+    pricing: { type: Boolean, default: true },
+    graftPricing: { type: Boolean, default: true },
+    priceFactors: { type: Boolean, default: true },
+    includedSection: { type: Boolean, default: true },
+    consultation: { type: Boolean, default: true },
+    faq: { type: Boolean, default: true },
+    clinic: { type: Boolean, default: true },
+  },
+  { _id: false }
+);
+
+/* ==============================================================================
+   10.2 Generic Pricing Schema
+============================================================================== */
+
+const pricingCardFeatureSchema = new Schema(
+  {
+    text: { type: String, default: "", trim: true },
+  },
+  { _id: false }
+);
+
+const pricingCardSchema = new Schema(
+  {
+    title: { type: String, default: "", trim: true },
+    price: { type: String, default: "", trim: true },
+    subtitle: { type: String, default: "", trim: true },
+    description: { type: String, default: "", trim: true },
+    features: { type: [Schema.Types.Mixed], default: [] },
+    badge: { type: String, default: "", trim: true },
+    displayOrder: { type: Number, default: 0 },
+    active: { type: Boolean, default: true },
+  },
+  { _id: false }
+);
+
+const pricingSchema = new Schema(
+  {
+    heading: { type: String, default: "", trim: true },
+    description: { type: String, default: "", trim: true },
+    cards: { type: [pricingCardSchema], default: [] },
+  },
+  { _id: false }
+);
+
+/* ==============================================================================
    11. Generic Pricing Options Schema (PRP sessions, packages, future cost types)
    — Hair Transplant pages use graftPricing; PRP and others use pricingOptions
 ============================================================================== */
 
 const pricingOptionItemSchema = new Schema(
   {
-    title: { type: String, required: true, trim: true },
+    title: { type: String, default: "", trim: true },
     subtitle: { type: String, default: "", trim: true },
     price: { type: String, default: "", trim: true },
     priceSuffix: { type: String, default: "", trim: true },
@@ -900,7 +954,7 @@ const contentSectionItemSchema = new Schema(
 
 const contentSectionSchema = new Schema(
   {
-    sectionKey: { type: String, required: true, trim: true },
+    sectionKey: { type: String, default: "", trim: true },
     badge: { type: String, default: "", trim: true },
     heading: { type: String, default: "", trim: true },
     description: { type: String, default: "", trim: true },
@@ -922,8 +976,8 @@ const contentSectionSchema = new Schema(
 
 const mythFactPairSchema = new Schema(
   {
-    myth: { type: String, required: true, trim: true },
-    fact: { type: String, required: true, trim: true },
+    myth: { type: String, default: "", trim: true },
+    fact: { type: String, default: "", trim: true },
     displayOrder: { type: Number, default: 0 },
     active: { type: Boolean, default: true },
   },
@@ -1030,8 +1084,25 @@ const costPageSchema = new Schema(
 
     pageType: {
       type: String,
-      default: "cost-page",
+      enum: ["hair-transplant", "prp", "dhi", "beard-transplant", "other"],
+      default: "hair-transplant",
       trim: true,
+    },
+
+    sectionVisibility: {
+      type: sectionVisibilitySchema,
+      default: () => ({
+        hero: true,
+        intro: true,
+        services: true,
+        pricing: true,
+        graftPricing: true,
+        priceFactors: true,
+        includedSection: true,
+        consultation: true,
+        faq: true,
+        clinic: true,
+      }),
     },
 
     /* ---------- SEO ---------- */
@@ -1053,6 +1124,11 @@ const costPageSchema = new Schema(
 
     services: {
       type: servicesSchema,
+      default: () => ({}),
+    },
+
+    pricing: {
+      type: pricingSchema,
       default: () => ({}),
     },
 
@@ -1117,6 +1193,14 @@ const costPageSchema = new Schema(
     timestamps: true,
   }
 );
+
+costPageSchema.pre("validate", function (next) {
+  const validTypes = ["hair-transplant", "prp", "dhi", "beard-transplant", "other"];
+  if (!this.pageType || !validTypes.includes(this.pageType)) {
+    this.pageType = "hair-transplant";
+  }
+  next();
+});
 
 /* ==============================================================================
    13. Model Export

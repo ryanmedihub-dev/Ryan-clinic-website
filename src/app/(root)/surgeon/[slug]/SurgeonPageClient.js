@@ -34,8 +34,9 @@ import {
     CreditCard,
 } from "lucide-react";
 
-const WA = "https://api.whatsapp.com/send?phone=919217958539&text=Hi%2C%20I%20want%20to%20book%20a%20consultation%20with%20the%20best%20hair%20transplant%20surgeon%20in%20Delhi";
-const TEL = "tel:+919217958539";
+const WA = "https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation";
+const TEL = "tel:+919911111247";
+
 
 /* ─── Image Helper ────────────────────────────────────────────────────────── */
 function getImageSrc(img, fallback = "/uploads/gallery.jpg") {
@@ -1489,7 +1490,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
                                     : pageData?.relatedLinks?.length
                                         ? pageData.relatedLinks
                                         : [
-                                            { label: `Hair Transplant Surgery in ${cityName}`, href: `/hair-transplant-surgery-in-${(rawCityName || "delhi").toLowerCase().replace(/\s+/g, "-")}` },
+                                            { label: `Hair Transplant Surgery in ${cityName}`, href: `/surgery/hair-transplant-surgery-in-${(rawCityName || "delhi").toLowerCase().replace(/\s+/g, "-")}` },
                                             { label: `Hair Transplant Cost in ${cityName}`, href: `/cost/hair-transplant-cost-in-${(rawCityName || "delhi").toLowerCase().replace(/\s+/g, "-")}` },
                                             { label: `PRP Treatment in ${cityName}`, href: `/prp-hair-loss-treatment-in-${(rawCityName || "delhi").toLowerCase().replace(/\s+/g, "-")}` },
                                         ]

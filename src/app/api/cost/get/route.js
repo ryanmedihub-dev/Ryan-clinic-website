@@ -45,6 +45,29 @@ const handler = async (req) => {
             );
         }
 
+        const validTypes = ["hair-transplant", "prp", "dhi", "beard-transplant", "other"];
+        if (!costPage.pageType || !validTypes.includes(costPage.pageType)) {
+            costPage.pageType = "hair-transplant";
+        }
+
+        const defaultVisibility = {
+            hero: true,
+            intro: true,
+            services: true,
+            pricing: true,
+            graftPricing: true,
+            priceFactors: true,
+            includedSection: true,
+            consultation: true,
+            faq: true,
+            clinic: true,
+        };
+
+        costPage.sectionVisibility = {
+            ...defaultVisibility,
+            ...(costPage.sectionVisibility || {}),
+        };
+
         return NextResponse.json(
             {
                 success: true,

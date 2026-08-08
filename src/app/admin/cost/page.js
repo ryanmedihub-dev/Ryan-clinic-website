@@ -87,6 +87,29 @@ function buildColumns(onEdit, onDelete) {
       ),
     },
 
+    /* Page Type badge */
+    {
+      key: "pageType",
+      label: "Page Type",
+      className: "w-36",
+      render: (row) => {
+        const type = row.pageType || "hair-transplant";
+        const map = {
+          "hair-transplant": { label: "Hair Transplant", color: "bg-indigo-50 text-indigo-700 border-indigo-200" },
+          prp: { label: "PRP Hair", color: "bg-purple-50 text-purple-700 border-purple-200" },
+          dhi: { label: "DHI Treatment", color: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+          "beard-transplant": { label: "Beard Transplant", color: "bg-amber-50 text-amber-700 border-amber-200" },
+          other: { label: "Other", color: "bg-gray-100 text-gray-700 border-gray-200" },
+        };
+        const cfg = map[type] || map["hair-transplant"];
+        return (
+          <span className={`inline-flex items-center text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${cfg.color}`}>
+            {cfg.label}
+          </span>
+        );
+      },
+    },
+
     /* Status badge */
     {
       key: "status",

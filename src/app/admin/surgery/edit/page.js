@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, useParams } from "next/navigation";
 import AdminHeader from "@/components/admin/adminHeader";
 import ImageUploader from "@/components/admin/ImageUploader";
 import ToastContainer from "@/components/admin/Toast";
@@ -73,7 +73,9 @@ function EditSurgeryContent() {
     const toast = useToast();
     const router = useRouter();
     const searchParams = useSearchParams();
-    const querySlug = searchParams.get("slug");
+    const params = useParams();
+    // Support both /admin/surgery/edit/[slug] (path param) and /admin/surgery/edit?slug= (query param)
+    const querySlug = params?.slug || searchParams.get("slug");
 
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
@@ -209,12 +211,26 @@ function EditSurgeryContent() {
 
                 {/* Sticky Save Bar */}
                 <div className="sticky top-4 z-40 flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-3 shadow-sm">
-                    <p className="text-sm font-semibold text-gray-700">Slug: <span className="font-mono text-blue-600">/{formData.slug}</span></p>
+                    <div className="flex items-center gap-3">
+                        <p className="text-sm font-semibold text-gray-700">Public URL: <span className="font-mono text-blue-600">/surgery/{formData.slug}</span></p>
+                        {formData.slug && (
+                            <a
+                                href={`/surgery/${formData.slug}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-xs font-semibold text-gray-500 hover:text-blue-600 border border-gray-200 hover:border-blue-300 bg-gray-50 px-2.5 py-1.5 rounded-lg transition-colors"
+                            >
+                                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                View Live
+                            </a>
+                        )}
+                    </div>
                     <div className="flex items-center gap-3">
                         <button type="button" onClick={() => router.push("/admin/surgery")} className="px-4 py-2 text-sm font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-md">Cancel</button>
                         <button type="submit" disabled={submitting} className="px-6 py-2 text-sm font-bold text-white bg-[#e30a17] hover:bg-red-700 rounded-md disabled:opacity-50">{submitting ? "Saving..." : "Save Changes"}</button>
                     </div>
                 </div>
+
 
                 {/* 1. GENERAL INFO */}
                 <h3 className={sectionHeadingCls}>1. General Info</h3>
@@ -588,20 +604,25 @@ function EditSurgeryContent() {
                     <textarea rows={2} value={formData.procedureTimeline.description} onChange={(e) => handleNestedChange("procedureTimeline", "description", e.target.value)} className={inputCls} />
                 </div>
                 <div>
+                    <label className={labelCls}>Bottom Highlight Message</label>
+                    <input type="text" value={formData.procedureTimeline.bottomHighlightMessage || ""} onChange={(e) => handleNestedChange("procedureTimeline", "bottomHighlightMessage", e.target.value)} className={inputCls} />
+                </div>
+                <div>
                     <label className={labelCls}>Steps</label>
                     {(formData.procedureTimeline.timelineSteps || []).map((step, idx) => (
                         <div key={idx} className="border rounded-md p-4 mb-3 bg-gray-50 relative">
                             <button type="button" onClick={() => removeFromArray("procedureTimeline", "timelineSteps", idx)} className={removeBtnCls + " absolute top-2 right-2"}>✕</button>
                             <div className="grid grid-cols-3 gap-3">
-                                <div><label className={labelCls}>Num</label><input type="text" value={step.num || ""} onChange={(e) => updateArrayItem("procedureTimeline", "timelineSteps", idx, "num", e.target.value)} className={inputCls} /></div>
+                                <div><label className={labelCls}>Step Number</label><input type="text" value={step.stepNumber || ""} onChange={(e) => updateArrayItem("procedureTimeline", "timelineSteps", idx, "stepNumber", e.target.value)} className={inputCls} /></div>
                                 <div><label className={labelCls}>Title</label><input type="text" value={step.title || ""} onChange={(e) => updateArrayItem("procedureTimeline", "timelineSteps", idx, "title", e.target.value)} className={inputCls} /></div>
-                                <div><label className={labelCls}>Tag</label><input type="text" value={step.tag || ""} onChange={(e) => updateArrayItem("procedureTimeline", "timelineSteps", idx, "tag", e.target.value)} className={inputCls} /></div>
-                                <div className="col-span-3"><label className={labelCls}>Description</label><textarea rows={2} value={step.desc || ""} onChange={(e) => updateArrayItem("procedureTimeline", "timelineSteps", idx, "desc", e.target.value)} className={inputCls} /></div>
-                                <div className="col-span-2"><label className={labelCls}>Image</label><ImageUploader value={step.image || ""} onChange={(url) => updateArrayItem("procedureTimeline", "timelineSteps", idx, "image", url)} /></div>
+                                <div><label className={labelCls}>Badge</label><input type="text" value={step.badge || ""} onChange={(e) => updateArrayItem("procedureTimeline", "timelineSteps", idx, "badge", e.target.value)} className={inputCls} /></div>
+                                <div className="col-span-3"><label className={labelCls}>Description</label><textarea rows={2} value={step.description || ""} onChange={(e) => updateArrayItem("procedureTimeline", "timelineSteps", idx, "description", e.target.value)} className={inputCls} /></div>
+                                <div className="col-span-2"><label className={labelCls}>Image</label><ImageUploader value={step.stepImage?.image || ""} onChange={(url) => updateArrayItem("procedureTimeline", "timelineSteps", idx, "stepImage", { image: url, imageAlt: step.title || "" })} /></div>
+                                <div><label className={labelCls}>Image Alt</label><input type="text" value={step.stepImage?.imageAlt || ""} onChange={(e) => updateArrayItem("procedureTimeline", "timelineSteps", idx, "stepImage", { image: step.stepImage?.image || "", imageAlt: e.target.value })} className={inputCls} /></div>
                             </div>
                         </div>
                     ))}
-                    <button type="button" onClick={() => addToArray("procedureTimeline", "timelineSteps", { num: "", title: "", tag: "", desc: "", image: "" })} className={addBtnCls}>+ Add Step</button>
+                    <button type="button" onClick={() => addToArray("procedureTimeline", "timelineSteps", { stepNumber: "", title: "", badge: "", description: "", stepImage: { image: "", imageAlt: "" }, icon: "", displayOrder: 0 })} className={addBtnCls}>+ Add Step</button>
                 </div>
 
                 {/* 14. RECOVERY TIMELINE */}
@@ -616,17 +637,48 @@ function EditSurgeryContent() {
                     <label className={labelCls}>Description</label>
                     <textarea rows={2} value={formData.recoveryTimeline.description} onChange={(e) => handleNestedChange("recoveryTimeline", "description", e.target.value)} className={inputCls} />
                 </div>
+
+                {/* Left Highlight Card (dark panel) */}
+                <div className="border rounded-md p-4 mb-4 bg-indigo-50">
+                    <label className={labelCls + " mb-2 block"}>Left Highlight Card (dark panel)</label>
+                    <div className="grid grid-cols-2 gap-3">
+                        <div>
+                            <label className={labelCls}>Duration Label (e.g. &quot;18 Months&quot;)</label>
+                            <input type="text" value={formData.recoveryTimeline.leftHighlightCard?.icon || ""} onChange={(e) => setFormData((prev) => ({ ...prev, recoveryTimeline: { ...prev.recoveryTimeline, leftHighlightCard: { ...prev.recoveryTimeline.leftHighlightCard, icon: e.target.value } } }))} className={inputCls} />
+                        </div>
+                        <div>
+                            <label className={labelCls}>Title</label>
+                            <input type="text" value={formData.recoveryTimeline.leftHighlightCard?.title || ""} onChange={(e) => setFormData((prev) => ({ ...prev, recoveryTimeline: { ...prev.recoveryTimeline, leftHighlightCard: { ...prev.recoveryTimeline.leftHighlightCard, title: e.target.value } } }))} className={inputCls} />
+                        </div>
+                        <div className="col-span-2">
+                            <label className={labelCls}>Description</label>
+                            <textarea rows={2} value={formData.recoveryTimeline.leftHighlightCard?.description || ""} onChange={(e) => setFormData((prev) => ({ ...prev, recoveryTimeline: { ...prev.recoveryTimeline, leftHighlightCard: { ...prev.recoveryTimeline.leftHighlightCard, description: e.target.value } } }))} className={inputCls} />
+                        </div>
+                    </div>
+                    <div className="mt-3">
+                        <label className={labelCls}>Statistics (shown at bottom of dark card)</label>
+                        {(formData.recoveryTimeline.leftHighlightCard?.statistics || []).map((stat, idx) => (
+                            <div key={idx} className="flex gap-2 mb-2 items-center">
+                                <input type="text" placeholder="Value (e.g. 95%)" value={stat.value || ""} onChange={(e) => { const stats = [...(formData.recoveryTimeline.leftHighlightCard?.statistics || [])]; stats[idx] = { ...stats[idx], value: e.target.value }; setFormData((prev) => ({ ...prev, recoveryTimeline: { ...prev.recoveryTimeline, leftHighlightCard: { ...prev.recoveryTimeline.leftHighlightCard, statistics: stats } } })); }} className={inputCls} />
+                                <input type="text" placeholder="Label (e.g. Graft Survival)" value={stat.label || ""} onChange={(e) => { const stats = [...(formData.recoveryTimeline.leftHighlightCard?.statistics || [])]; stats[idx] = { ...stats[idx], label: e.target.value }; setFormData((prev) => ({ ...prev, recoveryTimeline: { ...prev.recoveryTimeline, leftHighlightCard: { ...prev.recoveryTimeline.leftHighlightCard, statistics: stats } } })); }} className={inputCls} />
+                                <button type="button" onClick={() => { const stats = (formData.recoveryTimeline.leftHighlightCard?.statistics || []).filter((_, i) => i !== idx); setFormData((prev) => ({ ...prev, recoveryTimeline: { ...prev.recoveryTimeline, leftHighlightCard: { ...prev.recoveryTimeline.leftHighlightCard, statistics: stats } } })); }} className={removeBtnCls}>✕</button>
+                            </div>
+                        ))}
+                        <button type="button" onClick={() => { const stats = [...(formData.recoveryTimeline.leftHighlightCard?.statistics || []), { value: "", label: "" }]; setFormData((prev) => ({ ...prev, recoveryTimeline: { ...prev.recoveryTimeline, leftHighlightCard: { ...prev.recoveryTimeline.leftHighlightCard, statistics: stats } } })); }} className={addBtnCls}>+ Add Stat</button>
+                    </div>
+                </div>
+
                 <div>
                     <label className={labelCls}>Recovery Stages</label>
                     {(formData.recoveryTimeline.recoveryStages || []).map((stage, idx) => (
                         <div key={idx} className="flex gap-2 mb-2 items-center">
-                            <input type="text" placeholder="Time" value={stage.time || ""} onChange={(e) => updateArrayItem("recoveryTimeline", "recoveryStages", idx, "time", e.target.value)} className={inputCls} />
-                            <input type="text" placeholder="Title" value={stage.label || ""} onChange={(e) => updateArrayItem("recoveryTimeline", "recoveryStages", idx, "label", e.target.value)} className={inputCls} />
-                            <input type="text" placeholder="Description" value={stage.desc || ""} onChange={(e) => updateArrayItem("recoveryTimeline", "recoveryStages", idx, "desc", e.target.value)} className={inputCls} />
+                            <input type="text" placeholder="Duration (e.g. Days 1–3)" value={stage.duration || ""} onChange={(e) => updateArrayItem("recoveryTimeline", "recoveryStages", idx, "duration", e.target.value)} className={inputCls} />
+                            <input type="text" placeholder="Title" value={stage.title || ""} onChange={(e) => updateArrayItem("recoveryTimeline", "recoveryStages", idx, "title", e.target.value)} className={inputCls} />
+                            <input type="text" placeholder="Description" value={stage.description || ""} onChange={(e) => updateArrayItem("recoveryTimeline", "recoveryStages", idx, "description", e.target.value)} className={inputCls} />
                             <button type="button" onClick={() => removeFromArray("recoveryTimeline", "recoveryStages", idx)} className={removeBtnCls}>✕</button>
                         </div>
                     ))}
-                    <button type="button" onClick={() => addToArray("recoveryTimeline", "recoveryStages", { time: "", label: "", desc: "" })} className={addBtnCls}>+ Add Stage</button>
+                    <button type="button" onClick={() => addToArray("recoveryTimeline", "recoveryStages", { duration: "", title: "", description: "", icon: "", displayOrder: 0 })} className={addBtnCls}>+ Add Stage</button>
                 </div>
 
                 {/* 15. SURGICAL RISKS */}
@@ -674,21 +726,67 @@ function EditSurgeryContent() {
                     </div>
                 </div>
                 <div>
-                    <label className={labelCls}>Description</label>
-                    <textarea rows={2} value={formData.pricing.description} onChange={(e) => handleNestedChange("pricing", "description", e.target.value)} className={inputCls} />
+                    <label className={labelCls}>Description (supports HTML)</label>
+                    <textarea rows={3} value={formData.pricing.description} onChange={(e) => handleNestedChange("pricing", "description", e.target.value)} className={inputCls} />
                 </div>
                 <div>
-                    <label className={labelCls}>Pricing Packages</label>
-                    {(formData.pricing.pricingFactors || []).map((f, idx) => (
+                    <label className={labelCls}>Warning / Advisory Text (shown in red-bordered box)</label>
+                    <input type="text" value={formData.pricing.warningText || ""} onChange={(e) => handleNestedChange("pricing", "warningText", e.target.value)} className={inputCls} />
+                </div>
+                <div>
+                    <label className={labelCls}>Pricing Stat Cards (value + label, shown as 4 highlight cards)</label>
+                    {(formData.pricing.pricingStats || []).map((stat, idx) => (
                         <div key={idx} className="flex gap-2 mb-2 items-center">
-                            <input type="text" placeholder="ID" value={f.id || ""} onChange={(e) => updateArrayItem("pricing", "pricingFactors", idx, "id", e.target.value)} className={inputCls + " max-w-[80px]"} />
-                            <input type="text" placeholder="Title" value={f.title || ""} onChange={(e) => updateArrayItem("pricing", "pricingFactors", idx, "title", e.target.value)} className={inputCls} />
-                            <input type="text" placeholder="Price" value={f.price || ""} onChange={(e) => updateArrayItem("pricing", "pricingFactors", idx, "price", e.target.value)} className={inputCls} />
-                            <input type="text" placeholder="Duration" value={f.duration || ""} onChange={(e) => updateArrayItem("pricing", "pricingFactors", idx, "duration", e.target.value)} className={inputCls + " max-w-[100px]"} />
+                            <input type="text" placeholder="Value (e.g. ₹40,000+)" value={stat.value || ""} onChange={(e) => updateArrayItem("pricing", "pricingStats", idx, "value", e.target.value)} className={inputCls} />
+                            <input type="text" placeholder="Label (e.g. Starting Price)" value={stat.label || ""} onChange={(e) => updateArrayItem("pricing", "pricingStats", idx, "label", e.target.value)} className={inputCls} />
+                            <button type="button" onClick={() => removeFromArray("pricing", "pricingStats", idx)} className={removeBtnCls}>✕</button>
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => addToArray("pricing", "pricingStats", { value: "", label: "" })} className={addBtnCls}>+ Add Stat Card</button>
+                </div>
+                <div>
+                    <label className={labelCls}>Cost Influencing Factors (simple text bullets, e.g. &quot;Graft Count&quot;, &quot;Technique Used&quot;)</label>
+                    {(formData.pricing.pricingFactors || []).map((factor, idx) => (
+                        <div key={idx} className="flex gap-2 mb-2 items-center">
+                            <input type="text" placeholder="e.g. Graft Count" value={typeof factor === "string" ? factor : ""} onChange={(e) => setFormData((prev) => { const arr = [...(prev.pricing.pricingFactors || [])]; arr[idx] = e.target.value; return { ...prev, pricing: { ...prev.pricing, pricingFactors: arr } }; })} className={inputCls} />
                             <button type="button" onClick={() => removeFromArray("pricing", "pricingFactors", idx)} className={removeBtnCls}>✕</button>
                         </div>
                     ))}
-                    <button type="button" onClick={() => addToArray("pricing", "pricingFactors", { id: "", title: "", price: "", duration: "" })} className={addBtnCls}>+ Add Package</button>
+                    <button type="button" onClick={() => setFormData((prev) => ({ ...prev, pricing: { ...prev.pricing, pricingFactors: [...(prev.pricing.pricingFactors || []), ""] } }))} className={addBtnCls}>+ Add Factor</button>
+                </div>
+                <div>
+                    <label className={labelCls}>Notes (shown below factors, supports HTML)</label>
+                    <textarea rows={2} value={formData.pricing.notes || ""} onChange={(e) => handleNestedChange("pricing", "notes", e.target.value)} className={inputCls} />
+                </div>
+                <div className={rowCls}>
+                    <div>
+                        <label className={labelCls}>WhatsApp CTA Text</label>
+                        <input type="text" value={formData.pricing.ctaTextWhatsApp?.text || ""} onChange={(e) => setFormData((prev) => ({ ...prev, pricing: { ...prev.pricing, ctaTextWhatsApp: { ...prev.pricing.ctaTextWhatsApp, text: e.target.value } } }))} className={inputCls} />
+                    </div>
+                    <div>
+                        <label className={labelCls}>WhatsApp CTA Link</label>
+                        <input type="text" value={formData.pricing.ctaTextWhatsApp?.link || ""} onChange={(e) => setFormData((prev) => ({ ...prev, pricing: { ...prev.pricing, ctaTextWhatsApp: { ...prev.pricing.ctaTextWhatsApp, link: e.target.value } } }))} className={inputCls} />
+                    </div>
+                </div>
+                <div className={rowCls}>
+                    <div>
+                        <label className={labelCls}>Call CTA Text</label>
+                        <input type="text" value={formData.pricing.ctaTextCall?.text || ""} onChange={(e) => setFormData((prev) => ({ ...prev, pricing: { ...prev.pricing, ctaTextCall: { ...prev.pricing.ctaTextCall, text: e.target.value } } }))} className={inputCls} />
+                    </div>
+                    <div>
+                        <label className={labelCls}>Call CTA Link (tel:)</label>
+                        <input type="text" value={formData.pricing.ctaTextCall?.link || ""} onChange={(e) => setFormData((prev) => ({ ...prev, pricing: { ...prev.pricing, ctaTextCall: { ...prev.pricing.ctaTextCall, link: e.target.value } } }))} className={inputCls} />
+                    </div>
+                </div>
+                <div className={rowCls}>
+                    <div>
+                        <label className={labelCls}>Guide Link Text</label>
+                        <input type="text" value={formData.pricing.ctaTextGuide?.text || ""} onChange={(e) => setFormData((prev) => ({ ...prev, pricing: { ...prev.pricing, ctaTextGuide: { ...prev.pricing.ctaTextGuide, text: e.target.value } } }))} className={inputCls} />
+                    </div>
+                    <div>
+                        <label className={labelCls}>Guide Link URL</label>
+                        <input type="text" value={formData.pricing.ctaTextGuide?.link || ""} onChange={(e) => setFormData((prev) => ({ ...prev, pricing: { ...prev.pricing, ctaTextGuide: { ...prev.pricing.ctaTextGuide, link: e.target.value } } }))} className={inputCls} />
+                    </div>
                 </div>
 
                 {/* 17. SURGEONS */}
