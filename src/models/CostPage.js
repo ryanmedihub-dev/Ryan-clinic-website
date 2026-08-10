@@ -37,6 +37,26 @@ const seoSchema = new Schema(
       default: "index, follow",
       trim: true,
     },
+    geoRegion: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+    geoPlacename: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+    geoPosition: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+    icbm: {
+      type: String,
+      default: "",
+      trim: true,
+    },
   },
   { _id: false }
 );

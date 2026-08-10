@@ -352,9 +352,9 @@ export function useCostForm({ mode = "create", id = null, toast }) {
               cards: p.services?.cards || [],
             },
             pricing: {
-              heading: p.pricing?.heading || p.pricingOptions?.heading || "",
-              description: p.pricing?.description || p.pricingOptions?.description || "",
-              cards: p.pricing?.cards?.length ? p.pricing.cards : (p.pricingOptions?.items || []),
+              heading: p.pricing?.heading || "",
+              description: p.pricing?.description || "",
+              cards: p.pricing?.cards || [],
             },
             graftPricing: {
               badge: p.graftPricing?.badge || "",

@@ -1,6 +1,9 @@
 "use client";
 
+import { Phone } from "lucide-react";
 import ImageUploader from "@/components/admin/ImageUploader";
+import SectionCard from "../shared/SectionCard";
+import { Field, inputCls, textareaCls, AddButton, DeleteIconButton } from "../shared/CostFormUI";
 
 export default function ConsultationSection({
   formData,
@@ -12,109 +15,113 @@ export default function ConsultationSection({
   const cons = formData.consultation || {};
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-2xl font-bold underline mt-10 mb-5">Consultation CTA Section</h3>
-
-      <div className="flex gap-6 flex-col md:flex-row">
-        <div className="w-full">
-          <label className="block text-sm font-semibold text-gray-700">Badge</label>
+    <SectionCard
+      icon={Phone}
+      title="15. Consultation CTA & Lead Form"
+      subtitle="Book consultation call-to-action, doctor image, perks and lead capture"
+    >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <Field label="Section Badge">
           <input
             type="text"
             value={cons.badge || ""}
             onChange={(e) => updateField("consultation.badge", e.target.value)}
-            className="w-full mt-2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
+            className={inputCls}
             placeholder="e.g. Free Scalp Analysis"
           />
-        </div>
-        <div className="w-full">
-          <label className="block text-sm font-semibold text-gray-700">Heading</label>
+        </Field>
+        <Field label="Section Heading">
           <input
             type="text"
             value={cons.heading || ""}
             onChange={(e) => updateField("consultation.heading", e.target.value)}
-            className="w-full mt-2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
+            className={inputCls}
             placeholder="e.g. Get an Exact Graft Count & Cost Estimate"
           />
-        </div>
+        </Field>
       </div>
 
-      <div>
-        <label className="block text-sm font-semibold text-gray-700">Description</label>
+      <Field label="Description">
         <textarea
-          rows={3}
+          rows={2}
           value={cons.description || ""}
           onChange={(e) => updateField("consultation.description", e.target.value)}
-          className="w-full mt-2 p-2 border rounded-md"
+          className={textareaCls}
           placeholder="Book a confidential consultation with our hair restoration specialists..."
         />
-      </div>
+      </Field>
 
-      <div className="flex gap-6 flex-col md:flex-row">
-        <div className="w-full">
-          <label className="block text-sm font-semibold text-gray-700">Button Text</label>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <Field label="CTA Button Text">
           <input
             type="text"
             value={cons.buttonText || "Book Free Consultation"}
             onChange={(e) => updateField("consultation.buttonText", e.target.value)}
-            className="w-full mt-2 p-2 border rounded-md"
+            className={inputCls}
           />
-        </div>
-
-        <div className="w-full">
-          <label className="block text-sm font-semibold text-gray-700">Button Link</label>
+        </Field>
+        <Field label="CTA Button Link">
           <input
             type="text"
-            value={cons.buttonLink || "https://wa.me/919911111247"}
+            value={cons.buttonLink || ""}
             onChange={(e) => updateField("consultation.buttonLink", e.target.value)}
-            className="w-full mt-2 p-2 border rounded-md"
+            className={inputCls}
+            placeholder="e.g. https://wa.me/919911111247"
           />
-        </div>
+        </Field>
       </div>
 
-      <div className="mt-4">
-        <label className="block text-sm font-semibold text-gray-700 mb-2">Section Image</label>
-        <ImageUploader
-          initialImage={typeof cons.image === "object" ? cons.image?.url || "" : cons.image || ""}
-          onUpload={(url) => updateField("consultation.image", url)}
-        />
-        <input
-          type="text"
-          value={(typeof cons.image === "object" ? cons.image?.alt : cons.imageAlt) || ""}
-          onChange={(e) => updateField("consultation.imageAlt", e.target.value)}
-          className="w-full mt-2 p-2 border rounded-md"
-          placeholder="Image Alt Text"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <Field label="Section Image">
+          <ImageUploader
+            initialImage={typeof cons.image === "object" ? cons.image?.url || "" : cons.image || ""}
+            onUpload={(url) => updateField("consultation.image", url)}
+          />
+        </Field>
+        <Field label="Image Alt Text">
+          <input
+            type="text"
+            value={(typeof cons.image === "object" ? cons.image?.alt : cons.imageAlt) || ""}
+            onChange={(e) => updateField("consultation.imageAlt", e.target.value)}
+            className={inputCls}
+            placeholder="Describe the image for accessibility"
+          />
+        </Field>
       </div>
 
       {/* Perks */}
-      <div className="mt-4">
-        <button
-          type="button"
-          onClick={() => addItem("consultation.features", { text: "" })}
-          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-4 transition font-semibold text-sm cursor-pointer"
-        >
-          + Add Consultation Perk
-        </button>
+      <div className="pt-2 border-t border-gray-100 space-y-3">
+        <div className="flex justify-between items-center">
+          <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+            Consultation Perks / Benefits ({(cons.features || []).length})
+          </label>
+          <AddButton
+            onClick={() => addItem("consultation.features", { text: "" })}
+            label="Add Perk"
+          />
+        </div>
 
-        {(cons.features || []).map((feat, i) => (
-          <div key={i} className="flex gap-2 mt-2">
-            <input
-              type="text"
-              value={feat.text || ""}
-              onChange={(e) => updateArrayItem("consultation.features", i, "text", e.target.value)}
-              className="flex-1 p-2 border rounded-md text-sm"
-              placeholder="e.g. 3D Scalp Micro-Analysis Included"
-            />
-            <button
-              type="button"
-              onClick={() => removeItem("consultation.features", i)}
-              className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 text-sm transition cursor-pointer"
-            >
-              Delete
-            </button>
+        {(cons.features || []).length === 0 ? (
+          <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 text-center">
+            <p className="text-xs text-gray-400">No consultation perks added yet.</p>
           </div>
-        ))}
+        ) : (
+          <div className="space-y-2">
+            {(cons.features || []).map((feat, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={feat.text || ""}
+                  onChange={(e) => updateArrayItem("consultation.features", i, "text", e.target.value)}
+                  className={inputCls}
+                  placeholder="e.g. 3D Scalp Micro-Analysis Included"
+                />
+                <DeleteIconButton onClick={() => removeItem("consultation.features", i)} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-    </div>
+    </SectionCard>
   );
 }

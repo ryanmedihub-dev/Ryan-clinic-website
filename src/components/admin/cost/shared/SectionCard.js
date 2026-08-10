@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 export default function SectionCard({
+  icon: Icon,
   title,
   subtitle,
   children,
@@ -23,12 +24,17 @@ export default function SectionCard({
         }`}
         onClick={() => collapsible && setIsOpen(!isOpen)}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3.5">
+          {Icon && (
+            <span className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+              <Icon className="w-4.5 h-4.5" />
+            </span>
+          )}
           <div>
             <div className="flex items-center gap-2">
               <h3 className="font-bold text-gray-900 text-base tracking-tight">{title}</h3>
               {badge && (
-                <span className="px-2.5 py-0.5 text-xs font-semibold bg-blue-50 text-blue-700 rounded-full border border-blue-200">
+                <span className="px-2.5 py-0.5 text-xs font-semibold bg-indigo-50 text-indigo-700 rounded-full border border-indigo-200">
                   {badge}
                 </span>
               )}

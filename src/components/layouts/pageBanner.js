@@ -63,10 +63,37 @@ export default function PageBanner({
   breadcrumbLabel,
   bgImage,
   hideBadge = false,
+  badgeText = "",
   stats,
+  city = "",
+  pageType = "hair-transplant",
+  whatsappUrl = "",
 }) {
   const trackCTA = useTrackCTA();
   const breadcrumbText = formatBreadcrumbs(breadcrumb, title);
+
+  const cityName =
+    city ||
+    (title ? (title.match(/in\s+([A-Za-z\s]+?)(?:\s*[-–,|]|$)/i)?.[1]?.trim() || "") : "") ||
+    "";
+
+  const isPrp = pageType === "prp" || (title && title.toLowerCase().includes("prp"));
+
+  const defaultWaText = isPrp
+    ? (cityName
+        ? `Hi, I want a free PRP consultation in ${cityName}`
+        : "Hi, I want a free PRP consultation")
+    : (cityName
+        ? `Hi, I want a free hair transplant consultation in ${cityName}`
+        : "Hi, I want a free hair transplant consultation");
+
+  const bannerWaUrl =
+    whatsappUrl ||
+    `https://api.whatsapp.com/send?phone=+919217958539&text=${encodeURIComponent(defaultWaText)}`;
+
+  const activeBadgeText =
+    badgeText || (isPrp ? "Doctor-Led PRP Treatment" : "India's Only Turkey Sapphire FUE");
+
   return (
     <header className="relative w-full overflow-hidden">
       <div className="hidden md:block">
@@ -130,7 +157,9 @@ export default function PageBanner({
                 {/* Buttons */}
                 <div className="flex gap-3">
                   <a
-                    href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20consultation%20in%20Delhi"
+                    href={bannerWaUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="bg-[#D32F2F] px-5 py-3 rounded-lg text-sm font-semibold hover:bg-red-700"
                     onClick={() => trackCTA({ type: "whatsapp", ctaName: "Banner WhatsApp Us", buttonLocation: "Page Banner" })}
                   >
@@ -238,7 +267,7 @@ export default function PageBanner({
             <div className="inline-flex items-center gap-2 bg-red-800/25 border border-red-500/35 rounded-full px-3 py-1.5 mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
               <span className="text-[9px] uppercase tracking-[2px] text-red-300">
-                India&apos;s Only Turkey Sapphire FUE
+                {activeBadgeText}
               </span>
             </div>
           )}
@@ -266,7 +295,9 @@ export default function PageBanner({
           {/* CTA Buttons */}
           <div className="flex gap-3 mb-5">
             <a
-              href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20consultation%20in%20Delhi"
+              href={bannerWaUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex-1 text-center bg-[#D32F2F] py-3.5 rounded-xl text-[13px] font-semibold text-white active:scale-95 transition-transform"
               onClick={() => trackCTA({ type: "whatsapp", ctaName: "Banner WhatsApp Us", buttonLocation: "Page Banner Mobile" })}
             >

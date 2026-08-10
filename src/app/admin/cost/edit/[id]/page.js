@@ -2,6 +2,7 @@
 
 import { use, useState, useCallback } from "react";
 import { useCostForm } from "@/hooks/useCostForm";
+import { Save, Loader2, Edit3 } from "lucide-react";
 import ToastContainer from "@/components/admin/Toast";
 import AdminHeader from "@/components/admin/adminHeader";
 
@@ -89,6 +90,34 @@ export default function EditCostPage({ params }) {
 
       <form onSubmit={handleSubmit} className="space-y-6 px-6 mx-auto" suppressHydrationWarning>
 
+        {/* Sticky Top Bar */}
+        <div className="sticky top-4 z-40 bg-white/95 backdrop-blur-md border border-gray-200 rounded-2xl px-6 py-3.5 shadow-lg flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+              <Edit3 className="w-4.5 h-4.5" />
+            </span>
+            <div>
+              <h2 className="text-sm font-bold text-gray-900">
+                {formData.title || "Editing Cost Page"}
+              </h2>
+              <p className="text-xs text-gray-500">
+                {formData.slug ? `/cost/${formData.slug}` : "Edit mode"}
+              </p>
+            </div>
+          </div>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors font-semibold text-sm disabled:opacity-60 disabled:cursor-not-allowed shadow-sm cursor-pointer"
+          >
+            {submitting ? (
+              <><Loader2 className="w-4 h-4 animate-spin" /> Saving...</>
+            ) : (
+              <><Save className="w-4 h-4" /> Update Cost Page</>
+            )}
+          </button>
+        </div>
+
         <GeneralSection {...sectionProps} />
         <SectionVisibilitySection {...sectionProps} />
         <SEOSection {...sectionProps} />
@@ -106,13 +135,18 @@ export default function EditCostPage({ params }) {
         <ConsultationSection {...sectionProps} />
         <FAQSection {...sectionProps} />
 
+        {/* Bottom Submit */}
         <div className="pt-4">
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-blue-600 text-white py-3 px-4 rounded-xl hover:bg-blue-700 transition duration-200 font-semibold text-sm disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full inline-flex items-center justify-center gap-2 bg-indigo-600 text-white py-3.5 px-4 rounded-xl hover:bg-indigo-700 transition-colors font-semibold text-sm disabled:opacity-60 disabled:cursor-not-allowed shadow-sm cursor-pointer"
           >
-            {submitting ? "Saving..." : "Update Cost Page"}
+            {submitting ? (
+              <><Loader2 className="w-4 h-4 animate-spin" /> Saving...</>
+            ) : (
+              <><Save className="w-4 h-4" /> Update Cost Page</>
+            )}
           </button>
         </div>
 
