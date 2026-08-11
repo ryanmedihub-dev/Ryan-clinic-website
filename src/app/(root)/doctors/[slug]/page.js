@@ -19,20 +19,17 @@ function normalizeDoctor(dbDoc) {
     designation: b.designation || "Hair Transplant Surgeon",
     location: b.city || "Delhi",
     city: b.city || "Delhi",
-    experience: b.yearsExperience ? `${b.yearsExperience}+ Yrs` : "15+ Yrs",
-    procedures: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : "5,000+",
-    proceduresCount: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : "7,500+",
-    successRate: b.successRate || "95%+",
+    experience: b.yearsExperience ? `${b.yearsExperience}+ Yrs` : null,
+    procedures: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : null,
+    proceduresCount: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : null,
+    successRate: b.successRate || null,
     rating: b.rating || 5.0,
     about: s.about || "",
     biography: s.biography || "",
     philosophy: s.philosophy || "",
     languages: b.languages?.length ? b.languages : ["English", "Hindi"],
-    specialities: s.specialities?.length ? s.specialities : ["Sapphire FUE", "THI Hair Restoration", "Beard Transplant"],
-    qualifications: s.qualifications?.length ? s.qualifications : [
-      { degree: "MBBS", institute: "Recognized Medical Council" },
-      { degree: "Turkey Certification", institute: "International Hair Restoration Association" },
-    ],
+    specialities: s.specialities?.length ? s.specialities : ["Sapphire FUE", "THI Hair Restoration"],
+    qualifications: s.qualifications?.length ? s.qualifications : [],
     certifications: s.certifications?.length ? s.certifications : [],
     achievements: s.achievements?.length ? s.achievements.map(a => typeof a === "string" ? a : `${a.title || ""}: ${a.description || ""}`) : [],
     memberships: s.memberships?.length ? s.memberships : [],
@@ -394,7 +391,9 @@ export default async function DoctorPage({ params }) {
     pricingDisclaimer = doctor.pricing.disclaimer || "";
   }
 
-  const bannerTitle = doctor.hero?.title || doctor.name;
+  const qualSuffix = (doctor.keyFacts?.qualifications || "").includes("MCh") ? ", MCh (Plastic Surgery)" : "";
+  const defaultHeading = `Hair Transplant Doctor in ${doctor.city || "Delhi"} — ${doctor.name}${qualSuffix}`;
+  const bannerTitle = doctor.hero?.title || doctor.seo?.metaTitle || defaultHeading;
   const bannerDesc = doctor.hero?.description || `${doctor.designation} at Ryan Clinic. Experienced hair restoration specialist.`;
   const bannerImage = doctor.hero?.heroImage?.image || "/uploads/1752667815707-fue-banner_ro9ae6.webp";
   const bannerAlt = doctor.hero?.heroImage?.alt || `${doctor.name} — Ryan Clinic`;
@@ -507,6 +506,12 @@ export default async function DoctorPage({ params }) {
     organizationSchema
   ];
 
+  const bannerStats = [
+    doctor.experience ? { value: doctor.experience, label: "Experience" } : null,
+    doctor.proceduresCount ? { value: `${doctor.proceduresCount.toLocaleString()}+`, label: "Procedures" } : null,
+    doctor.rating ? { value: `${doctor.rating}★`, label: "Google Rating" } : null,
+  ].filter(Boolean);
+
   return (
     <>
       <script
@@ -519,6 +524,7 @@ export default async function DoctorPage({ params }) {
         description={bannerDesc}
         bgImage={bannerImage}
         alt={bannerAlt}
+        stats={bannerStats}
       />
       <DoctorsPageClient
         data={{

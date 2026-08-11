@@ -201,7 +201,7 @@ export default function PageBanner({
               <span className="text-white text-xl">❤</span>
             </div>
           </div>
-          {stats && stats.length > 0 ? (
+          {stats && stats.length > 0 && (
             <div className="absolute bottom-6 right-20 bg-white rounded-xl shadow-xl px-6 py-4 flex gap-8 z-30">
               {stats.map((stat, i) => (
                 <div key={i} className={`text-center ${i > 0 ? "border-l border-gray-200 pl-6" : ""}`}>
@@ -210,17 +210,6 @@ export default function PageBanner({
                 </div>
               ))}
             </div>
-          ) : (
-            <div
-              className="absolute bottom-6 right-20 bg-white rounded-xl shadow-xl px-6 py-4 flex gap-8 z-30"
-              dangerouslySetInnerHTML={{
-                __html:
-                  '<div class="text-center"><p class="font-bold text-lg text-gray-800">12+</p><p class="text-xs text-gray-500">Years</p></div>' +
-                  '<div class="text-center border-l border-gray-200 pl-6"><p class="font-bold text-lg text-gray-800">10,000+</p><p class="text-xs text-gray-500">Procedures</p></div>' +
-                  '<div class="text-center border-l border-gray-200 pl-6"><p class="font-bold text-lg text-gray-800">4.9★</p><p class="text-xs text-gray-500">Google rating</p></div>' +
-                  '<div class="text-center border-l border-gray-200 pl-6"><p class="font-bold text-lg text-gray-800">0%</p><p class="text-xs text-gray-500">EMI Available</p></div>',
-              }}
-            />
           )}
         </div>
       </div>
@@ -338,7 +327,7 @@ export default function PageBanner({
           </div>
 
           {/* Stats — glassmorphism strip */}
-          {stats && stats.length > 0 ? (
+          {stats && stats.length > 0 && (
             <div
               className="flex items-center rounded-2xl py-3.5"
               style={{
@@ -358,49 +347,6 @@ export default function PageBanner({
                   </div>
                 </Fragment>
               ))}
-            </div>
-          ) : (
-            <div
-              className="flex items-center rounded-2xl py-3.5"
-              style={{
-                background: "rgba(255,255,255,0.07)",
-                border: "1px solid rgba(255,255,255,0.11)",
-                backdropFilter: "blur(12px)",
-              }}
-            >
-              <div className="flex-1 text-center">
-                <p className="font-bold text-[17px] text-white leading-none mb-0.5">
-                  12+
-                </p>
-                <p className="text-[9.5px] text-white/45">Years of Experience</p>
-              </div>
-
-              <div className="w-px h-8 bg-white/15" />
-
-              <div className="flex-1 text-center">
-                <p className="font-bold text-[17px] text-white leading-none mb-0.5">
-                  10,000+
-                </p>
-                <p className="text-[9.5px] text-white/45">Procedures</p>
-              </div>
-
-              <div className="w-px h-8 bg-white/15" />
-
-              <div className="flex-1 text-center">
-                <p className="font-bold text-[17px] text-white leading-none mb-0.5">
-                  4.9★
-                </p>
-                <p className="text-[9.5px] text-white/45">Google Rating</p>
-              </div>
-
-              <div className="w-px h-8 bg-white/15" />
-
-              <div className="flex-1 text-center">
-                <p className="font-bold text-[17px] text-white leading-none mb-0.5">
-                  0%
-                </p>
-                <p className="text-[9.5px] text-white/45">EMI available</p>
-              </div>
             </div>
           )}
         </div>
