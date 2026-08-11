@@ -94,6 +94,10 @@ export default async function SurgeryPage({ params }) {
 
   const cityName = page.city || (page.pageName?.includes("Mumbai") ? "Mumbai" : "Delhi");
 
+  const lastModifiedDate = page.updatedAt
+    ? new Date(page.updatedAt).toISOString().split("T")[0]
+    : "2026-08-11";
+
   // Schema.org Data
   const medicalWebPageSchema = {
     "@context": "https://schema.org",
@@ -101,7 +105,7 @@ export default async function SurgeryPage({ params }) {
     "name": page.seo?.metaTitle || page.pageName,
     "description": page.seo?.metaDescription || "",
     "url": canonicalUrl,
-    "lastReviewed": "2026-08-10",
+    "lastReviewed": lastModifiedDate,
     "reviewedBy": {
       "@type": "Person",
       "name": "Dr. Pranendra Singh",
@@ -110,15 +114,25 @@ export default async function SurgeryPage({ params }) {
     }
   };
 
-  const medicalTherapySchema = {
+  const medicalProcedureSchema = {
     "@context": "https://schema.org",
-    "@type": "MedicalTherapy",
+    "@type": "MedicalProcedure",
     "name": "Hair Transplant Surgery",
+    "procedureType": "SurgicalProcedure",
     "description": "Doctor-led Sapphire FUE & DHI hair transplant surgery in a sterile OT under local anaesthesia.",
     "relevantSpecialty": {
       "@type": "MedicalSpecialty",
       "name": "PlasticSurgery"
     }
+  };
+
+  const physicianSchema = {
+    "@context": "https://schema.org",
+    "@type": "Physician",
+    "name": "Dr. Pranendra Singh",
+    "medicalSpecialty": "PlasticSurgery",
+    "identifier": "DMC-68492",
+    "description": "Senior Consultant Plastic & Reconstructive Surgeon specializing in Hair Transplant Surgery."
   };
 
   const clinicSchema = {
@@ -128,6 +142,7 @@ export default async function SurgeryPage({ params }) {
     "url": "https://www.clinicryan.com",
     "logo": "https://www.clinicryan.com/uploads/logo.png",
     "telephone": "+91-9911111247",
+    "email": "info@clinicryan.com",
     "address": {
       "@type": "PostalAddress",
       "addressLocality": cityName,
@@ -182,7 +197,11 @@ export default async function SurgeryPage({ params }) {
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalTherapySchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalProcedureSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(physicianSchema) }}
       />
       <script
         type="application/ld+json"
