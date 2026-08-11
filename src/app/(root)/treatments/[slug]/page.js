@@ -122,6 +122,8 @@ export default async function TreatmentPage({ params }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <HairFallPageClient data={page} />
     </>
+
+    
     
   );
 }
