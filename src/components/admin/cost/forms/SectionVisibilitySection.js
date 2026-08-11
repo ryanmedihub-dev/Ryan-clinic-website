@@ -5,16 +5,24 @@ import SectionCard from "../shared/SectionCard";
 import { defaultSectionVisibility, getRecommendedSectionVisibility } from "@/hooks/useCostForm";
 
 const SECTIONS_CONFIG = [
-  { key: "hero", label: "Hero Section", description: "Top page banner, title, pricing line, action buttons" },
-  { key: "intro", label: "Introduction", description: "Quick summary, badges, highlights & summary rows" },
-  { key: "services", label: "Services / Procedures", description: "Available treatment options & procedure cards" },
-  { key: "pricing", label: "Pricing (Generic)", description: "Per-session/package pricing cards for PRP, DHI, etc." },
-  { key: "graftPricing", label: "Graft Pricing", description: "Graft-count tiers specifically for Hair Transplant" },
-  { key: "priceFactors", label: "Price Factors & Financing", description: "Cost breakdown factors, EMI plans & comparison" },
-  { key: "includedSection", label: "What's Included", description: "Disclosures, written price guarantee & hidden costs" },
-  { key: "consultation", label: "Consultation & Lead Form", description: "Book free consultation CTA, doctor details & form" },
-  { key: "faq", label: "FAQ Section", description: "Accordion with frequently asked questions" },
-  { key: "clinic", label: "Clinic Information", description: "Address, timings, phone, WhatsApp & Google map" },
+  { key: "hero", label: "3. Hero Section", description: "Top page banner, title, pricing line, action buttons" },
+  { key: "intro", label: "4. Introduction", description: "Quick summary, badges, highlights & summary rows" },
+  { key: "services", label: "5. How Much Does It Cost?", description: "Available treatment options & procedure cards" },
+  { key: "pricing", label: "6. Per Graft / Session Pricing", description: "Per-session/package pricing cards for PRP, DHI, etc." },
+  { key: "graftPricing", label: "7. Pricing by Graft Count", description: "Graft-count tiers specifically for Hair Transplant" },
+  { key: "includedSection", label: "8. What's Included", description: "Disclosures, written price guarantee & hidden costs" },
+  { key: "priceFactors", label: "9. What Affects the Cost?", description: "Cost breakdown factors & key cost driver cards" },
+  { key: "techniqueComparison", label: "10. Technique Comparison", description: "FUE vs Sapphire FUE vs THT comparison table" },
+  { key: "fueVsFut", label: "11. FUE vs FUT Comparison", description: "Detailed FUE vs FUT technique & price comparison" },
+  { key: "delhiVsTurkey", label: "12. Delhi vs Turkey Comparison", description: "Cost, travel, quality & aftercare in Delhi vs Turkey" },
+  { key: "cheapFue", label: "13. Affordable / Cheap Treatment", description: "Pitfalls of low-cost technician clinics" },
+  { key: "emi", label: "14. EMI & Payment Options", description: "0% EMI financing plans & bank options" },
+  { key: "ryanPricing", label: "15. Ryan Clinic Transparent Pricing", description: "Transparent clinic pricing overview & package cards" },
+  { key: "whyRyan", label: "16. Why Choose Ryan Clinic", description: "Doctor-led care, high graft survival & written price guarantee" },
+  { key: "mythsFacts", label: "17. Myths vs Facts", description: "Common misconceptions vs medical facts" },
+  { key: "clinic", label: "18. Clinic / Location", description: "Address, timings, phone, WhatsApp & Google map" },
+  { key: "consultation", label: "19. Consultation & Lead Form", description: "Book free consultation CTA, doctor details & form" },
+  { key: "faq", label: "20. FAQ Section", description: "Accordion with frequently asked questions" },
 ];
 
 export default function SectionVisibilitySection({

@@ -364,7 +364,7 @@ export default function SurgeryPageClient({ data }) {
 
   // ─── Recovery Timeline ────────────────────────────────────────────────────
   const recoveryHeading = recoveryTimeline.heading || "Post-Op Recovery Timeline";
-  const recoveryDesc = recoveryTimeline.description || "";
+  const recoveryDesc = recoveryTimeline.description || "Because the wounds are tiny — extraction points rather than incisions — surgical recovery is quicker than most people expect. Below is the typical timeline, though individual healing varies. Desk work is usually possible within the first week; strenuous exercise, swimming and gym work resume around week three.";
   const leftCard = recoveryTimeline.leftHighlightCard ?? {};
   const leftCardTitle = leftCard.title || "18-Month Recovery Tracking";
   const leftCardDesc = leftCard.description || "Free post-op checkups at months 1, 3, 6, 12, and 18 ensure your hairline progress is monitored.";
@@ -579,6 +579,19 @@ export default function SurgeryPageClient({ data }) {
         stats={heroStats}
       />
 
+      {/* ── Medical Reviewer Byline & Last Updated ──────────────────────── */}
+      <div className="bg-[#FAF6F3] border-b border-gray-200/80 py-3.5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between text-xs text-gray-600 font-sans gap-2">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0 animate-pulse" />
+            <span>
+              <strong className="text-gray-900">Medically Reviewed by:</strong> Dr. Pranendra Singh, MS, MCh (Plastic Surgery), Delhi Medical Council DMC-68492
+            </span>
+          </div>
+          <span className="text-gray-400 font-medium">Last Updated: 10 August 2026</span>
+        </div>
+      </div>
+
       {/* ── 2. What is Hair Transplant Surgery? (Original Production Layout) ── */}
       <section className="bg-white py-20 md:py-28 relative overflow-hidden">
         <div className="absolute top-1/2 left-0 -translate-y-1/2 w-72 h-72 bg-[#e30a17]/5 rounded-full blur-3xl pointer-events-none" />
@@ -592,17 +605,7 @@ export default function SurgeryPageClient({ data }) {
               <Reveal direction="left">
                 <SectionLabel text={introSmallHeading} />
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 tracking-tight leading-tight mb-5">
-                  {introTitle.includes("Surgery") ? (
-                    <>
-                      {introTitle.split("Surgery")[0]}
-                      <br />
-                      <span className="text-[#e30a17] relative inline-block">
-                        Surgery
-                        <span className="absolute bottom-1 left-0 w-full h-1 bg-[#e30a17]/10 rounded" />
-                      </span>
-                      {introTitle.split("Surgery")[1]}
-                    </>
-                  ) : introTitle}
+                  {introTitle}
                 </h2>
 
                 <div className="space-y-4 text-gray-600 text-sm md:text-base leading-relaxed font-sans">
@@ -720,6 +723,46 @@ export default function SurgeryPageClient({ data }) {
               </Reveal>
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* ── Key Facts Section ─────────────────────────────────────────────── */}
+      <section className="bg-white pt-4 pb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-[#FAF6F3] rounded-3xl border border-gray-200/80 p-6 sm:p-8 shadow-xs">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="w-2 h-2 rounded-full bg-[#e30a17]" />
+              <h3 className="text-xs font-extrabold uppercase tracking-widest text-[#e30a17]">
+                Hair Transplant Surgery — Key Facts
+              </h3>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 text-xs font-sans">
+              <div className="p-3 bg-white rounded-2xl border border-gray-100">
+                <p className="font-bold text-gray-400 uppercase text-[9.5px]">Procedure</p>
+                <p className="font-bold text-gray-900 mt-1">Outpatient (Local Anaesthesia)</p>
+              </div>
+              <div className="p-3 bg-white rounded-2xl border border-gray-100">
+                <p className="font-bold text-gray-400 uppercase text-[9.5px]">Duration</p>
+                <p className="font-bold text-gray-900 mt-1">4–8 Hours (Same-Day Discharge)</p>
+              </div>
+              <div className="p-3 bg-white rounded-2xl border border-gray-100">
+                <p className="font-bold text-gray-400 uppercase text-[9.5px]">Recovery</p>
+                <p className="font-bold text-gray-900 mt-1">Desk Work in 5–7 Days</p>
+              </div>
+              <div className="p-3 bg-white rounded-2xl border border-gray-100">
+                <p className="font-bold text-gray-400 uppercase text-[9.5px]">Results Timeline</p>
+                <p className="font-bold text-gray-900 mt-1">3–4 Months (Final 12–18m)</p>
+              </div>
+              <div className="p-3 bg-white rounded-2xl border border-gray-100">
+                <p className="font-bold text-gray-400 uppercase text-[9.5px]">Starting Cost</p>
+                <p className="font-bold text-[#e30a17] mt-1">From ₹40,000 (0% EMI)</p>
+              </div>
+              <div className="p-3 bg-white rounded-2xl border border-gray-100">
+                <p className="font-bold text-gray-400 uppercase text-[9.5px]">Permanence</p>
+                <p className="font-bold text-gray-900 mt-1">DHT-Resistant Permanent Grafts</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1479,14 +1522,18 @@ export default function SurgeryPageClient({ data }) {
                     <ShieldCheck className="w-4 h-4 text-emerald-600" /> How Ryan Clinic Minimises Them
                   </h4>
                   <div className="grid grid-cols-1 gap-2">
-                    {preventionList.length > 0 ? preventionList.map((p, i) => (
-                      <div key={i} className="p-3.5 bg-emerald-50/50 rounded-xl border border-emerald-100">
-                        <h5 className="font-bold text-sm md:text-base text-emerald-900 mb-1 flex items-center gap-1.5">
-                          <Check className="w-4 h-4 text-emerald-600" /> {p.title}
-                        </h5>
-                        <p className="text-sm text-gray-700 leading-relaxed pl-5.5">{p.description}</p>
-                      </div>
-                    )) : [
+                    {preventionList.length > 0 ? preventionList.map((p, i) => {
+                      const title = typeof p === "string" ? p : (p.title || p.text || p.description || "");
+                      const desc = typeof p === "string" ? "" : p.description;
+                      return (
+                        <div key={i} className="p-3.5 bg-emerald-50/50 rounded-xl border border-emerald-100">
+                          <h5 className="font-bold text-sm md:text-base text-emerald-900 mb-1 flex items-center gap-1.5">
+                            <Check className="w-4 h-4 text-emerald-600" /> {title}
+                          </h5>
+                          {desc && <p className="text-sm text-gray-700 leading-relaxed pl-5.5">{desc}</p>}
+                        </div>
+                      );
+                    }) : [
                       { t: "Sterile OT & Single-Use Instruments", d: "HEPA-filtered air, single-use surgical kits, sterilised surfaces for every procedure." },
                       { t: "Doctor-Led Extraction & Implantation", d: "No technician handles graft extraction, channel creation, or placement at Ryan Clinic." },
                       { t: "Careful Graft Handling", d: "Minimising time outside the body, chilled preservation solution, and unhurried extraction protect graft survival." },
@@ -1835,7 +1882,7 @@ export default function SurgeryPageClient({ data }) {
         </div>
       </section>
 
-      {/* ── 10. Pricing (Original Layout + Bottom Explanatory Block) ──────── */}
+      {/* ── 10. Pricing Section with Indicative Pricing Table ──────── */}
       <section className="bg-white py-14 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <RevealSection>
@@ -1844,108 +1891,113 @@ export default function SurgeryPageClient({ data }) {
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight tracking-tight mt-2 mb-3">
                 {pricingHeading}
               </h2>
-              <div className="text-gray-500 text-sm md:text-base leading-relaxed font-sans max-w-2xl">
+              <div className="text-gray-500 text-sm md:text-base leading-relaxed font-sans max-w-3xl">
                 {pricingDesc ? (
                   <div dangerouslySetInnerHTML={{ __html: sanitizeContent(pricingDesc) }} />
                 ) : (
-                  <p>No hidden charges, no unexpected OT fees. Pricing is calculated strictly on graft count with full transparency.</p>
+                  <p>No hidden charges, no unexpected OT fees. Pricing is calculated transparently based on graft count and procedure technique.</p>
                 )}
               </div>
             </div>
           </RevealSection>
 
-          {/* 4 Stat Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
-            {pricingStats.length > 0 &&
-              pricingStats.map((stat, i) => (
-                <AnimatedCard
-                  key={i}
-                  delay={i * 80}
-                  className="bg-[#F7F5F2] rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between"
-                >
-                  <div>
-                    <span className="w-9 h-9 rounded-lg bg-white text-[#e30a17] flex items-center justify-center mb-4 shadow-sm border border-gray-100">
-                      {PRICING_STAT_ICONS[i % PRICING_STAT_ICONS.length]}
-                    </span>
-                    <p className="text-xl md:text-2xl font-extrabold text-[#302658] mb-0.5">{stat.value}</p>
-                    <p className="text-gray-500 text-xs font-medium leading-relaxed">{stat.label}</p>
-                  </div>
-                </AnimatedCard>
-              ))}
-          </div>
-
-          {/* Additional Pricing Factors / Notes Block */}
-          {(pricingFactors.length > 0 || pricingNotes) && (
-            <div className="mb-8 p-6 bg-[#F7F5F2] rounded-2xl border border-gray-200">
-              {pricingFactors.length > 0 && (
-                <div className="mb-4">
-                  <h4 className="font-bold text-sm text-[#302658] mb-2">Cost Influencing Factors:</h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-                    {pricingFactors.map((factor, fidx) => (
-                      <div key={fidx} className="flex items-center gap-2 text-xs text-gray-700 bg-white p-2.5 rounded-lg border border-gray-100">
-                        <Check className="w-3.5 h-3.5 text-[#e30a17] shrink-0" />
-                        <span>{factor}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {pricingNotes && <div className="text-xs text-gray-600 leading-relaxed font-sans" dangerouslySetInnerHTML={{ __html: sanitizeContent(pricingNotes) }} />}
+          {/* Indicative Pricing Table by Session Size */}
+          <div className="mb-10 bg-white rounded-3xl border border-gray-200/80 overflow-hidden shadow-xs">
+            <div className="p-6 border-b border-gray-100 bg-[#FAF6F3]">
+              <h3 className="font-bold text-base md:text-lg text-[#302658] flex items-center gap-2 font-outfit">
+                <CreditCard className="w-5 h-5 text-[#e30a17]" /> Indicative Pricing by Session Size
+              </h3>
+              <p className="text-xs text-gray-500 mt-1 font-sans">Sample graft session sizes and starting figures for hair transplant surgery in Delhi.</p>
             </div>
-          )}
-
-          {/* Action Buttons */}
-          <div className="flex flex-wrap gap-3 items-center mb-10">
-            <a
-              href={pricingWA}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white font-semibold py-3 px-6 text-sm tracking-wide transition-all duration-200 rounded-xl shadow-md shadow-red-200 hover:-translate-y-0.5 active:translate-y-0"
-              onClick={() =>
-                trackCTA({
-                  type: "whatsapp",
-                  ctaName: `Pricing: ${pricingWALabel}`,
-                  buttonLocation: "Pricing Box",
-                })
-              }
-            >
-              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.458 5.706 1.458h.008c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-              </svg>
-              {pricingWALabel || "Calculate My Cost on WhatsApp"}
-            </a>
-
-            <a
-              href={pricingTel}
-              className="inline-flex items-center justify-center gap-2 border border-gray-200 bg-white hover:bg-gray-50 text-[#302658] hover:text-[#e30a17] hover:border-red-200 font-semibold py-3 px-6 text-sm tracking-wide transition-all duration-200 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5"
-              onClick={() =>
-                trackCTA({
-                  type: "call",
-                  ctaName: `Pricing: ${pricingTelLabel}`,
-                  buttonLocation: "Pricing Box",
-                })
-              }
-            >
-              <Phone className="w-4 h-4" />
-              {pricingTelLabel || "Call for Pricing Quote"}
-            </a>
-
-            {pricingGuide && (
-              <a href={pricingGuide} className="inline-flex items-center gap-1.5 text-xs font-bold text-[#e30a17] hover:underline py-3 px-1">
-                {pricingGuideLabel || "Read Full Cost Breakdown Guide"} <ArrowRight className="w-3.5 h-3.5" />
-              </a>
-            )}
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b border-gray-100 text-gray-400 font-bold uppercase text-[10px] tracking-wider bg-gray-50/50">
+                    <th className="py-3.5 px-6">Session Type</th>
+                    <th className="py-3.5 px-6">Indicative Grafts</th>
+                    <th className="py-3.5 px-6">Typical Norwood Grade</th>
+                    <th className="py-3.5 px-6">Starting From</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100 font-sans">
+                  <tr className="hover:bg-[#FAF6F3]/50 transition-colors">
+                    <td className="py-4 px-6 font-bold text-[#302658]">Standard Session</td>
+                    <td className="py-4 px-6 text-gray-600">1,000 – 1,500 Grafts</td>
+                    <td className="py-4 px-6 text-gray-600">Norwood 2 – 3</td>
+                    <td className="py-4 px-6 font-black text-[#e30a17]">Starting ₹40,000</td>
+                  </tr>
+                  <tr className="hover:bg-[#FAF6F3]/50 transition-colors">
+                    <td className="py-4 px-6 font-bold text-[#302658]">Medium Session</td>
+                    <td className="py-4 px-6 text-gray-600">1,500 – 2,500 Grafts</td>
+                    <td className="py-4 px-6 text-gray-600">Norwood 3 – 4</td>
+                    <td className="py-4 px-6 font-semibold text-gray-700">Custom Scalp Quote</td>
+                  </tr>
+                  <tr className="hover:bg-[#FAF6F3]/50 transition-colors">
+                    <td className="py-4 px-6 font-bold text-[#302658]">Large Session</td>
+                    <td className="py-4 px-6 text-gray-600">2,500 – 3,500 Grafts</td>
+                    <td className="py-4 px-6 text-gray-600">Norwood 4 – 5</td>
+                    <td className="py-4 px-6 font-semibold text-gray-700">Custom Scalp Quote</td>
+                  </tr>
+                  <tr className="hover:bg-[#FAF6F3]/50 transition-colors">
+                    <td className="py-4 px-6 font-bold text-[#302658]">Mega Session</td>
+                    <td className="py-4 px-6 text-gray-600">3,500+ Grafts</td>
+                    <td className="py-4 px-6 text-gray-600">Norwood 5 – 7</td>
+                    <td className="py-4 px-6 font-black text-[#e30a17]">Starting ₹1,40,000</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div className="p-4 bg-[#FAF6F3] border-t border-gray-100 text-xs text-gray-600 font-sans leading-relaxed flex items-start gap-2">
+              <Info className="w-4 h-4 text-[#e30a17] shrink-0 mt-0.5" />
+              <p>
+                <strong>Price Commitment:</strong> Prices above are indicative starting points. Your exact, all-inclusive figure is confirmed in writing after a free scalp analysis — we do not quote a per-graft rate and then revise it mid-surgery.
+              </p>
+            </div>
           </div>
 
-          {pricingWarning && (
-            <div className="w-full bg-[#F7F5F2] border-l-4 border-[#e30a17] p-4 rounded-r-xl text-xs md:text-sm text-gray-600 leading-relaxed flex items-start gap-2.5">
-              <AlertTriangle className="w-4 h-4 text-[#e30a17] shrink-0 mt-0.5" />
-              <div>
-                <strong className="font-semibold text-[#302658]">Pricing Advisory: </strong>
-                <span>{pricingWarning}</span>
+          {/* Additional Pricing Factors Block */}
+          {pricingFactors.length > 0 && (
+            <div className="mb-8 p-6 bg-[#FAF6F3] rounded-3xl border border-gray-200/80">
+              <h4 className="font-bold text-sm text-[#302658] mb-3 font-outfit">What Actually Changes Your Price:</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                {pricingFactors.map((factor, fidx) => (
+                  <div key={fidx} className="flex items-start gap-2.5 text-xs text-gray-700 bg-white p-3.5 rounded-2xl border border-gray-100 font-sans">
+                    <Check className="w-4 h-4 text-[#e30a17] shrink-0 mt-0.5" />
+                    <span>{factor}</span>
+                  </div>
+                ))}
               </div>
             </div>
           )}
+
+          {/* Action Buttons & Detailed Cost Guide Link */}
+          <div className="flex flex-wrap gap-4 items-center justify-between pt-4 border-t border-gray-100">
+            <div className="flex flex-wrap gap-3 items-center">
+              <a
+                href={pricingWA}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white font-bold py-3.5 px-6 rounded-xl text-xs tracking-wider transition-all shadow-md"
+              >
+                <MessageCircle className="w-4 h-4" />
+                {pricingWALabel || "Calculate My Cost on WhatsApp"}
+              </a>
+              <a
+                href={pricingTel}
+                className="inline-flex items-center justify-center gap-2 border border-gray-200 bg-white hover:bg-gray-50 text-[#302658] hover:text-[#e30a17] font-semibold py-3.5 px-6 text-xs transition-all rounded-xl shadow-xs"
+              >
+                <Phone className="w-4 h-4" />
+                {pricingTelLabel || "Call for Pricing Quote"}
+              </a>
+            </div>
+
+            <a
+              href="/cost/hair-transplant-cost-in-delhi"
+              className="inline-flex items-center gap-2 text-xs font-bold text-[#e30a17] hover:underline py-2"
+            >
+              Explore Full Cost Breakdown Guide <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
         </div>
       </section>
 
@@ -2102,7 +2154,7 @@ export default function SurgeryPageClient({ data }) {
       </section>
 
       {/* ── 13. FAQ (Original FAQ Component) ─────────────────────────────── */}
-      <FAQSection faqs={FAQS} />
+      <FAQSection faqs={FAQS} heading={faqSection.heading || `Frequently asked questions – Hair Transplant Surgery in ${cityName}`} />
 
       {/* ── DYNAMIC INTERNAL LINKS (If provided) ─────────────────────────── */}
       {linksList.length > 0 && (

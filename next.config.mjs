@@ -94,6 +94,24 @@ const nextConfig = {
         destination: "/treatments/hair-fall-loss-treatment-in-delhi",
         permanent: true,
       },
+      // Legacy root surgery URL moved to /surgery/hair-transplant-surgery-in-delhi
+      {
+        source: "/hair-transplant-surgery-in-delhi",
+        destination: "/surgery/hair-transplant-surgery-in-delhi",
+        permanent: true,
+      },
+      // Root doctor URL redirected to dynamic CMS doctor route
+      {
+        source: "/hair-transplant-doctor-in-delhi",
+        destination: "/doctors/hair-transplant-doctor-in-delhi",
+        permanent: true,
+      },
+      // Root FUE cost URL redirected to dynamic CMS cost route
+      {
+        source: "/fue-hair-transplant-cost-in-delhi",
+        destination: "/cost/fue-hair-transplant-cost-in-delhi",
+        permanent: true,
+      },
     ];
   },
 };

@@ -126,65 +126,6 @@ export default function HeroSection({
         )}
       </div>
 
-      {/* Action Buttons */}
-      <div className="pt-2 border-t border-gray-100 space-y-3">
-        <div className="flex justify-between items-center">
-          <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-            Banner Action Buttons ({(hero.buttons || []).length})
-          </label>
-          <AddButton
-            onClick={() => addItem("hero.buttons", { text: "", link: "", variant: "primary" })}
-            label="Add Action Button"
-          />
-        </div>
-
-        {(hero.buttons || []).length === 0 ? (
-          <div className="border-2 border-dashed border-gray-200 rounded-xl p-5 text-center">
-            <p className="text-xs text-gray-400">No banner buttons added yet.</p>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {(hero.buttons || []).map((btn, i) => (
-              <ItemCard
-                key={i}
-                title={`Button ${i + 1}`}
-                onDelete={() => removeItem("hero.buttons", i)}
-              >
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  <Field label="Button Text">
-                    <input
-                      type="text"
-                      value={btn.text || ""}
-                      onChange={(e) => updateArrayItem("hero.buttons", i, "text", e.target.value)}
-                      className={inputCls}
-                      placeholder="e.g. Book Consultation"
-                    />
-                  </Field>
-                  <Field label="Button Link">
-                    <input
-                      type="text"
-                      value={btn.link || ""}
-                      onChange={(e) => updateArrayItem("hero.buttons", i, "link", e.target.value)}
-                      className={inputCls}
-                      placeholder="e.g. /contact"
-                    />
-                  </Field>
-                  <Field label="Style Variant">
-                    <select
-                      value={btn.variant || "primary"}
-                      onChange={(e) => updateArrayItem("hero.buttons", i, "variant", e.target.value)}
-                      className={inputCls}
-                    >
-                      <option value="primary">Primary (Red / Solid)</option>
-                      <option value="secondary">Secondary (Outline / Light)</option>
-                    </select>
-                  </Field>
-                </div>
-              </ItemCard>
-            ))}
-          </div>
-        )}
-      </div>
     </SectionCard>
   );
 }

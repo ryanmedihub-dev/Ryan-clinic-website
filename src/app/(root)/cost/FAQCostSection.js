@@ -4,6 +4,7 @@ import { useState } from "react";
 import useTrackCTA from "@/lib/useTrackCTA";
 
 export default function FAQCostSection({
+  heading = "",
   faqs = [],
   pageType = "hair-transplant",
   cityName = "Delhi",
@@ -71,9 +72,13 @@ export default function FAQCostSection({
               className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-5"
               style={{ color: "var(--text-primary, #111827)" }}
             >
-              Frequently
-              <br />
-              Asked <span style={{ color: "var(--primary-red, #D32F2F)" }}>Questions</span>
+              {heading || (
+                <>
+                  Frequently
+                  <br />
+                  Asked <span style={{ color: "var(--primary-red, #D32F2F)" }}>Questions</span>
+                </>
+              )}
             </h2>
 
             <p

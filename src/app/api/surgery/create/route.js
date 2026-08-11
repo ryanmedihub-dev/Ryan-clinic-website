@@ -61,12 +61,47 @@ const handler = async (req) => {
       );
     }
 
+    const normalizeImage = (img) => {
+      if (typeof img === "string") return { image: img, imageAlt: "" };
+      if (img && typeof img === "object") {
+        return {
+          image: typeof img.image === "string" ? img.image : (typeof img.url === "string" ? img.url : ""),
+          imageAlt: typeof img.imageAlt === "string" ? img.imageAlt : (typeof img.alt === "string" ? img.alt : ""),
+        };
+      }
+      return { image: "", imageAlt: "" };
+    };
+
+    const normalizeItem = (item) => {
+      if (typeof item === "string") return { title: item, description: "" };
+      return item || { title: "", description: "" };
+    };
+
+    const normalizedSurgicalRisks = surgicalRisks || {};
+    if (Array.isArray(normalizedSurgicalRisks.preventionPoints)) {
+      normalizedSurgicalRisks.preventionPoints = normalizedSurgicalRisks.preventionPoints.map(normalizeItem);
+    }
+
+    const normalizedPatientResults = patientResults || {};
+    if (Array.isArray(normalizedPatientResults.cases)) {
+      normalizedPatientResults.cases = normalizedPatientResults.cases.map((c) => ({
+        ...c,
+        beforeImage: normalizeImage(c.beforeImage),
+        afterImage: normalizeImage(c.afterImage),
+      }));
+    }
+
+    const normalizedWhyChooseUs = whyChooseUs || {};
+    if (Array.isArray(normalizedWhyChooseUs.points)) {
+      normalizedWhyChooseUs.points = normalizedWhyChooseUs.points.map(normalizeItem);
+    }
+
     const doc = new SurgeryPageModel({
       pageName: pageName.trim(),
       city: (city || "").trim(),
       slug,
       status: status || "draft",
-      landingCardImage: landingCardImage || { image: "", imageAlt: "" },
+      landingCardImage: normalizeImage(landingCardImage),
       seo: seo || {},
       hero: hero || {},
       introduction: introduction || {},
@@ -81,15 +116,15 @@ const handler = async (req) => {
       qualityBenchmarks: qualityBenchmarks || {},
       procedureTimeline: procedureTimeline || {},
       recoveryTimeline: recoveryTimeline || {},
-      surgicalRisks: surgicalRisks || {},
+      surgicalRisks: normalizedSurgicalRisks,
       doctors: doctors || {},
-      patientResults: patientResults || {},
+      patientResults: normalizedPatientResults,
       pricing: pricing || {},
       visitClinic: visitClinic || {},
       consultation: consultation || {},
       faq: faq || {},
       internalLinks: internalLinks || {},
-      whyChooseUs: whyChooseUs || {},
+      whyChooseUs: normalizedWhyChooseUs,
     });
 
     await doc.save();

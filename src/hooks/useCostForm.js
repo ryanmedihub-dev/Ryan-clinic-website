@@ -11,11 +11,19 @@ export const defaultSectionVisibility = {
   services: true,
   pricing: true,
   graftPricing: true,
-  priceFactors: true,
   includedSection: true,
+  priceFactors: true,
+  techniqueComparison: true,
+  fueVsFut: true,
+  delhiVsTurkey: true,
+  cheapFue: false,
+  emi: true,
+  ryanPricing: true,
+  whyRyan: true,
+  mythsFacts: true,
+  clinic: true,
   consultation: true,
   faq: true,
-  clinic: true,
 };
 
 export function getRecommendedSectionVisibility(pageType) {
@@ -27,6 +35,10 @@ export function getRecommendedSectionVisibility(pageType) {
       return {
         ...defaultSectionVisibility,
         graftPricing: false,
+        techniqueComparison: false,
+        fueVsFut: false,
+        delhiVsTurkey: false,
+        cheapFue: false,
       };
     case "hair-transplant":
     default:

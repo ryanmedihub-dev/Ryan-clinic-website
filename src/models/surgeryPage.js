@@ -755,8 +755,8 @@ const surgicalRisksSectionSchema = new mongoose.Schema(
   {
     heading: { type: String, trim: true, default: "" },
     description: { type: String, trim: true, default: "" },
-    risks: { type: [riskItemSchema], default: [] },
-    preventionPoints: { type: [preventionPointSchema], default: [] },
+    risks: { type: [mongoose.Schema.Types.Mixed], default: [] },
+    preventionPoints: { type: [mongoose.Schema.Types.Mixed], default: [] },
   },
   { _id: false }
 );
@@ -907,8 +907,8 @@ const patientResultCaseSchema = new mongoose.Schema(
     technique: { type: String, trim: true, default: "" },
     recoveryTime: { type: String, trim: true, default: "" },
     description: { type: String, trim: true, default: "" },
-    beforeImage: { type: imageFieldSchema, default: () => ({}) },
-    afterImage: { type: imageFieldSchema, default: () => ({}) },
+    beforeImage: { type: mongoose.Schema.Types.Mixed, default: () => ({}) },
+    afterImage: { type: mongoose.Schema.Types.Mixed, default: () => ({}) },
     displayOrder: { type: Number, default: 0 },
   },
   { _id: false }
@@ -1162,7 +1162,7 @@ const whyChooseUsSectionSchema = new mongoose.Schema(
   {
     heading: { type: String, trim: true, default: "" },
     description: { type: String, trim: true, default: "" },
-    points: { type: [whyChoosePointSchema], default: [] },
+    points: { type: [mongoose.Schema.Types.Mixed], default: [] },
   },
   { _id: false }
 );

@@ -867,14 +867,38 @@ const sectionVisibilitySchema = new Schema(
   {
     hero: { type: Boolean, default: true },
     intro: { type: Boolean, default: true },
+    /* Section 5 — How Much Does It Cost? */
     services: { type: Boolean, default: true },
+    /* Section 6 — Per Graft / Session Pricing */
     pricing: { type: Boolean, default: true },
+    /* Section 7 — Pricing by Graft Count / Treatment Size */
     graftPricing: { type: Boolean, default: true },
-    priceFactors: { type: Boolean, default: true },
+    /* Section 8 — What's Included */
     includedSection: { type: Boolean, default: true },
-    consultation: { type: Boolean, default: true },
-    faq: { type: Boolean, default: true },
+    /* Section 9 — What Affects the Cost? */
+    priceFactors: { type: Boolean, default: true },
+    /* Section 10 — Technique Comparison */
+    techniqueComparison: { type: Boolean, default: true },
+    /* Section 11 — FUE vs FUT */
+    fueVsFut: { type: Boolean, default: true },
+    /* Section 12 — Delhi vs Turkey */
+    delhiVsTurkey: { type: Boolean, default: true },
+    /* Section 13 — Affordable / Cheap Treatment */
+    cheapFue: { type: Boolean, default: false },
+    /* Section 14 — EMI & Payment Options */
+    emi: { type: Boolean, default: true },
+    /* Section 15 — Ryan Clinic Transparent Pricing */
+    ryanPricing: { type: Boolean, default: true },
+    /* Section 16 — Why Ryan Clinic */
+    whyRyan: { type: Boolean, default: true },
+    /* Section 17 — Myths vs Facts */
+    mythsFacts: { type: Boolean, default: true },
+    /* Section 18 — Clinic / Location */
     clinic: { type: Boolean, default: true },
+    /* Section 19 — Consultation / Quote CTA */
+    consultation: { type: Boolean, default: true },
+    /* Section 20 — FAQ */
+    faq: { type: Boolean, default: true },
   },
   { _id: false }
 );

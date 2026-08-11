@@ -7,21 +7,28 @@ import ToastContainer from "@/components/admin/Toast";
 import AdminHeader from "@/components/admin/adminHeader";
 
 import GeneralSection from "@/components/admin/cost/forms/GeneralSection";
-import SectionVisibilitySection from "@/components/admin/cost/forms/SectionVisibilitySection";
 import SEOSection from "@/components/admin/cost/forms/SEOSection";
 import HeroSection from "@/components/admin/cost/forms/HeroSection";
 import IntroSection from "@/components/admin/cost/forms/IntroSection";
 import ServicesSection from "@/components/admin/cost/forms/ServicesSection";
-import GraftPricingSection from "@/components/admin/cost/forms/GraftPricingSection";
 import PricingOptionsSection from "@/components/admin/cost/forms/PricingOptionsSection";
-import TechniqueComparisonSection from "@/components/admin/cost/forms/TechniqueComparisonSection";
+import GraftPricingSection from "@/components/admin/cost/forms/GraftPricingSection";
 import IncludedSection from "@/components/admin/cost/forms/IncludedSection";
 import PriceFactorsSection from "@/components/admin/cost/forms/PriceFactorsSection";
-import ContentSectionsSection from "@/components/admin/cost/forms/ContentSectionsSection";
+import TechniqueComparisonSection from "@/components/admin/cost/forms/TechniqueComparisonSection";
+import FueVsFutSection from "@/components/admin/cost/forms/FueVsFutSection";
+import DelhiVsTurkeySection from "@/components/admin/cost/forms/DelhiVsTurkeySection";
+import CheapFueSection from "@/components/admin/cost/forms/CheapFueSection";
+import EMISection from "@/components/admin/cost/forms/EMISection";
+import RyanPricingSection from "@/components/admin/cost/forms/RyanPricingSection";
+import WhyRyanSection from "@/components/admin/cost/forms/WhyRyanSection";
 import MythsFactsSection from "@/components/admin/cost/forms/MythsFactsSection";
 import VisitClinicSection from "@/components/admin/cost/forms/VisitClinicSection";
 import ConsultationSection from "@/components/admin/cost/forms/ConsultationSection";
 import FAQSection from "@/components/admin/cost/forms/FAQSection";
+import SectionVisibilitySection from "@/components/admin/cost/forms/SectionVisibilitySection";
+import ContentSectionsSection from "@/components/admin/cost/forms/ContentSectionsSection";
+import SettingsSection from "@/components/admin/cost/forms/SettingsSection";
 
 function useToast() {
   const [toasts, setToasts] = useState([]);
@@ -99,22 +106,74 @@ export default function CreateCostPage() {
           </button>
         </div>
 
+        {/* 1. GENERAL INFORMATION */}
         <GeneralSection {...sectionProps} />
-        <SectionVisibilitySection {...sectionProps} />
+
+        {/* 2. SEO SETTINGS */}
         <SEOSection {...sectionProps} />
+
+        {/* 3. HERO SECTION */}
         <HeroSection {...sectionProps} />
+
+        {/* 4. INTRODUCTION */}
         <IntroSection {...sectionProps} />
+
+        {/* 5. HOW MUCH DOES IT COST? */}
         <ServicesSection {...sectionProps} />
-        <GraftPricingSection {...sectionProps} />
+
+        {/* 6. PER GRAFT / SESSION PRICING */}
         <PricingOptionsSection {...sectionProps} />
-        <TechniqueComparisonSection {...sectionProps} />
+
+        {/* 7. PRICING BY GRAFT COUNT / TREATMENT SIZE */}
+        <GraftPricingSection {...sectionProps} />
+
+        {/* 8. WHAT'S INCLUDED */}
         <IncludedSection {...sectionProps} />
+
+        {/* 9. WHAT AFFECTS THE COST? */}
         <PriceFactorsSection {...sectionProps} />
-        <ContentSectionsSection {...sectionProps} />
+
+        {/* 10. TECHNIQUE COMPARISON */}
+        <TechniqueComparisonSection {...sectionProps} />
+
+        {/* 11. FUE VS FUT */}
+        <FueVsFutSection {...sectionProps} />
+
+        {/* 12. DELHI VS TURKEY */}
+        <DelhiVsTurkeySection {...sectionProps} />
+
+        {/* 13. AFFORDABLE / CHEAP TREATMENT */}
+        <CheapFueSection {...sectionProps} />
+
+        {/* 14. EMI & PAYMENT OPTIONS */}
+        <EMISection {...sectionProps} />
+
+        {/* 15. RYAN CLINIC TRANSPARENT PRICING */}
+        <RyanPricingSection {...sectionProps} />
+
+        {/* 16. WHY RYAN CLINIC */}
+        <WhyRyanSection {...sectionProps} />
+
+        {/* 17. MYTHS VS FACTS */}
         <MythsFactsSection {...sectionProps} />
+
+        {/* 18. CLINIC / LOCATION */}
         <VisitClinicSection {...sectionProps} />
+
+        {/* 19. CONSULTATION / QUOTE */}
         <ConsultationSection {...sectionProps} />
+
+        {/* 20. FAQ */}
         <FAQSection {...sectionProps} />
+
+        {/* 21. SECTION VISIBILITY */}
+        <SectionVisibilitySection {...sectionProps} />
+
+        {/* 22. ADVANCED / CUSTOM CONTENT SECTIONS */}
+        <ContentSectionsSection {...sectionProps} />
+
+        {/* 23. SETTINGS & PUBLISH STATUS */}
+        <SettingsSection {...sectionProps} />
 
         {/* Bottom Submit */}
         <div className="pt-4">

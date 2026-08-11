@@ -4,7 +4,19 @@ import Image from "next/image";
 import { Fragment } from "react";
 import useTrackCTA from "@/lib/useTrackCTA";
 
-function formatBreadcrumbs(breadcrumb, title) {
+function getBreadcrumbHref(part, isLast) {
+  if (isLast) return null;
+  const upper = part.toUpperCase();
+  if (upper === "HOME") return "/";
+  if (upper === "COST") return "/cost";
+  if (upper === "SURGERY") return "/surgery";
+  if (upper === "DOCTORS") return "/doctors";
+  if (upper === "SURGEON") return "/surgeon";
+  if (upper === "TREATMENTS") return "/treatments";
+  return null;
+}
+
+function formatBreadcrumbItems(breadcrumb, title) {
   let str = "";
   if (typeof breadcrumb === "string") {
     str = breadcrumb.trim();
@@ -19,7 +31,6 @@ function formatBreadcrumbs(breadcrumb, title) {
     str = title || "Surgery";
   }
 
-  // Split by / or >
   const parts = str
     .split(/\s*[\/>]\s*/)
     .map((p) => p.trim())
@@ -28,32 +39,33 @@ function formatBreadcrumbs(breadcrumb, title) {
   const cleanParts = [];
   for (const part of parts) {
     const upper = part.toUpperCase();
-    // Skip duplicate "HOME"
     if (upper === "HOME" && cleanParts.some((cp) => cp.toUpperCase() === "HOME")) {
       continue;
     }
-    // Skip exact consecutive duplicate
     if (cleanParts.length > 0 && cleanParts[cleanParts.length - 1].toUpperCase() === upper) {
       continue;
     }
-    // Skip 'HAIR TRANSPLANT' if 'HAIR TRANSPLANT SURGERY' is also present
     if (upper === "HAIR TRANSPLANT" && parts.some((p) => p.toUpperCase() === "HAIR TRANSPLANT SURGERY")) {
       continue;
     }
     cleanParts.push(part);
   }
 
-  // Ensure starts with HOME
   if (cleanParts.length === 0 || cleanParts[0].toUpperCase() !== "HOME") {
     cleanParts.unshift("HOME");
   }
 
-  // If only "HOME", add page title
   if (cleanParts.length === 1 && title) {
     cleanParts.push(title);
   }
 
-  return cleanParts.join(" > ").toUpperCase();
+  return cleanParts.map((part, idx) => {
+    const isLast = idx === cleanParts.length - 1;
+    return {
+      label: part.toUpperCase(),
+      href: getBreadcrumbHref(part, isLast),
+    };
+  });
 }
 
 export default function PageBanner({
@@ -70,7 +82,7 @@ export default function PageBanner({
   whatsappUrl = "",
 }) {
   const trackCTA = useTrackCTA();
-  const breadcrumbText = formatBreadcrumbs(breadcrumb, title);
+  const breadcrumbItems = formatBreadcrumbItems(breadcrumb, title);
 
   const cityName =
     city ||
@@ -133,15 +145,21 @@ export default function PageBanner({
               {/* Content */}
               <div className="relative max-w-200 z-10 px-16 py-20 text-white">
                 {/* Breadcrumb */}
-                <div className="flex items-center gap-3 mb-5">
+                <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-5 text-xs uppercase tracking-widest text-white/60 font-sans">
                   <span className="w-8 h-px bg-white/40" />
-                  <p
-                    className="text-xs uppercase tracking-widest text-white/60"
-                    suppressHydrationWarning
-                  >
-                    {breadcrumbText}
-                  </p>
-                </div>
+                  {breadcrumbItems.map((item, idx) => (
+                    <Fragment key={idx}>
+                      {idx > 0 && <span className="text-white/40">&gt;</span>}
+                      {item.href ? (
+                        <a href={item.href} className="hover:text-white transition-colors underline-offset-2 hover:underline">
+                          {item.label}
+                        </a>
+                      ) : (
+                        <span className="text-white/90 font-bold">{item.label}</span>
+                      )}
+                    </Fragment>
+                  ))}
+                </nav>
 
                 {/* Title — single h1 lives only in desktop tree; mobile uses aria-hidden duplicate */}
                 <h1
@@ -250,15 +268,21 @@ export default function PageBanner({
         />
 
         {/* Breadcrumb — top left */}
-        <div className="absolute top-8 left-6 flex items-center gap-3 z-10">
+        <nav aria-label="Breadcrumb" className="absolute top-8 left-6 flex items-center gap-2 z-10 text-[9px] uppercase tracking-[2px] text-white/60 font-sans">
           <span className="w-5 h-px bg-white/35" />
-          <p
-            className="text-[9px] uppercase tracking-[2.5px] text-white/45"
-            suppressHydrationWarning
-          >
-            {breadcrumbText}
-          </p>
-        </div>
+          {breadcrumbItems.map((item, idx) => (
+            <Fragment key={idx}>
+              {idx > 0 && <span className="text-white/40">&gt;</span>}
+              {item.href ? (
+                <a href={item.href} className="hover:text-white transition-colors underline-offset-2 hover:underline">
+                  {item.label}
+                </a>
+              ) : (
+                <span className="text-white/90 font-bold">{item.label}</span>
+              )}
+            </Fragment>
+          ))}
+        </nav>
 
         {/* Main content — pinned to bottom */}
         <div className="absolute bottom-0 left-0 right-0 px-5 pb-6 z-10">

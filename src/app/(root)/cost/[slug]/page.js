@@ -126,17 +126,17 @@ export async function generateMetadata({ params }) {
   const geoRegion = seo.geoRegion || defaultGeoRegion;
   const geoPlacename = seo.geoPlacename || city;
   const geoPosition = seo.geoPosition || defaultGeoPosition;
-  const icbm = seo.icbm || defaultIcbm;
 
   if (geoRegion) otherMeta["geo.region"] = geoRegion;
   if (geoPlacename) otherMeta["geo.placename"] = geoPlacename;
   if (geoPosition) otherMeta["geo.position"] = geoPosition;
-  if (icbm) otherMeta["ICBM"] = icbm;
+
+  const isPrpMeta = page.pageType === "prp" || (page.title && page.title.toLowerCase().includes("prp"));
+  const ogImgUrl = seo.ogImage || (isPrpMeta ? "/uploads/1752746168716-PRP 1.jpg" : "/uploads/1752667815707-fue-banner_ro9ae6.webp");
 
   return {
-    title: seo.metaTitle || page.title || "Hair Transplant Cost - Ryan Clinic",
+    title: seo.metaTitle || page.title || "Hair Treatment Cost - Ryan Clinic",
     description: seo.metaDescription || page.hero?.pricingLine || "",
-    keywords: seo.keywords || [],
     alternates: { canonical: seo.canonical || `https://www.clinicryan.com/cost/${page.slug}` },
     openGraph: {
       title: seo.metaTitle || page.title,
@@ -145,13 +145,13 @@ export async function generateMetadata({ params }) {
       siteName: "Ryan Clinic",
       locale: "en_IN",
       type: "website",
-      images: seo.ogImage ? [{ url: seo.ogImage, width: 1200, height: 630, alt: page.title }] : [],
+      images: [{ url: ogImgUrl, width: 1200, height: 630, alt: page.title }],
     },
     twitter: {
       card: "summary_large_image",
       title: seo.metaTitle || page.title,
       description: seo.metaDescription || page.hero?.pricingLine || "",
-      images: seo.ogImage ? [seo.ogImage] : [],
+      images: [ogImgUrl],
     },
     robots: seo.robots || "index, follow",
     other: otherMeta,
@@ -668,17 +668,24 @@ export default async function DynamicCostPage({ params }) {
     } : {}),
   };
 
+  const cityDefaults = getCityDefaults(cityName);
+  const vc = visitClinic || {};
+  const clinicAddressStr = vc.address || cityDefaults.address || "";
+  const addressLines = clinicAddressStr.split("\n").map(l => l.trim()).filter(Boolean);
+  const postalCodeMatch = clinicAddressStr.match(/\b\d{6}\b/);
+  const postalCode = postalCodeMatch ? postalCodeMatch[0] : (cityName.toLowerCase().includes("mumbai") ? "400053" : cityName.toLowerCase().includes("hyderabad") ? "500034" : "110034");
+
   const medicalClinicSchema = {
     "@context": "https://schema.org",
     "@type": "MedicalClinic",
     name: `Ryan Clinic ${cityName}`,
-    telephone: "+91-9911111247",
+    telephone: vc.phone || cityDefaults.phone || "+91-9911111247",
     url: "https://www.clinicryan.com",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "CD 163, Block CD, Dakshini Pitampura",
-      addressLocality: "Pitampura, New Delhi",
-      postalCode: "110034",
+      streetAddress: addressLines.slice(0, Math.max(1, addressLines.length - 1)).join(", "),
+      addressLocality: addressLines.length > 0 ? addressLines[addressLines.length - 1] : cityName,
+      postalCode: postalCode,
       addressCountry: "IN",
     },
   };
@@ -694,9 +701,6 @@ export default async function DynamicCostPage({ params }) {
 
   const vis = page.sectionVisibility || {};
 
-  // Use pricingOptions.items as primary source for per-session/package pricing.
-  // Fall back to page.pricing.cards only if pricingOptions.items is empty (legacy support).
-  // Never merge both — that would render every card twice.
   const genericPricingItems = (
     pricingOptions?.items?.length > 0
       ? pricingOptions.items
@@ -721,7 +725,7 @@ export default async function DynamicCostPage({ params }) {
           breadcrumb={hero?.breadcrumbs && hero.breadcrumbs.length > 0 ? hero.breadcrumbs : ["Home", "Cost", page.title]}
           title={hero?.title || page.title}
           description={hero?.pricingLine || ""}
-          bgImage={hero?.heroImage || "/uploads/1752667815707-fue-banner_ro9ae6.webp"}
+          bgImage={hero?.heroImage || (isPrpPage ? "/uploads/1752746168716-PRP 1.jpg" : "/uploads/1752667815707-fue-banner_ro9ae6.webp")}
           alt={hero?.heroImageAlt || page.title}
           city={cityName}
           pageType={page.pageType}
@@ -972,6 +976,72 @@ export default async function DynamicCostPage({ params }) {
       )}
 
       {/* ════════════════════════════════════════════════════════════
+          PRICING OPTIONS — Generic per-session/package pricing
+          (PRP, DHI, and future cost types; Hair Transplant uses graftPricing)
+      ════════════════════════════════════════════════════════════ */}
+      {vis.pricing !== false && genericPricingItems.length > 0 && (
+        <section className="bg-[#FAF6F3] py-16 md:py-24 border-b border-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-12 max-w-xl">
+              <EyebrowLabel text={pricingOptions?.badge || page.pricing?.badge || "Transparent Pricing"} />
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
+                {pricingOptions?.heading || page.pricing?.heading || "Treatment Pricing & Packages"}
+              </h2>
+              {(pricingOptions?.description || page.pricing?.description) && (
+                <p className="text-gray-500 text-xs sm:text-sm mt-2 font-sans">
+                  {pricingOptions?.description || page.pricing?.description}
+                </p>
+              )}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {genericPricingItems.sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)).map((item, i) => (
+                <div key={i} className="relative bg-white rounded-3xl border border-[#E8E4DF] p-6 sm:p-8 shadow-sm hover:shadow-xl hover:border-[#e30a17]/30 transition-all duration-300 flex flex-col">
+                  {item.badge && (
+                    <span className="absolute -top-3 left-6 bg-[#e30a17] text-white text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full shadow">
+                      {item.badge}
+                    </span>
+                  )}
+                  <div className="mb-4">
+                    <h3 className="text-lg font-black text-gray-900">{item.title}</h3>
+                    {item.subtitle && <p className="text-xs text-gray-500 mt-1 font-sans">{item.subtitle}</p>}
+                  </div>
+                  {item.price ? (
+                    <div className="mb-4">
+                      <span className="text-2xl sm:text-3xl font-black text-[#e30a17]">{item.price}</span>
+                      {item.priceSuffix && <span className="text-xs text-gray-500 ml-1">{item.priceSuffix}</span>}
+                    </div>
+                  ) : (
+                    <div className="mb-4">
+                      <span className="text-sm font-semibold text-gray-400 italic">Price confirmed after consultation</span>
+                    </div>
+                  )}
+                  {item.description && (
+                    <p className="text-xs text-gray-600 leading-relaxed mb-5 font-sans flex-1">{item.description}</p>
+                  )}
+                  {item.features?.length > 0 && (
+                    <ul className="space-y-2 mb-6">
+                      {item.features.map((feat, fi) => (
+                        <li key={fi} className="flex items-start gap-2 text-xs text-gray-700">
+                          <RedCheck />
+                          <span>{typeof feat === "object" ? feat.text : feat}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  <a
+                    href={item.ctaLink || item.buttonLink || "/contact"}
+                    className="mt-auto inline-flex items-center justify-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white font-bold text-xs py-3 px-5 rounded-xl transition-all shadow-md"
+                  >
+                    {item.ctaText || item.buttonText || "Book Consultation"} <ArrowIcon />
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════
           SECTION 3: GRAFT PRICING TIERS — Premium Pricing Cards
       ════════════════════════════════════════════════════════════ */}
       {vis.graftPricing !== false && (
@@ -1102,72 +1172,6 @@ export default async function DynamicCostPage({ params }) {
       )}
 
       {/* ════════════════════════════════════════════════════════════
-          PRICING OPTIONS — Generic per-session/package pricing
-          (PRP, DHI, and future cost types; Hair Transplant uses graftPricing)
-      ════════════════════════════════════════════════════════════ */}
-      {vis.pricing !== false && genericPricingItems.length > 0 && (
-        <section className="bg-[#FAF6F3] py-16 md:py-24 border-b border-gray-100">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-12 max-w-xl">
-              <EyebrowLabel text={pricingOptions?.badge || page.pricing?.badge || "Transparent Pricing"} />
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
-                {pricingOptions?.heading || page.pricing?.heading || "Treatment Pricing & Packages"}
-              </h2>
-              {(pricingOptions?.description || page.pricing?.description) && (
-                <p className="text-gray-500 text-xs sm:text-sm mt-2 font-sans">
-                  {pricingOptions?.description || page.pricing?.description}
-                </p>
-              )}
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {genericPricingItems.sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0)).map((item, i) => (
-                <div key={i} className="relative bg-white rounded-3xl border border-[#E8E4DF] p-6 sm:p-8 shadow-sm hover:shadow-xl hover:border-[#e30a17]/30 transition-all duration-300 flex flex-col">
-                  {item.badge && (
-                    <span className="absolute -top-3 left-6 bg-[#e30a17] text-white text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full shadow">
-                      {item.badge}
-                    </span>
-                  )}
-                  <div className="mb-4">
-                    <h3 className="text-lg font-black text-gray-900">{item.title}</h3>
-                    {item.subtitle && <p className="text-xs text-gray-500 mt-1 font-sans">{item.subtitle}</p>}
-                  </div>
-                  {item.price ? (
-                    <div className="mb-4">
-                      <span className="text-2xl sm:text-3xl font-black text-[#e30a17]">{item.price}</span>
-                      {item.priceSuffix && <span className="text-xs text-gray-500 ml-1">{item.priceSuffix}</span>}
-                    </div>
-                  ) : (
-                    <div className="mb-4">
-                      <span className="text-sm font-semibold text-gray-400 italic">Price confirmed after consultation</span>
-                    </div>
-                  )}
-                  {item.description && (
-                    <p className="text-xs text-gray-600 leading-relaxed mb-5 font-sans flex-1">{item.description}</p>
-                  )}
-                  {item.features?.length > 0 && (
-                    <ul className="space-y-2 mb-6">
-                      {item.features.map((feat, fi) => (
-                        <li key={fi} className="flex items-start gap-2 text-xs text-gray-700">
-                          <RedCheck />
-                          <span>{typeof feat === "object" ? feat.text : feat}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  <a
-                    href={item.ctaLink || item.buttonLink || "/contact"}
-                    className="mt-auto inline-flex items-center justify-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white font-bold text-xs py-3 px-5 rounded-xl transition-all shadow-md"
-                  >
-                    {item.ctaText || item.buttonText || "Book Consultation"} <ArrowIcon />
-                  </a>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ════════════════════════════════════════════════════════════
           SECTION 4: PRICE FACTORS PROCESS (Image 2 Timeline Design)
       ════════════════════════════════════════════════════════════ */}
       {vis.priceFactors !== false && (priceFactors?.factors?.length > 0 || priceFactors?.emiPlans?.length > 0) && (
@@ -1267,9 +1271,9 @@ export default async function DynamicCostPage({ params }) {
                     <span className="inline-block bg-[#e30a17] text-white text-[9px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full mb-2 shadow-sm">
                       {priceFactors.emiBadge || "0% EMI Available"}
                     </span>
-                    <h3 className="text-xl sm:text-2xl font-black text-white">
+                    <h2 className="text-xl sm:text-2xl font-black text-white">
                       {priceFactors.emiHeading || "Flexible Monthly Installment Plans"}
-                    </h3>
+                    </h2>
                     <p className="text-xs sm:text-sm text-white/60 mt-1 max-w-xl font-sans">
                       Pay in easy monthly installments with zero interest. Confirm eligibility in 2 minutes.
                     </p>
@@ -1366,117 +1370,9 @@ export default async function DynamicCostPage({ params }) {
       )}
 
       {/* ════════════════════════════════════════════════════════════
-          SECTION 7: CONSULTATION & FORM — Premium Professional Layout
-      ════════════════════════════════════════════════════════════ */}
-      {vis.consultation !== false && (
-        <section className="bg-[#FAF6F3] py-16 md:py-24 border-t border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_440px] gap-12 lg:gap-16 items-center">
-
-              {/* ── Left Column: Headline, Benefits & Contact ── */}
-              <div>
-                <EyebrowLabel text={consultation?.badge || "Book Free Consultation"} />
-
-                <h2 className="text-3xl sm:text-4xl font-black text-gray-900 leading-tight tracking-tight mb-4">
-                  {consultation?.heading || `Get Your Free Consultation in ${cityName}`}
-                </h2>
-
-                {consultation?.description ? (
-                  <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-8 max-w-xl font-sans">
-                    {consultation.description}
-                  </p>
-                ) : (
-                  <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-8 max-w-xl font-sans">
-                    Meet our expert doctors at our {cityName} centre for a detailed scalp assessment, treatment recommendations, and personalised cost plan — completely free of charge.
-                  </p>
-                )}
-
-                {/* Benefits 2x2 Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                  {(consultation?.features?.length > 0
-                    ? consultation.features.map((f) => f.text || f)
-                    : [
-                      "Free Scalp Assessment & Audit",
-                      "Direct Consultation with Senior Specialist",
-                      "Written Cost Quote with Zero Hidden Fees",
-                      "Personalised Treatment & Aftercare Plan",
-                    ]
-                  ).map((text, i) => (
-                    <div
-                      key={i}
-                      className="bg-white rounded-2xl p-4 border border-[#E8E4DF] shadow-xs flex items-start gap-3 hover:shadow-md hover:border-[#e30a17]/30 transition-all duration-200"
-                    >
-                      <span className="w-6 h-6 rounded-full bg-red-50 text-[#e30a17] flex items-center justify-center shrink-0 font-bold text-xs mt-0.5 border border-red-100">
-                        ✓
-                      </span>
-                      <span className="text-xs font-semibold text-gray-800 leading-snug">{text}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Compact Action Buttons & Availability */}
-                <div className="flex flex-wrap items-center gap-3">
-                  <a
-                    href={`https://api.whatsapp.com/send?phone=+919217958539&text=${encodeURIComponent(
-                      isPrpPage
-                        ? `Hi, I want a free PRP consultation in ${cityName}`
-                        : `Hi, I want a free hair transplant consultation in ${cityName}`
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white text-xs font-bold py-3 px-5 rounded-xl transition-all shadow-md shadow-red-200 hover:-translate-y-0.5"
-                  >
-                    💬 WhatsApp Us
-                  </a>
-                  <a
-                    href="tel:+919911111247"
-                    className="inline-flex items-center gap-2 bg-white border border-[#E8E4DF] hover:border-gray-300 text-gray-800 text-xs font-bold py-3 px-5 rounded-xl transition-all shadow-xs hover:-translate-y-0.5"
-                  >
-                    📞 Call +91-9911111247
-                  </a>
-                  <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50/80 px-3 py-2 rounded-xl border border-emerald-200/60">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    Doctors Available Today
-                  </span>
-                </div>
-              </div>
-
-              {/* ── Right Column: Clean Sleek Form Card ── */}
-              <div>
-                <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E8E4DF] shadow-2xl shadow-gray-200/60 relative">
-
-                  {/* Form Header */}
-                  <div className="mb-5 pb-4 border-b border-gray-100 flex items-center justify-between">
-                    <div>
-                      <h3 className="text-lg sm:text-xl font-bold text-gray-900">Schedule Your Free Consultation</h3>
-                      <p className="text-xs text-gray-500 mt-0.5">Takes less than 60 seconds · No obligation</p>
-                    </div>
-                    <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shrink-0">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                      Secure
-                    </span>
-                  </div>
-
-                  {/* Form Body */}
-                  <ContactForm plain />
-
-                  {/* Trust Footer */}
-                  <div className="mt-4 pt-3 border-t border-gray-100 flex items-center gap-2 text-xs text-gray-400 leading-snug">
-                    <span className="text-emerald-600 text-sm">🔒</span>
-                    <p className="text-[11px]">100% private &amp; confidential. Never shared with third parties.</p>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ════════════════════════════════════════════════════════════
           TECHNIQUE / TREATMENT COMPARISON TABLE
       ════════════════════════════════════════════════════════════ */}
-      {vis.priceFactors !== false && techniqueComparison?.columns?.length > 0 && techniqueComparison?.rows?.length > 0 && (
+      {vis.techniqueComparison !== false && techniqueComparison?.columns?.length > 0 && techniqueComparison?.rows?.length > 0 && (
         <section className="bg-white py-16 md:py-24 border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-10 max-w-2xl">
@@ -1531,7 +1427,7 @@ export default async function DynamicCostPage({ params }) {
       {/* ════════════════════════════════════════════════════════════
           MYTHS VS FACTS
       ════════════════════════════════════════════════════════════ */}
-      {mythsFacts?.pairs?.filter((p) => p.active !== false).length > 0 && (
+      {vis.mythsFacts !== false && mythsFacts?.pairs?.filter((p) => p.active !== false).length > 0 && (
         <section className="bg-white py-16 md:py-24 border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 max-w-2xl">
@@ -1711,10 +1607,119 @@ export default async function DynamicCostPage({ params }) {
       })()}
 
       {/* ════════════════════════════════════════════════════════════
+          CONSULTATION & FORM — Premium Professional Layout (Position 13)
+      ════════════════════════════════════════════════════════════ */}
+      {vis.consultation !== false && (
+        <section className="bg-[#FAF6F3] py-16 md:py-24 border-t border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_440px] gap-12 lg:gap-16 items-center">
+
+              {/* ── Left Column: Headline, Benefits & Contact ── */}
+              <div>
+                <EyebrowLabel text={consultation?.badge || "Book Free Consultation"} />
+
+                <h2 className="text-3xl sm:text-4xl font-black text-gray-900 leading-tight tracking-tight mb-4">
+                  {consultation?.heading || `Get Your Free Consultation in ${cityName}`}
+                </h2>
+
+                {consultation?.description ? (
+                  <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-8 max-w-xl font-sans">
+                    {consultation.description}
+                  </p>
+                ) : (
+                  <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-8 max-w-xl font-sans">
+                    Meet our expert doctors at our {cityName} centre for a detailed scalp assessment, treatment recommendations, and personalised cost plan — completely free of charge.
+                  </p>
+                )}
+
+                {/* Benefits 2x2 Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                  {(consultation?.features?.length > 0
+                    ? consultation.features.map((f) => f.text || f)
+                    : [
+                      "Free Scalp Assessment & Audit",
+                      "Direct Consultation with Senior Specialist",
+                      "Written Cost Quote with Zero Hidden Fees",
+                      "Personalised Treatment & Aftercare Plan",
+                    ]
+                  ).map((text, i) => (
+                    <div
+                      key={i}
+                      className="bg-white rounded-2xl p-4 border border-[#E8E4DF] shadow-xs flex items-start gap-3 hover:shadow-md hover:border-[#e30a17]/30 transition-all duration-200"
+                    >
+                      <span className="w-6 h-6 rounded-full bg-red-50 text-[#e30a17] flex items-center justify-center shrink-0 font-bold text-xs mt-0.5 border border-red-100">
+                        ✓
+                      </span>
+                      <span className="text-xs font-semibold text-gray-800 leading-snug">{text}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Compact Action Buttons & Availability */}
+                <div className="flex flex-wrap items-center gap-3">
+                  <a
+                    href={`https://api.whatsapp.com/send?phone=+919217958539&text=${encodeURIComponent(
+                      isPrpPage
+                        ? `Hi, I want a free PRP consultation in ${cityName}`
+                        : `Hi, I want a free hair transplant consultation in ${cityName}`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-[#e30a17] hover:bg-red-700 text-white text-xs font-bold py-3 px-5 rounded-xl transition-all shadow-md shadow-red-200 hover:-translate-y-0.5"
+                  >
+                    💬 WhatsApp Us
+                  </a>
+                  <a
+                    href="tel:+919911111247"
+                    className="inline-flex items-center gap-2 bg-white border border-[#E8E4DF] hover:border-gray-300 text-gray-800 text-xs font-bold py-3 px-5 rounded-xl transition-all shadow-xs hover:-translate-y-0.5"
+                  >
+                    📞 Call +91-9911111247
+                  </a>
+                  <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50/80 px-3 py-2 rounded-xl border border-emerald-200/60">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    Doctors Available Today
+                  </span>
+                </div>
+              </div>
+
+              {/* ── Right Column: Clean Sleek Form Card ── */}
+              <div>
+                <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E8E4DF] shadow-2xl shadow-gray-200/60 relative">
+
+                  {/* Form Header */}
+                  <div className="mb-5 pb-4 border-b border-gray-100 flex items-center justify-between">
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-bold text-gray-900">Schedule Your Free Consultation</h3>
+                      <p className="text-xs text-gray-500 mt-0.5">Takes less than 60 seconds · No obligation</p>
+                    </div>
+                    <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wider shrink-0">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      Secure
+                    </span>
+                  </div>
+
+                  {/* Form Body */}
+                  <ContactForm plain />
+
+                  {/* Trust Footer */}
+                  <div className="mt-4 pt-3 border-t border-gray-100 flex items-center gap-2 text-xs text-gray-400 leading-snug">
+                    <span className="text-emerald-600 text-sm">🔒</span>
+                    <p className="text-[11px]">100% private &amp; confidential. Never shared with third parties.</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════
           FAQ SECTION
       ════════════════════════════════════════════════════════════ */}
       {vis.faq !== false && faqItems.length > 0 && (
         <FAQCostSection
+          heading={faq?.heading}
           faqs={faqItems.map((item) => ({ question: item.question, answer: item.answer }))}
           pageType={page.pageType}
           cityName={cityName}

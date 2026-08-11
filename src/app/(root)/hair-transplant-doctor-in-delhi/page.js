@@ -40,13 +40,13 @@ export async function generateMetadata() {
     description: seo.metaDescription || "",
     keywords,
     alternates: {
-      canonical: seo.canonicalUrl || "https://www.clinicryan.com/hair-transplant-doctor-in-delhi",
+      canonical: seo.canonicalUrl || "https://www.clinicryan.com/doctors/hair-transplant-doctor-in-delhi",
     },
     robots,
     openGraph: {
       title: seo.metaTitle || doctor.pageName,
       description: seo.metaDescription || "",
-      url: seo.canonicalUrl || "https://www.clinicryan.com/hair-transplant-doctor-in-delhi",
+      url: seo.canonicalUrl || "https://www.clinicryan.com/doctors/hair-transplant-doctor-in-delhi",
       siteName: "Ryan Clinic",
       locale: "en_IN",
       type: "website",
