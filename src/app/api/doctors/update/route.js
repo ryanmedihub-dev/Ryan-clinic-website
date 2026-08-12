@@ -138,7 +138,7 @@ const handler = async (req) => {
             "basicInfo", "seo", "hero", "whyItMatters", "doctorStandards", "credentials",
             "verification", "comparison", "surgeonProfile", "surgeryTimeline", "consultation",
             "questionsToAsk", "greatDoctorQualities", "warningSigns", "proceduresPerformed",
-            "surgicalProcess", "pricing", "visitClinic", "faq"
+            "surgicalProcess", "pricing", "visitClinic", "faq", "keyFacts", "medicalReviewer"
         ].forEach((key) => {
             if (body[key] !== undefined) {
                 doctor.markModified(key);

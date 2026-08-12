@@ -17,20 +17,18 @@ const WARN_ICON = (
 );
 
 const DEFAULT_RISKS = [
-  { number: "01", title: "Confirm who operates", body: "Always verify that a qualified, registered hair transplant doctor performs your surgery — not a technician. At Ryan Clinic, every step — extraction, channel creation, and implantation — is done exclusively by a certified doctor.", type: "check", icon: CHECK_ICON },
-  { number: "02", title: "Beware of ₹15–25 per graft quotes", body: "Very low per-graft pricing almost always signals technician-led, rushed work. A hair transplant is permanent — and a poor result is very hard to correct. Never book on price alone without verifying the surgeon.", type: "warn", icon: WARN_ICON },
-  { number: "03", title: "Check for a sterile facility", body: "Confirm single-use, surgical-grade instruments and a properly maintained operating theatre. Poor hygiene and reused tools are avoidable risks. Ryan Clinic operates in a NABH-compliant, fully sterile OT — always.", type: "check", icon: CHECK_ICON },
-  { number: "04", title: "Expect realistic survival figures", body: "Be wary of any clinic claiming '100% guaranteed' graft survival. Ryan Clinic achieves 90%+ graft survival — one of the highest in India — but we'll never mislead you with impossible promises.", type: "warn", icon: WARN_ICON },
-  { number: "05", title: "Review genuine before/after cases", body: "Ask for real, consented patient cases — not stock photos. Ryan Clinic's 500+ verified Google reviews and 10,000+ documented procedures are available for you to inspect before booking.", type: "check", icon: CHECK_ICON },
+  { number: "01", title: "Confirm who operates", body: "Always verify that a qualified, registered plastic surgeon performs your surgery — not a technician. At Ryan Clinic, extraction, site creation, and implantation are done exclusively by a certified doctor.", type: "check", icon: CHECK_ICON },
+  { number: "02", title: "Verify single-use sterile instruments", body: "Confirm single-use, surgical-grade instruments and a properly maintained operating theatre. Ryan Clinic operates in a sterile, NABH-standard minor OT — always.", type: "check", icon: CHECK_ICON },
+  { number: "03", title: "Expect realistic survival figures", body: "Be wary of any clinic claiming '100% guaranteed' graft survival. Ryan Clinic achieves 90%+ graft survival with careful handling, but we never mislead you with impossible claims.", type: "warn", icon: WARN_ICON },
+  { number: "04", title: "Inspect genuine before/after cases", body: "Ask for real, consented patient cases — not stock photos. Documented procedures and patient reviews are available for you to inspect before booking.", type: "check", icon: CHECK_ICON },
 ];
 
 const DEFAULT_COMPARISON = [
-  { aspect: "Who operates", doctorLed: "Certified doctor at every step", techLed: "Technician performs extraction + implant" },
-  { aspect: "Graft survival", doctorLed: "90%+ (Ryan Clinic standard)", techLed: "Often 50–70% — rushed, less precise" },
-  { aspect: "Naturalness", doctorLed: "Precise angle, depth & direction", techLed: "Variable — uneven, patchy results" },
-  { aspect: "Safety", doctorLed: "Sterile OT, single-use instruments", techLed: "Risk of infection, poor hygiene" },
-  { aspect: "Accountability", doctorLed: "Licensed, registered, legally liable", techLed: "No medical accountability" },
-  { aspect: "Price signal", doctorLed: "₹40–₹120 per graft (transparent)", techLed: "₹15–25 per graft (corner-cutting)" },
+  { aspect: "Who performs extraction & implantation?", doctorLed: "A named, registered plastic surgeon (ask for registration number)", techLed: "100% Doctor-Led by Certified Surgeon" },
+  { aspect: "Can I inspect the operating theatre?", doctorLed: "Yes, on request prior to surgery date", techLed: "NABH-Standard Sterile Minor OT" },
+  { aspect: "Are surgical instruments single-use?", doctorLed: "Yes, CE-marked single-use packages opened in front of you", techLed: "100% Single-Use Disposable Kits" },
+  { aspect: "Is the quoted price all-inclusive?", doctorLed: "A written, all-inclusive figure after scalp analysis", techLed: "Written Price Transparency — Zero Hidden Fees" },
+  { aspect: "What aftercare support is included?", doctorLed: "Written aftercare kit, saline spray, and 12-month follow-up visits", techLed: "Full 12-Month Growth Cycle Monitoring" },
 ];
 
 export default function WhyDoctorMattersSection({ risks: risksOverride, comparison: comparisonOverride, heading: headingOverride, description: descOverride }) {
@@ -47,7 +45,7 @@ export default function WhyDoctorMattersSection({ risks: risksOverride, comparis
         <div className="flex items-center gap-3 mb-6">
           <span className="block w-8 h-px bg-[#D32F2F]" />
           <span className="text-[#D32F2F] text-[11px] font-semibold tracking-[0.22em] uppercase">
-            Protect Yourself
+            Surgical Accountability
           </span>
         </div>
 
@@ -55,11 +53,11 @@ export default function WhyDoctorMattersSection({ risks: risksOverride, comparis
           <div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-[1.1] tracking-tight mb-4">
               {headingOverride || (
-                <>Why a{" "}<span className="text-[#D32F2F]">Doctor-Led</span>{" "}Clinic Matters</>
+                <>Questions to Ask Any Clinic — <span className="text-[#D32F2F]">Including Us</span></>
               )}
             </h2>
             <p className="text-gray-500 text-sm md:text-base leading-relaxed max-w-2xl">
-              {descOverride || "A hair transplant is permanent — so a poor result is too. The biggest risks come from clinics cutting corners to offer the lowest price. Here's how to protect yourself."}
+              {descOverride || "A hair transplant is permanent — so your surgical choice should be backed by clear answers. Use this checklist to evaluate any clinic before booking your procedure."}
             </p>
           </div>
 
@@ -67,7 +65,7 @@ export default function WhyDoctorMattersSection({ risks: risksOverride, comparis
             <svg className="w-4 h-4 text-amber-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
             </svg>
-            <span className="text-[12px] font-semibold text-amber-800">Always verify before you book</span>
+            <span className="text-[12px] font-semibold text-amber-800">Verify credentials before booking</span>
           </div>
         </div>
 
@@ -100,37 +98,37 @@ export default function WhyDoctorMattersSection({ risks: risksOverride, comparis
             ))}
           </div>
 
-          {/* ── Right: Comparison table ── */}
+          {/* ── Right: Questions Comparison Table ── */}
           <div className="lg:sticky lg:top-28">
             <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
 
               {/* Column headers */}
               <div className="grid grid-cols-3 border-b border-gray-100">
                 <div className="px-4 py-4 bg-gray-50 flex items-center">
-                  <span className="text-xs font-bold uppercase tracking-[0.18em] text-gray-500">Aspect</span>
+                  <span className="text-xs font-bold uppercase tracking-[0.18em] text-gray-500">Key Question</span>
                 </div>
 
-                {/* Doctor-led */}
+                {/* Good Standard */}
+                <div className="px-4 py-4 border-l border-emerald-100 bg-emerald-50/40">
+                  <div className="flex items-center gap-1.5 mb-0.5">
+                    <svg className="w-3 h-3 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p className="text-xs font-black uppercase tracking-[0.14em] text-emerald-700">Good Answer</p>
+                  </div>
+                  <p className="text-[10px] text-gray-400">Standard to look for</p>
+                </div>
+
+                {/* Ryan Clinic */}
                 <div className="px-4 py-4 border-l border-red-100 relative" style={{ background: "rgba(211,47,47,0.03)" }}>
                   <div className="absolute top-0 inset-x-0 h-0.5 bg-[#D32F2F]" />
                   <div className="flex items-center gap-1.5 mb-0.5">
                     <svg className="w-3 h-3 text-[#D32F2F]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <p className="text-xs font-black uppercase tracking-[0.14em] text-[#D32F2F]">Doctor-Led</p>
+                    <p className="text-xs font-black uppercase tracking-[0.14em] text-[#D32F2F]">Ryan Clinic</p>
                   </div>
-                  <p className="text-[10px] text-gray-400">Ryan Clinic</p>
-                </div>
-
-                {/* Technician */}
-                <div className="px-4 py-4 border-l border-gray-100 bg-amber-50/50">
-                  <div className="flex items-center gap-1.5 mb-0.5">
-                    <svg className="w-3 h-3 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                    <p className="text-xs font-black uppercase tracking-[0.14em] text-amber-700">Technician</p>
-                  </div>
-                  <p className="text-[10px] text-gray-400">Common elsewhere</p>
+                  <p className="text-[10px] text-gray-400">Our Standard</p>
                 </div>
               </div>
 
@@ -140,21 +138,21 @@ export default function WhyDoctorMattersSection({ risks: risksOverride, comparis
                   <div className={`px-4 py-3.5 flex items-start ${i % 2 === 0 ? "bg-white" : "bg-gray-50/40"}`}>
                     <span className="text-xs sm:text-sm font-semibold text-gray-800 leading-snug">{row.aspect}</span>
                   </div>
+                  <div className={`px-4 py-3.5 border-l border-emerald-100 ${i % 2 === 0 ? "bg-emerald-50/20" : "bg-emerald-50/40"}`}>
+                    <p className="text-xs sm:text-sm leading-snug font-medium text-emerald-900">{row.doctorLed}</p>
+                  </div>
                   <div
                     className="px-4 py-3.5 border-l border-red-100"
                     style={{ background: i % 2 === 0 ? "rgba(211,47,47,0.025)" : "rgba(211,47,47,0.04)" }}
                   >
-                    <p className="text-xs sm:text-sm leading-snug font-medium text-[#D32F2F]">{row.doctorLed}</p>
-                  </div>
-                  <div className={`px-4 py-3.5 border-l border-gray-50 ${i % 2 === 0 ? "bg-amber-50/30" : "bg-amber-50/50"}`}>
-                    <p className="text-xs sm:text-sm leading-snug text-amber-800">{row.techLed}</p>
+                    <p className="text-xs sm:text-sm leading-snug font-bold text-[#D32F2F]">{row.techLed}</p>
                   </div>
                 </div>
               ))}
             </div>
 
             <p className="text-[11px] text-gray-400 mt-4 text-center leading-relaxed">
-              At Ryan Clinic, every procedure is 100% doctor-led.{" "}
+              At Ryan Clinic, every hair transplant procedure is 100% doctor-led.{" "}
               <a
                 href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20verify%20your%20surgeon%20credentials%20before%20booking"
                 target="_blank"

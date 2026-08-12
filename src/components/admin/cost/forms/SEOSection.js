@@ -1,45 +1,45 @@
 "use client";
 
+import { Search } from "lucide-react";
 import ImageUploader from "@/components/admin/ImageUploader";
+import SectionCard from "../shared/SectionCard";
+import { Field, inputCls, textareaCls } from "../shared/CostFormUI";
 
 export default function SEOSection({ formData, updateField, errors = {} }) {
   const seo = formData.seo || {};
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-2xl font-bold underline mt-10 mb-5">Meta Details</h3>
-
-      <div className="flex gap-6 flex-col md:flex-row">
-        <div className="w-full">
-          <label className="block text-sm font-semibold text-gray-700">Meta Title *</label>
+    <SectionCard
+      icon={Search}
+      title="3. SEO & Meta Tags"
+      subtitle="Meta title, description, keywords, canonical link and Open Graph share image"
+    >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <Field label="Meta Title" required error={errors["seo.metaTitle"]}>
           <input
             type="text"
             value={seo.metaTitle || ""}
             onChange={(e) => updateField("seo.metaTitle", e.target.value)}
-            className="w-full mt-2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter Meta Title"
+            className={inputCls}
+            placeholder="Enter Meta Title (50-60 characters recommended)"
             required
           />
-          {errors["seo.metaTitle"] && <p className="text-xs text-red-500 mt-1">{errors["seo.metaTitle"]}</p>}
-        </div>
+        </Field>
 
-        <div className="w-full">
-          <label className="block text-sm font-semibold text-gray-700">Meta Description *</label>
+        <Field label="Meta Description" required error={errors["seo.metaDescription"]}>
           <textarea
-            rows={4}
+            rows={3}
             value={seo.metaDescription || ""}
             onChange={(e) => updateField("seo.metaDescription", e.target.value)}
-            className="w-full mt-2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter Meta Description"
+            className={textareaCls}
+            placeholder="Enter Meta Description (150-160 characters recommended)"
             required
           />
-          {errors["seo.metaDescription"] && <p className="text-xs text-red-500 mt-1">{errors["seo.metaDescription"]}</p>}
-        </div>
+        </Field>
       </div>
 
-      <div className="flex gap-6 flex-col md:flex-row">
-        <div className="w-full">
-          <label className="block text-sm font-semibold text-gray-700">Keywords</label>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <Field label="Keywords" subtitle="comma-separated">
           <input
             type="text"
             value={Array.isArray(seo.keywords) ? seo.keywords.join(", ") : seo.keywords || ""}
@@ -49,41 +49,93 @@ export default function SEOSection({ formData, updateField, errors = {} }) {
                 e.target.value.split(",").map((k) => k.trim()).filter(Boolean)
               )
             }
-            className="w-full mt-2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
-            placeholder="hair transplant, FUE, hair loss clinic"
+            className={inputCls}
+            placeholder="hair transplant cost, FUE price, Delhi"
           />
-        </div>
+        </Field>
 
-        <div className="w-full">
-          <label className="block text-sm font-semibold text-gray-700">Canonical URL</label>
+        <Field label="Canonical URL">
           <input
             type="text"
             value={seo.canonical || ""}
             onChange={(e) => updateField("seo.canonical", e.target.value)}
-            className="w-full mt-2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
-            placeholder="https://ryanclinic.in/..."
+            className={inputCls}
+            placeholder="https://www.clinicryan.com/cost/..."
           />
-        </div>
+        </Field>
 
-        <div className="w-full">
-          <label className="block text-sm font-semibold text-gray-700">Robots</label>
+        <Field label="Robots Indexing">
           <input
             type="text"
             value={seo.robots || "index,follow"}
             onChange={(e) => updateField("seo.robots", e.target.value)}
-            className="w-full mt-2 p-2 border rounded-md focus:ring-blue-500 focus:border-blue-500"
+            className={inputCls}
             placeholder="index,follow"
           />
-        </div>
+        </Field>
       </div>
 
-      <div className="mt-4">
-        <label className="block text-sm font-semibold text-gray-700 mb-2">OG Share Image</label>
+      <Field label="OG Share Image" subtitle="social preview image">
         <ImageUploader
           initialImage={seo.ogImage || ""}
           onUpload={(url) => updateField("seo.ogImage", url)}
         />
+      </Field>
+
+      {/* GeoTags Subsection */}
+      <div className="pt-4 border-t border-gray-100 space-y-4">
+        <div>
+          <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wide">
+            GeoTags & Geotargeting (SEO Meta Tags)
+          </h4>
+          <p className="text-xs text-gray-500 mt-0.5 font-sans">
+            Specify location coordinates & region tags so search engines geotarget this cost page to the target city.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <Field label="Geo Region (ISO Code)" subtitle="e.g. IN-MH, IN-DL">
+            <input
+              type="text"
+              value={seo.geoRegion || ""}
+              onChange={(e) => updateField("seo.geoRegion", e.target.value)}
+              className={inputCls}
+              placeholder="e.g. IN-MH"
+            />
+          </Field>
+
+          <Field label="Geo Placename (City)" subtitle="e.g. Mumbai, Delhi">
+            <input
+              type="text"
+              value={seo.geoPlacename || ""}
+              onChange={(e) => updateField("seo.geoPlacename", e.target.value)}
+              className={inputCls}
+              placeholder="e.g. Mumbai"
+            />
+          </Field>
+
+          <Field label="Geo Position (Lat;Long)" subtitle="e.g. 19.0760;72.8777">
+            <input
+              type="text"
+              value={seo.geoPosition || ""}
+              onChange={(e) => updateField("seo.geoPosition", e.target.value)}
+              className={inputCls}
+              placeholder="e.g. 19.0760;72.8777"
+            />
+          </Field>
+
+          <Field label="ICBM (Lat, Long)" subtitle="e.g. 19.0760, 72.8777">
+            <input
+              type="text"
+              value={seo.icbm || ""}
+              onChange={(e) => updateField("seo.icbm", e.target.value)}
+              className={inputCls}
+              placeholder="e.g. 19.0760, 72.8777"
+            />
+          </Field>
+        </div>
       </div>
-    </div>
+    </SectionCard>
   );
 }
+

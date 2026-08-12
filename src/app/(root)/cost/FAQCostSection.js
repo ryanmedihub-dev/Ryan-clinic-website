@@ -3,12 +3,48 @@
 import { useState } from "react";
 import useTrackCTA from "@/lib/useTrackCTA";
 
-const WA =
-  "https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation";
-
-export default function FAQCostSection({ faqs = [] }) {
+export default function FAQCostSection({
+  heading = "",
+  faqs = [],
+  pageType = "hair-transplant",
+  cityName = "Delhi",
+  description = "",
+  stats = null,
+  whatsappUrl = "",
+}) {
   const [open, setOpen] = useState(0);
   const trackCTA = useTrackCTA();
+
+  const isPrp = pageType === "prp";
+
+  const defaultDescription = isPrp
+    ? `Everything you need to know about PRP hair treatment costs in ${cityName} — session pricing, packages, what affects cost, and maintenance.`
+    : `Everything you need to know about hair transplant costs in ${cityName} — per-graft pricing, EMI plans, procedure breakdown, and hidden charge guarantees.`;
+
+  const defaultStats = isPrp
+    ? [
+        { num: "Doctor-Led", label: "PRP Treatment" },
+        { num: "3–4", label: "Sessions in Course" },
+        { num: "0% EMI", label: "Available Plans" },
+        { num: "100%", label: "Written Cost Guarantee" },
+      ]
+    : [
+        { num: "₹40–₹120", label: "Per Graft Price" },
+        { num: "0% EMI", label: "Interest-Free Plans" },
+        { num: "100%", label: "Written Cost Guarantee" },
+        { num: "18 Months", label: "Free Follow-Up" },
+      ];
+
+  const targetWaUrl =
+    whatsappUrl ||
+    `https://api.whatsapp.com/send?phone=+919217958539&text=${encodeURIComponent(
+      isPrp
+        ? `Hi, I want a free PRP consultation in ${cityName}`
+        : `Hi, I want a free hair transplant consultation in ${cityName}`
+    )}`;
+
+  const activeStats = stats && stats.length > 0 ? stats : defaultStats;
+  const activeDescription = description || defaultDescription;
 
   return (
     <section className="py-16 md:py-24" style={{ background: "var(--bg-main, #ffffff)" }}>
@@ -36,16 +72,20 @@ export default function FAQCostSection({ faqs = [] }) {
               className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-5"
               style={{ color: "var(--text-primary, #111827)" }}
             >
-              Frequently
-              <br />
-              Asked <span style={{ color: "var(--primary-red, #D32F2F)" }}>Questions</span>
+              {heading || (
+                <>
+                  Frequently
+                  <br />
+                  Asked <span style={{ color: "var(--primary-red, #D32F2F)" }}>Questions</span>
+                </>
+              )}
             </h2>
 
             <p
-              className="text-sm md:text-base leading-relaxed mb-8"
+              className="text-sm md:text-base leading-relaxed mb-8 font-sans"
               style={{ color: "var(--text-muted, #4B5563)" }}
             >
-              Everything you need to know about hair transplant costs in Delhi — per-graft pricing, EMI plans, procedure breakdown, and hidden charge guarantees.
+              {activeDescription}
             </p>
 
             {/* Trust stats card */}
@@ -57,18 +97,13 @@ export default function FAQCostSection({ faqs = [] }) {
               }}
             >
               <div className="grid grid-cols-2 gap-5">
-                {[
-                  { num: "₹40–₹120", label: "Per Graft Price" },
-                  { num: "0% EMI", label: "Interest-Free Plans" },
-                  { num: "100%", label: "Written Cost Guarantee" },
-                  { num: "18 Months", label: "Free Follow-Up" },
-                ].map((s) => (
+                {activeStats.map((s) => (
                   <div key={s.label}>
                     <p
                       className="text-xl md:text-2xl font-bold"
                       style={{ color: "var(--primary-red, #D32F2F)" }}
                     >
-                      {s.num}
+                      {s.num || s.value}
                     </p>
                     <p
                       className="text-[11px] font-medium mt-0.5"
@@ -83,7 +118,7 @@ export default function FAQCostSection({ faqs = [] }) {
 
             {/* CTA */}
             <a
-              href={WA}
+              href={targetWaUrl}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 font-semibold text-sm py-4 px-7 rounded-xl text-white w-full justify-center transition-all shadow-lg hover:opacity-95"
@@ -229,12 +264,14 @@ export default function FAQCostSection({ faqs = [] }) {
 
             {/* Bottom note */}
             <p
-              className="text-xs mt-6 text-center"
+              className="text-xs mt-6 text-center font-sans"
               style={{ color: "#6B7280" }}
             >
-              Have a specific question about your graft requirement?{" "}
+              {isPrp
+                ? "Have a specific question about your PRP treatment or cost? "
+                : "Have a specific question about your graft requirement? "}
               <a
-                href={WA}
+                href={targetWaUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="font-bold underline"

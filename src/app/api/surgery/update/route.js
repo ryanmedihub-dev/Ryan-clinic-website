@@ -93,6 +93,43 @@ const handler = async (req) => {
 
     // Update all sections and use markModified so Mongoose properly detects
     // changes in nested objects and sub-documents (critical for image fields, arrays, etc.)
+    // Normalize payload to prevent casting errors when strings are submitted for embedded schemas
+    const normalizeImage = (img) => {
+      if (typeof img === "string") return { image: img, imageAlt: "" };
+      if (img && typeof img === "object") {
+        return {
+          image: typeof img.image === "string" ? img.image : (typeof img.url === "string" ? img.url : ""),
+          imageAlt: typeof img.imageAlt === "string" ? img.imageAlt : (typeof img.alt === "string" ? img.alt : ""),
+        };
+      }
+      return { image: "", imageAlt: "" };
+    };
+
+    const normalizeItem = (item) => {
+      if (typeof item === "string") return { title: item, description: "" };
+      return item || { title: "", description: "" };
+    };
+
+    if (surgicalRisks && typeof surgicalRisks === "object") {
+      if (Array.isArray(surgicalRisks.preventionPoints)) {
+        surgicalRisks.preventionPoints = surgicalRisks.preventionPoints.map(normalizeItem);
+      }
+    }
+
+    if (patientResults?.cases && Array.isArray(patientResults.cases)) {
+      patientResults.cases = patientResults.cases.map((c) => ({
+        ...c,
+        beforeImage: normalizeImage(c.beforeImage),
+        afterImage: normalizeImage(c.afterImage),
+      }));
+    }
+
+    if (whyChooseUs && typeof whyChooseUs === "object") {
+      if (Array.isArray(whyChooseUs.points)) {
+        whyChooseUs.points = whyChooseUs.points.map(normalizeItem);
+      }
+    }
+
     const sections = {
       landingCardImage,
       seo,

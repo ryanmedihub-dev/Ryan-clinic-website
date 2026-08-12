@@ -19,7 +19,7 @@ export default function SchemaMarkup() {
               height: 512,
             },
             description:
-              "India's only Turkey Sapphire FUE Hair Transplant Clinic. Certified doctors, 95%+ graft survival, transparent pricing across Delhi, Mumbai & Hyderabad. Trusted by 10,000+ patients since 2012.",
+              "Doctor-led Sapphire FUE & Turkish Technique Hair Restoration Clinic with centers across Delhi, Mumbai & Hyderabad. Transparent pricing & verified medical expertise.",
             foundingDate: "2012",
             numberOfEmployees: {
               "@type": "QuantitativeValue",
@@ -362,7 +362,7 @@ export default function SchemaMarkup() {
                 name: "What is the cost of hair transplant in Delhi?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Hair transplant cost in Delhi at Ryan Clinic ranges from ₹40,000 to ₹1,50,000 depending on the number of grafts required. We offer fully transparent per-graft pricing with zero hidden charges. Book a free consultation to get your personalised cost estimate.",
+                  text: "Hair transplant cost in Delhi at Ryan Clinic depends on the number of grafts required. We offer fully transparent per-graft pricing with zero hidden charges. Book a free consultation to get your personalised cost estimate.",
                 },
               },
               {

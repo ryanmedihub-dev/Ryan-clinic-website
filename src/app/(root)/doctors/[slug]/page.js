@@ -19,20 +19,17 @@ function normalizeDoctor(dbDoc) {
     designation: b.designation || "Hair Transplant Surgeon",
     location: b.city || "Delhi",
     city: b.city || "Delhi",
-    experience: b.yearsExperience ? `${b.yearsExperience}+ Yrs` : "15+ Yrs",
-    procedures: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : "5,000+",
-    proceduresCount: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : "7,500+",
-    successRate: b.successRate || "95%+",
+    experience: b.yearsExperience ? `${b.yearsExperience}+ Yrs` : null,
+    procedures: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : null,
+    proceduresCount: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : null,
+    successRate: b.successRate || null,
     rating: b.rating || 5.0,
     about: s.about || "",
     biography: s.biography || "",
     philosophy: s.philosophy || "",
     languages: b.languages?.length ? b.languages : ["English", "Hindi"],
-    specialities: s.specialities?.length ? s.specialities : ["Sapphire FUE", "THI Hair Restoration", "Beard Transplant"],
-    qualifications: s.qualifications?.length ? s.qualifications : [
-      { degree: "MBBS", institute: "Recognized Medical Council" },
-      { degree: "Turkey Certification", institute: "International Hair Restoration Association" },
-    ],
+    specialities: s.specialities?.length ? s.specialities : ["Sapphire FUE", "THI Hair Restoration"],
+    qualifications: s.qualifications?.length ? s.qualifications : [],
     certifications: s.certifications?.length ? s.certifications : [],
     achievements: s.achievements?.length ? s.achievements.map(a => typeof a === "string" ? a : `${a.title || ""}: ${a.description || ""}`) : [],
     memberships: s.memberships?.length ? s.memberships : [],
@@ -77,14 +74,14 @@ export async function generateMetadata({ params }) {
   const seo = doctor.seo || {};
   const locationText = doctor.location ? ` in ${doctor.location}` : "";
   const metaTitle = seo.metaTitle || `${doctor.name} — Hair Transplant Doctor${locationText} | Ryan Clinic`;
-  const metaDesc = seo.metaDescription || `${doctor.name} is a Turkey-certified hair transplant surgeon${locationText} at Ryan Clinic. ${doctor.experience} experience. Book a free consultation.`;
+  const metaDesc = seo.metaDescription || `${doctor.name} is a hair transplant surgeon${locationText} at Ryan Clinic. Book a free consultation.`;
   const canonicalUrl = seo.canonicalUrl || `https://www.clinicryan.com/doctors/${slug}`;
   const ogImageUrl = seo.openGraphImage?.image || doctor.image;
+  const fullOgImage = ogImageUrl.startsWith("http") ? ogImageUrl : `https://www.clinicryan.com${ogImageUrl}`;
 
   return {
     title: metaTitle,
     description: metaDesc,
-    keywords: seo.keywords || "",
     alternates: {
       canonical: canonicalUrl,
     },
@@ -97,10 +94,16 @@ export async function generateMetadata({ params }) {
       type: "profile",
       images: [
         {
-          url: ogImageUrl.startsWith("http") ? ogImageUrl : `https://www.clinicryan.com${ogImageUrl}`,
+          url: fullOgImage,
           alt: `${doctor.name} — Hair Transplant Surgeon`,
         },
       ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: metaTitle,
+      description: metaDesc,
+      images: [fullOgImage],
     },
   };
 }
@@ -388,19 +391,140 @@ export default async function DoctorPage({ params }) {
     pricingDisclaimer = doctor.pricing.disclaimer || "";
   }
 
-  const bannerTitle = doctor.hero?.title || doctor.name;
+  const qualSuffix = (doctor.keyFacts?.qualifications || "").includes("MCh") ? ", MCh (Plastic Surgery)" : "";
+  const defaultHeading = `Hair Transplant Doctor in ${doctor.city || "Delhi"} — ${doctor.name}${qualSuffix}`;
+  const bannerTitle = doctor.hero?.title || doctor.seo?.metaTitle || defaultHeading;
   const bannerDesc = doctor.hero?.description || `${doctor.designation} at Ryan Clinic. Experienced hair restoration specialist.`;
   const bannerImage = doctor.hero?.heroImage?.image || "/uploads/1752667815707-fue-banner_ro9ae6.webp";
   const bannerAlt = doctor.hero?.heroImage?.alt || `${doctor.name} — Ryan Clinic`;
 
+  const canonicalUrl = doctor.seo?.canonicalUrl || `https://www.clinicryan.com/doctors/${slug}`;
+  const clinicCity = doctor.visitClinic?.address?.addressLocality || doctor.city || "Delhi";
+  const clinicAddressLine = doctor.visitClinic?.address?.streetAddress || "Plot No. 12, Main Road, Pitampura";
+  const clinicPhone = doctor.basicInfo?.phoneNumber || doctor.visitClinic?.contact?.phone || "+91-9911111247";
+  const dateModified = doctor.updatedAt ? new Date(doctor.updatedAt).toISOString() : new Date().toISOString();
+
+  const physicianSchema = {
+    "@context": "https://schema.org",
+    "@type": "Physician",
+    "@id": `${canonicalUrl}#physician`,
+    "name": doctor.name,
+    "jobTitle": doctor.designation || "Hair Transplant Surgeon",
+    "medicalSpecialty": "Hair Restoration Surgery",
+    "worksFor": {
+      "@type": "MedicalClinic",
+      "name": "Ryan Clinic",
+      "url": "https://www.clinicryan.com"
+    },
+    "image": doctor.image?.startsWith("http") ? doctor.image : `https://www.clinicryan.com${doctor.image}`
+  };
+
+  const profilePageSchema = {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "@id": canonicalUrl,
+    "url": canonicalUrl,
+    "name": `${doctor.name} — Profile`,
+    "mainEntity": { "@id": `${canonicalUrl}#physician` },
+    "dateModified": dateModified
+  };
+
+  const medicalClinicSchema = {
+    "@context": "https://schema.org",
+    "@type": "MedicalClinic",
+    "@id": "https://www.clinicryan.com/#clinic",
+    "name": "Ryan Clinic",
+    "url": "https://www.clinicryan.com",
+    "telephone": clinicPhone,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": clinicAddressLine,
+      "addressLocality": clinicCity,
+      "addressRegion": "Delhi",
+      "addressCountry": "IN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 28.6987,
+      "longitude": 77.1352
+    }
+  };
+
+  const faqSchemaData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map((f) => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": f.a
+      }
+    }))
+  };
+
+  const breadcrumbSchemaData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.clinicryan.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Doctors",
+        "item": "https://www.clinicryan.com/doctors"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": doctor.name,
+        "item": canonicalUrl
+      }
+    ]
+  };
+
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://www.clinicryan.com/#organization",
+    "name": "Ryan Clinic",
+    "url": "https://www.clinicryan.com",
+    "logo": "https://www.clinicryan.com/uploads/logo.png"
+  };
+
+  const jsonLdSchemas = [
+    physicianSchema,
+    profilePageSchema,
+    medicalClinicSchema,
+    faqSchemaData,
+    breadcrumbSchemaData,
+    organizationSchema
+  ];
+
+  const bannerStats = [
+    doctor.experience ? { value: doctor.experience, label: "Experience" } : null,
+    doctor.proceduresCount ? { value: `${doctor.proceduresCount.toLocaleString()}+`, label: "Procedures" } : null,
+    doctor.rating ? { value: `${doctor.rating}★`, label: "Google Rating" } : null,
+  ].filter(Boolean);
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdSchemas) }}
+      />
       <PageBanner
         breadcrumb={`Doctors / ${doctor.name}`}
         title={bannerTitle}
         description={bannerDesc}
         bgImage={bannerImage}
         alt={bannerAlt}
+        stats={bannerStats}
       />
       <DoctorsPageClient
         data={{
@@ -434,6 +558,8 @@ export default async function DoctorPage({ params }) {
           visitClinic: doctor.visitClinic || null,
           consultation: doctor.consultation || null,
           faqSection: doctor.faq || null,
+          keyFacts: doctor.keyFacts || null,
+          medicalReviewer: doctor.medicalReviewer || null,
         }}
       />
     </>

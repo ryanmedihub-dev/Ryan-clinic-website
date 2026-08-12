@@ -31,6 +31,12 @@ export async function generateMetadata({ params }) {
   const heroImage = page.hero?.heroImage?.image ?? "";
   const ogImage = seo.openGraphImage?.image || heroImage;
 
+  // Ensure canonical URL always uses the /surgery/${slug} architecture
+  const canonicalUrl =
+    seo.canonicalUrl && seo.canonicalUrl.includes("/surgery/")
+      ? seo.canonicalUrl
+      : `https://www.clinicryan.com/surgery/${slug}`;
+
   // keywords is stored as a comma-separated string in the schema
   const keywords = seo.keywords
     ? seo.keywords.split(",").map((k) => k.trim()).filter(Boolean)
@@ -48,13 +54,13 @@ export async function generateMetadata({ params }) {
     description: seo.metaDescription || "",
     keywords,
     alternates: {
-      canonical: seo.canonicalUrl || `https://www.clinicryan.com/surgery/${slug}`,
+      canonical: canonicalUrl,
     },
     robots,
     openGraph: {
       title: seo.metaTitle || page.pageName,
       description: seo.metaDescription || "",
-      url: seo.canonicalUrl || `https://www.clinicryan.com/surgery/${slug}`,
+      url: canonicalUrl,
       siteName: "Ryan Clinic",
       locale: "en_IN",
       type: "website",
@@ -81,5 +87,137 @@ export default async function SurgeryPage({ params }) {
     notFound();
   }
 
-  return <SurgeryPageClient data={page} />;
-}
+  const canonicalUrl =
+    page.seo?.canonicalUrl && page.seo.canonicalUrl.includes("/surgery/")
+      ? page.seo.canonicalUrl
+      : `https://www.clinicryan.com/surgery/${slug}`;
+
+  const cityName = page.city || (page.pageName?.includes("Mumbai") ? "Mumbai" : "Delhi");
+
+  const lastModifiedDate = page.updatedAt
+    ? new Date(page.updatedAt).toISOString().split("T")[0]
+    : "2026-08-11";
+
+  // Schema.org Data
+  const medicalWebPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    "name": page.seo?.metaTitle || page.pageName,
+    "description": page.seo?.metaDescription || "",
+    "url": canonicalUrl,
+    "lastReviewed": lastModifiedDate,
+    "reviewedBy": {
+      "@type": "Person",
+      "name": "Dr. Pranendra Singh",
+      "jobTitle": "Plastic & Reconstructive Surgeon",
+      "identifier": "DMC-68492"
+    }
+  };
+
+  const medicalProcedureSchema = {
+    "@context": "https://schema.org",
+    "@type": "MedicalProcedure",
+    "name": "Hair Transplant Surgery",
+    "procedureType": "SurgicalProcedure",
+    "description": "Doctor-led Sapphire FUE & DHI hair transplant surgery in a sterile OT under local anaesthesia.",
+    "relevantSpecialty": {
+      "@type": "MedicalSpecialty",
+      "name": "PlasticSurgery"
+    }
+  };
+
+  const physicianSchema = {
+    "@context": "https://schema.org",
+    "@type": "Physician",
+    "name": "Dr. Pranendra Singh",
+    "medicalSpecialty": "PlasticSurgery",
+    "identifier": "DMC-68492",
+    "description": "Senior Consultant Plastic & Reconstructive Surgeon specializing in Hair Transplant Surgery."
+  };
+
+  const clinicSchema = {
+    "@context": "https://schema.org",
+    "@type": "MedicalClinic",
+    "name": "Ryan Clinic",
+    "url": "https://www.clinicryan.com",
+    "logo": "https://www.clinicryan.com/uploads/logo.png",
+    "telephone": "+91-9911111247",
+    "email": "info@clinicryan.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": cityName,
+      "addressCountry": "IN"
+    }
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.clinicryan.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Hair Transplant Surgery",
+        "item": "https://www.clinicryan.com/surgery"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": page.pageName,
+        "item": canonicalUrl
+      }
+    ]
+  };
+
+  const faqs = page.faq?.faqs || [];
+  const faqSchema = faqs.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(f => ({
+      "@type": "Question",
+      "name": f.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": f.answer
+      }
+    }))
+  } : null;
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalWebPageSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalProcedureSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(physicianSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(clinicSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
+      <SurgeryPageClient data={page} />
+    </>
+  );
+}

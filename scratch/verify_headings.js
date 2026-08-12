@@ -1,37 +1,66 @@
-const fs = require("fs");
+import { DBConnection } from "../src/lib/db.js";
+import CostPage from "../src/models/CostPage.js";
 
-const mandatoryHeadings = [
-    "Best Hair Transplant Surgeon in Delhi",
-    "Why Surgical Skill Matters for Your Hair Transplant",
-    "What Makes a Qualified Hair Transplant Surgeon?",
-    "Why Choose Dr. Pranendra Singh as Your Hair Transplant Surgeon in Delhi?",
-    "The Role of the Surgeon in Every Step of Your Hair Transplant",
-    "Hair Transplant Surgeon vs Technician: Why Doctor-Led Surgery Matters",
-    "Experience and Specialization: What to Look for in a Hair Transplant Doctor",
-    "How to Evaluate a Surgeon's Hair Transplant Skill and Results",
-    "Hairline Artistry and Natural Density Design",
-    "Revision and Repair Hair Transplants by an Experienced Surgeon",
-    "Hair Transplant Surgeon Consultation and Cost in Delhi",
-    "Questions to Ask Your Hair Transplant Surgeon Before Booking",
-    "Red Flags When Choosing a Hair Transplant Surgeon in Delhi",
-    "Procedures Offered by Our Lead Hair Transplant Surgeon",
-    "Visit Our Hair Transplant Surgeon in Delhi",
-    "Frequently Asked Questions About Hair Transplant Surgeons in Delhi"
-];
+async function verifyHeadings() {
+  await DBConnection();
+  const doc = await CostPage.findOne({ slug: 'fue-hair-transplant-cost-in-delhi' }).lean();
 
-const html = fs.readFileSync("scratch/err.html", "utf8");
+  const headingsToTest = [
+    { type: 'H1', text: doc.hero?.title },
+    { type: 'H2 #1', text: doc.intro?.heading },
+    { type: 'H2 #2', text: doc.pricingOptions?.heading },
+    { type: 'H2 #3', text: doc.graftPricing?.heading },
+    { type: 'H2 #4', text: doc.includedSection?.heading },
+    { type: 'H2 #5', text: doc.priceFactors?.heading },
+    { type: 'H2 #6', text: doc.techniqueComparison?.heading },
+    { type: 'H2 #7', text: doc.contentSections?.find(s => s.sectionKey === 'fue-vs-fut')?.heading },
+    { type: 'H2 #8', text: doc.contentSections?.find(s => s.sectionKey === 'delhi-vs-turkey')?.heading },
+    { type: 'H2 #9', text: doc.contentSections?.find(s => s.sectionKey === 'cheap-fue-risks')?.heading },
+    { type: 'H2 #10', text: doc.priceFactors?.emiHeading },
+    { type: 'H2 #11', text: doc.pricing?.heading },
+    { type: 'H2 #12', text: doc.contentSections?.find(s => s.sectionKey === 'why-ryan-worth-it')?.heading },
+    { type: 'H2 #13', text: doc.mythsFacts?.heading },
+    { type: 'H2 #14', text: doc.visitClinic?.heading },
+    { type: 'H2 #15', text: doc.consultation?.heading },
+    { type: 'H2 #16', text: doc.faq?.heading },
+  ];
 
-console.log("--- MANDATORY SEO HEADINGS AUDIT ---");
-let passCount = 0;
+  const expectedHeadings = [
+    { type: 'H1', text: 'Best FUE Hair Transplant Cost in Delhi' },
+    { type: 'H2 #1', text: 'How much does FUE hair transplant cost in Delhi?' },
+    { type: 'H2 #2', text: 'FUE hair transplant cost per graft in Delhi' },
+    { type: 'H2 #3', text: 'FUE hair transplant cost by graft count in Delhi' },
+    { type: 'H2 #4', text: "What's included in FUE hair transplant cost in Delhi" },
+    { type: 'H2 #5', text: 'What affects FUE hair transplant cost and price in Delhi' },
+    { type: 'H2 #6', text: 'FUE vs Sapphire FUE vs THT cost in Delhi' },
+    { type: 'H2 #7', text: 'FUE vs FUT cost in Delhi' },
+    { type: 'H2 #8', text: 'FUE hair transplant cost in Delhi vs Turkey' },
+    { type: 'H2 #9', text: 'Is a cheap FUE hair transplant in Delhi worth it?' },
+    { type: 'H2 #10', text: 'EMI and payment options for FUE hair transplant in Delhi' },
+    { type: 'H2 #11', text: 'Ryan Clinic FUE hair transplant cost in Delhi (transparent pricing)' },
+    { type: 'H2 #12', text: 'Why our FUE hair transplant cost in Delhi is worth it' },
+    { type: 'H2 #13', text: 'Myths vs facts about FUE hair transplant cost in Delhi' },
+    { type: 'H2 #14', text: 'Visiting Ryan Clinic for FUE hair transplant in Delhi' },
+    { type: 'H2 #15', text: 'Get your FUE hair transplant cost quote in Delhi' },
+    { type: 'H2 #16', text: 'FUE hair transplant cost in Delhi — frequently asked questions' },
+  ];
 
-mandatoryHeadings.forEach((heading, idx) => {
-    const exists = html.includes(heading);
-    if (exists) {
-        console.log(`[PASS] Heading ${idx + 1}: "${heading}"`);
-        passCount++;
-    } else {
-        console.log(`[FAIL] Heading ${idx + 1}: "${heading}"`);
-    }
-});
+  let allPass = true;
+  console.log("==================================================");
+  console.log("HEADING ALIGNMENT AUDIT REPORT");
+  console.log("==================================================");
+  for (let i = 0; i < expectedHeadings.length; i++) {
+    const exp = expectedHeadings[i];
+    const got = headingsToTest[i]?.text;
+    const pass = exp.text === got;
+    if (!pass) allPass = false;
+    console.log(`[${pass ? 'PASS' : 'FAIL'}] ${exp.type}:\n  Expected: "${exp.text}"\n  Got:      "${got}"`);
+  }
 
-console.log(`\nResult: ${passCount} / ${mandatoryHeadings.length} Headings Verified.`);
+  console.log("==================================================");
+  console.log('OVERALL RESULT:', allPass ? 'PASS - ALL 17 HEADINGS MATCH VERBATIM (1 H1 + 16 H2s)' : 'FAIL - MISMATCH FOUND');
+  console.log("==================================================");
+  process.exit(allPass ? 0 : 1);
+}
+
+verifyHeadings();

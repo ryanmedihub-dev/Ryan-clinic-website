@@ -5,6 +5,7 @@ import statSchema from "./schemas/statSchema.js";
 import breadcrumbSchema from "./schemas/breadcrumbSchema.js";
 import cardSchema from "./schemas/cardSchema.js";
 import faqSchema from "./schemas/faqSchema.js";
+import doctorQuestionSchema from "./schemas/doctorQuestionSchema.js";
 import timelineStepSchema from "./schemas/timelineStepSchema.js";
 import credentialTabSchema from "./schemas/credentialTabSchema.js";
 import contactCardSchema from "./schemas/contactCardSchema.js";
@@ -268,10 +269,28 @@ const doctorSchema = new mongoose.Schema(
       heading: { type: String, trim: true, default: "" },
       description: { type: String, trim: true, default: "" },
       questions: {
-        type: [faqSchema],
+        type: [doctorQuestionSchema],
         default: [],
       },
       ctaCard: { type: bottomCtaSchema, default: () => ({}) },
+    },
+
+    /* ── Key Facts & Medical Reviewer ── */
+    keyFacts: {
+      qualifications: { type: String, trim: true, default: "" },
+      registration: { type: String, trim: true, default: "" },
+      specialisation: { type: String, trim: true, default: "" },
+      experience: { type: String, trim: true, default: "" },
+      procedures: { type: String, trim: true, default: "" },
+      memberships: { type: String, trim: true, default: "" },
+      location: { type: String, trim: true, default: "" },
+      consultation: { type: String, trim: true, default: "" },
+    },
+    medicalReviewer: {
+      isVerified: { type: Boolean, default: false },
+      reviewerName: { type: String, trim: true, default: "" },
+      qualifications: { type: String, trim: true, default: "" },
+      registration: { type: String, trim: true, default: "" },
     },
 
     /* ── 13. Great Doctor Qualities ── */

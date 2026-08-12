@@ -1,5 +1,9 @@
 "use client";
 
+import { ShieldCheck } from "lucide-react";
+import SectionCard from "../shared/SectionCard";
+import { Field, inputCls, textareaCls, AddButton, ItemCard } from "../shared/CostFormUI";
+
 export default function MythsFactsSection({
   formData,
   updateField,
@@ -10,112 +14,97 @@ export default function MythsFactsSection({
   const mf = formData.mythsFacts || {};
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-2xl font-bold underline mt-10 mb-5">Myths vs Facts</h3>
-      <p className="text-sm text-gray-500 mb-4">
-        Each pair contains a common myth and the corresponding fact. Use only content from the approved marketing brief.
-      </p>
-
-      <div className="flex gap-6 flex-col md:flex-row">
-        <div className="w-full">
-          <label className="block text-sm font-semibold text-gray-700">Section Badge</label>
+    <SectionCard
+      icon={ShieldCheck}
+      title="13. Myths vs Facts"
+      subtitle="Common misconceptions paired with medically accurate facts — use only approved marketing content"
+    >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <Field label="Section Badge">
           <input
             type="text"
             value={mf.badge || ""}
             onChange={(e) => updateField("mythsFacts.badge", e.target.value)}
-            className="w-full mt-2 p-2 border rounded-md"
+            className={inputCls}
             placeholder="e.g. Common Misconceptions"
           />
-        </div>
-        <div className="w-full">
-          <label className="block text-sm font-semibold text-gray-700">Section Heading</label>
+        </Field>
+        <Field label="Section Heading">
           <input
             type="text"
             value={mf.heading || ""}
             onChange={(e) => updateField("mythsFacts.heading", e.target.value)}
-            className="w-full mt-2 p-2 border rounded-md"
-            placeholder="e.g. Myths vs facts about PRP cost in Delhi"
+            className={inputCls}
+            placeholder="e.g. Myths vs Facts about PRP Cost"
           />
-        </div>
+        </Field>
       </div>
 
-      <div>
-        <label className="block text-sm font-semibold text-gray-700">Section Description</label>
+      <Field label="Section Description" subtitle="optional intro paragraph">
         <textarea
           rows={2}
           value={mf.description || ""}
           onChange={(e) => updateField("mythsFacts.description", e.target.value)}
-          className="w-full mt-2 p-2 border rounded-md"
+          className={textareaCls}
           placeholder="Optional intro paragraph..."
         />
+      </Field>
+
+      <div className="pt-2 border-t border-gray-100 space-y-3">
+        <div className="flex justify-between items-center">
+          <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+            Myth / Fact Pairs ({(mf.pairs || []).length})
+          </label>
+          <AddButton
+            onClick={() =>
+              addItem("mythsFacts.pairs", {
+                myth: "",
+                fact: "",
+                displayOrder: (mf.pairs || []).length,
+                active: true,
+              })
+            }
+            label="Add Myth / Fact Pair"
+          />
+        </div>
+
+        {(mf.pairs || []).length === 0 ? (
+          <div className="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center">
+            <p className="text-xs text-gray-400">No myth/fact pairs added yet.</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {(mf.pairs || []).map((pair, i) => (
+              <ItemCard
+                key={i}
+                title={`Myth/Fact Pair ${i + 1}`}
+                active={pair.active}
+                onToggleActive={(val) => updateArrayItem("mythsFacts.pairs", i, "active", val)}
+                onDelete={() => removeItem("mythsFacts.pairs", i)}
+              >
+                <Field label="Myth" subtitle="the misconception">
+                  <textarea
+                    rows={2}
+                    value={pair.myth || ""}
+                    onChange={(e) => updateArrayItem("mythsFacts.pairs", i, "myth", e.target.value)}
+                    className="w-full mt-1.5 px-3.5 py-2.5 border border-red-200 rounded-xl text-sm bg-red-50/50 focus:outline-none focus:ring-2 focus:ring-red-300 focus:border-transparent transition"
+                    placeholder="e.g. PRP is too expensive for regular people"
+                  />
+                </Field>
+                <Field label="Fact" subtitle="the truth">
+                  <textarea
+                    rows={2}
+                    value={pair.fact || ""}
+                    onChange={(e) => updateArrayItem("mythsFacts.pairs", i, "fact", e.target.value)}
+                    className="w-full mt-1.5 px-3.5 py-2.5 border border-emerald-200 rounded-xl text-sm bg-emerald-50/50 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:border-transparent transition"
+                    placeholder="e.g. A full initial course costs..."
+                  />
+                </Field>
+              </ItemCard>
+            ))}
+          </div>
+        )}
       </div>
-
-      <button
-        type="button"
-        onClick={() =>
-          addItem("mythsFacts.pairs", {
-            myth: "",
-            fact: "",
-            displayOrder: (mf.pairs || []).length,
-            active: true,
-          })
-        }
-        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold text-sm transition cursor-pointer"
-      >
-        + Add Myth / Fact Pair
-      </button>
-
-      {(mf.pairs || []).length === 0 ? (
-        <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center mt-4">
-          <p className="text-gray-500 text-sm">No myth/fact pairs added yet.</p>
-        </div>
-      ) : (
-        <div className="space-y-4 mt-4">
-          {(mf.pairs || []).map((pair, i) => (
-            <div key={i} className="border rounded-xl p-5 bg-white shadow-xs space-y-3">
-              <div className="flex justify-between items-center">
-                <h5 className="font-semibold text-sm">Pair {i + 1}</h5>
-                <button
-                  type="button"
-                  onClick={() => removeItem("mythsFacts.pairs", i)}
-                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm transition cursor-pointer"
-                >
-                  Delete
-                </button>
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-red-700">Myth</label>
-                <textarea
-                  rows={2}
-                  value={pair.myth || ""}
-                  onChange={(e) => updateArrayItem("mythsFacts.pairs", i, "myth", e.target.value)}
-                  className="w-full mt-1 p-2 border border-red-200 rounded-md text-sm bg-red-50"
-                  placeholder="e.g. PRP is too expensive for regular people"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-green-700">Fact</label>
-                <textarea
-                  rows={2}
-                  value={pair.fact || ""}
-                  onChange={(e) => updateArrayItem("mythsFacts.pairs", i, "fact", e.target.value)}
-                  className="w-full mt-1 p-2 border border-green-200 rounded-md text-sm bg-green-50"
-                  placeholder="e.g. A full initial course costs..."
-                />
-              </div>
-              <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={pair.active !== false}
-                  onChange={(e) => updateArrayItem("mythsFacts.pairs", i, "active", e.target.checked)}
-                  className="w-4 h-4 text-blue-600 rounded"
-                />
-                <span>Active</span>
-              </label>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+    </SectionCard>
   );
 }

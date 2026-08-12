@@ -4,7 +4,19 @@ import Image from "next/image";
 import { Fragment } from "react";
 import useTrackCTA from "@/lib/useTrackCTA";
 
-function formatBreadcrumbs(breadcrumb, title) {
+function getBreadcrumbHref(part, isLast) {
+  if (isLast) return null;
+  const upper = part.toUpperCase();
+  if (upper === "HOME") return "/";
+  if (upper === "COST") return "/cost";
+  if (upper === "SURGERY") return "/surgery";
+  if (upper === "DOCTORS") return "/doctors";
+  if (upper === "SURGEON") return "/surgeon";
+  if (upper === "TREATMENTS") return "/treatments";
+  return null;
+}
+
+function formatBreadcrumbItems(breadcrumb, title) {
   let str = "";
   if (typeof breadcrumb === "string") {
     str = breadcrumb.trim();
@@ -19,7 +31,6 @@ function formatBreadcrumbs(breadcrumb, title) {
     str = title || "Surgery";
   }
 
-  // Split by / or >
   const parts = str
     .split(/\s*[\/>]\s*/)
     .map((p) => p.trim())
@@ -28,32 +39,33 @@ function formatBreadcrumbs(breadcrumb, title) {
   const cleanParts = [];
   for (const part of parts) {
     const upper = part.toUpperCase();
-    // Skip duplicate "HOME"
     if (upper === "HOME" && cleanParts.some((cp) => cp.toUpperCase() === "HOME")) {
       continue;
     }
-    // Skip exact consecutive duplicate
     if (cleanParts.length > 0 && cleanParts[cleanParts.length - 1].toUpperCase() === upper) {
       continue;
     }
-    // Skip 'HAIR TRANSPLANT' if 'HAIR TRANSPLANT SURGERY' is also present
     if (upper === "HAIR TRANSPLANT" && parts.some((p) => p.toUpperCase() === "HAIR TRANSPLANT SURGERY")) {
       continue;
     }
     cleanParts.push(part);
   }
 
-  // Ensure starts with HOME
   if (cleanParts.length === 0 || cleanParts[0].toUpperCase() !== "HOME") {
     cleanParts.unshift("HOME");
   }
 
-  // If only "HOME", add page title
   if (cleanParts.length === 1 && title) {
     cleanParts.push(title);
   }
 
-  return cleanParts.join(" > ").toUpperCase();
+  return cleanParts.map((part, idx) => {
+    const isLast = idx === cleanParts.length - 1;
+    return {
+      label: part.toUpperCase(),
+      href: getBreadcrumbHref(part, isLast),
+    };
+  });
 }
 
 export default function PageBanner({
@@ -63,10 +75,37 @@ export default function PageBanner({
   breadcrumbLabel,
   bgImage,
   hideBadge = false,
+  badgeText = "",
   stats,
+  city = "",
+  pageType = "hair-transplant",
+  whatsappUrl = "",
 }) {
   const trackCTA = useTrackCTA();
-  const breadcrumbText = formatBreadcrumbs(breadcrumb, title);
+  const breadcrumbItems = formatBreadcrumbItems(breadcrumb, title);
+
+  const cityName =
+    city ||
+    (title ? (title.match(/in\s+([A-Za-z\s]+?)(?:\s*[-–,|]|$)/i)?.[1]?.trim() || "") : "") ||
+    "";
+
+  const isPrp = pageType === "prp" || (title && title.toLowerCase().includes("prp"));
+
+  const defaultWaText = isPrp
+    ? (cityName
+        ? `Hi, I want a free PRP consultation in ${cityName}`
+        : "Hi, I want a free PRP consultation")
+    : (cityName
+        ? `Hi, I want a free hair transplant consultation in ${cityName}`
+        : "Hi, I want a free hair transplant consultation");
+
+  const bannerWaUrl =
+    whatsappUrl ||
+    `https://api.whatsapp.com/send?phone=+919217958539&text=${encodeURIComponent(defaultWaText)}`;
+
+  const activeBadgeText =
+    badgeText || (isPrp ? "Doctor-Led PRP Treatment" : "India's Only Turkey Sapphire FUE");
+
   return (
     <header className="relative w-full overflow-hidden">
       <div className="hidden md:block">
@@ -106,15 +145,21 @@ export default function PageBanner({
               {/* Content */}
               <div className="relative max-w-200 z-10 px-16 py-20 text-white">
                 {/* Breadcrumb */}
-                <div className="flex items-center gap-3 mb-5">
+                <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-5 text-xs uppercase tracking-widest text-white/60 font-sans">
                   <span className="w-8 h-px bg-white/40" />
-                  <p
-                    className="text-xs uppercase tracking-widest text-white/60"
-                    suppressHydrationWarning
-                  >
-                    {breadcrumbText}
-                  </p>
-                </div>
+                  {breadcrumbItems.map((item, idx) => (
+                    <Fragment key={idx}>
+                      {idx > 0 && <span className="text-white/40">&gt;</span>}
+                      {item.href ? (
+                        <a href={item.href} className="hover:text-white transition-colors underline-offset-2 hover:underline">
+                          {item.label}
+                        </a>
+                      ) : (
+                        <span className="text-white/90 font-bold">{item.label}</span>
+                      )}
+                    </Fragment>
+                  ))}
+                </nav>
 
                 {/* Title — single h1 lives only in desktop tree; mobile uses aria-hidden duplicate */}
                 <h1
@@ -130,7 +175,9 @@ export default function PageBanner({
                 {/* Buttons */}
                 <div className="flex gap-3">
                   <a
-                    href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20consultation%20in%20Delhi"
+                    href={bannerWaUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="bg-[#D32F2F] px-5 py-3 rounded-lg text-sm font-semibold hover:bg-red-700"
                     onClick={() => trackCTA({ type: "whatsapp", ctaName: "Banner WhatsApp Us", buttonLocation: "Page Banner" })}
                   >
@@ -154,7 +201,7 @@ export default function PageBanner({
               <span className="text-white text-xl">❤</span>
             </div>
           </div>
-          {stats && stats.length > 0 ? (
+          {stats && stats.length > 0 && (
             <div className="absolute bottom-6 right-20 bg-white rounded-xl shadow-xl px-6 py-4 flex gap-8 z-30">
               {stats.map((stat, i) => (
                 <div key={i} className={`text-center ${i > 0 ? "border-l border-gray-200 pl-6" : ""}`}>
@@ -163,17 +210,6 @@ export default function PageBanner({
                 </div>
               ))}
             </div>
-          ) : (
-            <div
-              className="absolute bottom-6 right-20 bg-white rounded-xl shadow-xl px-6 py-4 flex gap-8 z-30"
-              dangerouslySetInnerHTML={{
-                __html:
-                  '<div class="text-center"><p class="font-bold text-lg text-gray-800">12+</p><p class="text-xs text-gray-500">Years</p></div>' +
-                  '<div class="text-center border-l border-gray-200 pl-6"><p class="font-bold text-lg text-gray-800">10,000+</p><p class="text-xs text-gray-500">Procedures</p></div>' +
-                  '<div class="text-center border-l border-gray-200 pl-6"><p class="font-bold text-lg text-gray-800">4.9★</p><p class="text-xs text-gray-500">Google rating</p></div>' +
-                  '<div class="text-center border-l border-gray-200 pl-6"><p class="font-bold text-lg text-gray-800">0%</p><p class="text-xs text-gray-500">EMI Available</p></div>',
-              }}
-            />
           )}
         </div>
       </div>
@@ -221,15 +257,21 @@ export default function PageBanner({
         />
 
         {/* Breadcrumb — top left */}
-        <div className="absolute top-8 left-6 flex items-center gap-3 z-10">
+        <nav aria-label="Breadcrumb" className="absolute top-8 left-6 flex items-center gap-2 z-10 text-[9px] uppercase tracking-[2px] text-white/60 font-sans">
           <span className="w-5 h-px bg-white/35" />
-          <p
-            className="text-[9px] uppercase tracking-[2.5px] text-white/45"
-            suppressHydrationWarning
-          >
-            {breadcrumbText}
-          </p>
-        </div>
+          {breadcrumbItems.map((item, idx) => (
+            <Fragment key={idx}>
+              {idx > 0 && <span className="text-white/40">&gt;</span>}
+              {item.href ? (
+                <a href={item.href} className="hover:text-white transition-colors underline-offset-2 hover:underline">
+                  {item.label}
+                </a>
+              ) : (
+                <span className="text-white/90 font-bold">{item.label}</span>
+              )}
+            </Fragment>
+          ))}
+        </nav>
 
         {/* Main content — pinned to bottom */}
         <div className="absolute bottom-0 left-0 right-0 px-5 pb-6 z-10">
@@ -238,7 +280,7 @@ export default function PageBanner({
             <div className="inline-flex items-center gap-2 bg-red-800/25 border border-red-500/35 rounded-full px-3 py-1.5 mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
               <span className="text-[9px] uppercase tracking-[2px] text-red-300">
-                India&apos;s Only Turkey Sapphire FUE
+                {activeBadgeText}
               </span>
             </div>
           )}
@@ -266,7 +308,9 @@ export default function PageBanner({
           {/* CTA Buttons */}
           <div className="flex gap-3 mb-5">
             <a
-              href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20consultation%20in%20Delhi"
+              href={bannerWaUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex-1 text-center bg-[#D32F2F] py-3.5 rounded-xl text-[13px] font-semibold text-white active:scale-95 transition-transform"
               onClick={() => trackCTA({ type: "whatsapp", ctaName: "Banner WhatsApp Us", buttonLocation: "Page Banner Mobile" })}
             >
@@ -283,7 +327,7 @@ export default function PageBanner({
           </div>
 
           {/* Stats — glassmorphism strip */}
-          {stats && stats.length > 0 ? (
+          {stats && stats.length > 0 && (
             <div
               className="flex items-center rounded-2xl py-3.5"
               style={{
@@ -303,49 +347,6 @@ export default function PageBanner({
                   </div>
                 </Fragment>
               ))}
-            </div>
-          ) : (
-            <div
-              className="flex items-center rounded-2xl py-3.5"
-              style={{
-                background: "rgba(255,255,255,0.07)",
-                border: "1px solid rgba(255,255,255,0.11)",
-                backdropFilter: "blur(12px)",
-              }}
-            >
-              <div className="flex-1 text-center">
-                <p className="font-bold text-[17px] text-white leading-none mb-0.5">
-                  12+
-                </p>
-                <p className="text-[9.5px] text-white/45">Years of Experience</p>
-              </div>
-
-              <div className="w-px h-8 bg-white/15" />
-
-              <div className="flex-1 text-center">
-                <p className="font-bold text-[17px] text-white leading-none mb-0.5">
-                  10,000+
-                </p>
-                <p className="text-[9.5px] text-white/45">Procedures</p>
-              </div>
-
-              <div className="w-px h-8 bg-white/15" />
-
-              <div className="flex-1 text-center">
-                <p className="font-bold text-[17px] text-white leading-none mb-0.5">
-                  4.9★
-                </p>
-                <p className="text-[9.5px] text-white/45">Google Rating</p>
-              </div>
-
-              <div className="w-px h-8 bg-white/15" />
-
-              <div className="flex-1 text-center">
-                <p className="font-bold text-[17px] text-white leading-none mb-0.5">
-                  0%
-                </p>
-                <p className="text-[9.5px] text-white/45">EMI available</p>
-              </div>
             </div>
           )}
         </div>
