@@ -100,6 +100,16 @@ const nextConfig = {
         destination: "/surgery/hair-transplant-surgery-in-delhi",
         permanent: true,
       },
+      {
+        source: "/hair-transplant-surgery-in-mumbai",
+        destination: "/surgery/hair-transplant-surgery-in-mumbai",
+        permanent: true,
+      },
+      {
+        source: "/hair-transplant-surgery-in-hyderabad",
+        destination: "/surgery/hair-transplant-surgery-in-hyderabad",
+        permanent: true,
+      },
       // Root doctor URL redirected to dynamic CMS doctor route
       {
         source: "/hair-transplant-doctor-in-delhi",

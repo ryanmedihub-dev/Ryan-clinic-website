@@ -64,6 +64,8 @@ const initialState = {
     doctors: { heading: "", description: "", doctors: [], topButtonText: "" },
     patientResults: { heading: "", description: "", cases: [] },
     visitClinic: { heading: "", description: "", address: "", contactPhone: "", mapEmbedUrl: "", nearbyLocations: [], informationCards: [], buttonText: { text: "", link: "" } },
+    turkeyComparison: { heading: "", description: "", comparisonPoints: [], summaryBadge: "" },
+    consultation: { backgroundImage: { image: "", imageAlt: "" }, leftSide: { heading: "", description: "", contactCards: [] }, consultationFormConfig: { title: "", servicesDropdown: [], submitButtonText: { text: "", link: "" } } },
     faq: { heading: "", description: "", stats: [], faqs: [], ctaButtonText: { text: "", link: "" } },
     internalLinks: { heading: "", links: [] },
     whyChooseUs: { heading: "", description: "", points: [] },
@@ -110,6 +112,8 @@ function EditSurgeryContent() {
                         doctors: { ...initialState.doctors, ...(data.surgeryPage.doctors || {}) },
                         patientResults: { ...initialState.patientResults, ...(data.surgeryPage.patientResults || {}) },
                         visitClinic: { ...initialState.visitClinic, ...(data.surgeryPage.visitClinic || {}) },
+                        turkeyComparison: { ...initialState.turkeyComparison, ...(data.surgeryPage.turkeyComparison || {}) },
+                        consultation: { ...initialState.consultation, ...(data.surgeryPage.consultation || {}) },
                         faq: { ...initialState.faq, ...(data.surgeryPage.faq || {}) },
                         internalLinks: { ...initialState.internalLinks, ...(data.surgeryPage.internalLinks || {}) },
                         whyChooseUs: { ...initialState.whyChooseUs, ...(data.surgeryPage.whyChooseUs || {}) },
@@ -884,6 +888,107 @@ function EditSurgeryContent() {
                 <div>
                     <label className={labelCls}>Map Embed URL</label>
                     <input type="text" value={formData.visitClinic.mapEmbedUrl} onChange={(e) => handleNestedChange("visitClinic", "mapEmbedUrl", e.target.value)} className={inputCls} placeholder="https://maps.google.com/maps?..." />
+                </div>
+                <div>
+                    <label className={labelCls}>Nearby Locations (e.g. South Delhi, Gurgaon, Noida)</label>
+                    {(formData.visitClinic.nearbyLocations || []).map((loc, idx) => (
+                        <div key={idx} className="flex gap-2 mb-2 items-center">
+                            <input type="text" value={loc} onChange={(e) => { const list = [...(formData.visitClinic.nearbyLocations || [])]; list[idx] = e.target.value; setFormData((prev) => ({ ...prev, visitClinic: { ...prev.visitClinic, nearbyLocations: list } })); }} className={inputCls} />
+                            <button type="button" onClick={() => { const list = (formData.visitClinic.nearbyLocations || []).filter((_, i) => i !== idx); setFormData((prev) => ({ ...prev, visitClinic: { ...prev.visitClinic, nearbyLocations: list } })); }} className={removeBtnCls}>✕</button>
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => setFormData((prev) => ({ ...prev, visitClinic: { ...prev.visitClinic, nearbyLocations: [...(prev.visitClinic.nearbyLocations || []), ""] } }))} className={addBtnCls}>+ Add Nearby Location</button>
+                </div>
+                <div>
+                    <label className={labelCls}>Information Cards (Visit Clinic Highlights)</label>
+                    {(formData.visitClinic.informationCards || []).map((card, idx) => (
+                        <div key={idx} className="border border-gray-200 rounded p-3 mb-3 grid grid-cols-2 gap-2">
+                            <div><label className={labelCls}>Title</label><input type="text" value={card.title || ""} onChange={(e) => updateArrayItem("visitClinic", "informationCards", idx, "title", e.target.value)} className={inputCls} /></div>
+                            <div><label className={labelCls}>Icon (Clock, Calendar, ShieldCheck)</label><input type="text" value={card.icon || ""} onChange={(e) => updateArrayItem("visitClinic", "informationCards", idx, "icon", e.target.value)} className={inputCls} /></div>
+                            <div className="col-span-2"><label className={labelCls}>Description</label><input type="text" value={card.description || ""} onChange={(e) => updateArrayItem("visitClinic", "informationCards", idx, "description", e.target.value)} className={inputCls} /></div>
+                            <div className="col-span-2"><label className={labelCls}>Subtext (e.g. Free Scalp Analysis Included)</label><input type="text" value={card.subtext || ""} onChange={(e) => updateArrayItem("visitClinic", "informationCards", idx, "subtext", e.target.value)} className={inputCls} /></div>
+                            <div className="col-span-2 flex justify-end"><button type="button" onClick={() => removeFromArray("visitClinic", "informationCards", idx)} className={removeBtnCls}>✕ Remove Card</button></div>
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => addToArray("visitClinic", "informationCards", { title: "", icon: "", description: "", subtext: "" })} className={addBtnCls}>+ Add Info Card</button>
+                </div>
+
+                {/* 19b. TURKEY COMPARISON */}
+                <h3 className={sectionHeadingCls}>19b. City vs Turkey Section</h3>
+                <div className={rowCls}>
+                    <div className="w-full">
+                        <label className={labelCls}>Heading</label>
+                        <input type="text" value={formData.turkeyComparison?.heading || ""} onChange={(e) => handleNestedChange("turkeyComparison", "heading", e.target.value)} className={inputCls} placeholder="Delhi vs Turkey: is it worth travelling for a hair transplant?" />
+                    </div>
+                </div>
+                <div>
+                    <label className={labelCls}>Description</label>
+                    <textarea rows={2} value={formData.turkeyComparison?.description || ""} onChange={(e) => handleNestedChange("turkeyComparison", "description", e.target.value)} className={inputCls} />
+                </div>
+                <div>
+                    <label className={labelCls}>Comparison Points</label>
+                    {(formData.turkeyComparison?.comparisonPoints || []).map((pt, idx) => (
+                        <div key={idx} className="border border-gray-200 rounded p-3 mb-3 grid grid-cols-3 gap-2">
+                            <div><label className={labelCls}>Factor</label><input type="text" value={pt.factor || ""} onChange={(e) => updateArrayItem("turkeyComparison", "comparisonPoints", idx, "factor", e.target.value)} className={inputCls} placeholder="Surgeon Involvement" /></div>
+                            <div><label className={labelCls}>City Clinic Details</label><input type="text" value={pt.cityDetails || ""} onChange={(e) => updateArrayItem("turkeyComparison", "comparisonPoints", idx, "cityDetails", e.target.value)} className={inputCls} /></div>
+                            <div><label className={labelCls}>Turkey Clinic Details</label><input type="text" value={pt.turkeyDetails || ""} onChange={(e) => updateArrayItem("turkeyComparison", "comparisonPoints", idx, "turkeyDetails", e.target.value)} className={inputCls} /></div>
+                            <div className="col-span-3 flex justify-end"><button type="button" onClick={() => removeFromArray("turkeyComparison", "comparisonPoints", idx)} className={removeBtnCls}>✕ Remove Point</button></div>
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => addToArray("turkeyComparison", "comparisonPoints", { factor: "", cityDetails: "", turkeyDetails: "" })} className={addBtnCls}>+ Add Comparison Point</button>
+                </div>
+
+                {/* 19c. CONSULTATION */}
+                <h3 className={sectionHeadingCls}>19c. Consultation Section</h3>
+                <div>
+                    <label className={labelCls}>Background Image</label>
+                    <ImageUploader
+                        value={formData.consultation?.backgroundImage?.image || ""}
+                        onChange={(url) => setFormData((prev) => ({ ...prev, consultation: { ...prev.consultation, backgroundImage: { ...(prev.consultation?.backgroundImage || {}), image: url } } }))}
+                    />
+                </div>
+                <div className={rowCls}>
+                    <div className="w-full">
+                        <label className={labelCls}>Left Side Heading</label>
+                        <input type="text" value={formData.consultation?.leftSide?.heading || ""} onChange={(e) => setFormData((prev) => ({ ...prev, consultation: { ...prev.consultation, leftSide: { ...(prev.consultation?.leftSide || {}), heading: e.target.value } } }))} className={inputCls} />
+                    </div>
+                </div>
+                <div>
+                    <label className={labelCls}>Left Side Description</label>
+                    <textarea rows={3} value={formData.consultation?.leftSide?.description || ""} onChange={(e) => setFormData((prev) => ({ ...prev, consultation: { ...prev.consultation, leftSide: { ...(prev.consultation?.leftSide || {}), description: e.target.value } } }))} className={inputCls} />
+                </div>
+                <div>
+                    <label className={labelCls}>Contact Cards</label>
+                    {(formData.consultation?.leftSide?.contactCards || []).map((card, idx) => (
+                        <div key={idx} className="border border-gray-200 rounded p-3 mb-3 grid grid-cols-2 gap-2">
+                            <div><label className={labelCls}>Icon (emoji/text)</label><input type="text" value={card.icon || ""} onChange={(e) => { const cards = [...(formData.consultation?.leftSide?.contactCards || [])]; cards[idx] = { ...cards[idx], icon: e.target.value }; setFormData((prev) => ({ ...prev, consultation: { ...prev.consultation, leftSide: { ...(prev.consultation?.leftSide || {}), contactCards: cards } } })); }} className={inputCls} /></div>
+                            <div><label className={labelCls}>Title</label><input type="text" value={card.title || ""} onChange={(e) => { const cards = [...(formData.consultation?.leftSide?.contactCards || [])]; cards[idx] = { ...cards[idx], title: e.target.value }; setFormData((prev) => ({ ...prev, consultation: { ...prev.consultation, leftSide: { ...(prev.consultation?.leftSide || {}), contactCards: cards } } })); }} className={inputCls} /></div>
+                            <div><label className={labelCls}>Description</label><input type="text" value={card.description || ""} onChange={(e) => { const cards = [...(formData.consultation?.leftSide?.contactCards || [])]; cards[idx] = { ...cards[idx], description: e.target.value }; setFormData((prev) => ({ ...prev, consultation: { ...prev.consultation, leftSide: { ...(prev.consultation?.leftSide || {}), contactCards: cards } } })); }} className={inputCls} /></div>
+                            <div><label className={labelCls}>Link / Value</label><input type="text" value={card.link || ""} onChange={(e) => { const cards = [...(formData.consultation?.leftSide?.contactCards || [])]; cards[idx] = { ...cards[idx], link: e.target.value }; setFormData((prev) => ({ ...prev, consultation: { ...prev.consultation, leftSide: { ...(prev.consultation?.leftSide || {}), contactCards: cards } } })); }} className={inputCls} /></div>
+                            <div className="col-span-2 flex justify-end"><button type="button" className={removeBtnCls} onClick={() => { const cards = (formData.consultation?.leftSide?.contactCards || []).filter((_, i) => i !== idx); setFormData((prev) => ({ ...prev, consultation: { ...prev.consultation, leftSide: { ...(prev.consultation?.leftSide || {}), contactCards: cards } } })); }}>✕ Remove</button></div>
+                        </div>
+                    ))}
+                    <button type="button" className={addBtnCls} onClick={() => { const cards = [...(formData.consultation?.leftSide?.contactCards || []), { icon: "", title: "", description: "", link: "", ext: false }]; setFormData((prev) => ({ ...prev, consultation: { ...prev.consultation, leftSide: { ...(prev.consultation?.leftSide || {}), contactCards: cards } } })); }}>+ Add Contact Card</button>
+                </div>
+                <div className={rowCls}>
+                    <div className="w-full">
+                        <label className={labelCls}>Form Title</label>
+                        <input type="text" value={formData.consultation?.consultationFormConfig?.title || ""} onChange={(e) => setFormData((prev) => ({ ...prev, consultation: { ...prev.consultation, consultationFormConfig: { ...(prev.consultation?.consultationFormConfig || {}), title: e.target.value } } }))} className={inputCls} />
+                    </div>
+                    <div className="w-full">
+                        <label className={labelCls}>Submit Button Text</label>
+                        <input type="text" value={formData.consultation?.consultationFormConfig?.submitButtonText?.text || ""} onChange={(e) => setFormData((prev) => ({ ...prev, consultation: { ...prev.consultation, consultationFormConfig: { ...(prev.consultation?.consultationFormConfig || {}), submitButtonText: { ...(prev.consultation?.consultationFormConfig?.submitButtonText || {}), text: e.target.value } } } }))} className={inputCls} />
+                    </div>
+                </div>
+                <div>
+                    <label className={labelCls}>Services Dropdown Options (Form Dropdown)</label>
+                    {(formData.consultation?.consultationFormConfig?.servicesDropdown || []).map((srv, idx) => (
+                        <div key={idx} className="flex gap-2 mb-2 items-center">
+                            <input type="text" value={srv} onChange={(e) => { const list = [...(formData.consultation?.consultationFormConfig?.servicesDropdown || [])]; list[idx] = e.target.value; setFormData((prev) => ({ ...prev, consultation: { ...prev.consultation, consultationFormConfig: { ...(prev.consultation?.consultationFormConfig || {}), servicesDropdown: list } } })); }} className={inputCls} />
+                            <button type="button" onClick={() => { const list = (formData.consultation?.consultationFormConfig?.servicesDropdown || []).filter((_, i) => i !== idx); setFormData((prev) => ({ ...prev, consultation: { ...prev.consultation, consultationFormConfig: { ...(prev.consultation?.consultationFormConfig || {}), servicesDropdown: list } } })); }} className={removeBtnCls}>✕</button>
+                        </div>
+                    ))}
+                    <button type="button" onClick={() => setFormData((prev) => ({ ...prev, consultation: { ...prev.consultation, consultationFormConfig: { ...(prev.consultation?.consultationFormConfig || {}), servicesDropdown: [...(prev.consultation?.consultationFormConfig?.servicesDropdown || []), ""] } } }))} className={addBtnCls}>+ Add Service Option</button>
                 </div>
 
                 {/* 20. FAQs */}

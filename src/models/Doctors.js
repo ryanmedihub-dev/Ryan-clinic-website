@@ -368,6 +368,14 @@ const doctorSchema = new mongoose.Schema(
       },
       mapUrl: { type: String, trim: true, default: "" },
       contact: { type: contactSchema, default: () => ({}) },
+      nearbyLocations: {
+        type: [{ type: String, trim: true }],
+        default: [],
+      },
+      informationCards: {
+        type: [cardSchema],
+        default: [],
+      },
     },
 
     /* ── 18. Frequently Asked Questions ── */
