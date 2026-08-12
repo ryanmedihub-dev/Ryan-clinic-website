@@ -18,9 +18,21 @@ export default withAuth(
       return NextResponse.redirect(loginUrl);
     }
 
+    // Public endpoints that accept POST form submissions from visitors:
+    const isPublicWriteApi =
+      pathname.startsWith("/api/book-consult") ||
+      pathname.startsWith("/api/leads") ||
+      pathname.startsWith("/api/apply") ||
+      pathname.startsWith("/api/feedback") ||
+      pathname.startsWith("/api/send-international") ||
+      pathname.startsWith("/api/send-to-sheet") ||
+      pathname.startsWith("/api/submitInterviewForm") ||
+      pathname.startsWith("/api/razorpay") ||
+      pathname.startsWith("/api/auth");
+
     // Block unauthenticated writes to admin API routes → return 401
     const isWrite = ["POST", "PUT", "PATCH", "DELETE"].includes(req.method);
-    if (!token && isWrite) {
+    if (!token && isWrite && !isPublicWriteApi && (pathname.startsWith("/admin") || pathname.startsWith("/api/"))) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
