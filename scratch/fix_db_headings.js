@@ -1,10 +1,9 @@
+const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
-const mongoose = require('mongoose');
 
 let envPath = path.join(process.cwd(), '.env.local');
 if (!fs.existsSync(envPath)) envPath = path.join(process.cwd(), '.env');
-
 if (fs.existsSync(envPath)) {
     const envConfig = fs.readFileSync(envPath, 'utf8');
     envConfig.split('\n').forEach(line => {
@@ -17,16 +16,15 @@ if (fs.existsSync(envPath)) {
     });
 }
 
-async function checkDocs() {
-    console.log('Connecting to Mongo...');
-    const mongoUri = process.env.MONGO_URL || process.env.MONGODB_URI;
-    await mongoose.connect(mongoUri);
+async function updateHeadings() {
+    await mongoose.connect(process.env.MONGO_URL || process.env.MONGODB_URI);
     const Doctor = mongoose.models.Doctor || mongoose.model('Doctor', new mongoose.Schema({}, { strict: false }), 'doctors');
-    const docs = await Doctor.find({});
-    console.log('Total doctors in DB:', docs.length);
-    docs.forEach(d => {
-        console.log(' - ID:', d._id, '| slug:', d.slug, '| pageName:', d.pageName, '| doctorName:', d.basicInfo?.doctorName, '| city:', d.basicInfo?.city);
-    });
+    await Doctor.updateOne(
+        { slug: 'hair-transplant-doctor-in-delhi' },
+        { $set: { 'surgeonProfile.heading': 'Meet Dr. Pranendra Singh — Hair Restoration Surgeon in Delhi' } }
+    );
+    console.log('Heading updated in DB');
     await mongoose.disconnect();
 }
-checkDocs().catch(err => { console.error(err); process.exit(1); });
+
+updateHeadings().catch(console.error);

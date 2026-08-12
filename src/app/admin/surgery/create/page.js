@@ -64,6 +64,8 @@ const initialState = {
     doctors: { heading: "", description: "", doctors: [], topButtonText: "" },
     patientResults: { heading: "", description: "", cases: [] },
     visitClinic: { heading: "", description: "", address: "", contactPhone: "", mapEmbedUrl: "", nearbyLocations: [], informationCards: [], buttonText: { text: "", link: "" } },
+    turkeyComparison: { heading: "", description: "", comparisonPoints: [], summaryBadge: "" },
+    consultation: { backgroundImage: { image: "", imageAlt: "" }, leftSide: { heading: "", description: "", contactCards: [] }, consultationFormConfig: { title: "", servicesDropdown: [], submitButtonText: { text: "", link: "" } } },
     faq: { heading: "", description: "", stats: [], faqs: [], ctaButtonText: { text: "", link: "" } },
     internalLinks: { heading: "", links: [] },
     whyChooseUs: { heading: "", description: "", points: [] },

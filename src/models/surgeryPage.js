@@ -941,6 +941,30 @@ const infoCardSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
+    subtext: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+  },
+  { _id: false }
+);
+
+const turkeyComparisonPointSchema = new mongoose.Schema(
+  {
+    factor: { type: String, trim: true, default: "" },
+    cityDetails: { type: String, trim: true, default: "" },
+    turkeyDetails: { type: String, trim: true, default: "" },
+  },
+  { _id: false }
+);
+
+const turkeyComparisonSectionSchema = new mongoose.Schema(
+  {
+    heading: { type: String, trim: true, default: "" },
+    description: { type: String, trim: true, default: "" },
+    comparisonPoints: { type: [turkeyComparisonPointSchema], default: [] },
+    summaryBadge: { type: String, trim: true, default: "" },
   },
   { _id: false }
 );
@@ -1271,6 +1295,10 @@ const surgeryPageSchema = new mongoose.Schema(
     },
     visitClinic: {
       type: visitClinicSectionSchema,
+      default: () => ({}),
+    },
+    turkeyComparison: {
+      type: turkeyComparisonSectionSchema,
       default: () => ({}),
     },
     consultation: {

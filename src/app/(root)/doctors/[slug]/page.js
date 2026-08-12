@@ -391,7 +391,7 @@ export default async function DoctorPage({ params }) {
     pricingDisclaimer = doctor.pricing.disclaimer || "";
   }
 
-  const qualSuffix = (doctor.keyFacts?.qualifications || "").includes("MCh") ? ", MCh (Plastic Surgery)" : "";
+  const qualSuffix = doctor.keyFacts?.qualifications ? `, ${doctor.keyFacts.qualifications}` : "";
   const defaultHeading = `Hair Transplant Doctor in ${doctor.city || "Delhi"} — ${doctor.name}${qualSuffix}`;
   const bannerTitle = doctor.hero?.title || doctor.seo?.metaTitle || defaultHeading;
   const bannerDesc = doctor.hero?.description || `${doctor.designation} at Ryan Clinic. Experienced hair restoration specialist.`;
@@ -399,8 +399,13 @@ export default async function DoctorPage({ params }) {
   const bannerAlt = doctor.hero?.heroImage?.alt || `${doctor.name} — Ryan Clinic`;
 
   const canonicalUrl = doctor.seo?.canonicalUrl || `https://www.clinicryan.com/doctors/${slug}`;
-  const clinicCity = doctor.visitClinic?.address?.addressLocality || doctor.city || "Delhi";
-  const clinicAddressLine = doctor.visitClinic?.address?.streetAddress || "Plot No. 12, Main Road, Pitampura";
+  const clinicCity = doctor.visitClinic?.address?.addressLocality || doctor.location || doctor.city || "Delhi";
+  const cityDefaultAddresses = {
+    Delhi: "CD 163, Block CD, Dakshini Pitampura, New Delhi",
+    Mumbai: "MHADA 4 Bungalow, 168, Phase D, SV Patel Nagar, Andheri West, Mumbai",
+    Hyderabad: "2nd Floor, 8-2, 316/A/6/A, Road No. 14, Banjara Hills, Hyderabad",
+  };
+  const clinicAddressLine = doctor.visitClinic?.address?.streetAddress || doctor.basicInfo?.clinicAddress || cityDefaultAddresses[clinicCity] || cityDefaultAddresses.Delhi;
   const clinicPhone = doctor.basicInfo?.phoneNumber || doctor.visitClinic?.contact?.phone || "+91-9911111247";
   const dateModified = doctor.updatedAt ? new Date(doctor.updatedAt).toISOString() : new Date().toISOString();
 

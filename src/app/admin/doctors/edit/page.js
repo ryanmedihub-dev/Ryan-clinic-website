@@ -1389,6 +1389,114 @@ function EditDoctorContent() {
           </div>
         </div>
 
+        {/* Nearby Locations */}
+        <div className="mt-6 border-t pt-4">
+          <h4 className="text-lg font-bold text-gray-800 mb-2">Nearby Locations Served</h4>
+          <p className="text-xs text-gray-500 mb-3">Add key areas served near this clinic branch.</p>
+          {(formData.visitClinic?.nearbyLocations || []).map((loc, idx) => (
+            <div key={idx} className="flex items-center gap-2 mb-2">
+              <input
+                type="text"
+                value={loc}
+                onChange={(e) => {
+                  const list = [...(formData.visitClinic?.nearbyLocations || [])];
+                  list[idx] = e.target.value;
+                  setFormData((prev) => ({ ...prev, visitClinic: { ...prev.visitClinic, nearbyLocations: list } }));
+                  setIsDirty(true);
+                }}
+                className="w-full p-2 border rounded-md text-sm"
+                placeholder="e.g. Rohini, Pitampura, Shalimar Bagh"
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const list = (formData.visitClinic?.nearbyLocations || []).filter((_, i) => i !== idx);
+                  setFormData((prev) => ({ ...prev, visitClinic: { ...prev.visitClinic, nearbyLocations: list } }));
+                  setIsDirty(true);
+                }}
+                className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold"
+              >
+                ✕ Delete
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => {
+              setFormData((prev) => ({
+                ...prev,
+                visitClinic: {
+                  ...prev.visitClinic,
+                  nearbyLocations: [...(prev.visitClinic?.nearbyLocations || []), ""],
+                },
+              }));
+              setIsDirty(true);
+            }}
+            className="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 text-xs font-semibold mt-1"
+          >
+            + Add Nearby Location
+          </button>
+        </div>
+
+        {/* Information Cards */}
+        <div className="mt-6 border-t pt-4">
+          <h4 className="text-lg font-bold text-gray-800 mb-2">Information Cards</h4>
+          <p className="text-xs text-gray-500 mb-3">Add feature cards displayed under Visit Clinic (e.g. Metro station, Parking, Timings).</p>
+          <button
+            type="button"
+            onClick={() => addToArray("visitClinic", "informationCards", { title: "", description: "", subtext: "", icon: "" })}
+            className="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 text-xs font-semibold mb-3"
+          >
+            + Add Information Card
+          </button>
+          {(formData.visitClinic?.informationCards || []).map((card, i) => (
+            <div key={i} className="border rounded-xl p-4 bg-white shadow-sm space-y-3 mb-3">
+              <div className="flex justify-between items-center">
+                <h5 className="font-semibold text-xs text-gray-800">Card #{i + 1}</h5>
+                <button
+                  type="button"
+                  onClick={() => deleteFromArray("visitClinic", "informationCards", i)}
+                  className="bg-red-500 hover:bg-red-600 text-white px-2.5 py-1 rounded-md text-xs"
+                >
+                  Delete Card
+                </button>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700">Title</label>
+                  <input
+                    type="text"
+                    value={card.title || ""}
+                    onChange={(e) => updateArrayItem("visitClinic", "informationCards", i, "title", e.target.value)}
+                    className="w-full mt-1 p-2 border rounded-md text-xs"
+                    placeholder="e.g. Nearest Metro"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700">Description</label>
+                  <input
+                    type="text"
+                    value={card.description || ""}
+                    onChange={(e) => updateArrayItem("visitClinic", "informationCards", i, "description", e.target.value)}
+                    className="w-full mt-1 p-2 border rounded-md text-xs"
+                    placeholder="e.g. Pitampura Metro Station"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700">Subtext</label>
+                  <input
+                    type="text"
+                    value={card.subtext || ""}
+                    onChange={(e) => updateArrayItem("visitClinic", "informationCards", i, "subtext", e.target.value)}
+                    className="w-full mt-1 p-2 border rounded-md text-xs"
+                    placeholder="e.g. Red Line (5 min auto)"
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
         {/* 19. FREQUENTLY ASKED QUESTIONS */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">19. Frequently Asked Questions</h3>
         <button
