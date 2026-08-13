@@ -90,8 +90,8 @@ export default function PopupForm() {
 
   // Trigger popup 5 seconds (or configured delay) after landing or reloading any page
   useEffect(() => {
-    // Do not show popup on admin pages
-    if (pathname?.startsWith("/admin")) return;
+    // Do not show popup on admin pages or the interview form page
+    if (pathname?.startsWith("/admin") || pathname?.startsWith("/interview-form")) return;
 
     // Reset open state on page change
     setIsOpen(false);
