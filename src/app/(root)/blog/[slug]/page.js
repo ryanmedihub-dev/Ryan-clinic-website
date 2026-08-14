@@ -77,6 +77,7 @@ export default async function BlogPage({ params }) {
         <div className="containerFull">
           <div className="new-pageLayout pageLayout">
             <div
+              className="pageLayoutBox"
               dangerouslySetInnerHTML={{
                 __html: sanitizeContent(blog?.blogContent),
               }}
