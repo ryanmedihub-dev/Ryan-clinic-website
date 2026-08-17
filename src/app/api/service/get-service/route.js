@@ -1,20 +1,23 @@
-import Services from "@/models/services";
 import { NextResponse } from "next/server";
-import { withDB } from "@/lib/withDB";
+import { DBConnection } from "@/lib/db";
+import Services from "@/models/services";
 
-const handler = async () => {
-  const fulldata = await Services.find({});
+export const dynamic = "force-dynamic";
 
-  if (!fulldata) {
+export async function GET() {
+  try {
+    await DBConnection();
+    const fulldata = await Services.find({}).lean();
+
     return NextResponse.json(
-      { success: false, message: "No data found" },
-      { status: 400 }
+      { success: true, data: fulldata || [] },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("get-service API error:", error);
+    return NextResponse.json(
+      { success: false, message: error.message || "Failed to fetch services", data: [] },
+      { status: 500 }
     );
   }
-
-  return NextResponse.json({ success: true, data: fulldata }, { status: 200 });
-};
-
-
-
-export const GET = withDB(handler);
+}

@@ -26,22 +26,25 @@ const Header = () => {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
-      .then((res) => {
-        if (!res.ok) throw new Error(`API error: ${res.status}`);
+      .then(async (res) => {
+        if (!res.ok) {
+          console.warn(`Header services fetch returned status: ${res.status}`);
+          return { data: [] };
+        }
         return res.json();
       })
       .then((result) => {
-        const services = result.data || [];
+        const services = Array.isArray(result?.data) ? result.data : [];
         const toNav = (s) => ({
-          name: s.metadata.pageName,
-          href: `/${s.metadata.pageurl}`,
-          description: s.metadata.description || "",
+          name: s.metadata?.pageName || s.bannerData?.title || "",
+          href: `/${s.metadata?.pageurl || ""}`,
+          description: s.metadata?.description || s.bannerData?.description || "",
         });
         setTransplantPages(services.filter((s) => s.metadata?.pageType === "transplant").map(toNav));
         setTreatmentPages(services.filter((s) => s.metadata?.pageType === "treatment").map(toNav));
         setBranchPages(services.filter((s) => s.metadata?.pageType === "branch").map(toNav));
       })
-      .catch((err) => console.error("Header services fetch error:", err));
+      .catch((err) => console.warn("Header services fetch error:", err));
   }, []);
 
   const cardColors = [
