@@ -172,13 +172,13 @@ export default function DifferencesSection({ features: featuresOverride }) {
         {/* ── CTA ── */}
         <div className="flex flex-wrap items-center justify-center gap-3">
           <a
-            href="/fue-hair-transplant/"
+            href="/fue-hair-transplant"
             className="inline-flex items-center gap-2 border border-gray-200 hover:border-[#D32F2F] text-gray-600 hover:text-[#D32F2F] font-semibold py-3 px-6 text-sm tracking-wide transition-all rounded-xl"
           >
             About FUE →
           </a>
           <a
-            href="/fut-hair-transplant-delhi/"
+            href="/blog/hair-transplant-techniques"
             className="inline-flex items-center gap-2 border border-gray-200 hover:border-[#D32F2F] text-gray-600 hover:text-[#D32F2F] font-semibold py-3 px-6 text-sm tracking-wide transition-all rounded-xl"
           >
             About FUT →

@@ -2323,10 +2323,10 @@ export default function SurgeryPageClient({ data }) {
               <span>Book at a Doctor-Led Clinic →</span>
             </a>
             <a
-              href="/blog/doctor-led-vs-technician-hair-transplant"
+              href="/doctors"
               className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-bold px-7 py-4 rounded-2xl transition-all border border-gray-200"
             >
-              <span>Doctor vs Technician Guide →</span>
+              <span>Meet Our Doctors →</span>
             </a>
           </div>
 

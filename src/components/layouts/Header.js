@@ -121,7 +121,7 @@ const Header = () => {
           <Link href="/" className="flex items-center">
             <Image
               src={Logo}  
-              alt="Ryan Clinic"
+              alt="Ryan Clinic — Turkey Sapphire FUE Hair Transplant"
               width={160}
               height={40}
               className="w-28 md:w-40 object-contain"

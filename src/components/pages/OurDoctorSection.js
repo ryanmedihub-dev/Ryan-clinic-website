@@ -201,10 +201,10 @@ export default function OurDoctorSection({ city = "Delhi", doctor }) {
                 Book Consultation with {name}
               </a>
               <a
-                href="/about/dr-pranendra-singh/"
+                href="/doctors"
                 className="inline-flex items-center justify-center gap-2 border border-gray-200 hover:border-[#D32F2F] text-gray-600 hover:text-[#D32F2F] font-semibold py-4 px-6 text-sm tracking-wide transition-all rounded-xl"
               >
-                Full Profile →
+                View Doctors →
               </a>
             </div>
           </div>

@@ -74,6 +74,8 @@ export default function PageBanner({
   description,
   breadcrumbLabel,
   bgImage,
+  imageAlt,
+  alt,
   hideBadge = false,
   badgeText = "",
   stats,
@@ -86,7 +88,9 @@ export default function PageBanner({
 
   const cityName =
     city ||
-    (title ? (title.match(/in\s+([A-Za-z\s]+?)(?:\s*[-–,|]|$)/i)?.[1]?.trim() || "") : "") ||
+    (typeof breadcrumb === "string" && breadcrumb.includes(">")
+      ? breadcrumb.split(">").pop().trim()
+      : "") ||
     "";
 
   const isPrp = pageType === "prp" || (title && title.toLowerCase().includes("prp"));
@@ -106,6 +110,11 @@ export default function PageBanner({
   const activeBadgeText =
     badgeText || (isPrp ? "Doctor-Led PRP Treatment" : "India's Only Turkey Sapphire FUE");
 
+  const computedAlt =
+    imageAlt ||
+    alt ||
+    (title ? `${title} — Ryan Clinic Hair Restoration` : "Ryan Clinic Turkey Sapphire FUE Hair Restoration Procedure");
+
   return (
     <header className="relative w-full overflow-hidden">
       <div className="hidden md:block">
@@ -114,7 +123,7 @@ export default function PageBanner({
           <div className="absolute right-0 top-0 h-full w-[49%]">
             <Image
               src={bgImage || "/uploads/banner.jpg"}
-              alt="Banner background"
+              alt={computedAlt}
               fill
               className="object-cover object-center"
               unoptimized

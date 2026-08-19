@@ -179,7 +179,7 @@ export function SplitCTA() {
             </div>
 
             <Link
-              href="/results"
+              href="/gallery"
               className="inline-flex items-center justify-center gap-2 border border-gray-700 hover:border-[#FFC107] text-gray-300 hover:text-[#FFC107] font-semibold py-3.5 px-5 text-sm tracking-wide transition-all rounded-xl w-full"
             >
               View All Patient Results →

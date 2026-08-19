@@ -326,7 +326,7 @@ export default function HairFallPageClient({ data }) {
                 <div className="lg:w-[45%] relative min-h-[280px]">
                   <Image
                     src={c.cardImage?.image || "/uploads/turkey-doctor.jpg"}
-                    alt={c.cardImage?.imageAlt || c.title}
+                    alt={c.cardImage?.imageAlt || c.title || "Hair loss diagnosis and clinical treatment — Ryan Clinic"}
                     fill
                     className="object-cover"
                     unoptimized
@@ -585,7 +585,7 @@ export default function HairFallPageClient({ data }) {
                       <div className="relative h-44">
                         <Image
                           src={t.treatmentImage.image}
-                          alt={t.treatmentImage.imageAlt || t.title}
+                          alt={t.treatmentImage.imageAlt || t.title || "Clinical hair restoration treatment — Ryan Clinic"}
                           fill
                           className="object-cover"
                           unoptimized
@@ -902,6 +902,7 @@ export default function HairFallPageClient({ data }) {
                 whyChoose.backgroundImage?.image || "/uploads/turkey-doctor.jpg"
               }
               alt=""
+              aria-hidden="true"
               fill
               className="object-cover"
               unoptimized
@@ -1158,6 +1159,7 @@ export default function HairFallPageClient({ data }) {
                 "/uploads/1752746168716-PRP 1.jpg"
               }
               alt=""
+              aria-hidden="true"
               fill
               className="object-cover"
               unoptimized

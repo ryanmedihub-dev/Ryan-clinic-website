@@ -2,7 +2,15 @@
 
 import { useState, useEffect } from 'react';
 
-export default function ImageUploader({ onUpload, onChange, initialImage, value }) {
+export default function ImageUploader({
+  onUpload,
+  onChange,
+  initialImage,
+  value,
+  altValue,
+  onAltChange,
+  altPlaceholder,
+}) {
   const getUrl = (val) => {
     if (!val) return '';
     if (typeof val === 'string') return val;
@@ -98,6 +106,21 @@ export default function ImageUploader({ onUpload, onChange, initialImage, value 
           className="w-full text-xs p-2 border rounded-md"
         />
       </div>
+
+      {onAltChange && (
+        <div>
+          <label className="block text-xs font-semibold text-gray-700 mb-1">
+            Image Alt Text (Accessibility & SEO)
+          </label>
+          <input
+            type="text"
+            placeholder={altPlaceholder || "Descriptive alt text for image..."}
+            value={altValue || ""}
+            onChange={(e) => onAltChange(e.target.value)}
+            className="w-full text-xs p-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-blue-500"
+          />
+        </div>
+      )}
 
       {imageURL && (
         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200">
