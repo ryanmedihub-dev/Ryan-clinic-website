@@ -8,8 +8,10 @@ import SurgeryPageClient from "@/components/surgery/SurgeryPageClient";
 
 const getSurgeryPage = cache(async (slug) => {
   await DBConnection();
+  const cleanSlug = decodeURIComponent(slug).toLowerCase().trim();
+  const escaped = cleanSlug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const page = await SurgeryPageModel.findOne({
-    slug,
+    slug: { $regex: new RegExp(`^${escaped}$`, "i") },
     isDeleted: { $ne: true },
     status: { $ne: "draft" },
   }).lean();

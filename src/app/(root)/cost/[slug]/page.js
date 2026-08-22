@@ -77,9 +77,10 @@ function getCityDefaults(cityName) {
 
 const getCostPageBySlug = cache(async (slug) => {
   await DBConnection();
+  const cleanSlug = decodeURIComponent(slug).toLowerCase().trim();
+  const escaped = cleanSlug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const page = await CostPage.findOne({
-    slug,
-    "settings.status": "published",
+    slug: { $regex: new RegExp(`^${escaped}$`, "i") },
     "settings.isDeleted": { $ne: true },
   }).lean();
   if (!page) return null;

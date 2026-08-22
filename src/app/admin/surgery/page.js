@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import AdminHeader from "@/components/admin/adminHeader";
 import ToastContainer from "@/components/admin/Toast";
 import StatusBadge from "@/components/admin/surgeon/StatusBadge";
@@ -38,11 +39,14 @@ function formatDate(dateStr) {
 }
 
 export default function SurgeryListingPage() {
+    const router = useRouter();
     const toast = useToast();
     const [surgeryPages, setSurgeryPages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [deletingId, setDeletingId] = useState(null);
     const [confirmId, setConfirmId] = useState(null);
+    const [duplicatingId, setDuplicatingId] = useState(null);
+    const [confirmDuplicatePage, setConfirmDuplicatePage] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
 
     const fetchSurgeryPages = useCallback(async () => {
@@ -62,6 +66,35 @@ export default function SurgeryListingPage() {
             setLoading(false);
         }
     }, []);
+
+    const handleDuplicate = async (page) => {
+        if (!page) return;
+        setDuplicatingId(page._id);
+        try {
+            const response = await fetch("/api/surgery/duplicate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: page._id }),
+            });
+            const data = await response.json();
+            if (response.ok && data.success) {
+                toast.success("Duplicated", "Page duplicated successfully as draft.");
+                setConfirmDuplicatePage(null);
+                if (data.data?.editUrl) {
+                    router.push(data.data.editUrl);
+                } else {
+                    fetchSurgeryPages();
+                }
+            } else {
+                toast.error("Error", data.message || "Failed to duplicate surgery page.");
+            }
+        } catch (error) {
+            console.error("Duplicate error:", error);
+            toast.error("Error", "An error occurred while duplicating the page.");
+        } finally {
+            setDuplicatingId(null);
+        }
+    };
 
     const handleDelete = async (id) => {
         setDeletingId(id);
@@ -103,6 +136,43 @@ export default function SurgeryListingPage() {
     return (
         <>
             <ToastContainer toasts={toast.toasts} removeToast={toast.remove} />
+
+            {/* ── Confirm Duplicate Modal ───────────────────────────────── */}
+            {confirmDuplicatePage && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                    <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full mx-4 border border-gray-200">
+                        <div className="flex flex-col items-center text-center gap-4">
+                            <div className="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center">
+                                <svg className="w-7 h-7 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-bold text-gray-900">Duplicate Surgery Page?</h3>
+                                <p className="text-sm text-gray-500 mt-1">
+                                    A new draft copy of <span className="font-semibold text-gray-700">"{confirmDuplicatePage.pageName}"</span> will be created with a unique slug.
+                                </p>
+                            </div>
+                            <div className="flex gap-3 w-full mt-2">
+                                <button
+                                    onClick={() => setConfirmDuplicatePage(null)}
+                                    disabled={duplicatingId === confirmDuplicatePage._id}
+                                    className="flex-1 px-4 py-2 border border-gray-300 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-60 cursor-pointer"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={() => handleDuplicate(confirmDuplicatePage)}
+                                    disabled={duplicatingId === confirmDuplicatePage._id}
+                                    className="flex-1 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-sm font-semibold transition-colors disabled:opacity-60 cursor-pointer"
+                                >
+                                    {duplicatingId === confirmDuplicatePage._id ? "Duplicating…" : "Duplicate"}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* ── Confirm Delete Modal ──────────────────────────────────── */}
             {confirmId && (
@@ -213,7 +283,7 @@ export default function SurgeryListingPage() {
                                         <th className="text-left px-5 py-3.5 font-semibold text-gray-600 text-xs uppercase tracking-wide w-28">City</th>
                                         <th className="text-left px-5 py-3.5 font-semibold text-gray-600 text-xs uppercase tracking-wide w-28">Status</th>
                                         <th className="text-left px-5 py-3.5 font-semibold text-gray-600 text-xs uppercase tracking-wide w-28">Created</th>
-                                        <th className="text-left px-5 py-3.5 font-semibold text-gray-600 text-xs uppercase tracking-wide w-48">Actions</th>
+                                        <th className="text-left px-5 py-3.5 font-semibold text-gray-600 text-xs uppercase tracking-wide w-64">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-50">
@@ -270,6 +340,17 @@ export default function SurgeryListingPage() {
                                                         </svg>
                                                         Edit
                                                     </Link>
+                                                    <button
+                                                        onClick={() => setConfirmDuplicatePage(page)}
+                                                        disabled={duplicatingId === page._id}
+                                                        className="inline-flex items-center gap-1 text-xs font-semibold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 px-2.5 py-1.5 rounded-lg transition-colors disabled:opacity-50 cursor-pointer"
+                                                        title="Duplicate this page"
+                                                    >
+                                                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                                        </svg>
+                                                        {duplicatingId === page._id ? "Duplicating…" : "Duplicate"}
+                                                    </button>
                                                     <button
                                                         onClick={() => setConfirmId(page._id)}
                                                         disabled={deletingId === page._id}

@@ -38,11 +38,12 @@ function normalizeDoctor(dbDoc) {
 
 const getDoctorData = cache(async (slug) => {
   try {
-    const cleanSlug = slug.toLowerCase().trim();
+    const cleanSlug = decodeURIComponent(slug).toLowerCase().trim();
+    const escaped = cleanSlug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
     await DBConnection();
     const dbDoctor = await Doctor.findOne({
-      slug: cleanSlug,
+      slug: { $regex: new RegExp(`^${escaped}$`, "i") },
       $or: [{ deletedAt: null }, { deletedAt: { $exists: false } }],
     }).lean();
 
