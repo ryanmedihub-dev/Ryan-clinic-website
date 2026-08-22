@@ -283,7 +283,7 @@ export default function SurgeryListingPage() {
                                         <th className="text-left px-5 py-3.5 font-semibold text-gray-600 text-xs uppercase tracking-wide w-28">City</th>
                                         <th className="text-left px-5 py-3.5 font-semibold text-gray-600 text-xs uppercase tracking-wide w-28">Status</th>
                                         <th className="text-left px-5 py-3.5 font-semibold text-gray-600 text-xs uppercase tracking-wide w-28">Created</th>
-                                        <th className="text-left px-5 py-3.5 font-semibold text-gray-600 text-xs uppercase tracking-wide w-64">Actions</th>
+                                        <th className="text-left px-5 py-3.5 font-semibold text-gray-600 text-xs uppercase tracking-wide min-w-[280px]">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-50">
@@ -318,7 +318,7 @@ export default function SurgeryListingPage() {
                                                 </span>
                                             </td>
                                             <td className="px-5 py-4">
-                                                <div className="flex items-center gap-2">
+                                                <div className="flex items-center gap-2 flex-wrap">
                                                     <Link
                                                         href={`/surgery/${page.slug}`}
                                                         target="_blank"
