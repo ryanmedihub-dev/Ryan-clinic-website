@@ -26,7 +26,6 @@ const nextConfig = {
     return config;
   },
 
-
   images: {
     formats: ["image/webp"],
     minimumCacheTTL: 86400,
@@ -77,15 +76,83 @@ const nextConfig = {
 
   async redirects() {
     return [
-      // ── PHP extension cleanup ─────────────────────────────────────────
+      // ── 1. ROOT & CASE CLEANUP ────────────────────────────────────────
+      {
+        source: "/Home",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/&",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/index",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/index.php",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/costCost",
+        destination: "/cost",
+        permanent: true,
+      },
+      {
+        source: "/blogBlog",
+        destination: "/blog",
+        permanent: true,
+      },
+
+      // ── 2. PHP EXTENSION CLEANUP ──────────────────────────────────────
+      {
+        source: "/about.php",
+        destination: "/about",
+        permanent: true,
+      },
+      {
+        source: "/contact.php",
+        destination: "/contact",
+        permanent: true,
+      },
+      {
+        source: "/female-hair-transplant.php",
+        destination: "/female-hair-transplant",
+        permanent: true,
+      },
+      {
+        source: "/mumbai-branch.php",
+        destination: "/hair-transplant-in-mumbai",
+        permanent: true,
+      },
       {
         source: "/:path*.php",
         destination: "/:path*",
         permanent: true,
       },
 
-      // ── Gallery: old slugs → /gallery ─────────────────────────────────
-      // VERIFIED: /gallery returns 200. Both are semantic equivalents of the gallery page.
+      // ── 3. TYPOS & MISSPELLED URLS ────────────────────────────────────
+      {
+        source: "/book-appoinent",
+        destination: "/book-appointment",
+        permanent: true,
+      },
+      {
+        source: "/hair-transplant-in-banglore",
+        destination: "/hair-transplant-in-bangalore",
+        permanent: true,
+      },
+      {
+        source: "/blog/hair-trnasplant-in-patna",
+        destination: "/hair-transplant-in-patna",
+        permanent: true,
+      },
+
+      // ── 4. GALLERY & RESULTS URLS ─────────────────────────────────────
       {
         source: "/results",
         destination: "/gallery",
@@ -96,37 +163,76 @@ const nextConfig = {
         destination: "/gallery",
         permanent: true,
       },
+      {
+        source: "/gallery/images",
+        destination: "/gallery",
+        permanent: true,
+      },
+      // Gallery city legacy URLs (all consolidate to canonical gallery)
+      {
+        source: "/gallery/hair-transplant-in-kolkata",
+        destination: "/gallery",
+        permanent: true,
+      },
+      {
+        source: "/gallery/hair-transplant-in-pune",
+        destination: "/gallery",
+        permanent: true,
+      },
+      {
+        source: "/gallery/hair-transplant-in-ahmedabad",
+        destination: "/gallery",
+        permanent: true,
+      },
+      {
+        source: "/gallery/hair-transplant-in-chennai",
+        destination: "/gallery",
+        permanent: true,
+      },
+      {
+        source: "/gallery/hair-transplant-in-patna",
+        destination: "/gallery",
+        permanent: true,
+      },
+      {
+        source: "/gallery/hair-transplant-in-jammu",
+        destination: "/gallery",
+        permanent: true,
+      },
+      {
+        source: "/gallery/hair-transplant-in-bangalore",
+        destination: "/gallery",
+        permanent: true,
+      },
+      {
+        source: "/gallery/hair-transplant-in-lucknow",
+        destination: "/gallery",
+        permanent: true,
+      },
 
-      // ── General / Treatment ───────────────────────────────────────────
-      // VERIFIED: exact slug namespace move (/treatments/... exists, returns 200)
+      // ── 5. GENERAL & TREATMENT URLS ───────────────────────────────────
       {
         source: "/hair-fall-loss-treatment-in-delhi",
         destination: "/treatments/hair-fall-loss-treatment-in-delhi",
         permanent: true,
       },
-      // VERIFIED: generic India page → homepage (no dedicated India page exists)
       {
         source: "/hair-transplant-in-india",
         destination: "/",
         permanent: true,
       },
-      // VERIFIED: no FUT-specific page exists. /fue-hair-transplant (200) is the
-      // closest treatment-level equivalent (same technique category, same section).
       {
         source: "/fut-hair-transplant-delhi",
-        destination: "/fue-hair-transplant",
+        destination: "/hair-transplant-in-delhi",
         permanent: true,
       },
-      // VERIFIED: old URL was a PRP treatment page; /prp-treatment (200) is the
-      // canonical PRP service page — same intent. NOT a cost page.
       {
         source: "/prp-hair-loss-treatment-in-mumbai",
         destination: "/prp-treatment",
         permanent: true,
       },
 
-      // ── Blog: slug encoding fix ───────────────────────────────────────
-      // VERIFIED: same article in DB — only slug encoding changed (& → and)
+      // ── 6. BLOG URLS ──────────────────────────────────────────────────
       {
         source: "/blog/smoking-:amp(amp;|%26|&)-hair-transplant",
         destination: "/blog/smoking-and-hair-transplant",
@@ -137,18 +243,18 @@ const nextConfig = {
         destination: "/blog/smoking-and-hair-transplant",
         permanent: true,
       },
-      // NOTE: /blog/doctor-led-vs-technician-hair-transplant NOT redirected.
-      // REASON: /blog/turkey-india-which-is-best is a DIFFERENT article
-      // (different DB _id, different title). The old URL never existed in DB.
-      // → intentional 404 — no content was lost, no equivalent exists.
-
-      // ── Blog: city landing pages that never existed as blog articles ───
-      // VERIFIED: None of these 8 slugs exist in the Blog collection (DB confirmed).
-      // They were thin city landing pages incorrectly placed under /blog/.
-      // The canonical city branch page is the semantically correct destination.
       {
-        source: "/blog/hair-transplant-in-patna",
-        destination: "/hair-transplant-in-patna",
+        source: "/blog/using-topical-minoxidil-benefits",
+        destination: "/blog/minoxidil-benefits-for-hair",
+        permanent: true,
+      },
+      // NOTE: /blog/doctor-led-vs-technician-hair-transplant NOT redirected
+      // (different intent from turkey-india; left as 404 per strict rules)
+
+      // Old city blog URLs → city branch pages
+      {
+        source: "/blog/hair-transplant-in-bangalore",
+        destination: "/hair-transplant-in-bangalore",
         permanent: true,
       },
       {
@@ -157,8 +263,8 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: "/blog/hair-transplant-in-lucknow",
-        destination: "/hair-transplant-in-lucknow",
+        source: "/blog/hair-transplant-in-patna",
+        destination: "/hair-transplant-in-patna",
         permanent: true,
       },
       {
@@ -167,13 +273,13 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: "/blog/hair-transplant-in-bangalore",
-        destination: "/hair-transplant-in-bangalore",
+        source: "/blog/hair-transplant-in-pune",
+        destination: "/hair-transplant-in-pune",
         permanent: true,
       },
       {
-        source: "/blog/hair-transplant-in-kolkata",
-        destination: "/hair-transplant-in-kolkata",
+        source: "/blog/hair-transplant-in-lucknow",
+        destination: "/hair-transplant-in-lucknow",
         permanent: true,
       },
       {
@@ -182,13 +288,12 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: "/blog/hair-transplant-in-pune",
-        destination: "/hair-transplant-in-pune",
+        source: "/blog/hair-transplant-in-kolkata",
+        destination: "/hair-transplant-in-kolkata",
         permanent: true,
       },
 
-      // ── Cost pages: verified slug renames ─────────────────────────────
-      // VERIFIED: same CostPage record — slug was renamed to /cost/fue-*
+      // ── 7. COST PAGES ─────────────────────────────────────────────────
       {
         source: "/hair-transplant-cost-in-delhi",
         destination: "/cost/fue-hair-transplant-cost-in-delhi",
@@ -204,14 +309,12 @@ const nextConfig = {
         destination: "/cost/fue-hair-transplant-cost-in-delhi",
         permanent: true,
       },
-      // NOTE: /cost/hair-transplant-cost-in-mumbai NOT redirected.
-      // REASON: Hair transplant cost ≠ PRP cost. Entirely different treatments.
-      // No HT cost page for Mumbai exists in DB. → intentional 404.
-
-      // ── Cost pages: cities with no CostPage → /cost listing ───────────
-      // VERIFIED: /cost returns 200. No CostPage record for any of these cities.
-      // /cost listing is semantically defensible (same section, broader scope).
-      // NOT redirected to city branch pages (cost intent ≠ branch intent).
+      {
+        source: "/cost/hair-transplant-cost-in-mumbai",
+        destination: "/hair-transplant-in-mumbai",
+        permanent: true,
+      },
+      // Non-existent city cost pages → /cost listing
       {
         source: "/cost/hair-transplant-cost-in-hyderabad",
         destination: "/cost",
@@ -258,8 +361,8 @@ const nextConfig = {
         permanent: true,
       },
 
-      // ── Surgery pages: verified canonical slug renames ─────────────────
-      // VERIFIED: these two SurgeryPage records exist in DB and return 200
+      // ── 8. SURGERY PAGES ──────────────────────────────────────────────
+      // Canonical surgery page renames
       {
         source: "/hair-transplant-surgery-in-delhi",
         destination: "/surgery/hair-transplant-surgery-in-delhi",
@@ -270,11 +373,7 @@ const nextConfig = {
         destination: "/surgery/hair-transplant-surgery-in-mumbai",
         permanent: true,
       },
-
-      // ── Surgery pages: cities with no SurgeryPage → /surgery listing ───
-      // VERIFIED: /surgery returns 200. No SurgeryPage for these cities in DB.
-      // /surgery listing is semantically appropriate: same content section.
-      // NOT redirected to city branch pages (surgery intent ≠ branch intent).
+      // Non-existent city surgery pages → /surgery listing
       {
         source: "/surgery/hair-transplant-surgery-in-hyderabad",
         destination: "/surgery",
@@ -326,14 +425,12 @@ const nextConfig = {
         permanent: true,
       },
 
-      // ── Doctor pages: verified canonical renames ───────────────────────
-      // VERIFIED: Doctor records exist in DB (not deleted) and pages return 200
+      // ── 9. DOCTOR & SURGEON PAGES ─────────────────────────────────────
       {
         source: "/hair-transplant-doctor-in-delhi",
         destination: "/doctors/hair-transplant-doctor-in-delhi",
         permanent: true,
       },
-      // VERIFIED: moved from /doctors/ namespace to /surgeon/ namespace
       {
         source: "/doctors/hair-transplant-surgeon-in-delhi",
         destination: "/surgeon/hair-transplant-surgeon-in-delhi",
@@ -344,11 +441,12 @@ const nextConfig = {
         destination: "/surgeon/hair-transplant-surgeon-in-delhi",
         permanent: true,
       },
-
-      // ── Doctor pages: cities with no Doctor record → /doctors listing ──
-      // VERIFIED: /doctors returns 200. No active Doctor record for these cities.
-      // /doctors listing is semantically defensible (same section, broader scope).
-      // NOT redirected to city branch pages (doctor intent ≠ branch intent).
+      {
+        source: "/about/dr-pranendra-singh",
+        destination: "/doctors",
+        permanent: true,
+      },
+      // Non-existent city doctor pages → /doctors listing
       {
         source: "/doctors/hair-transplant-in-jammu",
         destination: "/doctors",
@@ -390,10 +488,7 @@ const nextConfig = {
         permanent: true,
       },
 
-      // ── Surgeon pages: cities with no SurgeonPage → /surgeon listing ───
-      // VERIFIED: /surgeon returns 200. No SurgeonPage for these cities in DB.
-      // /surgeon listing is semantically appropriate.
-      // NOT redirected to city branch pages (surgeon intent ≠ branch intent).
+      // Non-existent city surgeon pages → /surgeon listing
       {
         source: "/surgeon/hair-transplant-in-jammu",
         destination: "/surgeon",
@@ -435,8 +530,7 @@ const nextConfig = {
         permanent: true,
       },
 
-      // ── Best Clinic marketing URLs → canonical city branch pages ───────
-      // VERIFIED: "best clinic in X" intent = Ryan Clinic's city branch page
+      // ── 10. BEST CLINIC MARKETING URLS ────────────────────────────────
       {
         source: "/best-hair-transplant-clinic-in-delhi",
         destination: "/hair-transplant-in-delhi",
@@ -450,15 +544,6 @@ const nextConfig = {
       {
         source: "/best-hair-transplant-clinic-in-hyderabad",
         destination: "/hair-transplant-in-hyderabad",
-        permanent: true,
-      },
-
-      // ── Doctor profile: soft-deleted → /doctors listing ────────────────
-      // VERIFIED: dr-pranendra-singh has deletedAt set in DB → page returns 404.
-      // /doctors listing (200) is the semantically safest landing point.
-      {
-        source: "/about/dr-pranendra-singh",
-        destination: "/doctors",
         permanent: true,
       },
     ];
