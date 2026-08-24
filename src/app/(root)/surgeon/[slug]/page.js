@@ -1,18 +1,18 @@
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { DBConnection } from "@/lib/db";
-import SurgeonPage from "@/models/Surgeon";
+import SurgeonPage from "@/models/SurgeonPage";
 import PageBanner from "@/components/layouts/pageBanner";
 import SurgeonPageClient from "./SurgeonPageClient";
-
-// Cache invalidate: 2026-08-03T10:04:00Z
 
 // ─── Data Fetching ─────────────────────────────────────────────────────────────
 
 const getSurgeonPageData = cache(async (slug) => {
   await DBConnection();
+  const cleanSlug = decodeURIComponent(slug).toLowerCase().trim();
+  const escaped = cleanSlug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const page = await SurgeonPage.findOne({
-    slug,
+    slug: { $regex: new RegExp(`^${escaped}$`, "i") },
     "settings.isDeleted": { $ne: true },
   }).lean();
   return page ? JSON.parse(JSON.stringify(page)) : null;

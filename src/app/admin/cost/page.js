@@ -53,10 +53,10 @@ function formatDate(dateStr) {
 }
 
 /* ─── Column Definitions (cost-specific) ───────────────────────────────────
-   Columns are built as a function so the action handlers (onEdit, onDelete)
+   Columns are built as a function so the action handlers (onEdit, onDuplicate, onDelete)
    can be injected via closure — keeping CostTable fully generic.
    ─────────────────────────────────────────────────────────────────────────── */
-function buildColumns(onEdit, onDelete) {
+function buildColumns(onEdit, onDuplicate, onDelete) {
   return [
     /* Title + created-at sub-label */
     {
@@ -159,23 +159,32 @@ function buildColumns(onEdit, onDelete) {
     {
       key: "actions",
       label: "Actions",
-      className: "w-32",
+      className: "w-44",
       tdClassName: "text-right",
       render: (row) => (
-        <div className="flex items-center justify-end gap-3">
+        <div className="flex items-center justify-end gap-2.5">
           <button
             onClick={() => onEdit(row)}
             className="text-xs font-semibold text-indigo-600 hover:text-indigo-800
-                       transition-colors focus:outline-none focus:underline"
+                       transition-colors focus:outline-none focus:underline cursor-pointer"
             aria-label={`Edit ${row.title}`}
           >
             Edit
           </button>
           <span className="text-gray-200 select-none">|</span>
           <button
+            onClick={() => onDuplicate(row)}
+            className="text-xs font-semibold text-purple-600 hover:text-purple-800
+                       transition-colors focus:outline-none focus:underline cursor-pointer"
+            aria-label={`Duplicate ${row.title}`}
+          >
+            Duplicate
+          </button>
+          <span className="text-gray-200 select-none">|</span>
+          <button
             onClick={() => onDelete(row)}
             className="text-xs font-semibold text-red-600 hover:text-red-800
-                       transition-colors focus:outline-none focus:underline"
+                       transition-colors focus:outline-none focus:underline cursor-pointer"
             aria-label={`Delete ${row.title}`}
           >
             Delete
@@ -188,9 +197,9 @@ function buildColumns(onEdit, onDelete) {
 
 /* ─── Page Component ─────────────────────────────────────────────────────────
    This component ONLY manages:
-     • state (pages, loading, search, status, pagination, delete modal)
-     • API calls (fetchPages, handleDeleteConfirm)
-     • handlers (edit, delete click, page change, search, status)
+     • state (pages, loading, search, status, pagination, delete modal, duplicate modal)
+     • API calls (fetchPages, handleDeleteConfirm, handleDuplicateConfirm)
+     • handlers (edit, delete click, duplicate click, page change, search, status)
    All rendering is delegated to child components.
    ─────────────────────────────────────────────────────────────────────────── */
 export default function CostListingPage() {
@@ -218,6 +227,11 @@ export default function CostListingPage() {
   const [selectedRow, setSelectedRow] = useState(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+
+  /* Duplicate modal */
+  const [duplicateRow, setDuplicateRow] = useState(null);
+  const [duplicateModalOpen, setDuplicateModalOpen] = useState(false);
+  const [duplicateLoading, setDuplicateLoading] = useState(false);
 
   /* ── Debounce search (500 ms) ── */
   useEffect(() => {
@@ -274,6 +288,47 @@ export default function CostListingPage() {
     router.push(`/admin/cost/edit/${row.slug || row._id}`);
   };
 
+  const handleDuplicateClick = (row) => {
+    setDuplicateRow(row);
+    setDuplicateModalOpen(true);
+  };
+
+  const handleDuplicateCancel = () => {
+    if (duplicateLoading) return;
+    setDuplicateModalOpen(false);
+    setDuplicateRow(null);
+  };
+
+  const handleDuplicateConfirm = async () => {
+    if (!duplicateRow || duplicateLoading) return;
+    setDuplicateLoading(true);
+    try {
+      const res = await fetch("/api/cost/duplicate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: duplicateRow._id }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        toast.success("Duplicated", "Cost page duplicated successfully as draft.");
+        setDuplicateModalOpen(false);
+        setDuplicateRow(null);
+        if (data.data?.editUrl) {
+          router.push(data.data.editUrl);
+        } else {
+          fetchPages();
+        }
+      } else {
+        toast.error("Duplicate Failed", data.message || "Could not duplicate this cost page.");
+      }
+    } catch (err) {
+      console.error("[CostListingPage] duplicate error:", err);
+      toast.error("Network Error", "Failed to duplicate. Please try again.");
+    } finally {
+      setDuplicateLoading(false);
+    }
+  };
+
   const handleDeleteClick = (row) => {
     setSelectedRow(row);
     setDeleteModalOpen(true);
@@ -321,7 +376,7 @@ export default function CostListingPage() {
   };
 
   /* ── Derived values ── */
-  const columns = buildColumns(handleEdit, handleDeleteClick);
+  const columns = buildColumns(handleEdit, handleDuplicateClick, handleDeleteClick);
   const isEmpty = !loading && pages.length === 0;
   const hasData = !loading && pages.length > 0;
 
@@ -330,6 +385,47 @@ export default function CostListingPage() {
     <>
       {/* Toast notifications */}
       <ToastContainer toasts={toast.toasts} removeToast={toast.remove} />
+
+      {/* Duplicate Confirmation Modal */}
+      {duplicateModalOpen && (
+        <div className="fixed inset-0 z-[9998] flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={handleDuplicateCancel}
+          />
+          <div className="relative z-10 bg-white rounded-2xl shadow-2xl w-full max-w-[420px] p-6 border border-gray-100">
+            <div className="flex flex-col items-center text-center gap-3.5">
+              <div className="w-12 h-12 rounded-2xl bg-purple-50 border border-purple-200 flex items-center justify-center">
+                <svg className="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">Duplicate Cost Page?</h3>
+                <p className="text-sm text-gray-500 mt-1">
+                  A new draft copy of <span className="font-semibold text-gray-800">"{duplicateRow?.title}"</span> will be created with a unique slug.
+                </p>
+              </div>
+              <div className="flex gap-3 w-full mt-2">
+                <button
+                  onClick={handleDuplicateCancel}
+                  disabled={duplicateLoading}
+                  className="flex-1 px-4 py-2.5 border border-gray-300 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-60 cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDuplicateConfirm}
+                  disabled={duplicateLoading}
+                  className="flex-1 px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-sm font-semibold transition-colors disabled:opacity-60 cursor-pointer"
+                >
+                  {duplicateLoading ? "Duplicating…" : "Duplicate"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Delete confirmation modal */}
       <DeleteCostModal

@@ -1323,11 +1323,7 @@ const surgeryPageSchema = new mongoose.Schema(
   }
 );
 
-export default process.env.NODE_ENV === "development"
-  ? (() => {
-      if (mongoose.models.SurgeryPage) {
-        mongoose.deleteModel("SurgeryPage");
-      }
-      return mongoose.model("SurgeryPage", surgeryPageSchema);
-    })()
-  : mongoose.models.SurgeryPage || mongoose.model("SurgeryPage", surgeryPageSchema);
+const SurgeryPage =
+  mongoose.models.SurgeryPage || mongoose.model("SurgeryPage", surgeryPageSchema);
+
+export default SurgeryPage;

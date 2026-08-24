@@ -32,7 +32,14 @@ export const getHomepageBlogs = async () => {
 export const getBlogBySlug = async (slug) => {
   try {
     await DBConnection();
-    const blog = await Blog.findOne({ pageUrl: slug }).lean();
+    const cleanSlug = decodeURIComponent(slug).trim();
+    let blog = await Blog.findOne({ pageUrl: cleanSlug }).lean();
+    if (!blog) {
+      const escaped = cleanSlug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      blog = await Blog.findOne({
+        pageUrl: { $regex: new RegExp(`^${escaped}$`, "i") },
+      }).lean();
+    }
     return blog ? JSON.parse(JSON.stringify(blog)) : null;
   } catch (error) {
     console.error("getBlogBySlug error:", error.message);

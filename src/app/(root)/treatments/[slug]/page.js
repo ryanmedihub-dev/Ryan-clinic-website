@@ -1,24 +1,25 @@
 import { notFound } from "next/navigation";
+import { cache } from "react";
+import { DBConnection } from "@/lib/db";
+import HairFallPage from "@/models/hairFallPage";
 import HairFallPageClient from "./HairFallPageClient";
 
 export const dynamic = "force-dynamic";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-
-async function fetchTreatmentPage(slug) {
+const fetchTreatmentPage = cache(async (slug) => {
   try {
-    const res = await fetch(`${BASE_URL}/api/hair-fall/get?slug=${slug}`, {
-      cache: "no-store",
-    });
-    if (!res.ok) return null;
-    const json = await res.json();
-
-    return json?.hairFallPage ?? null;
+    await DBConnection();
+    const cleanSlug = decodeURIComponent(slug).toLowerCase().trim();
+    const escaped = cleanSlug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const page = await HairFallPage.findOne({
+      slug: { $regex: new RegExp(`^${escaped}$`, "i") },
+    }).lean();
+    return page ? JSON.parse(JSON.stringify(page)) : null;
   } catch (error) {
     console.error("Failed to fetch treatment page:", error);
     return null;
   }
-}
+});
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;

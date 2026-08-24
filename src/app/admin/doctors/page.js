@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import AdminHeader from "@/components/admin/adminHeader";
 import ToastContainer from "@/components/admin/Toast";
 
@@ -24,6 +25,7 @@ function useToast() {
 }
 
 export default function DoctorListingPage() {
+  const router = useRouter();
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -32,6 +34,8 @@ export default function DoctorListingPage() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
+  const [duplicatingId, setDuplicatingId] = useState(null);
+  const [confirmDuplicateDoc, setConfirmDuplicateDoc] = useState(null);
 
   const toast = useToast();
 
@@ -66,6 +70,35 @@ export default function DoctorListingPage() {
   useEffect(() => {
     fetchDoctors();
   }, [fetchDoctors]);
+
+  const handleDuplicate = async (doc) => {
+    if (!doc) return;
+    setDuplicatingId(doc._id);
+    try {
+      const res = await fetch("/api/doctors/duplicate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: doc._id }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        toast.success("Duplicated", "Doctor page duplicated successfully as draft.");
+        setConfirmDuplicateDoc(null);
+        if (data.data?.editUrl) {
+          router.push(data.data.editUrl);
+        } else {
+          fetchDoctors();
+        }
+      } else {
+        toast.error("Duplicate Failed", data.message || "Failed to duplicate doctor page.");
+      }
+    } catch (err) {
+      console.error("Duplicate error:", err);
+      toast.error("Error", "Server error while duplicating doctor page.");
+    } finally {
+      setDuplicatingId(null);
+    }
+  };
 
   const handleDelete = async (id, doctorName) => {
     if (!confirm(`Are you sure you want to delete "${doctorName || "this doctor"}"?`)) return;
@@ -269,6 +302,15 @@ export default function DoctorListingPage() {
                             </Link>
 
                             <button
+                              onClick={() => setConfirmDuplicateDoc(doc)}
+                              disabled={duplicatingId === doc._id}
+                              className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-md text-xs font-bold transition-all disabled:opacity-50 cursor-pointer"
+                              title="Duplicate doctor page"
+                            >
+                              {duplicatingId === doc._id ? "…" : "Duplicate"}
+                            </button>
+
+                            <button
                               onClick={() => handleDelete(doc._id, doctorName)}
                               className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer"
                             >
@@ -282,6 +324,43 @@ export default function DoctorListingPage() {
                 </tbody>
               </table>
             </div>
+
+            {/* Duplicate Confirmation Modal */}
+            {confirmDuplicateDoc && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+                <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full border border-gray-200">
+                  <div className="flex flex-col items-center text-center gap-4">
+                    <div className="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center">
+                      <svg className="w-7 h-7 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-900">Duplicate Doctor Page?</h3>
+                      <p className="text-sm text-gray-500 mt-1">
+                        A new draft copy of <span className="font-semibold text-gray-700">"{confirmDuplicateDoc.pageName || confirmDuplicateDoc.basicInfo?.doctorName}"</span> will be created with a unique slug.
+                      </p>
+                    </div>
+                    <div className="flex gap-3 w-full mt-2">
+                      <button
+                        onClick={() => setConfirmDuplicateDoc(null)}
+                        disabled={duplicatingId === confirmDuplicateDoc._id}
+                        className="flex-1 px-4 py-2 border border-gray-300 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-60 cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={() => handleDuplicate(confirmDuplicateDoc)}
+                        disabled={duplicatingId === confirmDuplicateDoc._id}
+                        className="flex-1 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-sm font-semibold transition-colors disabled:opacity-60 cursor-pointer"
+                      >
+                        {duplicatingId === confirmDuplicateDoc._id ? "Duplicating…" : "Duplicate"}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Pagination controls */}
             {totalPages > 1 && (

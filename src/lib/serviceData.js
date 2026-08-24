@@ -16,7 +16,14 @@ export const getAllServices = async () => {
 export const getServiceBySlug = async (id) => {
   try {
     await DBConnection();
-    const service = await Services.findOne({ "metadata.pageurl": id }).lean();
+    const cleanId = decodeURIComponent(id).trim();
+    let service = await Services.findOne({ "metadata.pageurl": cleanId }).lean();
+    if (!service) {
+      const escaped = cleanId.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      service = await Services.findOne({
+        "metadata.pageurl": { $regex: new RegExp(`^${escaped}$`, "i") },
+      }).lean();
+    }
     return service ? JSON.parse(JSON.stringify(service)) : null;
   } catch (error) {
     console.error("getServiceBySlug error:", error.message);
