@@ -249,6 +249,9 @@ const doctorSchema = new mongoose.Schema(
       sectionLabel: { type: String, trim: true, default: "" },
       heading: { type: String, trim: true, default: "" },
       description: { type: String, trim: true, default: "" },
+      rightCardBadge: { type: String, trim: true, default: "" },
+      rightCardHeading: { type: String, trim: true, default: "" },
+      rightCardDescription: { type: String, trim: true, default: "" },
       contactCards: {
         type: [contactCardSchema],
         default: [],
@@ -277,6 +280,8 @@ const doctorSchema = new mongoose.Schema(
 
     /* ── Key Facts & Medical Reviewer ── */
     keyFacts: {
+      sectionLabel: { type: String, trim: true, default: "" },
+      heading: { type: String, trim: true, default: "" },
       qualifications: { type: String, trim: true, default: "" },
       registration: { type: String, trim: true, default: "" },
       specialisation: { type: String, trim: true, default: "" },
@@ -344,6 +349,8 @@ const doctorSchema = new mongoose.Schema(
       sectionLabel: { type: String, trim: true, default: "" },
       heading: { type: String, trim: true, default: "" },
       description: { type: String, trim: true, default: "" },
+      packageSectionHeading: { type: String, trim: true, default: "" },
+      packageSectionDescription: { type: String, trim: true, default: "" },
       packages: {
         type: [packageSchema],
         default: [],

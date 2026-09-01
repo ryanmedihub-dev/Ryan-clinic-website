@@ -13,6 +13,16 @@ export const credentialTabSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
+    hint: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    badge: {
+      type: String,
+      trim: true,
+      default: "",
+    },
     image: {
       type: imageSchema,
       default: () => ({}),

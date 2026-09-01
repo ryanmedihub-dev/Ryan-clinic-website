@@ -8,7 +8,17 @@ export const comparisonCardSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
+    subtitle: {
+      type: String,
+      trim: true,
+      default: "",
+    },
     badge: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    disclaimer: {
       type: String,
       trim: true,
       default: "",

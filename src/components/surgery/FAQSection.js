@@ -6,7 +6,12 @@ import useTrackCTA from "@/lib/useTrackCTA";
 const WA =
     "https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20have%20a%20question%20about%20hair%20transplant%20surgery";
 
-export default function FAQSection({ faqs = [], heading = "Frequently asked questions about hair transplant doctors in Delhi" }) {
+export default function FAQSection({ 
+    faqs = [], 
+    heading = "Frequently asked questions about hair transplant doctors in Delhi",
+    sectionLabel = "Got Questions?",
+    description = "Everything you need to know about hair transplant surgery at Ryan Clinic — costs, procedure, recovery and results. Still have a question? Our doctors answer within 24 hours."
+}) {
     const [open, setOpen] = useState(null);
     const trackCTA = useTrackCTA();
 
@@ -28,7 +33,7 @@ export default function FAQSection({ faqs = [], heading = "Frequently asked ques
                                 className="text-[11px] font-semibold tracking-[0.22em] uppercase"
                                 style={{ color: "var(--primary-red)" }}
                             >
-                                Got Questions?
+                                {sectionLabel}
                             </span>
                         </div>
 
@@ -44,9 +49,7 @@ export default function FAQSection({ faqs = [], heading = "Frequently asked ques
                             className="text-sm md:text-base leading-relaxed mb-8"
                             style={{ color: "var(--text-muted)" }}
                         >
-                            Everything you need to know about hair transplant surgery at Ryan
-                            Clinic — costs, procedure, recovery and results. Still have a
-                            question? Our doctors answer within 24 hours.
+                            {description}
                         </p>
 
                         {/* Stats */}

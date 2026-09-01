@@ -194,12 +194,12 @@ export default function DoctorPageClient({ data }) {
         medicalReviewer,
     } = data;
 
-    const doctorCity = doctor.location || doctor.city || "Delhi";
-    const citySlug = doctorCity.toLowerCase().trim().replace(/\s+/g, "-");
-    const activeBranch = branchData[doctorCity] || branchData[doctor.city] || branchData.Delhi;
+    const doctorCity = (doctor.location || doctor.city || "").trim();
+    const citySlug = doctorCity.toLowerCase().replace(/\s+/g, "-");
+    const activeBranch = branchData[doctorCity] || null;
     const resolvedNearbyAreas = (visitClinic?.nearbyLocations && visitClinic.nearbyLocations.length > 0)
         ? visitClinic.nearbyLocations
-        : (activeBranch.areas ? activeBranch.areas.split(",").map(a => a.trim().replace(/\.\s*$/, "")) : nearbyAreas);
+        : (activeBranch?.areas ? activeBranch.areas.split(",").map(a => a.trim().replace(/\.\s*$/, "")) : (nearbyAreas || []));
     const waDoctorLink = doctor
         ? `https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation`
         : WA;
@@ -254,7 +254,7 @@ export default function DoctorPageClient({ data }) {
                                     doctor.about
                                 ) : (
                                     <>
-                                        <strong>{doctor.name}</strong> is dedicated to providing exceptional hair restoration and surgical precision you can trust with a patient-first approach in {doctor.location || "New Delhi"}.
+                                        <strong>{doctor.name}</strong> is dedicated to providing exceptional hair restoration and surgical precision you can trust with a patient-first approach{doctorCity ? ` in ${doctorCity}` : ""}.
                                     </>
                                 )}
                             </p>
@@ -372,7 +372,7 @@ export default function DoctorPageClient({ data }) {
                             <div className="flex items-center gap-2 mb-6">
                                 <span className="w-2 h-2 rounded-full bg-[#D32F2F]" />
                                 <h3 className="text-xs font-black uppercase tracking-widest text-gray-900">
-                                    Verified Doctor &amp; Clinic Key Facts
+                                    {keyFacts.heading || "Verified Doctor & Clinic Key Facts"}
                                 </h3>
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-sans">
@@ -534,12 +534,12 @@ export default function DoctorPageClient({ data }) {
 
                     {/* Section Header (Left Aligned) */}
                     <div className="max-w-3xl mb-12 text-left">
-                        <SectionLabel text="Verification & Credentials" />
+                        <SectionLabel text={credentials?.sectionLabel || "Verification & Credentials"} />
                         <h2 className="text-3xl sm:text-4xl font-black text-gray-900 leading-tight tracking-tight mt-1 mb-3">
-                            {credentials?.heading || "Credentials to look for in a hair transplant doctor in Delhi"}
+                            {credentials?.heading || `Credentials to look for in a hair transplant doctor${doctorCity ? ` in ${doctorCity}` : ""}`}
                         </h2>
                         <p className="text-gray-500 text-sm md:text-base font-sans leading-relaxed">
-                            What matters is genuine hair-restoration training, real surgical experience, and verifiable qualifications in {doctor.location || "New Delhi"}.
+                            {credentials?.description || `What matters is genuine hair-restoration training, real surgical experience, and verifiable qualifications${doctorCity ? ` in ${doctorCity}` : ""}.`}
                         </p>
                     </div>
 
@@ -647,7 +647,7 @@ export default function DoctorPageClient({ data }) {
                                     <div className="flex items-center gap-2">
                                         <CheckCircle2 className="w-5 h-5 text-emerald-600" />
                                         <h2 className="text-lg font-bold text-gray-900">
-                                            {verification?.heading || "How to verify a hair transplant doctor's credentials in Delhi"}
+                                            {verification?.heading || `How to verify a hair transplant doctor's credentials${doctorCity ? ` in ${doctorCity}` : ""}`}
                                         </h2>
                                     </div>
                                     <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
@@ -656,7 +656,7 @@ export default function DoctorPageClient({ data }) {
                                 </div>
 
                                 <p className="text-xs text-gray-500 mb-4 font-sans">
-                                    Tick off each item before booking your hair transplant procedure:
+                                    {verification?.description || "Tick off each item before booking your hair transplant procedure:"}
                                 </p>
 
                                 {/* Progress bar */}
@@ -757,7 +757,7 @@ export default function DoctorPageClient({ data }) {
                     <SectionLabel text={doctorStandards?.sectionLabel || "The Standard"} />
                     <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
                         <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight tracking-tight max-w-2xl">
-                            {doctorStandards?.heading || "What makes a good hair transplant doctor in Delhi?"}
+                            {doctorStandards?.heading || `What makes a good hair transplant doctor${doctorCity ? ` in ${doctorCity}` : ""}?`}
                         </h2>
                         <p className="text-xs sm:text-sm text-gray-400 max-w-xs font-sans text-right md:text-right">
                             {doctorStandards?.description || "These are the non-negotiables. Every box must be ticked before you consider booking."}
@@ -964,15 +964,14 @@ export default function DoctorPageClient({ data }) {
 
                 <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                    {/* Header (Smaller Heading font size as requested) */}
                     <div className="mb-12">
-                        <SectionLabel text="The Critical Difference" />
+                        <SectionLabel text={comparison?.sectionLabel || "The Critical Difference"} />
                         <div className="flex flex-col md:flex-row md:items-end gap-4 md:justify-between">
                             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight max-w-2xl">
-                                {comparison?.heading || "Doctor-led vs technician-led surgery in Delhi: the difference that defines your result"}
+                                {comparison?.heading || `Doctor-led vs technician-led surgery${doctorCity ? ` in ${doctorCity}` : ""}: the difference that defines your result`}
                             </h2>
                             <p className="text-gray-500 text-xs sm:text-sm leading-relaxed max-w-sm md:text-right font-sans">
-                                The person performing each step is what determines your result.
+                                {comparison?.description || "The person performing each step is what determines your result."}
                             </p>
                         </div>
                     </div>
@@ -1166,7 +1165,7 @@ export default function DoctorPageClient({ data }) {
                     {/* Bottom caption */}
                     <div className="mt-8 flex items-center gap-3 text-gray-400 text-xs font-sans">
                         <span className="w-8 h-px bg-gray-300 shrink-0" />
-                        When you choose the best hair transplant doctor in {doctor.location || "Delhi"}, you&apos;re
+                        When you choose the best hair transplant doctor{doctorCity ? ` in ${doctorCity}` : ""}, you&apos;re
                         really choosing who does each of these steps.
                     </div>
                 </div>
@@ -1199,7 +1198,7 @@ export default function DoctorPageClient({ data }) {
                         <div className="lg:col-span-7">
                             <SectionLabel text={questionsToAskSection?.sectionLabel || "Questions to Ask"} />
                             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight mb-3">
-                                {questionsToAskSection?.heading || "Questions to ask your hair transplant doctor in Delhi before booking"}
+                                {questionsToAskSection?.heading || `Questions to ask your hair transplant doctor${doctorCity ? ` in ${doctorCity}` : ""} before booking`}
                             </h2>
                             <p className="text-gray-500 text-xs sm:text-sm leading-relaxed mb-8 font-sans">
                                 {questionsToAskSection?.description || "The quality of a doctor\u2019s answers tells you almost everything."}
@@ -1325,15 +1324,15 @@ export default function DoctorPageClient({ data }) {
                         <div className="flex items-center gap-3 mb-4">
                             <span className="block w-8 h-px bg-emerald-600" />
                             <span className="text-emerald-600 text-[11px] font-extrabold tracking-[0.22em] uppercase">
-                                Excellence Standard
+                                {greatDoctorQualities?.sectionLabel || "Excellence Standard"}
                             </span>
                         </div>
                         <div className="max-w-3xl mb-8 md:mb-12">
                             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
-                                {greatDoctorQualities?.heading || "What a great hair transplant doctor in Delhi does differently"}
+                                {greatDoctorQualities?.heading || `What a great hair transplant doctor${doctorCity ? ` in ${doctorCity}` : ""} does differently`}
                             </h2>
                             <p className="text-gray-500 text-sm md:text-base leading-relaxed mt-4 font-sans">
-                                Every stage of your treatment in {doctor.location || "New Delhi"} is personally performed with high medical rigor to optimize graft survival and natural hairline aesthetics.
+                                {greatDoctorQualities?.description || `Every stage of your treatment${doctorCity ? ` in ${doctorCity}` : ""} is personally performed with high medical rigor to optimize graft survival and natural hairline aesthetics.`}
                             </p>
                         </div>
 
@@ -1373,15 +1372,15 @@ export default function DoctorPageClient({ data }) {
                         <div className="flex items-center gap-3 mb-4">
                             <span className="block w-8 h-px bg-[#D32F2F]" />
                             <span className="text-[#D32F2F] text-[11px] font-extrabold tracking-[0.22em] uppercase">
-                                Warning Signs
+                                {warningSigns?.sectionLabel || "Warning Signs"}
                             </span>
                         </div>
                         <div className="max-w-3xl mb-8 md:mb-12">
                             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
-                                {warningSigns?.heading || "Red flags when choosing a hair transplant doctor in Delhi"}
+                                {warningSigns?.heading || `Red flags when choosing a hair transplant doctor${doctorCity ? ` in ${doctorCity}` : ""}`}
                             </h2>
                             <p className="text-gray-500 text-sm md:text-base leading-relaxed mt-4 font-sans">
-                                If you encounter any of the following at a clinic, walk away. Corrective surgery after a poor procedure costs far more than getting it right the first time.
+                                {warningSigns?.description || "If you encounter any of the following at a clinic, walk away. Corrective surgery after a poor procedure costs far more than getting it right the first time."}
                             </p>
                         </div>
 
@@ -1488,7 +1487,7 @@ export default function DoctorPageClient({ data }) {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <SectionLabel text={proceduresPerformed?.sectionLabel || "Procedures Offered"} />
                     <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight mb-4">
-                        {proceduresPerformed?.heading || "Procedures our hair transplant doctors in Delhi perform"}
+                        {proceduresPerformed?.heading || `Procedures our hair transplant doctors${doctorCity ? ` in ${doctorCity}` : ""} perform`}
                     </h2>
                     <p className="text-gray-500 text-sm md:text-base leading-relaxed max-w-2xl font-sans mb-12">
                         {proceduresPerformed?.description || "Advanced surgical hair restoration and non-surgical therapies personally performed by certified doctors."}
@@ -1496,18 +1495,18 @@ export default function DoctorPageClient({ data }) {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {(proceduresPerformed?.cards?.length > 0 ? proceduresPerformed.cards : [
-                            { title: "Sapphire FUE Hair Transplant", description: "Microscopic Sapphire blades creating dense, natural recipient channels.", url: "/surgery/hair-transplant-surgery-in-delhi" },
-                            { title: "Turkish Technique (THI) Direct Implantation", description: "Direct Choi implanter pen insertion with zero channel pre-cutting.", url: "/surgery/hair-transplant-surgery-in-delhi" },
-                            { title: "Hairline Design & Micro-Dense Packing", description: "Artistic single-hair front rank feathering tailored to facial symmetry.", url: "/surgery/hair-transplant-surgery-in-delhi" },
+                            { title: "Sapphire FUE Hair Transplant", description: "Microscopic Sapphire blades creating dense, natural recipient channels.", url: citySlug ? `/surgery/hair-transplant-surgery-in-${citySlug}` : "/surgery" },
+                            { title: "Turkish Technique (THI) Direct Implantation", description: "Direct Choi implanter pen insertion with zero channel pre-cutting.", url: citySlug ? `/surgery/hair-transplant-surgery-in-${citySlug}` : "/surgery" },
+                            { title: "Hairline Design & Micro-Dense Packing", description: "Artistic single-hair front rank feathering tailored to facial symmetry.", url: citySlug ? `/surgery/hair-transplant-surgery-in-${citySlug}` : "/surgery" },
                             { title: "Beard & Moustache Transplant", description: "Precision facial hair extraction and high-angle density restoration.", url: "/beard-transplant" },
-                            { title: "PRP Hair Loss Therapy", description: "Doctor-administered platelet-rich plasma growth factor injections.", url: "/prp-hair-loss-treatment-in-delhi" },
-                            { title: "Revision Hair Transplant Repair", description: "Correcting pluggy hairlines, misdirected grafts, and depleted donor zones.", url: "/surgery/hair-transplant-surgery-in-delhi" },
+                            { title: "PRP Hair Loss Therapy", description: "Doctor-administered platelet-rich plasma growth factor injections.", url: citySlug ? `/prp-hair-loss-treatment-in-${citySlug}` : "/prp-treatment" },
+                            { title: "Revision Hair Transplant Repair", description: "Correcting pluggy hairlines, misdirected grafts, and depleted donor zones.", url: citySlug ? `/surgery/hair-transplant-surgery-in-${citySlug}` : "/surgery" },
                         ]).map((p, i) => {
                             const getProcedureUrl = (title) => {
                                 const t = (title || "").toLowerCase();
                                 if (t.includes("beard")) return "/beard-transplant";
-                                if (t.includes("prp")) return "/prp-hair-loss-treatment-in-delhi";
-                                return "/surgery/hair-transplant-surgery-in-delhi";
+                                if (t.includes("prp")) return citySlug ? `/prp-hair-loss-treatment-in-${citySlug}` : "/prp-treatment";
+                                return citySlug ? `/surgery/hair-transplant-surgery-in-${citySlug}` : "/surgery";
                             };
                             const href = p.url || getProcedureUrl(p.title);
                             return (
@@ -1533,19 +1532,18 @@ export default function DoctorPageClient({ data }) {
             <section className="py-16 md:py-24 bg-[#fff5ec] border-y border-red-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                    {/* Section Label + Header */}
                     <div className="text-center max-w-3xl mx-auto mb-14">
                         <div className="inline-flex items-center gap-2 bg-white border border-red-200 px-4 py-1.5 rounded-full mb-5 shadow-sm">
                             <span className="w-2 h-2 rounded-full bg-[#D32F2F]" />
                             <span className="text-[#D32F2F] text-xs font-extrabold tracking-widest uppercase">
-                                Surgical Process
+                                {surgicalProcess?.sectionLabel || "Surgical Process"}
                             </span>
                         </div>
                         <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
-                            {surgicalProcess?.heading || "What your hair transplant doctor in Delhi does at every stage"}
+                            {surgicalProcess?.heading || `What your hair transplant doctor${doctorCity ? ` in ${doctorCity}` : ""} does at every stage`}
                         </h2>
                         <p className="text-gray-500 text-sm md:text-base leading-relaxed mt-5 font-sans">
-                            Every stage of your hair restoration procedure is personally performed by {doctor.name || "our lead surgeon"} to ensure {doctor.successRate ? `${doctor.successRate} ` : ""}graft survival and natural hairline aesthetics.
+                            {surgicalProcess?.description || `Every stage of your hair restoration procedure is personally performed by ${doctor.name || "our lead surgeon"} to ensure ${doctor.successRate ? `${doctor.successRate} ` : ""}graft survival and natural hairline aesthetics.`}
                         </p>
                     </div>
 
@@ -1746,9 +1744,9 @@ export default function DoctorPageClient({ data }) {
                         {/* LEFT: Text & CTAs */}
                         <div className="lg:col-span-6">
                             <RevealSection>
-                                <SectionLabel text="Cost & Consultation" />
+                                <SectionLabel text={pricing?.sectionLabel || "Cost & Consultation"} />
                                 <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight mb-5">
-                                    {pricing?.heading || "Cost of consulting a hair transplant doctor in Delhi"}
+                                    {pricing?.heading || `Cost of consulting a hair transplant doctor${doctorCity ? ` in ${doctorCity}` : ""}`}
                                 </h2>
                                 <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-6 font-sans">
                                     {pricing?.description || "Consultation at Ryan Clinic includes a free scalp analysis — your doctor assesses your case and provides an exact graft count and transparent cost estimate."}
@@ -1836,10 +1834,10 @@ export default function DoctorPageClient({ data }) {
                         <div className="text-center max-w-2xl mx-auto mb-12">
                             <SectionLabel text="Transparent Pricing" />
                             <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight mt-1 mb-3">
-                                Hair Transplant Cost in {doctor.location || "Delhi"}
+                                {pricing?.packageSectionHeading || `Hair Transplant Cost${doctorCity ? ` in ${doctorCity}` : ""}`}
                             </h2>
                             <p className="text-gray-500 text-sm md:text-base font-sans leading-relaxed">
-                                Per-graft pricing — confirmed in writing at your free consultation. Zero hidden charges.
+                                {pricing?.packageSectionDescription || "Per-graft pricing — confirmed in writing at your free consultation. Zero hidden charges."}
                             </p>
                         </div>
                     </RevealSection>
@@ -1912,11 +1910,11 @@ export default function DoctorPageClient({ data }) {
                     <div className="flex items-center gap-3 mb-4">
                         <span className="block w-8 h-px bg-[#D32F2F]" />
                         <span className="text-[#D32F2F] text-[11px] font-extrabold tracking-[0.22em] uppercase">
-                            Visit Us
+                            {visitClinic?.sectionLabel || "Visit Us"}
                         </span>
                     </div>
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-12">
-                        {visitClinic?.heading || `Visiting Ryan Clinic in ${doctorCity}`}
+                        {visitClinic?.heading || (doctorCity ? `Visiting Ryan Clinic in ${doctorCity}` : "Visit Ryan Clinic")}
                     </h2>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
@@ -1924,15 +1922,16 @@ export default function DoctorPageClient({ data }) {
                         {/* Left Column: Address, Phone, Hours & Service Tags */}
                         <div className="space-y-6">
                             <p className="text-gray-500 text-sm md:text-base leading-relaxed font-sans">
-                                Our {doctor.location || "Delhi"} centre is convenient from across the city. Accessible
-                                from <strong className="text-gray-900 font-bold">{activeBranch.metro}</strong>, serving patients from{" "}
-                                {activeBranch.areas}
+                                {visitClinic?.description || `Our${doctorCity ? ` ${doctorCity}` : ""} centre is convenient from across the city.`}
+                                {activeBranch?.metro ? ` Accessible from ${activeBranch.metro}, serving patients from ${activeBranch.areas}` : (resolvedNearbyAreas.length > 0 ? ` Serving patients from ${resolvedNearbyAreas.slice(0, 6).join(", ")}.` : "")}
                             </p>
 
                             {/* Address Box */}
                             <div className="rounded-2xl border border-gray-200 overflow-hidden shadow-sm bg-white">
                                 <div className="bg-[#1a1430] px-6 py-3.5 flex items-center justify-between">
-                                    <p className="text-white font-bold text-sm">{activeBranch.addressTitle}</p>
+                                    <p className="text-white font-bold text-sm">
+                                        {activeBranch?.addressTitle || (doctorCity ? `Ryan Clinic — ${doctorCity}` : "Ryan Clinic")}
+                                    </p>
                                     <span className="inline-flex items-center gap-1 bg-[#D32F2F] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                                         Open Daily
                                     </span>
@@ -1945,9 +1944,13 @@ export default function DoctorPageClient({ data }) {
                                         <div>
                                             <p className="font-bold text-gray-900 text-xs uppercase tracking-wider text-gray-400 mb-0.5 font-sans">Clinic Address</p>
                                             <p className="text-gray-700 text-xs font-semibold leading-relaxed">
-                                                {activeBranch.addressLine1}
-                                                <br />
-                                                {activeBranch.addressLine2}
+                                                {visitClinic?.address?.streetAddress || doctor.basicInfo?.clinicAddress || activeBranch?.addressLine1 || (doctorCity ? `Ryan Clinic, ${doctorCity}` : "Contact clinic for address")}
+                                                {activeBranch?.addressLine2 && (
+                                                    <>
+                                                        <br />
+                                                        {activeBranch.addressLine2}
+                                                    </>
+                                                )}
                                             </p>
                                         </div>
                                     </div>
@@ -1959,10 +1962,10 @@ export default function DoctorPageClient({ data }) {
                                         <div>
                                             <p className="font-bold text-xs uppercase tracking-wider text-gray-400 mb-0.5 font-sans">Phone / Appointments</p>
                                             <a
-                                                href="tel:+919911111247"
+                                                href={`tel:${doctor.basicInfo?.phoneNumber || visitClinic?.contact?.phone || "+919911111247"}`}
                                                 className="text-[#D32F2F] text-sm hover:underline font-extrabold"
                                             >
-                                                +91-9911111247
+                                                {doctor.basicInfo?.phoneNumber || visitClinic?.contact?.phone || "+91-9911111247"}
                                             </a>
                                         </div>
                                     </div>
@@ -1980,40 +1983,42 @@ export default function DoctorPageClient({ data }) {
                             </div>
 
                             {/* Nearby areas tags */}
-                            <div>
-                                <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2.5">
-                                    Serving Patients From All Areas
-                                </p>
-                                <div className="flex flex-wrap gap-1.5">
-                                    {resolvedNearbyAreas.map((area, i) => (
-                                        <span
-                                            key={i}
-                                            className="text-xs bg-gray-100 text-gray-600 font-medium px-3 py-1 rounded-full cursor-default"
-                                        >
-                                            {area}
-                                        </span>
-                                    ))}
+                            {resolvedNearbyAreas.length > 0 && (
+                                <div>
+                                    <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2.5">
+                                        Serving Patients From All Areas
+                                    </p>
+                                    <div className="flex flex-wrap gap-1.5">
+                                        {resolvedNearbyAreas.map((area, i) => (
+                                            <span
+                                                key={i}
+                                                className="text-xs bg-gray-100 text-gray-600 font-medium px-3 py-1 rounded-full cursor-default"
+                                            >
+                                                {area}
+                                            </span>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                         </div>
 
                         {/* Right Column: Normal Sized Clean Map Card */}
                         <div className="w-full h-[380px] rounded-2xl overflow-hidden border border-gray-200 shadow-sm relative">
                             <iframe
-                                src={`https://maps.google.com/maps?q=${activeBranch.mapQuery}&output=embed`}
+                                src={`https://maps.google.com/maps?q=${encodeURIComponent(visitClinic?.mapUrl || activeBranch?.mapQuery || (doctorCity ? `Ryan Clinic ${doctorCity}` : "Ryan Clinic Delhi"))}&output=embed`}
                                 width="100%"
                                 height="100%"
                                 style={{ border: 0 }}
                                 allowFullScreen
                                 loading="lazy"
                                 referrerPolicy="no-referrer-when-downgrade"
-                                title={`Ryan Clinic ${doctor.location || "Delhi"} location map`}
+                                title={`Ryan Clinic${doctorCity ? ` ${doctorCity}` : ""} location map`}
                                 className="w-full h-full"
                             />
 
                             {/* Action Badge */}
                             <a
-                                href={`https://maps.google.com/?q=${activeBranch.mapQuery}`}
+                                href={`https://maps.google.com/?q=${encodeURIComponent(visitClinic?.mapUrl || activeBranch?.mapQuery || (doctorCity ? `Ryan Clinic ${doctorCity}` : "Ryan Clinic Delhi"))}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md border border-gray-200 shadow-md text-xs font-bold text-gray-800 hover:text-[#D32F2F] px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition-colors"
@@ -2056,11 +2061,11 @@ export default function DoctorPageClient({ data }) {
                                             </div>
 
                                             <h2 className="text-2xl sm:text-3xl font-black text-gray-900 leading-[1.2] tracking-tight mb-4">
-                                                {consultation?.heading || `Book a consultation with ${doctor.name}`}
+                                                {consultation?.heading || `Book a consultation with our hair transplant doctor${doctorCity ? ` in ${doctorCity}` : ""}`}
                                             </h2>
 
                                             <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-6 font-sans">
-                                                Doctor-led Sapphire FUE &amp; Turkish Technique hair restoration. Get your free scalp analysis, exact graft count &amp; cost breakdown — zero obligation.
+                                                {consultation?.description || "Doctor-led Sapphire FUE & Turkish Technique hair restoration. Get your free scalp analysis, exact graft count & cost breakdown — zero obligation."}
                                             </p>
 
                                             {/* Mini Stats (Only show verified metrics) */}
@@ -2068,7 +2073,7 @@ export default function DoctorPageClient({ data }) {
                                                 <div className="flex gap-6 mb-8">
                                                     {doctor.experience && (
                                                         <div>
-                                                            <p className="text-2xl font-black text-[#D32F2F] leading-none">{doctor.experience}</p>
+                                                             <p className="text-2xl font-black text-[#D32F2F] leading-none">{doctor.experience}</p>
                                                             <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-1">Exp.</p>
                                                         </div>
                                                     )}
@@ -2128,7 +2133,7 @@ export default function DoctorPageClient({ data }) {
                                                 </p>
                                                 <p className="text-gray-300 text-[11px] font-sans mt-1">
                                                     {verifiedPatientCase.graftsCount ? `${verifiedPatientCase.graftsCount} grafts · ` : ""}
-                                                    {verifiedPatientCase.technique || "Sapphire FUE"} · {doctor.location || "Delhi"}
+                                                    {verifiedPatientCase.technique || "Sapphire FUE"}{doctorCity ? ` · ${doctorCity}` : ""}
                                                 </p>
                                             </div>
                                         </div>
@@ -2139,7 +2144,7 @@ export default function DoctorPageClient({ data }) {
                                         <div>
                                             <div className="flex items-center justify-between mb-6">
                                                 <span className="text-[11px] font-extrabold text-[#FFC107] uppercase tracking-[0.18em]">
-                                                    WHY RYAN CLINIC?
+                                                    {consultation?.rightCardBadge || "WHY RYAN CLINIC?"}
                                                 </span>
                                                 <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
                                                     <ArrowRight className="w-4 h-4 text-white -rotate-45" />
@@ -2147,12 +2152,11 @@ export default function DoctorPageClient({ data }) {
                                             </div>
 
                                             <h3 className="text-xl sm:text-2xl font-black text-white leading-snug mb-3">
-                                                Results So Natural —<br />
-                                                <span className="text-[#FFC107]">Nobody Will Know</span>
+                                                {consultation?.rightCardHeading || "Results So Natural — Nobody Will Know"}
                                             </h3>
 
                                             <p className="text-xs text-white/80 leading-relaxed mb-6 font-sans">
-                                                Every graft is placed with precise control over angle, depth &amp; direction — mimicking your natural hair growth pattern exactly.
+                                                {consultation?.rightCardDescription || "Every graft is placed with precise control over angle, depth & direction — mimicking your natural hair growth pattern exactly."}
                                             </p>
 
                                             <ul className="space-y-3 mb-8">
@@ -2189,7 +2193,12 @@ export default function DoctorPageClient({ data }) {
             })()}
 
             {/* ── 14. FAQ ──────────────────────────────────────────────── */}
-            <FAQSection faqs={faqs} heading={faqSection?.heading || "Frequently asked questions about hair transplant doctors in Delhi"} />
+            <FAQSection
+                faqs={faqs}
+                heading={faqSection?.heading || `Frequently asked questions about hair transplant doctors${doctorCity ? ` in ${doctorCity}` : ""}`}
+                sectionLabel={faqSection?.sectionLabel || "Got Questions?"}
+                description={faqSection?.description || "Everything you need to know about hair transplant surgery at Ryan Clinic — costs, procedure, recovery and results. Still have a question? Our doctors answer within 24 hours."}
+            />
         </>
     );
 }

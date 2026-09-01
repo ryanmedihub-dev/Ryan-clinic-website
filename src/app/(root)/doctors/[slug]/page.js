@@ -5,26 +5,72 @@ import PageBanner from "@/components/layouts/pageBanner";
 import Doctor from "@/models/Doctors";
 import { DBConnection } from "@/lib/db";
 
-// Revalidate page dynamically
-export const revalidate = 60;
+// Helper to dynamically adapt legacy template boilerplate strings to current doctor's city
+function localizeText(text, city) {
+  if (!text || typeof text !== "string") return text;
+  if (!city) return text.replace(/\s+in\s+(New\s+Delhi|Delhi|New-Delhi)\b/gi, "");
+  if (city.toLowerCase() === "delhi" || city.toLowerCase() === "new delhi") return text;
+  return text
+    .replace(/\b(in\s+)(New\s+Delhi|Delhi|New-Delhi)\b/gi, (m, p1) => p1 + city)
+    .replace(/\b(at\s+Ryan\s+Clinic,\s*)(New\s+Delhi|Delhi|New-Delhi)\b/gi, (m, p1) => p1 + city);
+}
+
+function localizeSection(obj, city) {
+  if (!obj || !city) return obj;
+  if (typeof obj === "string") return localizeText(obj, city);
+  if (Array.isArray(obj)) return obj.map((item) => localizeSection(item, city));
+  if (typeof obj === "object") {
+    const res = {};
+    for (const [k, v] of Object.entries(obj)) {
+      res[k] = localizeSection(v, city);
+    }
+    return res;
+  }
+  return obj;
+}
 
 function normalizeDoctor(dbDoc) {
   if (!dbDoc) return null;
   const b = dbDoc.basicInfo || {};
   const s = dbDoc.surgeonProfile || {};
-  return {
+  const docCity = b.city?.trim() || "";
+
+  const localizedDoc = {
     ...dbDoc,
+    proceduresPerformed: localizeSection(dbDoc.proceduresPerformed, docCity),
+    doctorStandards: localizeSection(dbDoc.doctorStandards, docCity),
+    credentials: localizeSection(dbDoc.credentials, docCity),
+    verification: localizeSection(dbDoc.verification, docCity),
+    comparison: localizeSection(dbDoc.comparison, docCity),
+    surgicalProcess: localizeSection(dbDoc.surgicalProcess || dbDoc.surgeryTimeline, docCity),
+    questionsToAsk: localizeSection(dbDoc.questionsToAsk, docCity),
+    greatDoctorQualities: localizeSection(dbDoc.greatDoctorQualities, docCity),
+    warningSigns: localizeSection(dbDoc.warningSigns, docCity),
+    pricing: localizeSection(dbDoc.pricing, docCity),
+    visitClinic: localizeSection(dbDoc.visitClinic, docCity),
+    consultation: localizeSection(dbDoc.consultation, docCity),
+    faq: localizeSection(dbDoc.faq, docCity),
+    keyFacts: localizeSection(dbDoc.keyFacts, docCity),
+    medicalReviewer: localizeSection(dbDoc.medicalReviewer, docCity),
+    whyItMatters: localizeSection(dbDoc.whyItMatters, docCity),
+    surgeonProfile: localizeSection(dbDoc.surgeonProfile, docCity),
+    seo: localizeSection(dbDoc.seo, docCity),
+    hero: localizeSection(dbDoc.hero, docCity),
+  };
+
+  return {
+    ...localizedDoc,
     name: b.doctorName || dbDoc.pageName || "Dr. Specialist",
     image: b.profileImage?.image || "/uploads/turkey-doctor.jpg",
     designation: b.designation || "Hair Transplant Surgeon",
-    location: b.city || "Delhi",
-    city: b.city || "Delhi",
+    location: docCity,
+    city: docCity,
     experience: b.yearsExperience ? `${b.yearsExperience}+ Yrs` : null,
     procedures: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : null,
     proceduresCount: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : null,
     successRate: b.successRate || null,
     rating: b.rating || 5.0,
-    about: s.about || "",
+    about: localizeText(s.about || "", docCity),
     biography: s.biography || "",
     philosophy: s.philosophy || "",
     languages: b.languages?.length ? b.languages : ["English", "Hindi"],
@@ -233,20 +279,45 @@ const PROCEDURES = [
   { name: "Medical Management of Hair Loss" },
 ];
 
-const NEARBY_AREAS = [
-  "Rohini",
-  "Shalimar Bagh",
-  "Ashok Vihar",
-  "Model Town",
-  "Punjabi Bagh",
-  "Paschim Vihar",
-  "Karol Bagh",
-  "Janakpuri",
-  "Dwarka",
-  "Noida",
-  "Gurgaon",
-  "Faridabad",
-];
+const cityNearbyAreas = {
+  Delhi: [
+    "Rohini",
+    "Pitampura",
+    "Shalimar Bagh",
+    "Ashok Vihar",
+    "Model Town",
+    "Punjabi Bagh",
+    "Paschim Vihar",
+    "Karol Bagh",
+    "Janakpuri",
+    "Dwarka",
+    "Noida",
+    "Gurgaon",
+    "Faridabad",
+  ],
+  Mumbai: [
+    "Andheri",
+    "Bandra",
+    "Juhu",
+    "Powai",
+    "Borivali",
+    "Thane",
+    "Navi Mumbai",
+    "Dadar",
+    "Goregaon",
+    "Malad",
+  ],
+  Hyderabad: [
+    "Banjara Hills",
+    "Jubilee Hills",
+    "Gachibowli",
+    "Hitec City",
+    "Madhapur",
+    "Kondapur",
+    "Secunderabad",
+    "Kukatpally",
+  ],
+};
 
 const FAQS = [
   {
@@ -335,8 +406,8 @@ export default async function DoctorPage({ params }) {
   let faqs = FAQS;
   if (doctor.faq?.faqs?.length) {
     faqs = doctor.faq.faqs.map((f) => ({
-      q: f.question || f.q || "",
-      a: f.answer || f.a || "",
+      q: localizeText(f.question || f.q || "", doctor.city),
+      a: localizeText(f.answer || f.a || "", doctor.city),
     }));
   }
 
@@ -346,12 +417,12 @@ export default async function DoctorPage({ params }) {
     const wim = doctor.whyItMatters;
     whyItMatters = {
       sectionLabel: wim.sectionLabel || "Why It Matters",
-      heading: wim.heading || "",
-      description: wim.description || "",
-      secondaryDescription: wim.secondaryDescription || "",
-      highlightBox: wim.highlightBox || "",
+      heading: localizeText(wim.heading || "", doctor.city),
+      description: localizeText(wim.description || "", doctor.city),
+      secondaryDescription: localizeText(wim.secondaryDescription || "", doctor.city),
+      highlightBox: localizeText(wim.highlightBox || "", doctor.city),
       image: wim.image?.image || "",
-      imageAlt: wim.image?.alt || "",
+      imageAlt: localizeText(wim.image?.alt || "", doctor.city),
       floatingStats: Array.isArray(wim.floatingStats) ? wim.floatingStats.map(s => ({ value: s.value || "", label: s.label || "" })) : [],
       primaryCTA: { text: wim.primaryCTA?.text || "", url: wim.primaryCTA?.url || "" },
       secondaryCTA: { text: wim.secondaryCTA?.text || "", url: wim.secondaryCTA?.url || "" },
@@ -364,9 +435,9 @@ export default async function DoctorPage({ params }) {
     const sp = doctor.surgeonProfile;
     surgeonProfileData = {
       sectionLabel: sp.sectionLabel || "Your Surgeon",
-      heading: sp.heading || `Meet ${doctor.name}`,
-      about: sp.about || "",
-      philosophy: sp.philosophy || "",
+      heading: localizeText(sp.heading || `Meet ${doctor.name}`, doctor.city),
+      about: localizeText(sp.about || "", doctor.city),
+      philosophy: localizeText(sp.philosophy || "", doctor.city),
       achievements: sp.achievements?.length ? sp.achievements : [],
       consultationIncludes: sp.consultationIncludes?.length ? sp.consultationIncludes : [],
     };
@@ -393,20 +464,21 @@ export default async function DoctorPage({ params }) {
   }
 
   const qualSuffix = doctor.keyFacts?.qualifications ? `, ${doctor.keyFacts.qualifications}` : "";
-  const defaultHeading = `Hair Transplant Doctor in ${doctor.city || "Delhi"} — ${doctor.name}${qualSuffix}`;
+  const cityLabel = doctor.city ? ` in ${doctor.city}` : "";
+  const defaultHeading = `Hair Transplant Doctor${cityLabel} — ${doctor.name}${qualSuffix}`;
   const bannerTitle = doctor.hero?.title || doctor.seo?.metaTitle || defaultHeading;
   const bannerDesc = doctor.hero?.description || `${doctor.designation} at Ryan Clinic. Experienced hair restoration specialist.`;
   const bannerImage = doctor.hero?.heroImage?.image || "/uploads/1752667815707-fue-banner_ro9ae6.webp";
   const bannerAlt = doctor.hero?.heroImage?.alt || `${doctor.name} — Ryan Clinic`;
 
   const canonicalUrl = doctor.seo?.canonicalUrl || `https://www.clinicryan.com/doctors/${slug}`;
-  const clinicCity = doctor.visitClinic?.address?.addressLocality || doctor.location || doctor.city || "Delhi";
+  const clinicCity = doctor.visitClinic?.address?.addressLocality || doctor.location || doctor.city || "";
   const cityDefaultAddresses = {
     Delhi: "CD 163, Block CD, Dakshini Pitampura, New Delhi",
     Mumbai: "MHADA 4 Bungalow, 168, Phase D, SV Patel Nagar, Andheri West, Mumbai",
     Hyderabad: "2nd Floor, 8-2, 316/A/6/A, Road No. 14, Banjara Hills, Hyderabad",
   };
-  const clinicAddressLine = doctor.visitClinic?.address?.streetAddress || doctor.basicInfo?.clinicAddress || cityDefaultAddresses[clinicCity] || cityDefaultAddresses.Delhi;
+  const clinicAddressLine = doctor.visitClinic?.address?.streetAddress || doctor.basicInfo?.clinicAddress || cityDefaultAddresses[clinicCity] || "";
   const clinicPhone = doctor.basicInfo?.phoneNumber || doctor.visitClinic?.contact?.phone || "+91-9911111247";
   const dateModified = doctor.updatedAt ? new Date(doctor.updatedAt).toISOString() : new Date().toISOString();
 
@@ -444,9 +516,9 @@ export default async function DoctorPage({ params }) {
     "telephone": clinicPhone,
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": clinicAddressLine,
-      "addressLocality": clinicCity,
-      "addressRegion": "Delhi",
+      "streetAddress": clinicAddressLine || "CD 163, Block CD, Dakshini Pitampura, New Delhi",
+      "addressLocality": clinicCity || "India",
+      "addressRegion": clinicCity || "India",
       "addressCountry": "IN"
     },
     "geo": {
@@ -544,28 +616,28 @@ export default async function DoctorPage({ params }) {
           greatDoctorTraits,
           redFlags,
           procedures: PROCEDURES,
-          nearbyAreas: NEARBY_AREAS,
+          nearbyAreas: (cityNearbyAreas[doctor.city] || []),
           faqs,
           doctor,
           whyItMatters,
           surgeonProfile: surgeonProfileData,
           pricingPackages,
           pricingDisclaimer,
-          proceduresPerformed: doctor.proceduresPerformed || null,
-          doctorStandards: doctor.doctorStandards || null,
-          credentials: doctor.credentials || null,
-          verification: doctor.verification || null,
-          comparison: doctor.comparison || null,
-          surgicalProcess: doctor.surgicalProcess || doctor.surgeryTimeline || null,
-          questionsToAskSection: doctor.questionsToAsk || null,
-          greatDoctorQualities: doctor.greatDoctorQualities || null,
-          warningSigns: doctor.warningSigns || null,
-          pricing: doctor.pricing || null,
-          visitClinic: doctor.visitClinic || null,
-          consultation: doctor.consultation || null,
-          faqSection: doctor.faq || null,
-          keyFacts: doctor.keyFacts || null,
-          medicalReviewer: doctor.medicalReviewer || null,
+          proceduresPerformed: localizeSection(doctor.proceduresPerformed, doctor.city) || null,
+          doctorStandards: localizeSection(doctor.doctorStandards, doctor.city) || null,
+          credentials: localizeSection(doctor.credentials, doctor.city) || null,
+          verification: localizeSection(doctor.verification, doctor.city) || null,
+          comparison: localizeSection(doctor.comparison, doctor.city) || null,
+          surgicalProcess: localizeSection(doctor.surgicalProcess || doctor.surgeryTimeline, doctor.city) || null,
+          questionsToAskSection: localizeSection(doctor.questionsToAsk, doctor.city) || null,
+          greatDoctorQualities: localizeSection(doctor.greatDoctorQualities, doctor.city) || null,
+          warningSigns: localizeSection(doctor.warningSigns, doctor.city) || null,
+          pricing: localizeSection(doctor.pricing, doctor.city) || null,
+          visitClinic: localizeSection(doctor.visitClinic, doctor.city) || null,
+          consultation: localizeSection(doctor.consultation, doctor.city) || null,
+          faqSection: localizeSection(doctor.faq, doctor.city) || null,
+          keyFacts: localizeSection(doctor.keyFacts, doctor.city) || null,
+          medicalReviewer: localizeSection(doctor.medicalReviewer, doctor.city) || null,
         }}
       />
     </>

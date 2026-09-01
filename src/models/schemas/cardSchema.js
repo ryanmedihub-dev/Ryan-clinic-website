@@ -21,7 +21,17 @@ export const cardSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
+    hint: {
+      type: String,
+      trim: true,
+      default: "",
+    },
     description: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    url: {
       type: String,
       trim: true,
       default: "",

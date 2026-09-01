@@ -179,6 +179,23 @@ const initialState = {
     description: "",
     faqs: [],
   },
+  keyFacts: {
+    heading: "VERIFIED DOCTOR & CLINIC KEY FACTS",
+    qualifications: "",
+    registration: "",
+    specialisation: "",
+    experience: "",
+    procedures: "",
+    memberships: "",
+    location: "",
+    consultation: "",
+  },
+  medicalReviewer: {
+    isVerified: false,
+    reviewerName: "",
+    qualifications: "",
+    registration: "",
+  },
 };
 
 export default function CreateDoctorPage() {
@@ -734,6 +751,154 @@ export default function CreateDoctorPage() {
           </div>
         </div>
 
+        {/* 4B. VERIFIED DOCTOR & CLINIC KEY FACTS TABLE */}
+        <h3 className="text-2xl font-bold underline mt-10 mb-5">4B. Verified Doctor & Clinic Key Facts (Table Grid)</h3>
+        <p className="text-sm text-gray-500 mb-4">Edit the 8 Key Fact badges displayed directly below the Hero/Banner section.</p>
+        
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700">Section Heading</label>
+          <input
+            type="text"
+            value={formData.keyFacts?.heading || ""}
+            onChange={(e) => handleNestedChange("keyFacts", "heading", e.target.value)}
+            className="w-full mt-2 p-2 border rounded-md font-semibold"
+            placeholder="VERIFIED DOCTOR & CLINIC KEY FACTS"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-5 rounded-xl border border-gray-200">
+          <div>
+            <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider">Qualifications</label>
+            <input
+              type="text"
+              value={formData.keyFacts?.qualifications || ""}
+              onChange={(e) => handleNestedChange("keyFacts", "qualifications", e.target.value)}
+              className="w-full mt-1.5 p-2.5 border rounded-md bg-white text-sm"
+              placeholder="e.g. MBBS, MS, MCh (Plastic Surgery), DMC-68492"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider">Medical Registration</label>
+            <input
+              type="text"
+              value={formData.keyFacts?.registration || ""}
+              onChange={(e) => handleNestedChange("keyFacts", "registration", e.target.value)}
+              className="w-full mt-1.5 p-2.5 border rounded-md bg-white text-sm"
+              placeholder="e.g. DMC-68492"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider">Specialisation</label>
+            <input
+              type="text"
+              value={formData.keyFacts?.specialisation || ""}
+              onChange={(e) => handleNestedChange("keyFacts", "specialisation", e.target.value)}
+              className="w-full mt-1.5 p-2.5 border rounded-md bg-white text-sm"
+              placeholder="e.g. Sapphire FUE & Direct Implantation Hair Restoration"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider">Surgical Experience</label>
+            <input
+              type="text"
+              value={formData.keyFacts?.experience || ""}
+              onChange={(e) => handleNestedChange("keyFacts", "experience", e.target.value)}
+              className="w-full mt-1.5 p-2.5 border rounded-md bg-white text-sm"
+              placeholder="e.g. 15+ Years"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider">Case Volume</label>
+            <input
+              type="text"
+              value={formData.keyFacts?.procedures || ""}
+              onChange={(e) => handleNestedChange("keyFacts", "procedures", e.target.value)}
+              className="w-full mt-1.5 p-2.5 border rounded-md bg-white text-sm"
+              placeholder="e.g. 5,000+ Surgeries"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider">Council / Memberships</label>
+            <input
+              type="text"
+              value={formData.keyFacts?.memberships || ""}
+              onChange={(e) => handleNestedChange("keyFacts", "memberships", e.target.value)}
+              className="w-full mt-1.5 p-2.5 border rounded-md bg-white text-sm"
+              placeholder="e.g. Delhi Medical Council Registered"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider">Clinic Location</label>
+            <input
+              type="text"
+              value={formData.keyFacts?.location || ""}
+              onChange={(e) => handleNestedChange("keyFacts", "location", e.target.value)}
+              className="w-full mt-1.5 p-2.5 border rounded-md bg-white text-sm"
+              placeholder="e.g. 2nd Floor, Banjara Hills, Hyderabad – 500034"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider">Consultation</label>
+            <input
+              type="text"
+              value={formData.keyFacts?.consultation || ""}
+              onChange={(e) => handleNestedChange("keyFacts", "consultation", e.target.value)}
+              className="w-full mt-1.5 p-2.5 border rounded-md bg-white text-sm"
+              placeholder="e.g. Free Scalp Analysis & Custom Hairline Design"
+            />
+          </div>
+        </div>
+
+        {/* 4C. MEDICAL REVIEWER BYLINE */}
+        <div className="mt-8 p-5 bg-emerald-50/70 border border-emerald-200 rounded-xl">
+          <div className="flex items-center gap-3 mb-3">
+            <input
+              type="checkbox"
+              id="medVerifiedCreate"
+              checked={formData.medicalReviewer?.isVerified || false}
+              onChange={(e) => handleNestedChange("medicalReviewer", "isVerified", e.target.checked)}
+              className="w-4 h-4 text-emerald-600 rounded"
+            />
+            <label htmlFor="medVerifiedCreate" className="text-sm font-bold text-emerald-900 cursor-pointer">
+              Display &quot;Medically Reviewed By&quot; Badge in Hero
+            </label>
+          </div>
+          {formData.medicalReviewer?.isVerified && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3 pt-3 border-t border-emerald-200">
+              <div>
+                <label className="block text-xs font-semibold text-emerald-800">Reviewer Name</label>
+                <input
+                  type="text"
+                  value={formData.medicalReviewer?.reviewerName || ""}
+                  onChange={(e) => handleNestedChange("medicalReviewer", "reviewerName", e.target.value)}
+                  className="w-full mt-1 p-2 border rounded-md bg-white text-sm"
+                  placeholder="e.g. Dr. Pranendra Singh"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-emerald-800">Qualifications</label>
+                <input
+                  type="text"
+                  value={formData.medicalReviewer?.qualifications || ""}
+                  onChange={(e) => handleNestedChange("medicalReviewer", "qualifications", e.target.value)}
+                  className="w-full mt-1 p-2 border rounded-md bg-white text-sm"
+                  placeholder="e.g. MCh Plastic Surgery"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-emerald-800">Registration</label>
+                <input
+                  type="text"
+                  value={formData.medicalReviewer?.registration || ""}
+                  onChange={(e) => handleNestedChange("medicalReviewer", "registration", e.target.value)}
+                  className="w-full mt-1 p-2 border rounded-md bg-white text-sm"
+                  placeholder="e.g. DMC-68492"
+                />
+              </div>
+            </div>
+          )}
+        </div>
+
         {/* 5. WHY DOCTOR MATTERS */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">5. Why Doctor-Led Hair Transplant Matters</h3>
         <div className="flex gap-6 flex-col md:flex-row">
@@ -788,6 +953,20 @@ export default function CreateDoctorPage() {
 
         {/* 6. DOCTOR STANDARDS */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">6. Doctor Standards &amp; Excellence</h3>
+        <div className="flex gap-4 flex-col md:flex-row mb-4">
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
+            <input type="text" value={formData.doctorStandards.sectionLabel} onChange={(e) => handleNestedChange("doctorStandards", "sectionLabel", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. The Standard" />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
+            <input type="text" value={formData.doctorStandards.heading} onChange={(e) => handleNestedChange("doctorStandards", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md font-semibold" placeholder="e.g. What makes a good hair transplant doctor in Delhi?" />
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700">Description</label>
+          <textarea rows={2} value={formData.doctorStandards.description} onChange={(e) => handleNestedChange("doctorStandards", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. These are the non-negotiables." />
+        </div>
         <button
           type="button"
           onClick={() => addToArray("doctorStandards", "cards", { title: "", description: "", icon: "Award" })}
@@ -826,6 +1005,20 @@ export default function CreateDoctorPage() {
 
         {/* 7. CREDENTIALS */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">7. Qualifications &amp; Credentials</h3>
+        <div className="flex gap-4 flex-col md:flex-row mb-4">
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
+            <input type="text" value={formData.credentials.sectionLabel} onChange={(e) => handleNestedChange("credentials", "sectionLabel", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Verification & Credentials" />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
+            <input type="text" value={formData.credentials.heading} onChange={(e) => handleNestedChange("credentials", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md font-semibold" placeholder="e.g. Credentials to look for in a hair transplant doctor in Delhi" />
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700">Description</label>
+          <textarea rows={2} value={formData.credentials.description} onChange={(e) => handleNestedChange("credentials", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="What matters is genuine hair-restoration training." />
+        </div>
         <button
           type="button"
           onClick={() => addToArray("credentials", "tabs", { title: "", description: "", icon: "GraduationCap" })}
@@ -864,6 +1057,20 @@ export default function CreateDoctorPage() {
 
         {/* 8. VERIFICATION */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">8. Verification &amp; Safety Steps</h3>
+        <div className="flex gap-4 flex-col md:flex-row mb-4">
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
+            <input type="text" value={formData.verification.sectionLabel} onChange={(e) => handleNestedChange("verification", "sectionLabel", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Doctor Verification" />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
+            <input type="text" value={formData.verification.heading} onChange={(e) => handleNestedChange("verification", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md font-semibold" placeholder="e.g. How to verify a hair transplant doctor's credentials in Delhi" />
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700">Description</label>
+          <textarea rows={2} value={formData.verification.description} onChange={(e) => handleNestedChange("verification", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Tick off each item before booking your hair transplant procedure." />
+        </div>
         <button
           type="button"
           onClick={() => addToArray("verification", "steps", { title: "", description: "" })}
@@ -902,6 +1109,20 @@ export default function CreateDoctorPage() {
 
         {/* 9. DOCTOR VS TECHNICIAN COMPARISON */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">9. Doctor vs Technician Comparison Matrix</h3>
+        <div className="flex gap-4 flex-col md:flex-row mb-4">
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
+            <input type="text" value={formData.comparison.sectionLabel} onChange={(e) => handleNestedChange("comparison", "sectionLabel", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. The Critical Difference" />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
+            <input type="text" value={formData.comparison.heading} onChange={(e) => handleNestedChange("comparison", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md font-semibold" placeholder="e.g. Doctor-led vs technician-led surgery in Delhi" />
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700">Description</label>
+          <textarea rows={2} value={formData.comparison.description} onChange={(e) => handleNestedChange("comparison", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="The person performing each step is what determines your result." />
+        </div>
         <button
           type="button"
           onClick={() => addToArray("comparison", "rows", { parameter: "", doctorValue: "", technicianValue: "" })}
@@ -966,6 +1187,16 @@ export default function CreateDoctorPage() {
 
         {/* 10. SURGEON PROFILE & BIO */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">10. Surgeon Profile &amp; Bio</h3>
+        <div className="flex gap-4 flex-col md:flex-row mb-4">
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
+            <input type="text" value={formData.surgeonProfile.sectionLabel} onChange={(e) => handleNestedChange("surgeonProfile", "sectionLabel", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Your Surgeon" />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
+            <input type="text" value={formData.surgeonProfile.heading} onChange={(e) => handleNestedChange("surgeonProfile", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md font-semibold" placeholder="e.g. Meet Dr. Pranendra Singh — Hair Restoration Surgeon in Delhi" />
+          </div>
+        </div>
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-semibold text-gray-700">Detailed Biography / About</label>
@@ -991,6 +1222,20 @@ export default function CreateDoctorPage() {
 
         {/* 11. SURGERY TIMELINE */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">11. Surgery Timeline</h3>
+        <div className="flex gap-4 flex-col md:flex-row mb-4">
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
+            <input type="text" value={formData.surgeryTimeline.sectionLabel} onChange={(e) => handleNestedChange("surgeryTimeline", "sectionLabel", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Procedure Timeline" />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
+            <input type="text" value={formData.surgeryTimeline.heading} onChange={(e) => handleNestedChange("surgeryTimeline", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md font-semibold" placeholder="e.g. Your Hair Transplant Timeline" />
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700">Description</label>
+          <textarea rows={2} value={formData.surgeryTimeline.description} onChange={(e) => handleNestedChange("surgeryTimeline", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Overview of the procedure timeline." />
+        </div>
         <button
           type="button"
           onClick={() => addToArray("surgeryTimeline", "steps", { stepNumber: "", title: "", description: "" })}
@@ -1033,6 +1278,37 @@ export default function CreateDoctorPage() {
 
         {/* 12. CONSULTATION */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">12. Consultation Section</h3>
+        <div className="flex gap-4 flex-col md:flex-row mb-4">
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
+            <input type="text" value={formData.consultation.sectionLabel} onChange={(e) => handleNestedChange("consultation", "sectionLabel", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Book Consultation" />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
+            <input type="text" value={formData.consultation.heading} onChange={(e) => handleNestedChange("consultation", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md font-semibold" placeholder="e.g. Book a consultation with our hair transplant doctor in Delhi" />
+          </div>
+        </div>
+        <div className="mb-6">
+          <label className="block text-sm font-semibold text-gray-700">Description (left card body)</label>
+          <textarea rows={2} value={formData.consultation.description} onChange={(e) => handleNestedChange("consultation", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Doctor-led Sapphire FUE & Turkish Technique hair restoration..." />
+        </div>
+        <div className="bg-red-50 border border-red-200 rounded-xl p-5 mb-6 space-y-4">
+          <h4 className="text-base font-bold text-red-800">Right Card (Why Ryan Clinic?)</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700">Right Card Badge</label>
+              <input type="text" value={formData.consultation.rightCardBadge || ""} onChange={(e) => handleNestedChange("consultation", "rightCardBadge", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. WHY RYAN CLINIC?" />
+            </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700">Right Card Heading</label>
+              <input type="text" value={formData.consultation.rightCardHeading || ""} onChange={(e) => handleNestedChange("consultation", "rightCardHeading", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. Results So Natural — Nobody Will Know" />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700">Right Card Description</label>
+            <textarea rows={2} value={formData.consultation.rightCardDescription || ""} onChange={(e) => handleNestedChange("consultation", "rightCardDescription", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. Every graft is placed with precise control over angle, depth & direction..." />
+          </div>
+        </div>
         <div className="flex gap-6 flex-col md:flex-row">
           <div className="w-full">
             <label className="block text-sm font-semibold text-gray-700">Form Title</label>
@@ -1058,6 +1334,20 @@ export default function CreateDoctorPage() {
 
         {/* 13. QUESTIONS TO ASK */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">13. Questions to Ask Your Surgeon</h3>
+        <div className="flex gap-4 flex-col md:flex-row mb-4">
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
+            <input type="text" value={formData.questionsToAsk.sectionLabel} onChange={(e) => handleNestedChange("questionsToAsk", "sectionLabel", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Questions to Ask" />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
+            <input type="text" value={formData.questionsToAsk.heading} onChange={(e) => handleNestedChange("questionsToAsk", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md font-semibold" placeholder="e.g. Questions to ask your hair transplant doctor in Delhi before booking" />
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700">Description</label>
+          <textarea rows={2} value={formData.questionsToAsk.description} onChange={(e) => handleNestedChange("questionsToAsk", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="The quality of a doctor's answers tells you almost everything." />
+        </div>
         <button
           type="button"
           onClick={() => addToArray("questionsToAsk", "questions", { question: "", answer: "" })}
@@ -1094,6 +1384,20 @@ export default function CreateDoctorPage() {
 
         {/* 14. GREAT DOCTOR QUALITIES */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">14. Great Doctor Qualities</h3>
+        <div className="flex gap-4 flex-col md:flex-row mb-4">
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
+            <input type="text" value={formData.greatDoctorQualities.sectionLabel} onChange={(e) => handleNestedChange("greatDoctorQualities", "sectionLabel", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Excellence Standard" />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
+            <input type="text" value={formData.greatDoctorQualities.heading} onChange={(e) => handleNestedChange("greatDoctorQualities", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md font-semibold" placeholder="e.g. What a great hair transplant doctor in Delhi does differently" />
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700">Description</label>
+          <textarea rows={2} value={formData.greatDoctorQualities.description} onChange={(e) => handleNestedChange("greatDoctorQualities", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Every stage of your treatment is personally performed with high medical rigor..." />
+        </div>
         <button
           type="button"
           onClick={() => addToArray("greatDoctorQualities", "cards", { title: "", description: "", icon: "Sparkles" })}
@@ -1132,6 +1436,20 @@ export default function CreateDoctorPage() {
 
         {/* 15. WARNING SIGNS */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">15. Warning Signs &amp; Red Flags</h3>
+        <div className="flex gap-4 flex-col md:flex-row mb-4">
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
+            <input type="text" value={formData.warningSigns.sectionLabel} onChange={(e) => handleNestedChange("warningSigns", "sectionLabel", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Warning Signs" />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
+            <input type="text" value={formData.warningSigns.heading} onChange={(e) => handleNestedChange("warningSigns", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md font-semibold" placeholder="e.g. Red flags when choosing a hair transplant doctor in Delhi" />
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700">Description</label>
+          <textarea rows={2} value={formData.warningSigns.description} onChange={(e) => handleNestedChange("warningSigns", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="If you encounter any of the following at a clinic, walk away." />
+        </div>
         <button
           type="button"
           onClick={() => addToArray("warningSigns", "cards", { title: "", description: "", icon: "AlertTriangle" })}
@@ -1170,6 +1488,20 @@ export default function CreateDoctorPage() {
 
         {/* 16. SURGICAL PROCESS */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">16. Surgical Process Steps</h3>
+        <div className="flex gap-4 flex-col md:flex-row mb-4">
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
+            <input type="text" value={formData.surgicalProcess.sectionLabel} onChange={(e) => handleNestedChange("surgicalProcess", "sectionLabel", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Surgical Process" />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
+            <input type="text" value={formData.surgicalProcess.heading} onChange={(e) => handleNestedChange("surgicalProcess", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md font-semibold" placeholder="e.g. What your hair transplant doctor in Delhi does at every stage" />
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700">Description</label>
+          <textarea rows={2} value={formData.surgicalProcess.description} onChange={(e) => handleNestedChange("surgicalProcess", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Every stage of your hair restoration procedure is personally performed..." />
+        </div>
         <button
           type="button"
           onClick={() => addToArray("surgicalProcess", "steps", { number: "", title: "", description: "" })}
@@ -1212,6 +1544,30 @@ export default function CreateDoctorPage() {
 
         {/* 17. PRICING */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">17. Pricing &amp; Packages</h3>
+        <div className="flex gap-4 flex-col md:flex-row mb-4">
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
+            <input type="text" value={formData.pricing.sectionLabel} onChange={(e) => handleNestedChange("pricing", "sectionLabel", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Cost & Consultation" />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
+            <input type="text" value={formData.pricing.heading} onChange={(e) => handleNestedChange("pricing", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md font-semibold" placeholder="e.g. Cost of consulting a hair transplant doctor in Delhi" />
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700">Section Description</label>
+          <textarea rows={2} value={formData.pricing.description} onChange={(e) => handleNestedChange("pricing", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Consultation at Ryan Clinic includes a free scalp analysis..." />
+        </div>
+        <div className="flex gap-4 flex-col md:flex-row mb-4 bg-blue-50 border border-blue-200 rounded-xl p-4">
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Package Section Heading</label>
+            <input type="text" value={formData.pricing.packageSectionHeading || ""} onChange={(e) => handleNestedChange("pricing", "packageSectionHeading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Hair Transplant Cost in Delhi" />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Package Section Description</label>
+            <input type="text" value={formData.pricing.packageSectionDescription || ""} onChange={(e) => handleNestedChange("pricing", "packageSectionDescription", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Per-graft pricing — confirmed in writing at your free consultation." />
+          </div>
+        </div>
         <div>
           <label className="block text-sm font-semibold text-gray-700">Pricing Disclaimer</label>
           <input
@@ -1264,6 +1620,20 @@ export default function CreateDoctorPage() {
 
         {/* 18. VISIT CLINIC */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">18. Visit Clinic Information</h3>
+        <div className="flex gap-4 flex-col md:flex-row mb-4">
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
+            <input type="text" value={formData.visitClinic.sectionLabel} onChange={(e) => handleNestedChange("visitClinic", "sectionLabel", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Visit Us" />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
+            <input type="text" value={formData.visitClinic.heading} onChange={(e) => handleNestedChange("visitClinic", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md font-semibold" placeholder="e.g. Visiting Ryan Clinic in Delhi" />
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700">Description</label>
+          <textarea rows={2} value={formData.visitClinic.description} onChange={(e) => handleNestedChange("visitClinic", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Our Delhi centre is convenient from across the city." />
+        </div>
         <div className="flex gap-6 flex-col md:flex-row">
           <div className="w-full">
             <label className="block text-sm font-semibold text-gray-700">Clinic Address Line</label>
@@ -1397,6 +1767,20 @@ export default function CreateDoctorPage() {
 
         {/* 19. FREQUENTLY ASKED QUESTIONS */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">19. Frequently Asked Questions</h3>
+        <div className="flex gap-4 flex-col md:flex-row mb-4">
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
+            <input type="text" value={formData.faq.sectionLabel} onChange={(e) => handleNestedChange("faq", "sectionLabel", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Frequently Asked Questions" />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
+            <input type="text" value={formData.faq.heading} onChange={(e) => handleNestedChange("faq", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md font-semibold" placeholder="e.g. Frequently asked questions about hair transplant doctors in Delhi" />
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700">Description</label>
+          <textarea rows={2} value={formData.faq.description} onChange={(e) => handleNestedChange("faq", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Common questions about our hair transplant doctors and process." />
+        </div>
         <button
           type="button"
           onClick={() => addToArray("faq", "faqs", { question: "", answer: "" })}

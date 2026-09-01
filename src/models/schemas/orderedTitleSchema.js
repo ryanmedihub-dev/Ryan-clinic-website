@@ -12,6 +12,11 @@ export const orderedTitleSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
+    subtitle: {
+      type: String,
+      trim: true,
+      default: "",
+    },
     displayOrder: {
       type: Number,
       default: 0,
