@@ -6,7 +6,7 @@ import { TOTAL_QUESTIONS, ASSESSMENT_DURATION_SECONDS } from "@/lib/ai-interview
 export async function POST(req) {
   try {
     const body = await req.json().catch(() => ({}));
-    const { position, experienceType, yearsOfExperience } = body;
+    const { position, experienceType, yearsOfExperience, language: reqLanguage } = body;
 
     if (!position || typeof position !== "string") {
       return NextResponse.json(
@@ -15,18 +15,24 @@ export async function POST(req) {
       );
     }
 
-    // Generate role-specific MCQs (server-side only)
+    // Strictly validate language parameter — only "en" and "hinglish" allowed, defaults to "en"
+    const rawLang = String(reqLanguage || "en").toLowerCase().trim();
+    const language = rawLang === "hinglish" ? "hinglish" : "en";
+
+    // Generate role-specific MCQs in selected language (server-side only)
     const questions = await generateInterviewQuestions({
       position: position.trim(),
       experienceType: experienceType || "Fresher",
       yearsOfExperience: Number(yearsOfExperience) || 0,
+      language,
     });
 
-    // Create signed, tamper-resistant session token sealing answer key and 3-min expiry
+    // Create signed, tamper-resistant session token sealing answer key and 4-min expiry
     const { sessionId, token, questions: sessionQuestions, expiresAt } = createInterviewSessionToken({
       position: position.trim(),
       experienceType: experienceType || "Fresher",
       yearsOfExperience: Number(yearsOfExperience) || 0,
+      language,
       questions,
     });
 
@@ -35,6 +41,7 @@ export async function POST(req) {
       success: true,
       sessionId,
       sessionToken: token,
+      language,
       totalQuestions: TOTAL_QUESTIONS,
       durationSeconds: ASSESSMENT_DURATION_SECONDS,
       expiresAt,

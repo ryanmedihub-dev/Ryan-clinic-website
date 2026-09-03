@@ -28,6 +28,7 @@ export default function InterviewForm() {
   const [validationErrors, setValidationErrors] = useState({});
 
   // ── AI Interview State ──────────────────────────────────────────────────────
+  const [interviewLanguage, setInterviewLanguage] = useState("en"); // "en" | "hinglish"
   const [aiLoading, setAiLoading] = useState(false);
   const [aiLoadingText, setAiLoadingText] = useState("");
   const [aiError, setAiError] = useState("");
@@ -56,18 +57,73 @@ export default function InterviewForm() {
   const jobProfiles = [
     "Telecaller",
     "Team Leader",
+    "Manager",
+    "HR Recruiter",
     "Receptionist",
     "Counsellor",
     "Trainer",
     "Stock Manager",
     "MIS Executive",
     "Medicine Sales Executive",
+    "Pharmacy Executive",
     "Nursing Staff",
+    "Nursing Staff / OT Staff",
     "Doctor",
     "Transplant Technician",
     "Software Developer",
     "Other",
   ];
+
+  // ── HR Reference dropdown: filter + display-name formatting ───────────────
+  // Names to hide from the public reference list (case-insensitive, trimmed).
+  // Strips leading/trailing 'hr' to catch variants like 'anamta Hr' or 'Hr Muskan'.
+  // This ONLY affects the dropdown labels — ObjectIds and API data are untouched.
+  function isExcludedHr(hr) {
+    if (!hr) return false;
+    const name = hr.name || "";
+    const lower = name.trim().toLowerCase();
+    const stripped = lower
+      .replace(/^hr[\s._-]+/i, "")
+      .replace(/[\s._-]+hr$/i, "")
+      .trim();
+
+    const excludedNames = ["shubham chitransh", "anamta", "muskan"];
+    if (excludedNames.includes(stripped) || excludedNames.includes(lower)) {
+      return true;
+    }
+
+    // Safety fallback: exact CRM ObjectIds for the three excluded records
+    const excludedIds = [
+      "6a8c1c9f4b81eed5d782715a", // Anamta
+      "69bd264a9777c5b4424121d9", // Muskan
+      "6a8842144f9e384454479956", // Shubham Chitransh
+    ];
+    if (hr._id && excludedIds.includes(String(hr._id))) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Returns the display label for an HR entry.
+   * - Trims surrounding whitespace.
+   * - If the name already starts with "HR ", "Hr ", "hr " (case-insensitive),
+   *   normalizes the prefix to uppercase "HR " to avoid duplicates like "HR HR Tulsi".
+   * - Otherwise, prepends "HR ".
+   */
+  function formatHrDisplayName(rawName) {
+    const trimmed = (rawName || "").trim();
+    if (/^hr\s+/i.test(trimmed)) {
+      return trimmed.replace(/^hr\s+/i, "HR ");
+    }
+    return `HR ${trimmed}`;
+  }
+
+  // Filtered + formatted list — value (_id) is never modified.
+  const displayHrList = hrList
+    .filter((hr) => !isExcludedHr(hr))
+    .map((hr) => ({ _id: hr._id, displayName: formatHrDisplayName(hr.name) }));
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -135,13 +191,22 @@ export default function InterviewForm() {
     return Object.keys(errors).length === 0;
   };
 
-  // ── Initialize AI Interview ─────────────────────────────────────────────────
-  const startAiInterview = async () => {
+  // ── Advance from Step 2 to Step 3 (Language Selection & Assessment Intro) ──
+  const handleContinueToAssessment = () => {
     if (!validateStep2()) return;
-
     setCurrentStep(3);
+    window.scrollTo(0, 0);
+  };
+
+  // ── Initialize AI Interview in Selected Language ───────────────────────────
+  const startAiInterview = async (langOverride) => {
+    const langToUse = langOverride || interviewLanguage || "en";
     setAiLoading(true);
-    setAiLoadingText("Preparing your personalized interview assessment...");
+    setAiLoadingText(
+      langToUse === "hinglish"
+        ? "Preparing your personalized assessment in Hinglish..."
+        : "Preparing your personalized interview assessment in English..."
+    );
     setAiError("");
     setAnswers({});
     setCurrentQuestionIdx(0);
@@ -150,7 +215,7 @@ export default function InterviewForm() {
     window.scrollTo(0, 0);
 
     try {
-      // Send ONLY non-PII required for role MCQ generation
+      // Send ONLY non-PII required for role MCQ generation + language preference
       const res = await fetch("/api/ai-interview/start", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -158,6 +223,7 @@ export default function InterviewForm() {
           position: formData.position,
           experienceType: formData.experienceType,
           yearsOfExperience: formData.yearsOfExperience || 0,
+          language: langToUse,
         }),
       });
 
@@ -800,12 +866,12 @@ export default function InterviewForm() {
                     className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition appearance-none"
                   >
                     <option value="">{loadingHr ? "Loading references..." : "Select an HR reference"}</option>
-                    {hrList.map((hr) => (
+                    {displayHrList.map((hr) => (
                       <option key={hr._id} value={hr._id}>
-                        {hr.name}
+                        {hr.displayName}
                       </option>
                     ))}
-                    {!hrList.some((hr) => hr._id === "69bd3e186706eb9cf318ffc9") && (
+                    {!displayHrList.some((hr) => hr._id === "69bd3e186706eb9cf318ffc9") && (
                       <option value="69bd3e186706eb9cf318ffc9">Other</option>
                     )}
                   </select>
@@ -830,7 +896,7 @@ export default function InterviewForm() {
                 </button>
                 <button
                   type="button"
-                  onClick={startAiInterview}
+                  onClick={handleContinueToAssessment}
                   className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center shadow-xs cursor-pointer"
                 >
                   Continue to Pre-Screening Interview
@@ -860,22 +926,185 @@ export default function InterviewForm() {
                   </div>
                   <h3 className="text-lg font-semibold text-gray-800 mb-2">Assessment Temporary Notice</h3>
                   <p className="text-sm text-gray-600 mb-6">{aiError}</p>
-                  <button
-                    type="button"
-                    onClick={startAiInterview}
-                    className="px-6 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition cursor-pointer"
-                  >
-                    Retry Assessment
-                  </button>
+                  <div className="flex justify-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setAiError("")}
+                      className="px-5 py-2.5 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition text-sm cursor-pointer"
+                    >
+                      Change Language
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => startAiInterview(interviewLanguage)}
+                      className="px-6 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition text-sm cursor-pointer"
+                    >
+                      Retry Assessment
+                    </button>
+                  </div>
+                </div>
+              ) : !sessionToken || questions.length === 0 ? (
+                /* ── Language Selection & Assessment Introduction ── */
+                <div>
+                  <div className="flex items-center mb-6">
+                    <div className="bg-blue-100 p-3 rounded-2xl mr-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-800">Pre-Screening Assessment</h2>
+                      <p className="text-sm text-gray-500">
+                        Role: <span className="font-semibold text-blue-600">{formData.position || "Applied Role"}</span> • 7 Questions • 4 Minutes
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Language Selection Header */}
+                  <div className="mb-6">
+                    <label className="block text-base font-semibold text-gray-900 mb-1">
+                      Choose your interview language
+                    </label>
+                    <p className="text-sm text-gray-500">
+                      Choose the language you are most comfortable with.
+                    </p>
+                  </div>
+
+                  {/* Language Option Cards */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    {/* Option 1: English */}
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => setInterviewLanguage("en")}
+                      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setInterviewLanguage("en"); }}
+                      className={`p-5 rounded-xl border-2 transition-all cursor-pointer flex flex-col justify-between ${
+                        interviewLanguage === "en"
+                          ? "border-blue-600 bg-blue-50/70 ring-2 ring-blue-500/30 shadow-sm"
+                          : "border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50/50"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <span className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold text-sm ${
+                            interviewLanguage === "en" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-600"
+                          }`}>
+                            EN
+                          </span>
+                          <div>
+                            <h4 className="font-semibold text-gray-900 text-base">English</h4>
+                            <span className="text-xs text-gray-500 font-medium">Standard English</span>
+                          </div>
+                        </div>
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mt-0.5 ${
+                          interviewLanguage === "en" ? "border-blue-600 bg-blue-600" : "border-gray-300"
+                        }`}>
+                          {interviewLanguage === "en" && (
+                            <div className="w-2 h-2 rounded-full bg-white" />
+                          )}
+                        </div>
+                      </div>
+                      <p className="text-xs text-gray-600 leading-relaxed">
+                        Questions and multiple choice options will be presented entirely in clear, professional English.
+                      </p>
+                    </div>
+
+                    {/* Option 2: Hinglish */}
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => setInterviewLanguage("hinglish")}
+                      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setInterviewLanguage("hinglish"); }}
+                      className={`p-5 rounded-xl border-2 transition-all cursor-pointer flex flex-col justify-between ${
+                        interviewLanguage === "hinglish"
+                          ? "border-blue-600 bg-blue-50/70 ring-2 ring-blue-500/30 shadow-sm"
+                          : "border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50/50"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <span className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold text-sm ${
+                            interviewLanguage === "hinglish" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-600"
+                          }`}>
+                            हि/EN
+                          </span>
+                          <div>
+                            <h4 className="font-semibold text-gray-900 text-base">Hinglish (Hindi + English)</h4>
+                            <span className="text-xs text-blue-600 font-semibold bg-blue-100/70 px-2 py-0.5 rounded-full">Recommended</span>
+                          </div>
+                        </div>
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mt-0.5 ${
+                          interviewLanguage === "hinglish" ? "border-blue-600 bg-blue-600" : "border-gray-300"
+                        }`}>
+                          {interviewLanguage === "hinglish" && (
+                            <div className="w-2 h-2 rounded-full bg-white" />
+                          )}
+                        </div>
+                      </div>
+                      <p className="text-xs text-gray-600 leading-relaxed">
+                        Questions will be in natural conversational Hinglish (Roman script Hindi + English) for easier understanding.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Assessment Instructions Card */}
+                  <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 sm:p-5 mb-8">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">
+                      Assessment Guidelines
+                    </h4>
+                    <ul className="space-y-2.5 text-xs sm:text-sm text-slate-600">
+                      <li className="flex items-start gap-2.5">
+                        <span className="text-blue-600 font-bold mt-0.5">•</span>
+                        <span><strong>7 Practical Questions:</strong> Scenario-based multiple-choice questions tailored to the <strong>{formData.position}</strong> position.</span>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <span className="text-blue-600 font-bold mt-0.5">•</span>
+                        <span><strong>4-Minute Timer:</strong> A countdown timer begins immediately after questions are loaded.</span>
+                      </li>
+                      <li className="flex items-start gap-2.5">
+                        <span className="text-blue-600 font-bold mt-0.5">•</span>
+                        <span><strong>No Negative Marking:</strong> Select the single best answer for each question before time runs out.</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Bottom Actions */}
+                  <div className="flex items-center justify-between pt-2">
+                    <button
+                      type="button"
+                      onClick={() => { setCurrentStep(2); window.scrollTo(0, 0); }}
+                      className="px-6 py-3 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 flex items-center cursor-pointer text-sm"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clipRule="evenodd" />
+                      </svg>
+                      Back to Experience
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => startAiInterview(interviewLanguage)}
+                      className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center shadow-md cursor-pointer text-sm font-semibold"
+                    >
+                      Start Assessment ({interviewLanguage === "hinglish" ? "Hinglish" : "English"})
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               ) : questions.length > 0 && currentQuestion ? (
                 <div>
                   {/* Header: Role badge + progress + countdown timer */}
                   <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-6 border-b border-gray-100">
                     <div>
-                      <span className="text-xs uppercase tracking-wider font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100">
-                        {formData.position || "Candidate"} Assessment
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs uppercase tracking-wider font-semibold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100">
+                          {formData.position || "Candidate"} Assessment
+                        </span>
+                        <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
+                          {interviewLanguage === "hinglish" ? "Hinglish" : "English"}
+                        </span>
+                      </div>
                       <h3 className="text-xl font-bold text-gray-800 mt-2">
                         Question {currentQuestionIdx + 1} of {questions.length}
                       </h3>

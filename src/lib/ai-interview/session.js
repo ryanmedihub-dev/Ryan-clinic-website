@@ -74,10 +74,11 @@ function getSigningSecret() {
  * @param {string} params.position
  * @param {string} params.experienceType
  * @param {number|string} params.yearsOfExperience
+ * @param {string} [params.language] - "en" | "hinglish"
  * @param {Array<{ id: string, text: string, options: Array<{ id: string, text: string }>, correctOptionId: string }>} params.questions
  * @returns {string} Signed token: base64UrlPayload.signature
  */
-export function createInterviewSessionToken({ position, experienceType, yearsOfExperience, questions }) {
+export function createInterviewSessionToken({ position, experienceType, yearsOfExperience, language = "en", questions }) {
   const sessionId = "ses_" + crypto.randomBytes(12).toString("hex");
   const now = Date.now();
 
@@ -86,6 +87,7 @@ export function createInterviewSessionToken({ position, experienceType, yearsOfE
     position: String(position || "Other"),
     expType: String(experienceType || "Fresher"),
     expYears: Number(yearsOfExperience) || 0,
+    lang: language === "hinglish" ? "hinglish" : "en",
     questions: questions.map((q, idx) => ({
       id: String(q.id || `q_${idx + 1}`),
       text: String(q.text || "").trim(),

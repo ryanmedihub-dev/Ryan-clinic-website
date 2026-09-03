@@ -38,6 +38,28 @@ export const ROLE_COMPETENCIES = {
     ],
     sampleScenario: "Managing an underperforming team member while meeting monthly targets.",
   },
+  Manager: {
+    title: "Clinic / Operations Manager",
+    focusAreas: [
+      "Strategic planning, target setting, and multi-department coordination",
+      "Staff performance management, appraisal, and team development",
+      "Operational process improvement, SOP enforcement, and compliance oversight",
+      "Budget monitoring, resource allocation, and vendor relationship management",
+      "Escalation handling, stakeholder communication, and crisis resolution",
+    ],
+    sampleScenario: "Managing a department-wide performance dip while maintaining patient satisfaction standards.",
+  },
+  "HR Recruiter": {
+    title: "HR Executive / Talent Acquisition Recruiter",
+    focusAreas: [
+      "End-to-end recruitment: sourcing, screening, interviewing, and onboarding",
+      "Job description writing, candidate evaluation, and offer negotiation",
+      "Employee engagement, attendance management, and HR policy compliance",
+      "Conflict resolution, grievance handling, and disciplinary procedures",
+      "HR documentation, payroll coordination, and statutory compliance",
+    ],
+    sampleScenario: "Selecting the best candidate from a high-volume recruitment drive for a clinical support role.",
+  },
   Receptionist: {
     title: "Front Desk Receptionist",
     focusAreas: [
@@ -115,8 +137,30 @@ export const ROLE_COMPETENCIES = {
     ],
     sampleScenario: "Convincing a skeptical doctor to prescribe a new clinic-recommended product over a competitor brand.",
   },
+  "Pharmacy Executive": {
+    title: "Pharmacy / Medicine Sales Executive",
+    focusAreas: [
+      "Pharmaceutical product knowledge, detailing, and doctor relationship management",
+      "Target-driven territory planning and call frequency management",
+      "Handling prescriber objections and competitor product comparisons",
+      "Regulatory compliance and ethical pharmaceutical promotion",
+      "Order management, chemist coverage, and stockist coordination",
+    ],
+    sampleScenario: "Convincing a skeptical doctor to prescribe a new clinic-recommended product over a competitor brand.",
+  },
   "Nursing Staff": {
     title: "Clinic Nurse / Nursing Staff",
+    focusAreas: [
+      "Patient care protocols, vital monitoring, and pre/post-operative nursing support",
+      "Infection control, sterilization standards, and aseptic technique",
+      "Medication administration accuracy and adverse reaction monitoring",
+      "Patient communication, comfort, and anxiety management",
+      "Emergency response, documentation accuracy, and handover protocols",
+    ],
+    sampleScenario: "Managing a post-operative patient who develops unexpected pain while the doctor is in surgery.",
+  },
+  "Nursing Staff / OT Staff": {
+    title: "Clinic Nurse / OT Staff",
     focusAreas: [
       "Patient care protocols, vital monitoring, and pre/post-operative nursing support",
       "Infection control, sterilization standards, and aseptic technique",

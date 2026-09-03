@@ -5,6 +5,7 @@ import {
   ROLE_COMPETENCIES,
   QUESTION_GENERATION_SAFETY_PROMPT,
 } from "./config.js";
+import { DEFAULT_FALLBACK_QUESTIONS_HINGLISH } from "./fallback-questions-hinglish.js";
 
 /**
  * Expanded pool of curated, role-specific Multiple Choice Questions (MCQs).
@@ -201,6 +202,150 @@ const DEFAULT_FALLBACK_QUESTIONS = {
         { id: "opt_2", text: "Total number of unanswered dials made per day." },
         { id: "opt_3", text: "How loudly they speak on the floor." },
         { id: "opt_4", text: "Number of hours spent logged in without making calls." },
+      ],
+      correctOptionId: "opt_1",
+    },
+  ],
+  Manager: [
+    {
+      text: "Your clinic's OPD conversion rate drops 20% in a single month across all departments. What is your priority action?",
+      options: [
+        { id: "opt_1", text: "Conduct a cross-department data review, identify the root cause (leads, quality, or process), and set a targeted recovery action plan." },
+        { id: "opt_2", text: "Fire the lowest-performing employee immediately without investigation." },
+        { id: "opt_3", text: "Send a mass motivational email and take no further action." },
+        { id: "opt_4", text: "Assume it is a seasonal trend and wait for next month." },
+      ],
+      correctOptionId: "opt_1",
+    },
+    {
+      text: "Two department heads disagree on resource allocation for a new campaign. How do you resolve it?",
+      options: [
+        { id: "opt_1", text: "Facilitate a structured discussion using business impact data and align both on a shared clinic goal before making an objective decision." },
+        { id: "opt_2", text: "Side with the more senior of the two department heads automatically." },
+        { id: "opt_3", text: "Avoid the discussion entirely and delay the campaign launch." },
+        { id: "opt_4", text: "Split resources equally without analyzing operational needs." },
+      ],
+      correctOptionId: "opt_1",
+    },
+    {
+      text: "A vendor is consistently delivering consumables late, affecting clinic OT schedules. How should you address this?",
+      options: [
+        { id: "opt_1", text: "Formally escalate to the vendor with documented evidence, issue a performance warning, and initiate alternative vendor evaluation in parallel." },
+        { id: "opt_2", text: "Accept the delays as unavoidable and adjust the OT schedule indefinitely." },
+        { id: "opt_3", text: "Verbally complain to the delivery person without escalating to vendor management." },
+        { id: "opt_4", text: "Switch vendors immediately with no transition plan, risking a supply gap." },
+      ],
+      correctOptionId: "opt_1",
+    },
+    {
+      text: "How should a manager set realistic monthly performance targets for a growing clinic team?",
+      options: [
+        { id: "opt_1", text: "Base targets on historical performance data, team capacity, lead volume, and seasonal trends — then align the team through a structured briefing." },
+        { id: "opt_2", text: "Randomly assign large targets to motivate the team through pressure." },
+        { id: "opt_3", text: "Set identical targets for all staff regardless of their experience level." },
+        { id: "opt_4", text: "Let each employee set their own targets with no management input." },
+      ],
+      correctOptionId: "opt_1",
+    },
+    {
+      text: "A key team leader resigns unexpectedly one week before a peak operational period. What is your immediate plan?",
+      options: [
+        { id: "opt_1", text: "Conduct an internal knowledge transfer, temporarily promote a high-performing senior agent, and accelerate a replacement hiring process in parallel." },
+        { id: "opt_2", text: "Do nothing and hope the team self-manages." },
+        { id: "opt_3", text: "Cancel the peak period operations." },
+        { id: "opt_4", text: "Assign the work to yourself indefinitely without hiring support." },
+      ],
+      correctOptionId: "opt_1",
+    },
+    {
+      text: "How should a manager ensure that SOPs (Standard Operating Procedures) are consistently followed across all departments?",
+      options: [
+        { id: "opt_1", text: "Conduct regular SOP audits, provide refresher training when gaps are identified, and recognize teams that consistently comply." },
+        { id: "opt_2", text: "Print the SOPs and hope employees read them independently." },
+        { id: "opt_3", text: "Punish every minor SOP deviation without investigation or context." },
+        { id: "opt_4", text: "Only enforce SOPs during external audits or inspections." },
+      ],
+      correctOptionId: "opt_1",
+    },
+    {
+      text: "What is the best approach for a manager when presenting monthly performance results to clinic leadership?",
+      options: [
+        { id: "opt_1", text: "Present accurate, data-supported insights with root cause analysis for gaps and a clear action plan for the next cycle." },
+        { id: "opt_2", text: "Only share positive results and hide underperformance figures." },
+        { id: "opt_3", text: "Submit raw data without any analysis or commentary." },
+        { id: "opt_4", text: "Blame the team for all shortfalls without presenting improvement plans." },
+      ],
+      correctOptionId: "opt_1",
+    },
+  ],
+  "HR Recruiter": [
+    {
+      text: "You receive 200 applications for a Telecaller position. What is the most efficient first screening step?",
+      options: [
+        { id: "opt_1", text: "Apply pre-defined qualification criteria (education, experience, communication) to shortlist candidates objectively from the application pool." },
+        { id: "opt_2", text: "Call all 200 candidates for full interviews immediately." },
+        { id: "opt_3", text: "Select candidates based on profile photo attractiveness." },
+        { id: "opt_4", text: "Forward all applications to the manager without screening." },
+      ],
+      correctOptionId: "opt_1",
+    },
+    {
+      text: "A shortlisted candidate accepts the offer verbally but fails to show up on the joining date. How do you handle it?",
+      options: [
+        { id: "opt_1", text: "Contact the candidate professionally to understand the reason, update the records, and promptly re-activate the next shortlisted candidate in the pipeline." },
+        { id: "opt_2", text: "Call them repeatedly and threaten legal action." },
+        { id: "opt_3", text: "Wait indefinitely for them without informing the hiring manager." },
+        { id: "opt_4", text: "Close the position without filling the vacancy." },
+      ],
+      correctOptionId: "opt_1",
+    },
+    {
+      text: "What is the most effective way to write a job description that attracts high-quality clinic candidates?",
+      options: [
+        { id: "opt_1", text: "Clearly define the role responsibilities, required qualifications, key skills, compensation range, and a compelling overview of the clinic's culture." },
+        { id: "opt_2", text: "Copy and paste a generic JD from the internet with no customization." },
+        { id: "opt_3", text: "Write a vague JD to attract as many candidates as possible without filtering." },
+        { id: "opt_4", text: "Leave the salary and role details blank to negotiate later." },
+      ],
+      correctOptionId: "opt_1",
+    },
+    {
+      text: "During a structured interview, a candidate gives rehearsed textbook answers. How do you probe for genuine competency?",
+      options: [
+        { id: "opt_1", text: "Ask situational and behavioral follow-up questions such as 'Tell me about a specific time you handled X' to assess real-world experience." },
+        { id: "opt_2", text: "Accept rehearsed answers at face value and recommend hiring immediately." },
+        { id: "opt_3", text: "Ask personal and unrelated questions to catch them off guard." },
+        { id: "opt_4", text: "End the interview early because scripted answers indicate high preparation." },
+      ],
+      correctOptionId: "opt_1",
+    },
+    {
+      text: "An employee raises a confidential workplace grievance. What is the correct HR protocol?",
+      options: [
+        { id: "opt_1", text: "Acknowledge receipt confidentially, document the complaint, investigate impartially, and ensure the employee is protected from retaliation." },
+        { id: "opt_2", text: "Discuss the grievance openly with other team members to gather opinions." },
+        { id: "opt_3", text: "Dismiss the complaint if it seems minor and advise the employee to ignore it." },
+        { id: "opt_4", text: "Share the complaint details with the accused party immediately before investigating." },
+      ],
+      correctOptionId: "opt_1",
+    },
+    {
+      text: "How should offer letters and employment contracts be handled to ensure legal compliance?",
+      options: [
+        { id: "opt_1", text: "Ensure all terms (role, compensation, notice period, confidentiality) are clearly stated, reviewed by management, and signed by both parties before the joining date." },
+        { id: "opt_2", text: "Issue verbal offers only and create written documents after 3 months of employment." },
+        { id: "opt_3", text: "Use a single template for all roles regardless of the position terms." },
+        { id: "opt_4", text: "Skip contracts for probationary employees to save time." },
+      ],
+      correctOptionId: "opt_1",
+    },
+    {
+      text: "What is the primary purpose of an employee onboarding program in a clinic environment?",
+      options: [
+        { id: "opt_1", text: "To familiarize new hires with clinic SOPs, team structure, role expectations, and culture — accelerating their productivity and reducing early attrition." },
+        { id: "opt_2", text: "To test whether new employees can figure out their role without guidance." },
+        { id: "opt_3", text: "To introduce paperwork formalities with no practical orientation." },
+        { id: "opt_4", text: "To assign maximum workload on the first day to filter serious candidates." },
       ],
       correctOptionId: "opt_1",
     },
@@ -1077,8 +1222,19 @@ const DEFAULT_FALLBACK_QUESTIONS = {
 function resolveRoleKey(position) {
   if (!position || typeof position !== "string") return "Other";
   const pos = position.trim();
+
+  // ── Explicit exact-string matches for current dropdown positions ──────────
+  // Checked first so renamed/new roles always resolve to their own pool
+  // without accidentally matching a fuzzy heuristic below.
+  if (pos === "Pharmacy Executive") return "Medicine Sales Executive";
+  if (pos === "Nursing Staff / OT Staff") return "Nursing Staff";
+  if (pos === "Manager") return "Manager";
+  if (pos === "HR Recruiter") return "HR Recruiter";
+
+  // ── Exact key match for any other known role ──────────────────────────────
   if (ROLE_COMPETENCIES[pos]) return pos;
 
+  // ── Fuzzy heuristics for legacy or variant position strings ──────────────
   const lower = pos.toLowerCase();
   if (lower.includes("telecall") || lower.includes("caller") || lower.includes("sales") || lower.includes("bpo")) {
     return "Telecaller";
@@ -1107,8 +1263,11 @@ function resolveRoleKey(position) {
   if (lower.includes("medicine") || lower.includes("pharma") || lower.includes("medical rep") || lower.includes("mr ") || lower.includes("drug")) {
     return "Medicine Sales Executive";
   }
-  if (lower.includes("nurs")) {
+  if (lower.includes("nurs") || lower.includes("ot staff")) {
     return "Nursing Staff";
+  }
+  if (lower.includes("recruiter") || lower.includes("hr ") || lower.includes("human resource")) {
+    return "HR Recruiter";
   }
   if (lower.includes("doctor") || lower.includes("physician") || lower.includes("surgeon")) {
     return "Doctor";
@@ -1161,8 +1320,8 @@ function shuffleOptions(q) {
  * @param {number} count - Number of questions
  * @returns {Array<{ id: string, text: string, options: Array<{ id: string, text: string }>, correctOptionId: string }>}
  */
-function getRandomMCQsFromPool(pool, count = TOTAL_QUESTIONS) {
-  const source = Array.isArray(pool) && pool.length >= count ? pool : DEFAULT_FALLBACK_QUESTIONS.Other;
+function getRandomMCQsFromPool(pool, count = TOTAL_QUESTIONS, defaultPool = DEFAULT_FALLBACK_QUESTIONS.Other) {
+  const source = Array.isArray(pool) && pool.length >= count ? pool : defaultPool;
   const cloned = source.map((item) => ({
     text: item.text,
     options: item.options.map((opt) => ({ id: opt.id, text: opt.text })),
@@ -1190,26 +1349,44 @@ function getRandomMCQsFromPool(pool, count = TOTAL_QUESTIONS) {
 
 /**
  * Generates 7 role-specific Multiple Choice Questions (MCQs) via OpenAI with 4 options each and 1 correct answer.
- * Falls back safely to randomized curated MCQs if OpenAI is unconfigured or unavailable.
+ * Generates questions in either clear English or natural conversational Hinglish (Roman script) based on candidate preference.
+ * Falls back safely to randomized curated MCQs in the selected language if OpenAI is unconfigured or unavailable.
  *
  * @param {Object} params
  * @param {string} params.position - Applied job position
  * @param {string} params.experienceType - "Fresher" | "Experienced"
  * @param {number} params.yearsOfExperience - Number of years
+ * @param {string} [params.language] - "en" | "hinglish" (default: "en")
  * @returns {Promise<Array<{ id: string, text: string, options: Array<{ id: string, text: string }>, correctOptionId: string }>>}
  */
-export async function generateInterviewQuestions({ position, experienceType, yearsOfExperience }) {
+export async function generateInterviewQuestions({ position, experienceType, yearsOfExperience, language = "en" }) {
+  const isHinglish = language === "hinglish";
   const resolvedKey = resolveRoleKey(position);
   const roleInfo = ROLE_COMPETENCIES[resolvedKey] || ROLE_COMPETENCIES.Other;
-  const fallbackList = DEFAULT_FALLBACK_QUESTIONS[resolvedKey] || DEFAULT_FALLBACK_QUESTIONS.Other;
+
+  // Select language-appropriate fallback pool
+  const fallbackPools = isHinglish ? DEFAULT_FALLBACK_QUESTIONS_HINGLISH : DEFAULT_FALLBACK_QUESTIONS;
+  const fallbackList = fallbackPools[resolvedKey] || fallbackPools.Other;
   const apiKey = process.env.OPENAI_API_KEY;
 
-  // 1. If OpenAI API key is missing, immediately return randomized fallback MCQs
+  // 1. If OpenAI API key is missing, immediately return randomized fallback MCQs in the selected language
   if (!apiKey) {
-    return getRandomMCQsFromPool(fallbackList, TOTAL_QUESTIONS);
+    return getRandomMCQsFromPool(fallbackList, TOTAL_QUESTIONS, fallbackPools.Other);
   }
 
-  // 2. Build structured OpenAI prompt for 7 role-specific MCQs
+  // 2. Build language-specific directive
+  const languageDirective = isHinglish
+    ? `LANGUAGE REQUIREMENT: HINGLISH (Conversational Hindi + English in Roman script).
+- Every question text and all 4 options MUST be written in natural, everyday conversational Hinglish using the Roman English alphabet (strictly NO Devanagari script).
+- Naturally combine common conversational Hindi with standard English professional terms (e.g., 'customer', 'appointment', 'target', 'doctor', 'clinic', 'call', 'delay', 'issue', 'team', 'conversion').
+- Question style example: "Agar koi customer appointment delay hone ki wajah se upset hai, toh aap us situation ko kaise handle karenge?"
+- Option style example: "Politely delay ka reason explain karenge, empathy dikhayenge aur refreshments offer karenge."
+- Avoid difficult Sanskritized or literary Hindi.
+- Avoid mechanical word-by-word translations; keep sentences smooth, conversational, and instantly understandable for Indian candidates.`
+    : `LANGUAGE REQUIREMENT: ENGLISH.
+- All question texts and all 4 options MUST be written in clear, professional, modern English.`;
+
+  // 3. Build structured OpenAI prompt for 7 role-specific MCQs
   const systemPrompt = `
 You are a senior talent assessment expert at Clinic Ryan, a premier hair transplant and aesthetic healthcare clinic.
 Your task is to generate exactly ${TOTAL_QUESTIONS} distinct, high-quality, professional Multiple Choice Questions (MCQs) to evaluate a job candidate.
@@ -1219,6 +1396,8 @@ EXPERIENCE LEVEL: ${experienceType} (${yearsOfExperience || 0} years)
 KEY ROLE COMPETENCIES TO COVER:
 ${roleInfo.focusAreas.map((f, i) => `${i + 1}. ${f}`).join("\n")}
 
+${languageDirective}
+
 MCQ FORMAT REQUIREMENTS:
 1. Generate EXACTLY ${TOTAL_QUESTIONS} questions.
 2. Each question MUST contain EXACTLY 4 options (ids: "opt_1", "opt_2", "opt_3", "opt_4").
@@ -1226,7 +1405,8 @@ MCQ FORMAT REQUIREMENTS:
 4. The remaining 3 options must be realistic but suboptimal, counter-productive, or incorrect professional actions.
 5. Randomly vary which option id is the correct answer across questions (do not make "opt_1" always correct).
 6. Every question must test a distinct practical workplace scenario, objection handling, problem-solving, or competency check relevant to "${position}".
-7. Do not repeat questions or near-duplicate scenarios.
+7. Both the question text and all 4 options MUST be in the requested language (${isHinglish ? "Hinglish" : "English"}).
+8. Do not repeat questions or near-duplicate scenarios.
 
 ${QUESTION_GENERATION_SAFETY_PROMPT}
 
@@ -1256,7 +1436,9 @@ OUTPUT JSON SCHEMA:
   ];
   const selectedSeed = variationSeeds[Math.floor(Math.random() * variationSeeds.length)];
 
-  const userPrompt = `Generate ${TOTAL_QUESTIONS} distinct, professional 4-option MCQs for a candidate applying for "${position}" with ${experienceType} background (${yearsOfExperience || 0} years experience). ${selectedSeed}`;
+  const userPrompt = isHinglish
+    ? `Generate ${TOTAL_QUESTIONS} distinct, professional 4-option MCQs in natural HINGLISH (conversational Roman-script Hindi + English) for a candidate applying for "${position}" with ${experienceType} background (${yearsOfExperience || 0} years experience). Both question text and all 4 options must be in Hinglish. ${selectedSeed}`
+    : `Generate ${TOTAL_QUESTIONS} distinct, professional 4-option MCQs in clear English for a candidate applying for "${position}" with ${experienceType} background (${yearsOfExperience || 0} years experience). ${selectedSeed}`;
 
   try {
     const controller = new AbortController();
@@ -1283,8 +1465,8 @@ OUTPUT JSON SCHEMA:
     clearTimeout(timeoutId);
 
     if (!res.ok) {
-      console.error(`[AI-Interview] OpenAI MCQ generation error: HTTP ${res.status}. Using randomized fallback.`);
-      return getRandomMCQsFromPool(fallbackList, TOTAL_QUESTIONS);
+      console.error(`[AI-Interview] OpenAI MCQ generation error: HTTP ${res.status}. Using randomized ${language} fallback.`);
+      return getRandomMCQsFromPool(fallbackList, TOTAL_QUESTIONS, fallbackPools.Other);
     }
 
     const data = await res.json();
@@ -1331,25 +1513,28 @@ OUTPUT JSON SCHEMA:
       }
     }
 
-    console.warn("[AI-Interview] OpenAI returned insufficient valid MCQs. Using randomized fallback pool.");
-    return getRandomMCQsFromPool(fallbackList, TOTAL_QUESTIONS);
+    console.warn(`[AI-Interview] OpenAI returned insufficient valid MCQs. Using randomized ${language} fallback pool.`);
+    return getRandomMCQsFromPool(fallbackList, TOTAL_QUESTIONS, fallbackPools.Other);
   } catch (err) {
     console.error("[AI-Interview] OpenAI MCQ generation failed (timeout/network):", err.name || err.message);
-    return getRandomMCQsFromPool(fallbackList, TOTAL_QUESTIONS);
+    return getRandomMCQsFromPool(fallbackList, TOTAL_QUESTIONS, fallbackPools.Other);
   }
 }
 
 /**
  * Server-side evaluation of candidate's MCQ responses against the authoritative session answer key.
+ * Deterministic and objective MCQ evaluation: evaluates whether selected option matches the correct answer.
+ * Candidates answering in Hinglish or English face zero language bias.
  *
  * @param {Object} params
  * @param {string} params.position - Applied role
  * @param {string} params.experienceType - "Fresher" | "Experienced"
  * @param {number} params.yearsOfExperience - Years of experience
+ * @param {string} [params.language] - "en" | "hinglish"
  * @param {Array<{ questionId: string, questionText: string, selectedOptionId: string, correctOptionId: string }>} params.qaPairs
  * @returns {Promise<Object>} Structured evaluation with overallScore, passed flag
  */
-export async function evaluateCandidateAnswers({ position, experienceType, yearsOfExperience, qaPairs }) {
+export async function evaluateCandidateAnswers({ position, experienceType, yearsOfExperience, language = "en", qaPairs }) {
   if (!Array.isArray(qaPairs) || qaPairs.length === 0) {
     return {
       success: false,
@@ -1378,6 +1563,7 @@ export async function evaluateCandidateAnswers({ position, experienceType, years
     problemSolving: overallScore,
     answerQuality: overallScore,
     relevance: overallScore,
+    language: language === "hinglish" ? "Hinglish" : "English",
     summary: `Candidate answered ${correctCount} of ${TOTAL_QUESTIONS} MCQs correctly (${overallScore}%).`,
     baseScore: BASE_SCORE,
     passed,

@@ -98,7 +98,7 @@ export async function POST(req) {
  * @param {{ payload: Object, answers: Array, candidateData: Object, timedOut: boolean }} args
  */
 async function processEvaluation({ payload, answers, candidateData, timedOut }) {
-  const { sessionId, position, expType, expYears, questions } = payload;
+  const { sessionId, position, expType, expYears, lang, questions } = payload;
 
   // 4. Duplicate submission check (in-memory process-level guard)
   if (isSessionAlreadyProcessed(sessionId)) {
@@ -165,6 +165,7 @@ async function processEvaluation({ payload, answers, candidateData, timedOut }) 
     position,
     experienceType: expType,
     yearsOfExperience: expYears,
+    language: lang || "en",
     qaPairs,
   });
 
