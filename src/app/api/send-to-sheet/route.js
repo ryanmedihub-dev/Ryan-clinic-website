@@ -3,8 +3,6 @@ export async function POST(req) {
 
   const { name, phone, email, visitDate, visit, location, remarks } = body;
 
-  
-
   const crmPayload = {
     name,
     phone,
