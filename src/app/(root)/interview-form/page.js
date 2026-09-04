@@ -1,7 +1,12 @@
 "use client";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 
-export default function InterviewForm() {
+function InterviewFormContent() {
+  const searchParams = useSearchParams();
+  const rawSource = (searchParams.get("source") || "direct").trim();
+  const isQr = rawSource.toLowerCase() === "qr";
+
   const [hrList, setHrList] = useState([]);
   const [loadingHr, setLoadingHr] = useState(true);
 
@@ -21,11 +26,17 @@ export default function InterviewForm() {
     previousSalary: "",
     reasonForLeaving: "",
     reference: "", // stores HR _id (ObjectId string)
-    source: "",
+    source: isQr ? "qr" : rawSource,
   });
 
   const [currentStep, setCurrentStep] = useState(1);
   const [validationErrors, setValidationErrors] = useState({});
+
+  // ── QR Flow State ──────────────────────────────────────────────────────────
+  const [isSubmittingQr, setIsSubmittingQr] = useState(false);
+  const [qrSubmitMessage, setQrSubmitMessage] = useState("");
+  const [qrSubmitError, setQrSubmitError] = useState("");
+  const [isQrCompleted, setIsQrCompleted] = useState(false);
 
   // ── AI Interview State ──────────────────────────────────────────────────────
   const [interviewLanguage, setInterviewLanguage] = useState("en"); // "en" | "hinglish"
@@ -126,12 +137,10 @@ export default function InterviewForm() {
     .map((hr) => ({ _id: hr._id, displayName: formatHrDisplayName(hr.name) }));
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const url = new URL(window.location.href);
-      const src = url.searchParams.get("source") || "direct";
-      setFormData((prev) => ({ ...prev, source: src }));
-    }
-  }, []);
+    const rawSrc = (searchParams.get("source") || "direct").trim();
+    const normalized = rawSrc.toLowerCase() === "qr" ? "qr" : rawSrc;
+    setFormData((prev) => ({ ...prev, source: normalized }));
+  }, [searchParams]);
 
   useEffect(() => {
     let isMounted = true;
@@ -189,6 +198,62 @@ export default function InterviewForm() {
     }
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
+  };
+
+  // ── QR Direct Form Submission (Basic Walk-in Flow — No AI) ──────────────────
+  const handleQrSubmit = async () => {
+    if (!validateStep2()) return;
+
+    setIsSubmittingQr(true);
+    setQrSubmitError("");
+    setQrSubmitMessage("Submitting your application...");
+
+    try {
+      const payload = {
+        ...formData,
+        source: "qr", // ensure QR source is explicitly sent to API
+      };
+
+      const res = await fetch("/api/submitInterviewForm/online-form", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok) {
+        setIsQrCompleted(true);
+        setQrSubmitMessage("✅ Form submitted successfully!");
+        setFormData({
+          name: "",
+          date: "",
+          position: "",
+          address: "",
+          phone: "",
+          email: "",
+          expectedSalary: "",
+          experienceType: "Fresher",
+          yearsOfExperience: "",
+          previousCompany: "",
+          previousCompanyContact: "",
+          previousPosition: "",
+          previousSalary: "",
+          reasonForLeaving: "",
+          reference: "",
+          source: "qr",
+        });
+        setTimeout(() => {
+          window.location.href = "https://www.instagram.com/ryan_clinic/";
+        }, 1200);
+      } else {
+        setQrSubmitError(data.message || "Submission failed. Please check your details and try again.");
+      }
+    } catch (err) {
+      setQrSubmitError("Network error while submitting. Please check your internet connection and try again.");
+    } finally {
+      setIsSubmittingQr(false);
+    }
   };
 
   // ── Advance from Step 2 to Step 3 (Language Selection & Assessment Intro) ──
@@ -444,11 +509,15 @@ export default function InterviewForm() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-10">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-2 sm:mb-3 bg-clip-text bg-linear-to-r from-blue-600 to-indigo-700">
-            Candidate Pre-Screening & Interview
+          <h1 suppressHydrationWarning className="text-3xl sm:text-4xl font-bold text-gray-800 mb-2 sm:mb-3 bg-clip-text bg-linear-to-r from-blue-600 to-indigo-700">
+            {isQr ? "Candidate Interview Form" : "Candidate Pre-Screening & Interview"}
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
-            {currentStep === 3
+          <p suppressHydrationWarning className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
+            {isQr
+              ? isQrCompleted
+                ? "Your walk-in application has been received."
+                : "Complete your application in a few simple steps. We're excited to learn more about you!"
+              : currentStep === 3
               ? `Demonstrate your practical skills for the ${formData.position || "applied"} role.`
               : currentStep === 4
               ? "Your application has been received."
@@ -456,8 +525,32 @@ export default function InterviewForm() {
           </p>
         </div>
 
-        {/* Progress Bar (Visible on Steps 1, 2, 3) */}
-        {currentStep <= 3 && (
+        {/* Progress Bar for QR Candidate (Steps 1 & 2) */}
+        {isQr && !isQrCompleted && (
+          <div className="mb-8 sm:mb-10 px-2">
+            <div className="flex items-center justify-between mb-3">
+              {["Personal Info", "Experience & Reference"].map((label, i) => (
+                <div
+                  key={label}
+                  className={`text-xs sm:text-sm font-medium ${
+                    currentStep >= i + 1 ? "text-blue-600 font-semibold" : "text-gray-400"
+                  }`}
+                >
+                  Step {i + 1}: {label}
+                </div>
+              ))}
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-2.5">
+              <div
+                className="bg-blue-600 h-2.5 rounded-full transition-all duration-500"
+                style={{ width: `${(currentStep / 2) * 100}%` }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Progress Bar for Website Candidate (Steps 1, 2, 3) */}
+        {!isQr && currentStep <= 3 && (
           <div className="mb-8 sm:mb-10 px-2">
             <div className="flex items-center justify-between mb-3">
               {stepTitles.slice(0, 3).map((label, i) => (
@@ -481,8 +574,38 @@ export default function InterviewForm() {
         )}
 
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+          {/* ── QR Walk-in Completed Screen ─────────────────────────────────── */}
+          {isQr && isQrCompleted && (
+            <div className="p-8 sm:p-12 text-center">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xs">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 sm:h-12 sm:w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+                Application Submitted Successfully
+              </h2>
+
+              <p className="text-sm sm:text-base text-gray-600 max-w-lg mx-auto mb-6 leading-relaxed">
+                Thank you for submitting your details. Your walk-in interview application has been received and recorded.
+              </p>
+
+              {qrSubmitMessage && (
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-200 text-green-700 text-sm font-medium rounded-lg mb-6">
+                  <span>{qrSubmitMessage}</span>
+                  <span className="text-xs text-green-600">(Redirecting...)</span>
+                </div>
+              )}
+
+              <div className="text-xs text-gray-400 mt-4">
+                Clinic Ryan Recruitment Operations &bull; Walk-in Candidate
+              </div>
+            </div>
+          )}
+
           {/* ── STEP 1: Personal Information ───────────────────────────────── */}
-          {currentStep === 1 && (
+          {!isQrCompleted && currentStep === 1 && (
             <div className="p-6 md:p-8">
               <div className="flex items-center mb-6">
                 <div className="bg-blue-100 p-3 rounded-2xl mr-4">
@@ -673,7 +796,7 @@ export default function InterviewForm() {
           )}
 
           {/* ── STEP 2: Experience & Reference ─────────────────────────────── */}
-          {currentStep === 2 && (
+          {!isQrCompleted && currentStep === 2 && (
             <div className="p-6 md:p-8">
               <div className="flex items-center mb-6">
                 <div className="bg-blue-100 p-3 rounded-2xl mr-4">
@@ -883,33 +1006,67 @@ export default function InterviewForm() {
                 </div>
               </div>
 
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <button
                   type="button"
                   onClick={prevStep}
-                  className="px-6 py-3 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 flex items-center cursor-pointer"
+                  disabled={isSubmittingQr}
+                  className="px-6 py-3 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 flex items-center cursor-pointer disabled:opacity-50"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clipRule="evenodd" />
                   </svg>
                   Back
                 </button>
-                <button
-                  type="button"
-                  onClick={handleContinueToAssessment}
-                  className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center shadow-xs cursor-pointer"
-                >
-                  Continue to Pre-Screening Interview
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                  </svg>
-                </button>
+
+                {isQr ? (
+                  <button
+                    type="button"
+                    onClick={handleQrSubmit}
+                    disabled={isSubmittingQr}
+                    className="px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 flex items-center shadow-xs cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed font-semibold"
+                  >
+                    {isSubmittingQr ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Submitting Application...
+                      </>
+                    ) : (
+                      <>
+                        Submit Application
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </>
+                    )}
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleContinueToAssessment}
+                    className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center shadow-xs cursor-pointer"
+                  >
+                    Continue to Pre-Screening Interview
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+                )}
               </div>
+
+              {qrSubmitError && (
+                <div className="mt-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm text-center">
+                  {qrSubmitError}
+                </div>
+              )}
             </div>
           )}
 
-          {/* ── STEP 3: AI Interview MCQ Assessment ─────────────────────────── */}
-          {currentStep === 3 && (
+          {/* ── STEP 3: AI Interview MCQ Assessment (Website Candidates Only) ── */}
+          {!isQr && currentStep === 3 && (
             <div className="p-6 md:p-8">
               {aiLoading ? (
                 <div className="py-16 flex flex-col items-center justify-center text-center">
@@ -1235,8 +1392,8 @@ export default function InterviewForm() {
             </div>
           )}
 
-          {/* ── STEP 4: Application & Interview Completed ─────────────────── */}
-          {currentStep === 4 && (
+          {/* ── STEP 4: Application & Interview Completed (Website Candidates Only) ── */}
+          {!isQr && currentStep === 4 && (
             <div className="p-8 sm:p-12 text-center">
               <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xs">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 sm:h-12 sm:w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1272,12 +1429,26 @@ export default function InterviewForm() {
           )}
         </div>
 
-        {currentStep < 4 && (
+        {((isQr && !isQrCompleted) || (!isQr && currentStep < 4)) && (
           <div className="mt-8 text-center text-xs text-gray-500">
             <p>All information provided will be kept confidential and used solely for recruitment purposes.</p>
           </div>
         )}
       </div>
     </div>
+  );
+}
+
+export default function InterviewForm() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+          <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+        </div>
+      }
+    >
+      <InterviewFormContent />
+    </Suspense>
   );
 }
