@@ -14,11 +14,8 @@ export async function POST(req) {
     tag: "Form Leads",
   };
 
-  
-  
-  
 
-  try {
+    try {
     const response = await fetch("https://www.ryanmedihub.com/api/leads/create", {
       method: "POST",
       body: JSON.stringify(crmPayload),
