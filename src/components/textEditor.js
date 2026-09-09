@@ -14,7 +14,7 @@ export default function TextEditor({
   onChange,                // (html) => void
   onReady,                 // optional: (instance) => void
   height = "400px",
-  imageUploadUrl,          // optional: e.g. "/api/upload"
+  imageUploadUrl = "/api/upload/editor",
   placeholder = "Start writing...",
   options = {},            // optional extra SunEditor options
 }) {

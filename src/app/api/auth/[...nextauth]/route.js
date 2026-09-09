@@ -84,4 +84,15 @@ export const authOptions = {
 };
 
 const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
+
+/**
+ * Next.js 16 made ctx.params a Promise. next-auth v4 reads params.nextauth
+ * synchronously, which causes a silent crash → 404.
+ * Fix: await params first, then pass a reconstructed context to the handler.
+ */
+async function authHandler(req, ctx) {
+  const params = await ctx.params;
+  return handler(req, { ...ctx, params });
+}
+
+export { authHandler as GET, authHandler as POST };

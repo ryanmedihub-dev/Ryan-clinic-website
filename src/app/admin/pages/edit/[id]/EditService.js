@@ -522,7 +522,7 @@ export default function EditService({ initialData }) {
                 onChange={(val) => handleEditorChange("overviewContent", val)}
                 onReady={(inst) => handleEditorLoad("overviewContent", inst)}
                 placeholder="Enter service overview content..."
-                imageUploadUrl="/api/upload"
+                imageUploadUrl="/api/upload/editor"
               />
             </div>
           </div>
@@ -544,7 +544,7 @@ export default function EditService({ initialData }) {
                   onChange={(val) => handleEditorChange("typesDetails", val)}
                   onReady={(inst) => handleEditorLoad("typesDetails", inst)}
                   placeholder="Enter service types details..."
-                  imageUploadUrl="/api/upload"
+                  imageUploadUrl="/api/upload/editor"
                 />
               </div>
               <div>
@@ -798,7 +798,7 @@ export default function EditService({ initialData }) {
                   onChange={(val) => handleEditorChange("extraDetail1", val)}
                   onReady={(inst) => handleEditorLoad("extraDetail1", inst)}
                   placeholder="Enter additional information..."
-                  imageUploadUrl="/api/upload"
+                  imageUploadUrl="/api/upload/editor"
                 />
               </div>
               <div>
@@ -810,7 +810,7 @@ export default function EditService({ initialData }) {
                   onChange={(val) => handleEditorChange("extraDetail2", val)}
                   onReady={(inst) => handleEditorLoad("extraDetail2", inst)}
                   placeholder="Enter additional information..."
-                  imageUploadUrl="/api/upload"
+                  imageUploadUrl="/api/upload/editor"
                 />
               </div>
             </div>

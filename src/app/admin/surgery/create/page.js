@@ -18,7 +18,7 @@ const sunEditorOptions = {
         ["fullScreen", "codeView"],
     ],
     defaultStyle: "font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size:15px;",
-    imageUploadUrl: "/api/upload",
+    imageUploadUrl: "/api/upload/editor",
 };
 
 const SunEditor = dynamic(() => import("suneditor-react"), { ssr: false });

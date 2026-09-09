@@ -21,7 +21,7 @@ const sunEditorOptions = {
     ["preview", "print"],
   ],
   defaultStyle: "font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size:16px;",
-  imageUploadUrl: "/api/upload",
+  imageUploadUrl: "/api/upload/editor",
 };
 
 export default function FAQSection({

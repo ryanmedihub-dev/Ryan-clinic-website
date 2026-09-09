@@ -18,7 +18,7 @@ const defaultOptions = {
     ["preview", "print"],
   ],
   defaultStyle: "font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size:15px; color:#1f2937;",
-  imageUploadUrl: "/api/upload",
+  imageUploadUrl: "/api/upload/editor",
 };
 
 export default function RichTextEditor({ label, value = "", onChange, height = "250px", placeholder = "" }) {
