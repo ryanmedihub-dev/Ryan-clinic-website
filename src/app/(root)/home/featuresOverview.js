@@ -106,16 +106,14 @@ export default function FeaturesOverview() {
         {/* Heading + intro */}
         <div className="max-w-3xl mb-8 md:mb-14">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-normal text-gray-900 leading-[1.1] tracking-tight">
-            Permanent Hair. Natural Results.{" "}
+            Advanced Hair Transplant{" "}
             <span className="text-[#D32F2F]">
-              India's Only Turkey Technique.
+              Techniques in Delhi
             </span>
           </h2>
 
           <p className="text-gray-500 text-sm md:text-base leading-relaxed my-6">
-            Ryan Clinic brings Turkey's most advanced Sapphire FUE technique
-            exclusively to India — delivering results that last a lifetime with
-            precision and care that sets a new standard.
+            Ryan Clinic provides hair restoration solutions based on each patient&apos;s pattern of hair loss, donor-area capacity, hairline requirements and expected density. Treatment options may include FUE-based transplantation, Sapphire FUE and specialised hairline restoration. A consultation helps determine which approach is appropriate for the individual case.
           </p>
         </div>
 

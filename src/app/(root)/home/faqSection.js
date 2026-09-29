@@ -5,44 +5,52 @@ import useTrackCTA from "@/lib/useTrackCTA";
 
 const faqs = [
   {
-    q: "What is the cost of hair transplant in Delhi?",
-    a: "Hair transplant cost in Delhi at Ryan Clinic ranges from ₹40,000 to ₹1,50,000 depending on the number of grafts required. We offer fully transparent per-graft pricing with zero hidden charges. Book a free consultation to get your personalised cost estimate.",
-  },
-  {
-    q: "What is Turkey Sapphire FUE hair transplant?",
-    a: "Turkey Sapphire FUE is an advanced hair transplant technique using sapphire-tipped blades instead of conventional steel. This creates smaller, more precise incisions — resulting in minimal tissue trauma, faster healing, denser graft packing, and significantly more natural-looking results.",
-  },
-  {
-    q: "Why is Ryan Clinic the best hair transplant clinic in Delhi?",
-    a: "Ryan Clinic is India's only clinic exclusively specialising in Turkey Sapphire FUE — Delhi's most advanced hair transplant technique. Every surgery is performed by certified doctors (never technicians), with 95%+ graft survival rates, natural hairline design, and complete pricing transparency.",
+    q: "What is the cost of a hair transplant in Delhi?",
+    a: "The cost of a hair transplant in Delhi varies according to the number of grafts required, the extent of hair loss, donor-area quality, technique and treatment complexity. A scalp and graft assessment is the best way to obtain an individual estimate. For detailed pricing, see the Hair Transplant Cost in Delhi page.",
   },
   {
     q: "How many grafts do I need for a hair transplant?",
-    a: "Graft count depends on your Norwood baldness grade. Grade 2–3 typically needs 1,000–2,000 grafts; Grade 4–5 needs 2,000–3,500 grafts; Grade 6–7 may need 4,000+ grafts. Our doctors assess your donor density and scalp condition during a free consultation before recommending a count.",
+    a: "The required graft count depends on the size of the thinning or bald area, donor density, hair characteristics, hairline design and desired coverage. A doctor can estimate the graft requirement after examining the scalp and donor area.",
   },
   {
-    q: "Is hair transplant permanent?",
-    a: "Yes. Transplanted grafts are taken from the DHT-resistant donor area at the back and sides of the scalp, meaning they will not fall out due to pattern baldness. The transplanted hair grows naturally and permanently for life.",
+    q: "What is Sapphire FUE hair transplant?",
+    a: "Sapphire FUE is an FUE-based hair transplant approach in which sapphire blades are used to create recipient channels for transplanted follicular units. Suitability depends on the individual treatment plan and should be assessed by a qualified clinician.",
   },
   {
-    q: "What is the recovery time after hair transplant at Ryan Clinic?",
-    a: "With Sapphire FUE, most patients return to desk work within 5–7 days. Scabs fall off by day 10. Shock shedding at 3–4 weeks is completely normal. New growth begins at 3–4 months, significant density at 6–9 months, and final results are visible at 12–18 months.",
+    q: "Is a hair transplant permanent?",
+    a: "Transplanted follicles are generally selected from donor areas that are more resistant to pattern hair loss. Long-term growth can be durable, but individual outcomes vary and existing non-transplanted hair may continue to thin over time.",
   },
   {
-    q: "Is the procedure painful?",
-    a: "The procedure is performed under local anaesthesia — only the initial injections cause a brief sting. The surgery itself is completely painless. Most patients watch movies or listen to music throughout. Post-procedure mild soreness is easily managed with prescribed medication.",
+    q: "Is a hair transplant painful?",
+    a: "Hair transplant procedures are usually performed under local anaesthesia. Patients may experience pressure, mild discomfort or temporary soreness, and individual experiences vary. Your doctor can explain pain control and aftercare before treatment.",
   },
   {
-    q: "Can women get hair transplant at Ryan Clinic?",
-    a: "Absolutely. Ryan Clinic offers hair transplant for women with female pattern hair loss, traction alopecia, or high hairline concerns. We offer no-shave and partial-shave options for complete discretion — you can resume normal life almost immediately.",
+    q: "How long does a hair transplant procedure take?",
+    a: "Procedure time depends on the number of grafts, technique and complexity of the case. Larger sessions generally take longer. The clinic should provide an estimated session duration after graft planning.",
   },
   {
-    q: "How is Sapphire FUE better than regular FUE?",
-    a: "Sapphire FUE uses precious sapphire-stone blades to create V-shaped micro incisions instead of conventional steel punches. This means less scalp trauma, faster healing, higher graft density per session, and far more natural-looking results — the gold standard in modern hair transplantation.",
+    q: "How long is the recovery after a hair transplant?",
+    a: "Early redness, swelling, scabbing or tenderness can occur after a hair transplant. Many patients resume routine non-strenuous activities within several days, but recovery varies. Follow the treating doctor's aftercare instructions for washing, exercise, sun exposure and medication.",
   },
   {
-    q: "What is the success rate of hair transplant at Ryan Clinic?",
-    a: "Ryan Clinic consistently achieves over 95% graft survival rate — well above the industry average of 60–70%. This is due to precise extraction, minimal out-of-body time for grafts, the original Turkey Choi Pen technique, and expert implantation by certified hair restoration doctors.",
+    q: "When will I see hair transplant results?",
+    a: "Transplanted hair commonly goes through shedding and regrowth phases. Visible growth develops gradually over several months, while maturation can continue for a year or longer. Timelines vary between patients.",
+  },
+  {
+    q: "How do I choose a hair transplant clinic in Delhi?",
+    a: "Compare the treating doctor's qualifications and role in the procedure, donor assessment, hairline planning, hygiene standards, technique, transparent pricing, documented results and follow-up care. Ask who performs each surgical step before booking.",
+  },
+  {
+    q: "Can women get a hair transplant?",
+    a: "Some women with suitable donor hair and specific patterns of hair loss may be candidates for hair transplantation. Because female hair loss has multiple possible causes, clinical assessment is important before deciding on surgery.",
+  },
+  {
+    q: "What is the difference between FUE and Sapphire FUE?",
+    a: "FUE describes the individual extraction of follicular units from the donor area. Sapphire FUE commonly refers to using sapphire blades during recipient-channel creation. The appropriate technique depends on the treatment plan and the clinician's assessment.",
+  },
+  {
+    q: "Where is Ryan Clinic located in Delhi?",
+    a: "Ryan Clinic lists its Delhi centre in Pitampura, New Delhi. Keep the exact address, phone number and opening hours consistent across the website, Google Business Profile and structured data.",
   },
 ];
 
@@ -76,10 +84,8 @@ export default function FaqSection() {
               className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-5"
               style={{ color: "var(--text-primary)" }}
             >
-              Frequently
-              <br />
-              Asked{" "}
-              <span style={{ color: "var(--primary-red)" }}>Questions</span>
+              Hair Transplant in{" "}
+              <span style={{ color: "var(--primary-red)" }}>Delhi – FAQs</span>
             </h2>
 
             <p

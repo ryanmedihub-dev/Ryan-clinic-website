@@ -106,14 +106,14 @@ function SectionLabel({ text }) {
 }
 
 function cleanExp(str) {
-  if (!str) return "15+ Yrs";
+  if (!str) return "—";
   let s = String(str)
     .replace(/specialisation/gi, "")
     .replace(/experience/gi, "")
     .replace(/years/gi, "Yrs")
     .trim();
-  if (!s.toLowerCase().includes("yr")) s += " Yrs";
-  return s;
+  if (!s.toLowerCase().includes("yr") && !isNaN(Number(s))) s += "+ Yrs";
+  return s || "—";
 }
 
 export default function DoctorCarouselClient({ initialDoctors = [] }) {
@@ -124,6 +124,7 @@ export default function DoctorCarouselClient({ initialDoctors = [] }) {
 
     return initialDoctors.map((doc, idx) => {
       const b = doc.basicInfo || {};
+      const card = doc.doctorCard || {};
       const prof = doc.surgeonProfile || doc.hero || {};
       const rawSlug = (doc.slug || "").replace(/^\/+/, "").replace(/^doctors\//, "");
       const targetHref = rawSlug.startsWith("/") ? rawSlug : `/doctors/${rawSlug}`;
@@ -132,27 +133,44 @@ export default function DoctorCarouselClient({ initialDoctors = [] }) {
         id: doc._id || doc.slug || idx,
         name: b.doctorName || doc.pageName || "Dr. Specialist",
         doctorName: b.doctorName || doc.pageName || "Dr. Specialist",
-        qualification: prof.qualification || b.designation || "MBBS, MS (Plastic Surgery)",
+        qualification:
+          card.shortQualification ||
+          doc.keyFacts?.qualifications ||
+          prof.qualification ||
+          b.designation ||
+          "Hair Restoration Specialist",
         designation: b.designation || "Hair Transplant Surgeon",
         location: b.city ? `${b.city} Clinic` : "Ryan Clinic Center",
         city: b.city || "Delhi",
-        experience: cleanExp(b.yearsExperience ? `${b.yearsExperience}` : "15"),
-        procedures: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : "5,000+",
-        rating: b.rating ? `${b.rating} ★` : "4.9 ★",
-        survivalRate: b.successRate || "98.4%",
+        experience: b.yearsExperience ? cleanExp(`${b.yearsExperience}`) : "—",
+        procedures: b.proceduresCount ? `${Number(b.proceduresCount).toLocaleString()}+` : "—",
+        rating: b.rating ? `${b.rating} ★` : "—",
+        survivalRate: b.successRate || "—",
         image: b.profileImage?.image || b.profileImage?.url || DEFAULT_DOCTORS[idx % DEFAULT_DOCTORS.length].image,
         slug: doc.slug,
         targetHref,
-        about: prof.bio || prof.about || b.shortDescription || doc.seo?.metaDescription || DEFAULT_DOCTORS[0].about,
-        specializations: prof.specializations?.length
-          ? prof.specializations
-          : ["Sapphire FUE", "Turkish Technique", "Beard & Eyebrow Transplant"],
-        highlights: [
-          "100% Doctor-Led Surgery (Zero technician handover)",
-          "Turkey Sapphire FUE & Turkish Technique Certified",
-          "Microscopic hairline design tailored to facial structure",
-          "Comprehensive 18-Month Post-Op Recovery Care",
-        ],
+        about:
+          card.cardDescription ||
+          prof.bio ||
+          prof.about ||
+          b.shortDescription ||
+          doc.seo?.metaDescription ||
+          `Specialist at Ryan Clinic ${b.city || ""} leading advanced hair restoration procedures with doctor-led surgical care.`,
+        specializations:
+          card.specializations?.length && card.specializations.filter(Boolean).length
+            ? card.specializations.filter(Boolean)
+            : prof.specializations?.length && prof.specializations.filter(Boolean).length
+            ? prof.specializations.filter(Boolean)
+            : ["Sapphire FUE", "Hair Restoration", "Hairline Design"],
+        highlights:
+          card.certifications?.length && card.certifications.filter(Boolean).length
+            ? card.certifications.filter(Boolean).slice(0, 4)
+            : [
+                "100% Doctor-Led Surgery (Zero technician handover)",
+                "Meticulous Follicular Extraction & Implantation",
+                "Microscopic hairline design tailored to facial structure",
+                "Comprehensive Post-Op Recovery Care",
+              ],
         featured: doc.featured || idx === 0,
       };
     });

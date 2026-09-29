@@ -150,16 +150,15 @@ export default function Testimonials() {
             className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4"
             style={{ color: "var(--text-primary)" }}
           >
-            Celebrity Results & {" "}
+            Hair Transplant Celebrity Results &amp;{" "}
             <span style={{ color: "var(--primary-red)" }}>Reviews</span>
           </h2>
 
           <p
-            className="text-sm md:text-base leading-relaxed max-w-xl mx-auto"
+            className="text-sm md:text-base leading-relaxed max-w-2xl mx-auto"
             style={{ color: "var(--text-muted)" }}
           >
-            From Bollywood celebrities to everyday heroes — real results that
-            speak for themselves.
+            Explore celebrity experiences and documented treatment results from Ryan Clinic. Reviews can help prospective patients understand the consultation, procedure, recovery and follow-up experience, while before-and-after cases show how outcomes can vary from person to person.
           </p>
         </div>
 

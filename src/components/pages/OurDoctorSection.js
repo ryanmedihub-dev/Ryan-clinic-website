@@ -1,53 +1,150 @@
 "use client";
 
 // OurDoctorSection.js
-// Usage: <OurDoctorSection city="Delhi" doctor={{ name, title, image, stats, bioLines, qualifications, certifications, specializations }} />
+// Usage: <OurDoctorSection city="Delhi" doctor={...} cmsDoctor={...} />
 import useTrackCTA from "@/lib/useTrackCTA";
 
-const DEFAULT_QUALIFICATIONS = [
-  { degree: "MBBS", institute: "AIIMS, New Delhi" },
-  { degree: "MS – General Surgery", institute: "PGIMER, Chandigarh" },
-  { degree: "Fellowship – Hair Restoration", institute: "Istanbul, Turkey" },
-];
-
-const DEFAULT_CERTIFICATIONS = [
-  "Turkey Sapphire FUE Certification — Istanbul Hair Institute",
-  "NABH-Certified Operating Surgeon",
-  "ISHRS Member — International Society of Hair Restoration Surgery",
-  "Best Hair Transplant Surgeon — India 2022 & 2023",
-];
-
-const DEFAULT_STATS = [
-  { num: "12+", label: "Years of Experience" },
-  { num: "10,000+", label: "Procedures Done" },
-  { num: "95%+", label: "Graft Survival" },
-  { num: "4.9★", label: "Google Rating" },
-];
-
-const DEFAULT_SPECIALIZATIONS = [
-  "Turkey Sapphire FUE",
-  "Turkish Technique Choi Pen",
-  "Hairline Design",
-  "Crown Restoration",
-  "High-Density FUE",
-  "Female Hair Loss",
-];
-
-export default function OurDoctorSection({ city = "Delhi", doctor }) {
+export default function OurDoctorSection({ city = "Delhi", doctor, cmsDoctor }) {
   const trackCTA = useTrackCTA();
-  const name = doctor?.name || "Dr. Pranendra Singh";
-  const doctorTitle = doctor?.title || "Medical Director & Chief Surgeon";
-  const image = doctor?.image || "/uploads/gallery.jpg";
-  const stats = doctor?.stats?.length ? doctor.stats : DEFAULT_STATS;
-  const bioLines = doctor?.bioLines?.length
-    ? doctor.bioLines
-    : [
-      `Your hair transplant in ${city} is led by Dr. Pranendra Singh, founder of Ryan Clinic and India's foremost authority on Turkey's Sapphire FUE technique. Trained directly under Turkey's leading specialists in Istanbul, Dr. Singh personally performs every surgical step and has overseen 10,000+ successful procedures across Delhi, Mumbai, and Hyderabad.`,
-      `His commitment is simple: every patient receives world-class Turkey-certified care, with a doctor at every stage of surgery — never a technician.`,
+
+  // If no doctor is provided at all, do not render another city's surgeon
+  if (!doctor && !cmsDoctor) {
+    return null;
+  }
+
+  const name =
+    doctor?.name || cmsDoctor?.basicInfo?.doctorName || "Lead Hair Transplant Surgeon";
+  const doctorTitle =
+    doctor?.title || cmsDoctor?.basicInfo?.designation || "Hair Restoration Specialist";
+  const image =
+    doctor?.image ||
+    cmsDoctor?.basicInfo?.profileImage?.image ||
+    cmsDoctor?.basicInfo?.profileImage?.url ||
+    "/uploads/gallery.jpg";
+
+  // Dynamic CMS-driven badge
+  const badgeText = (() => {
+    if (doctor?.badge) return doctor.badge;
+    const certs = cmsDoctor?.doctorCard?.certifications || [];
+    const isTurkey = certs.some((c) =>
+      /turkey/i.test(typeof c === "string" ? c : c?.title || "")
+    );
+    if (isTurkey) return "Turkey Certified";
+    if (cmsDoctor?.medicalReviewer?.isVerified) return "Verified Surgeon";
+    if (cmsDoctor?.comparison?.leftCard?.badge) return cmsDoctor.comparison.leftCard.badge;
+    return "Board Certified";
+  })();
+
+  // Derive stats dynamically from CMS without inventing fake claims
+  const stats = (() => {
+    if (doctor?.stats?.length) return doctor.stats;
+    const s = [];
+    const b = cmsDoctor?.basicInfo;
+    if (b?.yearsExperience) {
+      s.push({ num: `${b.yearsExperience}+ Yrs`, label: "Surgical Experience" });
+    }
+    if (b?.proceduresCount) {
+      s.push({ num: `${Number(b.proceduresCount).toLocaleString()}+`, label: "Procedures Done" });
+    }
+    if (b?.successRate) {
+      s.push({ num: b.successRate, label: "Graft Survival" });
+    }
+    if (b?.rating) {
+      s.push({ num: `${b.rating}★`, label: "Google Rating" });
+    }
+    return s;
+  })();
+
+  // Derive bio dynamically from CMS without cross-doctor claim contamination
+  const bioLines = (() => {
+    if (doctor?.bioLines?.length) return doctor.bioLines;
+    if (cmsDoctor?.doctorCard?.cardDescription?.trim()) {
+      const parts = cmsDoctor.doctorCard.cardDescription
+        .split(/\n+/)
+        .map((p) => p.trim())
+        .filter(Boolean);
+      if (parts.length) return parts;
+    }
+    if (cmsDoctor?.surgeonProfile?.about?.trim()) {
+      const parts = cmsDoctor.surgeonProfile.about
+        .split(/\n+/)
+        .map((p) => p.trim())
+        .filter(Boolean);
+      if (parts.length) return parts;
+    }
+    if (cmsDoctor?.hero?.description?.trim()) {
+      return [cmsDoctor.hero.description.trim()];
+    }
+    return [
+      `Your hair restoration procedure in ${city} is led by ${name} at Ryan Clinic. Every procedure is 100% doctor-led with meticulous attention to natural hairline design, graft preservation, and patient safety.`,
+      `Our clinic is committed to medical excellence, ensuring a qualified surgical doctor oversees and personally performs each critical stage of your hair restoration.`,
     ];
-  const qualifications = doctor?.qualifications?.length ? doctor.qualifications : DEFAULT_QUALIFICATIONS;
-  const certifications = doctor?.certifications?.length ? doctor.certifications : DEFAULT_CERTIFICATIONS;
-  const specializations = doctor?.specializations?.length ? doctor.specializations : DEFAULT_SPECIALIZATIONS;
+  })();
+
+  // Qualifications dynamically from CMS (no shared fake AIIMS/PGIMER defaults)
+  const qualifications = (() => {
+    if (doctor?.qualifications?.length) return doctor.qualifications;
+    if (cmsDoctor?.doctorCard?.qualifications?.length) {
+      const valid = cmsDoctor.doctorCard.qualifications
+        .filter((q) => q && (q.degree?.trim() || q.institute?.trim()))
+        .map((q) => ({ degree: q.degree || "", institute: q.institute || "" }));
+      if (valid.length) return valid;
+    }
+    if (cmsDoctor?.credentials?.tabs?.length) {
+      const valid = cmsDoctor.credentials.tabs
+        .filter((t) => t && t.title?.trim())
+        .map((t) => ({ degree: t.title, institute: t.hint || t.description || "" }));
+      if (valid.length) return valid;
+    }
+    if (cmsDoctor?.keyFacts?.qualifications?.trim()) {
+      return [
+        {
+          degree: cmsDoctor.keyFacts.qualifications.trim(),
+          institute: cmsDoctor.keyFacts.registration || "Medical Council Registered",
+        },
+      ];
+    }
+    return [];
+  })();
+
+  // Certifications dynamically from CMS (no shared fake Turkey awards)
+  const certifications = (() => {
+    if (doctor?.certifications?.length) return doctor.certifications;
+    if (cmsDoctor?.doctorCard?.certifications?.length) {
+      const valid = cmsDoctor.doctorCard.certifications
+        .map((c) => (typeof c === "string" ? c : c?.title || c?.name || ""))
+        .filter((c) => c && c.trim());
+      if (valid.length) return valid;
+    }
+    if (cmsDoctor?.surgeonProfile?.achievements?.length) {
+      const valid = cmsDoctor.surgeonProfile.achievements
+        .map((c) => (typeof c === "string" ? c : c?.title ? `${c.title}${c.description ? ` — ${c.description}` : ""}` : ""))
+        .filter((c) => c && c.trim());
+      if (valid.length) return valid;
+    }
+    return [];
+  })();
+
+  // Specializations dynamically from CMS
+  const specializations = (() => {
+    if (doctor?.specializations?.length) return doctor.specializations;
+    if (cmsDoctor?.doctorCard?.specializations?.length) {
+      const valid = cmsDoctor.doctorCard.specializations
+        .map((s) => (typeof s === "string" ? s : s?.title || s?.name || ""))
+        .filter((s) => s && s.trim());
+      if (valid.length) return valid;
+    }
+    if (cmsDoctor?.surgeonProfile?.specializations?.length) {
+      const valid = cmsDoctor.surgeonProfile.specializations
+        .map((s) => (typeof s === "string" ? s : s?.title || s?.name || ""))
+        .filter((s) => s && s.trim());
+      if (valid.length) return valid;
+    }
+    return [];
+  })();
+
+  const doctorSlug = cmsDoctor?.slug ? cmsDoctor.slug.replace(/^\/+/, "").replace(/^doctors\//, "") : "";
+  const doctorProfileHref = doctorSlug ? `/doctors/${doctorSlug}` : "/doctors";
 
   return (
     <section className="py-20 bg-white">
@@ -82,14 +179,16 @@ export default function OurDoctorSection({ city = "Delhi", doctor }) {
               <div className="absolute inset-y-0 left-0 w-1 bg-[#D32F2F]" />
 
               {/* Badge */}
-              <div className="absolute top-4 right-4">
-                <span className="inline-flex items-center gap-1.5 bg-[#D32F2F] text-white text-[10px] font-bold px-3 py-1.5 rounded-full shadow-md">
-                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-                  </svg>
-                  Turkey Certified
-                </span>
-              </div>
+              {badgeText && (
+                <div className="absolute top-4 right-4">
+                  <span className="inline-flex items-center gap-1.5 bg-[#D32F2F] text-white text-[10px] font-bold px-3 py-1.5 rounded-full shadow-md">
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                    </svg>
+                    {badgeText}
+                  </span>
+                </div>
+              )}
 
               {/* Identity */}
               <div className="absolute bottom-0 inset-x-0 p-5">
@@ -99,96 +198,106 @@ export default function OurDoctorSection({ city = "Delhi", doctor }) {
               </div>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 gap-3">
-              {stats.map((s) => (
-                <div key={s.label} className="bg-white border border-gray-100 rounded-xl p-4 shadow-sm text-center hover:border-red-100 transition-colors">
-                  <p className="text-2xl font-bold text-gray-900">{s.num}</p>
-                  <p className="text-xs text-gray-400 font-medium tracking-wide mt-1 leading-snug">{s.label}</p>
-                </div>
-              ))}
-            </div>
+            {/* Stats (Rendered only when valid stats exist in CMS) */}
+            {stats.length > 0 && (
+              <div className="grid grid-cols-2 gap-3">
+                {stats.map((s) => (
+                  <div key={s.label} className="bg-white border border-gray-100 rounded-xl p-4 shadow-sm text-center hover:border-red-100 transition-colors">
+                    <p className="text-2xl font-bold text-gray-900">{s.num}</p>
+                    <p className="text-xs text-gray-400 font-medium tracking-wide mt-1 leading-snug">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* ── Right: Profile ── */}
           <div className="lg:col-span-3 flex flex-col gap-6">
 
             {/* Bio */}
-            <div className="bg-[#F7F5F2] rounded-2xl p-5 md:p-6">
-              {bioLines.map((line, i) => (
-                <p key={i} className={`text-[15px] text-gray-700 leading-[1.85] ${i < bioLines.length - 1 ? "mb-4" : ""}`}>
-                  {line}
-                </p>
-              ))}
-            </div>
-
-            {/* Education */}
-            <div className="bg-white border border-gray-100 rounded-2xl p-5 md:p-6 shadow-xs">
-              <div className="flex items-center gap-2.5 mb-4">
-                <span className="w-1 h-5 rounded-full bg-[#D32F2F]" />
-                <span className="text-xs font-black tracking-[0.18em] uppercase text-gray-500">
-                  Education & Qualifications
-                </span>
-              </div>
-              <ul className="space-y-3.5">
-                {qualifications.map((q) => (
-                  <li key={q.degree} className="flex items-start gap-3">
-                    <svg className="w-4 h-4 mt-0.5 shrink-0 text-[#D32F2F]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                    <div>
-                      <span className="text-sm font-semibold block text-gray-900">{q.degree}</span>
-                      <span className="text-xs text-gray-400">{q.institute}</span>
-                    </div>
-                  </li>
+            {bioLines.length > 0 && (
+              <div className="bg-[#F7F5F2] rounded-2xl p-5 md:p-6">
+                {bioLines.map((line, i) => (
+                  <p key={i} className={`text-[15px] text-gray-700 leading-[1.85] ${i < bioLines.length - 1 ? "mb-4" : ""}`}>
+                    {line}
+                  </p>
                 ))}
-              </ul>
-            </div>
-
-            {/* Certifications */}
-            <div className="bg-white border border-gray-100 rounded-2xl p-5 md:p-6 shadow-xs">
-              <div className="flex items-center gap-2.5 mb-4">
-                <span className="w-1 h-5 rounded-full bg-[#D32F2F]" />
-                <span className="text-xs font-black tracking-[0.18em] uppercase text-gray-500">
-                  Certifications & Awards
-                </span>
               </div>
-              <ul className="space-y-3">
-                {certifications.map((c) => (
-                  <li key={c} className="flex items-start gap-3">
-                    <svg className="w-4 h-4 mt-0.5 shrink-0" viewBox="0 0 20 20" fill="#D4A937">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.838-.197-1.539-1.118l1.285-3.957a1 1 0 00-.364-1.118L2.05 9.384c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.951-.69l1.286-3.957z" />
-                    </svg>
-                    <span className="text-sm text-gray-600 leading-snug">{c}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            )}
 
-            {/* Specializations */}
-            <div>
-              <div className="flex items-center gap-2.5 mb-3">
-                <span className="w-1 h-5 rounded-full bg-[#D32F2F]" />
-                <span className="text-xs font-black tracking-[0.18em] uppercase text-gray-500">
-                  Specializations
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {specializations.map((s) => (
-                  <span
-                    key={s}
-                    className="text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-red-50 text-[#D32F2F] border border-red-100"
-                  >
-                    {s}
+            {/* Education & Qualifications (Rendered only when valid qualifications exist in CMS) */}
+            {qualifications.length > 0 && (
+              <div className="bg-white border border-gray-100 rounded-2xl p-5 md:p-6 shadow-xs">
+                <div className="flex items-center gap-2.5 mb-4">
+                  <span className="w-1 h-5 rounded-full bg-[#D32F2F]" />
+                  <span className="text-xs font-black tracking-[0.18em] uppercase text-gray-500">
+                    Education & Qualifications
                   </span>
-                ))}
+                </div>
+                <ul className="space-y-3.5">
+                  {qualifications.map((q, idx) => (
+                    <li key={`${q.degree}-${idx}`} className="flex items-start gap-3">
+                      <svg className="w-4 h-4 mt-0.5 shrink-0 text-[#D32F2F]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                      <div>
+                        <span className="text-sm font-semibold block text-gray-900">{q.degree}</span>
+                        {q.institute && <span className="text-xs text-gray-400">{q.institute}</span>}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </div>
+            )}
+
+            {/* Certifications & Awards (Rendered only when valid certifications exist in CMS) */}
+            {certifications.length > 0 && (
+              <div className="bg-white border border-gray-100 rounded-2xl p-5 md:p-6 shadow-xs">
+                <div className="flex items-center gap-2.5 mb-4">
+                  <span className="w-1 h-5 rounded-full bg-[#D32F2F]" />
+                  <span className="text-xs font-black tracking-[0.18em] uppercase text-gray-500">
+                    Certifications & Awards
+                  </span>
+                </div>
+                <ul className="space-y-3">
+                  {certifications.map((c, idx) => (
+                    <li key={`${c}-${idx}`} className="flex items-start gap-3">
+                      <svg className="w-4 h-4 mt-0.5 shrink-0" viewBox="0 0 20 20" fill="#D4A937">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.286 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.838-.197-1.539-1.118l1.285-3.957a1 1 0 00-.364-1.118L2.05 9.384c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.951-.69l1.286-3.957z" />
+                      </svg>
+                      <span className="text-sm text-gray-600 leading-snug">{c}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Specializations (Rendered only when valid specializations exist in CMS) */}
+            {specializations.length > 0 && (
+              <div>
+                <div className="flex items-center gap-2.5 mb-3">
+                  <span className="w-1 h-5 rounded-full bg-[#D32F2F]" />
+                  <span className="text-xs font-black tracking-[0.18em] uppercase text-gray-500">
+                    Specializations
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {specializations.map((s) => (
+                    <span
+                      key={s}
+                      className="text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-red-50 text-[#D32F2F] border border-red-100"
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* CTA */}
             <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-gray-100">
               <a
-                href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%27d%20like%20to%20book%20a%20consultation%20with%20Dr.%20Pranendra%20Singh"
+                href={`https://api.whatsapp.com/send?phone=+919217958539&text=${encodeURIComponent(`Hi, I'd like to book a consultation with ${name} in ${city}.`)}`}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center justify-center gap-2.5 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-4 px-6 text-sm tracking-wide transition-colors rounded-xl"
@@ -201,10 +310,10 @@ export default function OurDoctorSection({ city = "Delhi", doctor }) {
                 Book Consultation with {name}
               </a>
               <a
-                href="/doctors"
+                href={doctorProfileHref}
                 className="inline-flex items-center justify-center gap-2 border border-gray-200 hover:border-[#D32F2F] text-gray-600 hover:text-[#D32F2F] font-semibold py-4 px-6 text-sm tracking-wide transition-all rounded-xl"
               >
-                View Doctors →
+                {doctorSlug ? "View Full Profile →" : "View Doctors Directory →"}
               </a>
             </div>
           </div>

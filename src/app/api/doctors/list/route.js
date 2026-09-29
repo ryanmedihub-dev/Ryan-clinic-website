@@ -16,7 +16,6 @@ const handler = async (req) => {
         const search = searchParams.get("search")?.trim() || "";
         const status = searchParams.get("status");
         const featured = searchParams.get("featured");
-        const isActive = searchParams.get("isActive");
 
         // Sorting
         const sortBy = searchParams.get("sortBy") || "createdAt";
@@ -46,10 +45,6 @@ const handler = async (req) => {
 
         if (featured !== null && featured !== undefined) {
             filter.featured = featured === "true";
-        }
-
-        if (isActive !== null && isActive !== undefined) {
-            filter.isActive = isActive === "true";
         }
 
         if (search) {

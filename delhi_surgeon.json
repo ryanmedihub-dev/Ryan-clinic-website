@@ -1,0 +1,562 @@
+{
+  "_id": "6a674a4ea3fad660a15ffb29",
+  "title": "Best Hair Transplant Surgeon in Delhi",
+  "slug": "hair-transplant-surgeon-in-delhi",
+  "general": {
+    "pageName": "Hair Transplant Surgeon in Delhi",
+    "city": "Delhi",
+    "shortDescription": "Looking for the best hair transplant surgeon in Delhi? Meet Ryan Clinic's surgeon, who personally performs every FUE/DHI step with natural-hairline artistry. Book now.",
+    "status": "published"
+  },
+  "seo": {
+    "metaTitle": "Best Hair Transplant Surgeon in Delhi | Ryan Clinic",
+    "metaDescription": "Looking for the best hair transplant surgeon in Delhi? Meet Ryan Clinic's surgeon, who personally performs every FUE/DHI step with natural-hairline artistry. Book now.",
+    "keywords": [
+      "hair transplant surgeon in Delhi",
+      "best hair transplant surgeon in Delhi",
+      "hair transplant surgeon Delhi",
+      "best hair transplant surgeon Delhi"
+    ],
+    "canonical": "https://www.clinicryan.com/hair-transplant-surgeon-in-delhi",
+    "robots": "index, follow",
+    "ogTitle": "Best Hair Transplant Surgeon in Delhi — Doctor-Led FUE & DHI | Ryan Clinic",
+    "ogDescription": "Why surgical skill decides your result, what to look for, and the surgeon behind Ryan Clinic's natural, lasting hair transplants in Delhi."
+  },
+  "hero": {
+    "badge": {
+      "text": "Ryan Clinic · Surgical Excellence"
+    },
+    "title": "Best Hair Transplant Surgeon in Delhi",
+    "description": "Your result depends less on the clinic's name or the machine used and more on the hands and eye of the surgeon. The best hair transplant surgeon in Delhi is a qualified, experienced surgeon who personally performs every step — designing a natural hairline, extracting follicles cleanly, and implanting each graft at the right angle, depth, and density. At Ryan Clinic in Pitampura, your hair transplant is surgeon-led from start to finish, never delegated to technicians. Suitability and results vary — a consultation decides what's right for you.",
+    "doctorCard": {
+      "doctorName": "Dr. Pranendra Singh",
+      "qualification": "MBBS (AIIMS) · MS (PGIMER) · Turkey FUE Specialist",
+      "experience": "15+ Years Specialization",
+      "designation": "Lead Hair Transplant Surgeon",
+      "image": {
+        "url": "/uploads/turkey-doctor.jpg",
+        "alt": "Dr. Pranendra Singh Best Hair Transplant Surgeon in Delhi"
+      }
+    }
+  },
+  "whySkill": {
+    "badge": {
+      "text": "Surgical Excellence"
+    },
+    "heading": "Why a skilled hair transplant surgeon in Delhi matters more than anything else",
+    "description": "A hair transplant is a one-time redistribution of a finite donor supply — and an aesthetic procedure on your face and scalp. Both facts point to the same conclusion: the surgeon's skill is the single biggest factor in your outcome. A gifted hair transplant surgeon in Delhi makes a result look completely natural; an inexperienced or absent one can waste follicles you can never recover and leave a result that looks \"off.\"",
+    "highlights": [
+      "Graft survival — gentle, precise extraction and minimal handling keep follicles viable.",
+      "Hairline artistry — angle, irregularity, and a soft-to-dense gradient that frames your face.",
+      "Density and coverage — distributing a limited donor supply for the most natural impact.",
+      "Donor management — harvesting without over-thinning the back and sides.",
+      "Safety — clean technique and sound judgement throughout."
+    ],
+    "footerNote": "No blade, pen, or brand name compensates for a surgeon who lacks experience — or who isn't actually doing the surgery.",
+    "cards": [
+      {
+        "num": "01",
+        "title": "Graft Survival",
+        "body": "Careful extraction, minimal handling, correct preservation, and precise implantation all protect follicle viability. Each of these steps is a direct reflection of surgical skill and directly influences how many grafts survive and grow.",
+        "image": "/uploads/turkey-doctor.jpg",
+        "gradient": "from-[#D32F2F]/90 via-[#D32F2F]/50",
+        "showCta": true
+      },
+      {
+        "num": "02",
+        "title": "Hairline Artistry",
+        "body": "The surgeon determines the shape, irregularity, direction and angle of each graft at the frontal edge — creating an aesthetic design that complements your facial proportions and looks completely natural.",
+        "image": "/uploads/1752734248947-Hair Transplant 1.jpg",
+        "gradient": "from-black/85 via-black/30"
+      },
+      {
+        "num": "03",
+        "title": "Density & Coverage",
+        "body": "A limited donor supply must be strategically distributed across the scalp. Surgical planning determines how grafts are placed to achieve the most visually effective density and coverage for your pattern of loss.",
+        "image": "/uploads/about-one.jpg",
+        "gradient": "from-[#D32F2F]/85 via-black/30"
+      },
+      {
+        "num": "04",
+        "title": "Donor Management",
+        "body": "Donor hair is finite and cannot be replaced. A skilled surgeon extracts strategically — protecting the donor area from over-harvesting while ensuring enough grafts are available for both current and any future restoration.",
+        "image": "/uploads/service-two.jpg",
+        "gradient": "from-black/85 via-black/30"
+      },
+      {
+        "num": "05",
+        "title": "Patient Safety",
+        "body": "Qualified surgical oversight, sterile protocols, sound patient selection and careful planning protect safety throughout the procedure. Good surgical judgement — not just equipment — is what keeps patients safe.",
+        "image": "/uploads/gallery.jpg",
+        "gradient": "from-black/85 via-black/30"
+      }
+    ]
+  },
+  "benefits": {
+    "badge": {
+      "text": "Trusted Qualifications"
+    },
+    "heading": "What makes the best hair transplant surgeon in Delhi",
+    "description": "The best hair transplant surgeon in Delhi combines surgical precision with an artist's eye:",
+    "items": [
+      {
+        "number": "01",
+        "title": "Hands-On Mastery",
+        "text": "The surgeon personally performs or directly controls every critical surgical stage — extraction, recipient-site creation, and implantation — rather than delegating essential surgical work to technicians."
+      },
+      {
+        "number": "02",
+        "title": "Aesthetic Judgement",
+        "text": "The surgeon understands facial proportions, age, natural growth direction and long-term hair-loss patterns — and applies that understanding when designing the hairline and distributing grafts for a result that looks natural."
+      },
+      {
+        "number": "03",
+        "title": "Deep Focused Experience",
+        "text": "Meaningful experience comes from sustained focus on hair restoration and real exposure to a wide range of hair-loss patterns and case types — not occasional procedures performed alongside unrelated treatments."
+      },
+      {
+        "number": "04",
+        "title": "Technical Range",
+        "text": "A skilled surgeon understands multiple hair restoration techniques — FUE, Sapphire FUE, DHI — and selects the most appropriate method based on your individual scalp, graft count, and density needs, rather than applying one approach to every patient."
+      },
+      {
+        "number": "05",
+        "title": "Honesty & Patient Selection",
+        "text": "A responsible surgeon assesses whether each patient is a suitable surgical candidate, sets realistic expectations, explains limitations honestly, and recommends non-surgical management when surgery is not yet appropriate — without applying pressure to proceed."
+      },
+      {
+        "number": "06",
+        "title": "Real Patient Portfolio",
+        "text": "Patients should be able to review genuine before-and-after cases showing hairline design, density distribution, donor zone management, and natural results across a range of hair-loss patterns — not stock imagery or unverifiable claims."
+      }
+    ],
+    "footerNote": "For this keyword, evidence of skill — the surgeon's own results — matters more than slogans or claimed statistics."
+  },
+  "whyClinic": {
+    "badge": {
+      "text": "WHY RYAN CLINIC"
+    },
+    "heading": "State-of-the-Art Surgical Facility in Delhi",
+    "description": "Located in Pitampura, New Delhi, our clinic features sterile HEPA-filtered operating theaters.",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800",
+      "alt": "Ryan Clinic Facility"
+    },
+    "stats": [
+      {
+        "value": "100%",
+        "label": "Sterile OT Environment"
+      },
+      {
+        "value": "0",
+        "label": "Infection Rate"
+      }
+    ],
+    "accordions": [
+      {
+        "title": "Is the surgeon present throughout the procedure?",
+        "content": "Yes! Dr. Aman Singh Gosain conducts the entire scalp mapping, local anesthesia, graft extraction, and slit incisions.",
+        "displayOrder": 1,
+        "active": true
+      }
+    ]
+  },
+  "surgeonRole": {
+    "badge": {
+      "text": "Step-By-Step Surgical Excellence"
+    },
+    "heading": "The hair transplant surgeon's role at every step in Delhi",
+    "description": "A great hair transplant surgeon in Delhi is involved at every stage, because each one depends on surgical skill:",
+    "steps": [
+      {
+        "num": "01",
+        "title": "Consultation & design",
+        "body": "The surgeon assesses your donor area and pattern, then designs a natural, age-appropriate hairline — the step that most defines how natural your result looks."
+      },
+      {
+        "num": "02",
+        "title": "Graft extraction",
+        "body": "The surgeon extracts follicular units precisely, protecting graft quality and the donor area."
+      },
+      {
+        "num": "03",
+        "title": "Recipient-site creation",
+        "body": "The surgeon sets the angle, depth, and direction of each site to mimic natural growth."
+      },
+      {
+        "num": "04",
+        "title": "Implantation",
+        "body": "Grafts are placed for natural density and flow — by Choi pen (DHI) or into sapphire channels (Sapphire FUE)."
+      },
+      {
+        "num": "05",
+        "title": "Follow-up",
+        "body": "The surgeon monitors healing and growth across your 12–18 month cycle."
+      }
+    ],
+    "footerNote": "When you choose a surgeon, you're choosing who performs each of these — which is exactly why a surgeon-led hair transplant in Delhi outperforms technician-led work."
+  },
+  "comparison": {
+    "badge": {
+      "text": "The Critical Difference"
+    },
+    "heading": "Hair transplant surgeon vs technician in Delhi: the difference that defines your result",
+    "description": "This is the most important thing to verify at any clinic in Delhi. In many high-volume \"graft mills,\" technicians perform large parts of the surgery — including extraction and implantation — while the surgeon's role is minimal. Technician-heavy, rushed work is a leading cause of poor graft survival and unnatural hairlines.",
+    "table": [
+      {
+        "step": "Hairline design",
+        "ryan": "Surgeon",
+        "competitor": "Variable"
+      },
+      {
+        "step": "Graft extraction",
+        "ryan": "Surgeon",
+        "competitor": "Often technicians"
+      },
+      {
+        "step": "Recipient-site creation",
+        "ryan": "Surgeon",
+        "competitor": "Often technicians"
+      },
+      {
+        "step": "Implantation",
+        "ryan": "Surgeon",
+        "competitor": "Often technicians"
+      },
+      {
+        "step": "Judgement & problem-solving",
+        "ryan": "Surgeon",
+        "competitor": "Limited"
+      },
+      {
+        "step": "Follow-up",
+        "ryan": "Surgeon",
+        "competitor": "Often ends at discharge"
+      }
+    ],
+    "footerNote": "Choosing the best hair transplant surgeon in Delhi means insisting the surgeon — not a technician — does the work that determines your result."
+  },
+  "leadSurgeon": {
+    "badge": {
+      "text": "OUR LEAD SURGEON"
+    },
+    "heading": "Best Hair Transplant Surgeon in Delhi",
+    "description": "Your result depends less on the clinic's name or the machine used and more on the hands and eye of the surgeon. The best hair transplant surgeon in Delhi is a qualified, experienced surgeon who personally performs every step — designing a natural hairline, extracting follicles cleanly, and implanting each graft at the right angle, depth, and density. At Ryan Clinic in Pitampura, your hair transplant is surgeon-led from start to finish, never delegated to technicians.",
+    "qualifications": [
+      {
+        "text": "MBBS — All India Institute of Medical Sciences (AIIMS)"
+      },
+      {
+        "text": "MS — Post Graduate Institute of Medical Education and Research (PGIMER)"
+      },
+      {
+        "text": "Turkey FUE Fellowship — Istanbul Hair Restoration Centre"
+      },
+      {
+        "text": "Member — International Society of Hair Restoration Surgery (ISHRS)"
+      }
+    ],
+    "stats": [
+      {
+        "value": "15+",
+        "label": "Years Experience"
+      },
+      {
+        "value": "5,000+",
+        "label": "Procedures"
+      },
+      {
+        "value": "AIIMS",
+        "label": "MBBS"
+      },
+      {
+        "value": "Turkey",
+        "label": "FUE Certified"
+      }
+    ]
+  },
+  "bookingChecklist": {
+    "badge": {
+      "text": "Due Diligence Checklist"
+    },
+    "questionsHeading": "Questions to ask a hair transplant surgeon in Delhi before booking",
+    "redFlagsHeading": "Red flags when choosing a hair transplant surgeon in Delhi",
+    "footerNote": "The quality of a surgeon's answers — and portfolio — tells you almost everything.",
+    "heading": "How to judge a hair transplant surgeon in Delhi before you book"
+  },
+  "procedures": {
+    "badge": {
+      "text": "Procedures & Location"
+    },
+    "heading": "Procedures performed by our hair transplant surgeon in Delhi",
+    "description": "Ryan Clinic's surgeon performs FUE & Sapphire FUE, DHI / hairline design, beard & moustache transplant, eyebrow transplant, hair transplant for women, and supporting treatments like PRP therapy and medical management of hair loss."
+  },
+  "consultationCTA": {
+    "badge": {
+      "text": "START YOUR JOURNEY"
+    },
+    "heading": "Book a consultation with a hair transplant surgeon in Delhi",
+    "description": "Get an accurate graft requirement count and digital hairline simulation directly from Dr. Aman Singh Gosain.",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800",
+      "alt": "Doctor Consultation"
+    },
+    "stats": [
+      {
+        "value": "Free",
+        "label": "Initial Assessment"
+      },
+      {
+        "value": "100%",
+        "label": "Confidentiality"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "Book WhatsApp Consultation",
+        "link": "https://wa.me/919217958539",
+        "variant": "primary"
+      }
+    ],
+    "featureCard": {
+      "icon": "Stethoscope",
+      "title": "Direct Access to Surgeon",
+      "description": "No sales counselors. Speak directly with the surgeon who will operate on you."
+    }
+  },
+  "faq": {
+    "badge": {
+      "text": "Got Questions?"
+    },
+    "heading": "Hair transplant surgeon in Delhi — frequently asked questions",
+    "faqs": [
+      {
+        "question": "How do I find the best hair transplant surgeon in Delhi?",
+        "answer": "Study the surgeon's own before-and-afters (especially hairlines and cases like yours), confirm the surgeon personally performs the surgery, check years and case volume in hair restoration, verify credentials and registration, and read genuine reviews."
+      },
+      {
+        "question": "What makes a great hair transplant surgeon?",
+        "answer": "A combination of surgical precision and aesthetic judgement — clean extraction, natural hairline design, well-distributed density, careful donor management — backed by focused experience and a real portfolio."
+      },
+      {
+        "question": "What's the difference between a hair transplant surgeon and a technician?",
+        "answer": "A qualified surgeon should perform the skilled steps — design, extraction, recipient-site creation, and implantation. In many clinics, technicians do much of this, which is a common cause of poor survival and unnatural results. At Ryan Clinic, the surgeon performs every step."
+      },
+      {
+        "question": "How much experience should a hair transplant surgeon have?",
+        "answer": "Look for documented years focused on hair restoration and real case volume — and, most importantly, a portfolio of the surgeon's own results with patients similar to you."
+      },
+      {
+        "question": "Does the surgeon design my hairline?",
+        "answer": "Yes — at Ryan Clinic the surgeon personally designs your hairline. Hairline design is the most artistic, result-defining part of the surgery and should never be left to a technician."
+      },
+      {
+        "question": "Why does surgical skill affect graft survival and how natural the result looks?",
+        "answer": "Gentle, precise extraction protects follicle viability, and correct angle, depth, and density at implantation create natural growth. Both depend directly on the surgeon's skill; rushed, delegated work puts them at risk."
+      },
+      {
+        "question": "Should one surgeon perform the whole procedure?",
+        "answer": "The surgeon should perform all the skilled surgical steps. Consistent, hands-on involvement is what produces a natural, lasting result."
+      },
+      {
+        "question": "How can I judge a surgeon's skill before booking?",
+        "answer": "Ask to see the surgeon's own before-and-afters — particularly hairlines — and cases similar to yours. A skilled hair transplant surgeon in Delhi will gladly show their portfolio."
+      },
+      {
+        "question": "Who is the hair transplant surgeon at Ryan Clinic?",
+        "answer": "Dr. Pranendra Singh (MBBS AIIMS, MS PGIMER, Turkey FUE Fellowship) is our lead surgeon with 15+ years experience and 5,000+ successful hair transplants."
+      },
+      {
+        "question": "Is a hair transplant surgeon the same as a dermatologist or plastic surgeon?",
+        "answer": "A hair transplant surgeon may come from different backgrounds. What matters most is genuine hair-restoration training, real surgical experience, and a portfolio that proves the skill — not one specific specialty."
+      },
+      {
+        "question": "Can a skilled hair transplant surgeon repair a previous bad transplant?",
+        "answer": "Often, yes. An experienced surgeon can refine an unnatural hairline, add density, or improve an over-harvested donor area. Revision work demands strong surgical judgement, so it's a good marker of skill."
+      },
+      {
+        "question": "How much does a hair transplant surgeon in Delhi charge?",
+        "answer": "It's priced per graft and depends mainly on graft count and technique. At Ryan Clinic the surgeon provides an exact, transparent quote after a free scalp analysis, starting from ₹40,000, with 0% EMI."
+      },
+      {
+        "question": "Where can I meet the hair transplant surgeon in Delhi?",
+        "answer": "At our Pitampura centre (CD 163, Block CD, Dakshini Pitampura, New Delhi – 110034), Mon–Sat, 9 AM–7 PM. Accessible via Pitampura Metro Station (Red Line)."
+      },
+      {
+        "question": "How do I book a consultation with the surgeon?",
+        "answer": "Call or WhatsApp +91-9217958539, or use the booking form. You'll get a scalp analysis, graft count, and cost breakdown with no obligation."
+      }
+    ]
+  },
+  "settings": {
+    "status": "published",
+    "featured": true,
+    "displayOrder": 1,
+    "showInSitemap": true,
+    "allowIndexing": true,
+    "isDeleted": false
+  },
+  "createdAt": "2026-07-27T12:08:46.449Z",
+  "updatedAt": "2026-07-28T09:28:18.238Z",
+  "__v": 0,
+  "costConsultation": {
+    "badge": {
+      "text": "TRANSPARENT PRICING"
+    },
+    "heading": "Cost of consulting a hair transplant surgeon in Delhi",
+    "description": "A consultation with our hair transplant surgeon in Delhi includes a free scalp analysis — the surgeon assesses your case and gives an exact graft count and transparent, per-graft cost. Surgery pricing starts from ₹40,000, with 0% EMI available.",
+    "disclaimer": "* Exact pricing is provided in writing following your in-person or online scalp consultation.",
+    "items": [
+      {
+        "label": "1,500 – 2,000 Grafts (Norwood 2-3)",
+        "value": "Starting from ₹40,000"
+      },
+      {
+        "label": "2,500 – 3,500 Grafts (Norwood 4-5)",
+        "value": "Starting from ₹65,000"
+      },
+      {
+        "label": "4,000+ Grafts (Norwood 6-7)",
+        "value": "Custom Quote on Assessment"
+      }
+    ]
+  },
+  "ctaSection": {
+    "heading": "Book a consultation with a hair transplant surgeon in Delhi",
+    "subtext": "Get a free scalp analysis, your exact graft count, and a transparent cost breakdown — no obligation.",
+    "phone": "+91-9217958539"
+  },
+  "experienceSpecialization": {
+    "badge": {
+      "text": "SURGEON CREDENTIALS"
+    },
+    "heading": "Experience and specialization to look for in a hair transplant surgeon in Delhi",
+    "description": "When evaluating a hair transplant surgeon in Delhi, weigh:",
+    "items": [
+      {
+        "title": "Years focused on hair restoration",
+        "icon": "🏆",
+        "description": "Documented years dedicated to hair restoration and approximate case volume."
+      },
+      {
+        "title": "Specialization",
+        "icon": "🎓",
+        "description": "A surgeon who concentrates on hair transplants, not an occasional add-on service."
+      },
+      {
+        "title": "Technique fluency",
+        "icon": "📋",
+        "description": "FUE, Sapphire FUE, and DHI, with a clear rationale for what they recommend for you."
+      },
+      {
+        "title": "Hairline-design portfolio",
+        "icon": "✒️",
+        "description": "Natural fronts across different ages and patterns."
+      },
+      {
+        "title": "Revision experience",
+        "icon": "🔄",
+        "description": "The skill to repair or improve previous unsatisfactory transplants (a strong marker of surgical ability)."
+      }
+    ],
+    "footerNote": "Note: different medical backgrounds can produce an excellent hair transplant surgeon. What matters is genuine hair-restoration training, real surgical experience, and a portfolio that proves the skill — not one specific specialty."
+  },
+  "hairlineArtistry": {
+    "badge": {
+      "text": "AESTHETIC DESIGN"
+    },
+    "heading": "The artistry of hairline design: what surgical skill looks like in Delhi",
+    "description": "The difference between a natural result and an obvious one is, above all, hairline design — the most artistic part of the surgery. A skilled hair transplant surgeon in Delhi:",
+    "items": [
+      {
+        "title": "Soft, Irregular Front Edge",
+        "description": "Builds a soft, irregular front edge rather than a straight, 'pluggy' line."
+      },
+      {
+        "title": "Natural Micro Gradient",
+        "description": "Sets fine single-hair grafts at the hairline and denser units behind for a natural gradient."
+      },
+      {
+        "title": "Facial Proportion Matching",
+        "description": "Matches the hairline to your face shape, age, and natural growth direction."
+      },
+      {
+        "title": "Future Loss Planning",
+        "description": "Plans for future hair loss, so the result still looks natural years later."
+      },
+      {
+        "title": "Donor Area Protection",
+        "description": "Manages the donor area so it never looks over-harvested."
+      }
+    ],
+    "footerNote": "This is craftsmanship that no machine performs for the surgeon — and it's why surgical skill, not equipment, is what you're really choosing."
+  },
+  "revisionRepair": {
+    "badge": {
+      "text": "CORRECTIVE SURGERY"
+    },
+    "heading": "Revision and repair work by a hair transplant surgeon in Delhi",
+    "description": "One of the clearest signs of an expert hair transplant surgeon in Delhi is the ability to correct previous work — refining an unnatural hairline, adding density to a thin result, or improving an over-harvested donor area. Revision cases demand even more surgical judgement and artistry than first-time surgery.",
+    "items": [
+      {
+        "title": "Plug Graft Extraction",
+        "description": "Removing large, unnatural plug grafts and re-implanting them as soft singles."
+      },
+      {
+        "title": "Hairline Softening & Lowering",
+        "description": "Re-establishing natural temporal peaks and soft transition zones."
+      },
+      {
+        "title": "Donor Scar Camouflage",
+        "description": "FUE harvesting and SMP repair for depleted or scarred donor areas."
+      }
+    ]
+  },
+  "skillEvaluation": {
+    "badge": {
+      "text": "SKILL ASSESSMENT"
+    },
+    "heading": "How to judge a hair transplant surgeon's skill in Delhi before booking",
+    "description": "Don't rely on claims — look for evidence of skill:",
+    "items": [
+      {
+        "num": "1",
+        "title": "Study before-and-afters",
+        "description": "Study the surgeon's own before-and-afters, especially hairlines and cases like yours."
+      },
+      {
+        "num": "2",
+        "title": "Confirm surgeon role",
+        "description": "Confirm the surgeon personally performs extraction and implantation — not technicians."
+      },
+      {
+        "num": "3",
+        "title": "Verify case volume",
+        "description": "Ask about case volume and years focused on hair transplants."
+      },
+      {
+        "num": "4",
+        "title": "Check credentials",
+        "description": "Check credentials and medical-council registration (verifiable)."
+      },
+      {
+        "num": "5",
+        "title": "Read genuine reviews",
+        "description": "Read genuine, recent reviews on Google and independent platforms."
+      }
+    ],
+    "footerNote": "A confident, skilled hair transplant surgeon in Delhi will happily show their work. Evasiveness is your answer."
+  },
+  "spotlightTitle": "Meet the hair transplant surgeon at Ryan Clinic, Delhi",
+  "visitSurgeon": {
+    "badge": {
+      "text": "VISIT OUR CLINIC"
+    },
+    "heading": "Visiting our hair transplant surgeon in Delhi",
+    "description": "Our Delhi centre is in Pitampura (North-West Delhi), convenient from across the city and NCR (Rohini, Shalimar Bagh, Ashok Vihar, Model Town, Punjabi Bagh, Paschim Vihar).",
+    "address": "CD 163, Block CD, Dakshini Pitampura, Pitampura, New Delhi – 110034",
+    "phone": "+91-9217958539",
+    "hours": "Mon–Sat, 9:00 AM – 7:00 PM",
+    "nearestMetro": "Pitampura Metro Station (Red Line)"
+  }
+}

@@ -183,37 +183,6 @@ const GOOD_DOCTOR_TRAITS = [
   },
 ];
 
-const CREDENTIALS_LIST = [
-  "A recognised medical degree (MBBS) and relevant postgraduate training or fellowship in a field related to hair restoration (dermatology, plastic/cosmetic surgery, or dedicated hair-transplant training).",
-  "Registration with the relevant medical council, with a registration number you can check.",
-  "Specific hair-transplant training or certification in the techniques they perform (FUE, Sapphire FUE, THI).",
-  "Documented experience — years in practice and case volume in hair restoration.",
-  "Ideally, memberships in recognised professional bodies.",
-];
-
-const VERIFY_STEPS = [
-  {
-    step: "01",
-    heading: "Check Medical Council Registration",
-    detail: "Verify their active registration number on the official Medical Council portal.",
-  },
-  {
-    step: "02",
-    heading: "Ask Who Performs Key Surgical Steps",
-    detail: "Confirm that the doctor personally performs graft extraction, slit creation, and implantation.",
-  },
-  {
-    step: "03",
-    heading: "Review Real Patient Cases & Results",
-    detail: "Inspect unedited before-and-after photos and genuine patient video testimonials.",
-  },
-  {
-    step: "04",
-    heading: "Confirm Surgery Volume Per Day",
-    detail: "Ensure the clinic handles limited cases per day for maximum surgical attention and safety.",
-  },
-];
-
 const DEFAULT_COMPARISON_ROWS = [
   ["Consultation & Scalp Analysis", "Doctor / Senior Specialist", "Technician / Assistant"],
   ["Hairline Design & Planning", "Doctor / Senior Specialist", "Technician / Untrained Staff"],
@@ -222,30 +191,6 @@ const DEFAULT_COMPARISON_ROWS = [
   ["Recipient Site Creation", "Doctor / Senior Specialist", "Technician / Assistant"],
   ["Graft Implantation", "Doctor / Senior Specialist", "Technician / Assistant"],
   ["Post-Op Inspection & Care Plan", "Doctor / Senior Specialist", "General Clinic Staff"],
-];
-
-const DOCTOR_STAGES = [
-  {
-    num: "01",
-    heading: "Initial Assessment & Scalp Analysis",
-    desc: "Detailed scalp analysis, donor density evaluation, and medical history check.",
-  },
-  {
-    num: "02",
-    heading: "Custom Hairline & Density Planning",
-    desc: "Crafting a natural, age-appropriate hairline tailored to your facial geometry.",
-  },
-  {
-    num: "03",
-    heading: "Precision Micro-Surgery",
-    desc: "Extraction and implantation executed personally by certified doctors with Sapphire micro-blades.",
-  },
-];
-
-const QUESTIONS_TO_ASK = [
-  "Will the doctor perform the extraction and channel creation personally?",
-  "How many surgeries does the doctor handle per day?",
-  "What post-operative care and follow-up support is included?",
 ];
 
 const GREAT_DOCTOR_TRAITS = [
@@ -261,22 +206,6 @@ const GREAT_DOCTOR_TRAITS = [
     title: "Strict Surgical Safety Protocols",
     desc: "Operates exclusively in sterile OT suites under international medical hygiene standards.",
   },
-];
-
-const RED_FLAGS = [
-  "Unusually low pricing with hidden fees later.",
-  "No doctor present during the actual surgical procedure.",
-  "Guaranteeing impossible hair density or 100% graft survival.",
-];
-
-const PROCEDURES = [
-  { name: "FUE & Sapphire FUE" },
-  { name: "THI / Hairline Design" },
-  { name: "Beard & Moustache Transplant" },
-  { name: "Eyebrow Transplant" },
-  { name: "Hair Transplant for Women" },
-  { name: "PRP Therapy" },
-  { name: "Medical Management of Hair Loss" },
 ];
 
 const cityNearbyAreas = {
@@ -339,31 +268,6 @@ export default async function DoctorPage({ params }) {
     notFound();
   }
 
-  const doctorCredentials = [
-    ...(doctor.qualifications || []).map((q) => ({
-      label: typeof q === "string" ? q : (q.degree || "Qualified"),
-      detail: typeof q === "string" ? "" : (q.institute || ""),
-    })),
-  ];
-
-  let verifySteps = VERIFY_STEPS;
-  if (doctor.verification?.steps?.length) {
-    verifySteps = doctor.verification.steps.map((step, idx) => ({
-      step: String(idx + 1).padStart(2, '0'),
-      heading: step.title || `Step ${idx + 1}`,
-      detail: step.description || "",
-    }));
-  }
-
-  let doctorStages = DOCTOR_STAGES;
-  if (doctor.surgeryTimeline?.steps?.length) {
-    doctorStages = doctor.surgeryTimeline.steps.map((step, idx) => ({
-      num: String(step.stepNumber || step.number || idx + 1).padStart(2, '0'),
-      heading: step.title || `Stage ${idx + 1}`,
-      desc: step.description || "",
-    }));
-  }
-
   let comparisonRows = DEFAULT_COMPARISON_ROWS;
   if (doctor.comparison?.rows?.length) {
     comparisonRows = doctor.comparison.rows.map((r) => [
@@ -381,26 +285,12 @@ export default async function DoctorPage({ params }) {
     }));
   }
 
-  let questionsToAsk = QUESTIONS_TO_ASK;
-  if (doctor.questionsToAsk?.questions?.length) {
-    questionsToAsk = doctor.questionsToAsk.questions.map((qItem) =>
-      typeof qItem === "string" ? qItem : (qItem.question || qItem.answer || "")
-    );
-  }
-
   let goodDoctorTraits = GOOD_DOCTOR_TRAITS;
   if (doctor.doctorStandards?.cards?.length) {
     goodDoctorTraits = doctor.doctorStandards.cards.map((c) => ({
       title: c.title || "",
       desc: c.description || "",
     }));
-  }
-
-  let redFlags = RED_FLAGS;
-  if (doctor.warningSigns?.cards?.length) {
-    redFlags = doctor.warningSigns.cards.map((c) =>
-      typeof c === "string" ? c : `${c.title || ""}: ${c.description || ""}`
-    );
   }
 
   let faqs = FAQS;
@@ -436,9 +326,11 @@ export default async function DoctorPage({ params }) {
     surgeonProfileData = {
       sectionLabel: sp.sectionLabel || "Your Surgeon",
       heading: localizeText(sp.heading || `Meet ${doctor.name}`, doctor.city),
+      achievementsHeading: localizeText(sp.achievementsHeading || "", doctor.city),
       about: localizeText(sp.about || "", doctor.city),
       philosophy: localizeText(sp.philosophy || "", doctor.city),
       achievements: sp.achievements?.length ? sp.achievements : [],
+      consultationHeading: localizeText(sp.consultationHeading || "", doctor.city),
       consultationIncludes: sp.consultationIncludes?.length ? sp.consultationIncludes : [],
     };
   }
@@ -473,12 +365,7 @@ export default async function DoctorPage({ params }) {
 
   const canonicalUrl = doctor.seo?.canonicalUrl || `https://www.clinicryan.com/doctors/${slug}`;
   const clinicCity = doctor.visitClinic?.address?.addressLocality || doctor.location || doctor.city || "";
-  const cityDefaultAddresses = {
-    Delhi: "CD 163, Block CD, Dakshini Pitampura, New Delhi",
-    Mumbai: "MHADA 4 Bungalow, 168, Phase D, SV Patel Nagar, Andheri West, Mumbai",
-    Hyderabad: "2nd Floor, 8-2, 316/A/6/A, Road No. 14, Banjara Hills, Hyderabad",
-  };
-  const clinicAddressLine = doctor.visitClinic?.address?.streetAddress || doctor.basicInfo?.clinicAddress || cityDefaultAddresses[clinicCity] || "";
+  const clinicAddressLine = doctor.visitClinic?.address?.streetAddress || doctor.basicInfo?.clinicAddress || "";
   const clinicPhone = doctor.basicInfo?.phoneNumber || doctor.visitClinic?.contact?.phone || "+91-9911111247";
   const dateModified = doctor.updatedAt ? new Date(doctor.updatedAt).toISOString() : new Date().toISOString();
 
@@ -516,15 +403,10 @@ export default async function DoctorPage({ params }) {
     "telephone": clinicPhone,
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": clinicAddressLine || "CD 163, Block CD, Dakshini Pitampura, New Delhi",
+      ...(clinicAddressLine ? { "streetAddress": clinicAddressLine } : {}),
       "addressLocality": clinicCity || "India",
       "addressRegion": clinicCity || "India",
       "addressCountry": "IN"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 28.6987,
-      "longitude": 77.1352
     }
   };
 
@@ -607,15 +489,8 @@ export default async function DoctorPage({ params }) {
       <DoctorsPageClient
         data={{
           goodDoctorTraits,
-          credentialsList: CREDENTIALS_LIST,
-          verifySteps,
           comparisonRows,
-          doctorCredentials,
-          doctorStages,
-          questionsToAsk,
           greatDoctorTraits,
-          redFlags,
-          procedures: PROCEDURES,
           nearbyAreas: (cityNearbyAreas[doctor.city] || []),
           faqs,
           doctor,

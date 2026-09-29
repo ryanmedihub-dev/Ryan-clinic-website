@@ -68,18 +68,17 @@ export default function WhyChooseUs({ city = "Delhi" }) {
           {/* ── Left panel ── */}
           <div className="lg:sticky lg:top-28">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-[1.1] tracking-tight mb-5">
-              Why Ryan Clinic Is
+              Why Patients Choose
               <br />
               <span className="text-[#D32F2F]">
-                The Best Hair Transplant
+                Ryan Clinic for Hair Transplant
                 <br />
               </span>
-              Clinic In {city}
+              in {city}
             </h2>
 
-            <p className="text-gray-500 text-sm md:text-[15px] leading-relaxed mb-8 max-w-md">
-              Among the many options for a hair transplant in {city}, here's what
-              makes Ryan Clinic the choice of 10,000+ patients.
+            <p className="text-gray-500 text-sm md:text-[15px] leading-relaxed mb-8 max-w-lg">
+              When comparing hair transplant clinics in {city}, patients should consider the medical team, treatment planning, graft handling, hairline design, hygiene, pricing transparency and aftercare. Ryan Clinic focuses on doctor-led treatment planning, personalised graft assessment and structured follow-up support. Clinic-specific experience, patient numbers, ratings or outcome claims should be displayed only where they can be verified and kept consistent across the website.
             </p>
 
             {/* Stats grid */}

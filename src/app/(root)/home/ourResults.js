@@ -329,15 +329,13 @@ export default function OurResults({ city = "Delhi" }) {
         {/* Heading */}
         <div className="text-center px-4 mb-6">
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-2">
-            Hair Transplant Results in &apos; {city}
+            Hair Transplant Results in {city}
           </h2>
           <p className="max-w-2xl mx-auto text-gray-500 text-xs sm:text-sm leading-relaxed">
-            Our results aren&apos;t just great — they&apos;re{" "}
-            <strong className="text-gray-800">outstanding</strong>.{" "}
-            <a href="#" className="or-cta text-red-600 font-medium hover:text-red-700 transition-colors">
-              Explore all outcomes
-            </a>{" "}
-            and read feedback from our satisfied patients.
+            Before-and-after results from real Ryan Clinic patients. Outcomes vary based on donor quality, hair characteristics, graft count and individual healing.{" "}
+            <a href="/gallery" className="or-cta text-red-600 font-medium hover:text-red-700 transition-colors">
+              View full gallery
+            </a>.
           </p>
         </div>
 
@@ -403,15 +401,13 @@ export default function OurResults({ city = "Delhi" }) {
         {/* Heading */}
         <div className={`or-heading text-center px-4 mb-8 ${inView ? "or-visible" : ""}`}>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight mb-3">
-            Ryan&apos;s Results
+            Hair Transplant Before &amp; After Results
           </h2>
           <p className="max-w-2xl mx-auto text-gray-500 text-sm md:text-base leading-relaxed">
-            Our results aren&apos;t just great — they&apos;re{" "}
-            <strong className="text-gray-800">outstanding</strong>.{" "}
-            <a href="#" className="or-cta text-red-600 font-medium hover:text-red-700 transition-colors">
-              Explore all outcomes
-            </a>{" "}
-            and read feedback from our satisfied patients.
+            Before-and-after results from real Ryan Clinic patients across Delhi, Mumbai and Hyderabad. Outcomes vary based on donor quality, hair characteristics, graft count and individual healing.{" "}
+            <a href="/gallery" className="or-cta text-red-600 font-medium hover:text-red-700 transition-colors">
+              View full gallery
+            </a>.
           </p>
         </div>
 

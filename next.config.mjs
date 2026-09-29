@@ -4,6 +4,12 @@ const nextConfig = {
   poweredByHeader: false,
   turbopack: {},
 
+  // Limit static generation workers to prevent Windows OS error 1450
+  // ("Insufficient system resources") when spawning too many threads.
+  experimental: {
+    cpus: 2,
+  },
+
   // Prevent the dev-server file watcher from triggering HMR when you create
   // new folders / files in directories that aren't part of your source code.
   webpack: (config, { dev }) => {

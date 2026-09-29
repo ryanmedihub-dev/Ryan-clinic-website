@@ -62,7 +62,7 @@ export default async function AdminDashboard() {
       textColor: "text-purple-600",
     },
     {
-      label: "Active Pages",
+      label: "Total Pages",
       value: services.length + blogs.length,
       icon: Activity,
       color: "orange",

@@ -16,6 +16,23 @@ const locations = [
   { name: "Delhi", image: DelhiImg, link: "/hair-transplant-in-delhi" },
   { name: "Mumbai", image: MumbaiImg, link: "/hair-transplant-in-mumbai" },
   { name: "Hyderabad", image: HyderabadImg, link: "/hair-transplant-in-hyderabad" },
+  { name: "Gurgaon", image: DelhiImg, link: "/hair-transplant-in-gurgaon" },
+  { name: "Noida", image: DelhiImg, link: "/hair-transplant-in-noida" },
+  { name: "Pune", image: MumbaiImg, link: "/hair-transplant-in-pune" },
+  { name: "Patna", image: DelhiImg, link: "/hair-transplant-in-patna" },
+  { name: "Ahmedabad", image: MumbaiImg, link: "/hair-transplant-in-ahmedabad" },
+  { name: "Bangalore", image: HyderabadImg, link: "/hair-transplant-in-banglore" },
+  { name: "Jammu", image: DelhiImg, link: "/hair-transplant-in-jammu" },
+  { name: "Lucknow", image: DelhiImg, link: "/hair-transplant-in-lucknow" },
+  { name: "Kolkata", image: DelhiImg, link: "/hair-transplant-in-kolkata" },
+  { name: "Chennai", image: HyderabadImg, link: "/hair-transplant-in-chennai" },
+  { name: "Indore", image: MumbaiImg, link: "/hair-transplant-in-indore" },
+  { name: "Bhopal", image: MumbaiImg, link: "/hair-transplant-in-bhopal" },
+  { name: "Chandigarh", image: DelhiImg, link: "/hair-transplant-in-chandigarh" },
+  { name: "Rachi", image: DelhiImg, link: "/hair-transplant-in-rachi" },
+  { name: "Dehradun", image: DelhiImg, link: "/hair-transplant-in-dehradun" },
+  { name: "Nagpur", image: MumbaiImg, link: "/hair-transplant-in-nagpur" },
+  { name: "Jaipur", image: DelhiImg, link: "/hair-transplant-in-jaipur" },
 ];
 
 export default function OurBranches() {
@@ -58,8 +75,8 @@ export default function OurBranches() {
               className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-5"
               style={{ color: "#ffffff" }}
             >
-              Our{" "}
-              <span style={{ color: "var(--accent-gold)" }}>Branches</span>
+              Ryan Clinic{" "}
+              <span style={{ color: "var(--accent-gold)" }}>Locations</span>
               <br />
               Across India
             </h2>
@@ -68,10 +85,7 @@ export default function OurBranches() {
               className="leading-relaxed text-base md:text-lg mb-4"
               style={{ color: "rgba(255,255,255,0.75)" }}
             >
-              Ryan Healthcare leads India's hair transplant space with branches
-              equipped for advanced Turkey Sapphire FUE. Skilled doctors, modern
-              OT infrastructure and per-graft transparent pricing — available
-              across Delhi, Mumbai &amp; Hyderabad.
+              Ryan Clinic leads India&apos;s No.1 hair transplant space with branches equipped for advanced Turkey Sapphire FUE. Skilled doctors, modern OT infrastructure and per-graft transparent pricing — available across India.
             </p>
 
             <p
@@ -84,7 +98,7 @@ export default function OurBranches() {
             {/* Stats row */}
             <div className="flex gap-8 mb-8">
               {[
-                { num: "3", label: "Cities" },
+                { num: "20", label: "Cities" },
                 { num: "10K+", label: "Patients" },
                 { num: "95%+", label: "Graft Survival" },
               ].map((s) => (

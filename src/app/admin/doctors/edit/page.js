@@ -123,6 +123,8 @@ function EditDoctorContent() {
               sectionLabel: "Qualifications",
               heading: "",
               description: "",
+              cardHeading: "",
+              bottomNote: "",
               tabs: [],
               bottomCTA: { badge: "", heading: "", description: "", buttonText: "", buttonLink: "" },
               ...(doc.credentials || {}),
@@ -150,6 +152,8 @@ function EditDoctorContent() {
               heading: "",
               about: "",
               philosophy: "",
+              achievementsHeading: "",
+              consultationHeading: "",
               whyChooseDoctor: [],
               achievements: [],
               consultationIncludes: [],
@@ -256,6 +260,14 @@ function EditDoctorContent() {
               registration: "",
               ...(doc.medicalReviewer || {}),
             },
+            doctorCard: {
+              shortQualification: "",
+              cardDescription: "",
+              qualifications: [],
+              certifications: [],
+              specializations: [],
+              ...(doc.doctorCard || {}),
+            },
           });
         } else {
           toast.error("Not Found", data.message || "Failed to load doctor page.");
@@ -322,6 +334,15 @@ function EditDoctorContent() {
     setFormData((prev) => {
       const arr = [...(prev[section][field] || [])];
       arr[index] = { ...arr[index], [itemField]: value };
+      return { ...prev, [section]: { ...prev[section], [field]: arr } };
+    });
+  };
+
+  const updateStringArrayItem = (section, field, index, value) => {
+    setIsDirty(true);
+    setFormData((prev) => {
+      const arr = [...(prev[section]?.[field] || [])];
+      arr[index] = value;
       return { ...prev, [section]: { ...prev[section], [field]: arr } };
     });
   };
@@ -463,18 +484,6 @@ function EditDoctorContent() {
               />
               <label htmlFor="featured" className="text-sm font-semibold text-gray-700 cursor-pointer">
                 Featured Doctor
-              </label>
-            </div>
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="isActive"
-                checked={!!formData.isActive}
-                onChange={(e) => handleTopLevelChange("isActive", e.target.checked)}
-                className="w-4 h-4"
-              />
-              <label htmlFor="isActive" className="text-sm font-semibold text-gray-700 cursor-pointer">
-                Active
               </label>
             </div>
           </div>
@@ -640,6 +649,204 @@ function EditDoctorContent() {
             className="w-full mt-2 p-2 border rounded-md"
             placeholder="Profile Image Alt Text"
           />
+        </div>
+
+        {/* 2B. DOCTOR CARD & LANDING PAGE INFO */}
+        <div className="mt-10 p-6 bg-amber-50/50 border border-amber-200/80 rounded-2xl shadow-xs">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-600" />
+            <h3 className="text-xl font-bold text-amber-950">
+              2B. Doctor Card &amp; City Landing Page Display
+            </h3>
+          </div>
+          <p className="text-xs text-amber-800/80 mb-6">
+            These fields power both the doctor card in <strong>/doctors</strong> listing AND the <strong>&quot;Meet Your Hair Transplant Surgeon&quot;</strong> section on city landing pages (e.g. <em>/hair-transplant-in-delhi</em>).
+          </p>
+
+          <div className="space-y-6">
+            {/* Short Qualification */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700">
+                Short Qualification (One-line credential for cards)
+              </label>
+              <input
+                type="text"
+                value={formData.doctorCard?.shortQualification || ""}
+                onChange={(e) => handleNestedChange("doctorCard", "shortQualification", e.target.value)}
+                className="w-full mt-2 p-2 border rounded-md bg-white"
+                placeholder="e.g. MBBS (AIIMS), MS (Plastic Surgery), Turkey Fellow"
+              />
+              <p className="text-xs text-gray-400 mt-1">
+                Displays directly below the doctor&apos;s name in cards.
+              </p>
+            </div>
+
+            {/* Card Description / Bio */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700">
+                Doctor Card Bio / Overview Paragraph
+              </label>
+              <textarea
+                rows={3}
+                value={formData.doctorCard?.cardDescription || ""}
+                onChange={(e) => handleNestedChange("doctorCard", "cardDescription", e.target.value)}
+                className="w-full mt-2 p-2 border rounded-md bg-white"
+                placeholder="Dr. Pranendra Singh is a renowned Plastic &amp; Reconstructive Surgeon with over 15 years of dedicated hair restoration experience. Trained directly under Turkey's leading specialists..."
+              />
+              <p className="text-xs text-gray-400 mt-1">
+                Used in the /doctors directory card and in the bio section on city landing pages.
+              </p>
+            </div>
+
+            {/* Qualifications & Degrees (Degree + Institute) */}
+            <div className="p-4 bg-white rounded-xl border border-gray-200">
+              <div className="flex justify-between items-center mb-3">
+                <div>
+                  <h4 className="text-sm font-bold text-gray-800">
+                    Degrees &amp; Education (for Landing Page Education Grid)
+                  </h4>
+                  <p className="text-xs text-gray-500">Degree name and the institution/university</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => addToArray("doctorCard", "qualifications", { degree: "", institute: "" })}
+                  className="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-semibold rounded-lg cursor-pointer"
+                >
+                  + Add Degree
+                </button>
+              </div>
+
+              {(formData.doctorCard?.qualifications || []).length === 0 ? (
+                <p className="text-xs text-gray-400 italic py-2">
+                  No qualifications added yet. (Fallback defaults like MBBS - AIIMS New Delhi will be shown on landing page).
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {formData.doctorCard.qualifications.map((q, i) => (
+                    <div key={i} className="flex gap-3 items-center bg-gray-50 p-3 rounded-lg border border-gray-200">
+                      <div className="flex-1">
+                        <input
+                          type="text"
+                          value={q.degree}
+                          onChange={(e) => updateArrayItem("doctorCard", "qualifications", i, "degree", e.target.value)}
+                          placeholder="Degree (e.g. MBBS, MS - General Surgery)"
+                          className="w-full p-2 border rounded-md bg-white text-sm"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <input
+                          type="text"
+                          value={q.institute}
+                          onChange={(e) => updateArrayItem("doctorCard", "qualifications", i, "institute", e.target.value)}
+                          placeholder="Institute (e.g. AIIMS, New Delhi)"
+                          className="w-full p-2 border rounded-md bg-white text-sm"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => deleteFromArray("doctorCard", "qualifications", i)}
+                        className="bg-red-500 hover:bg-red-600 text-white px-2.5 py-1.5 rounded-lg text-xs font-semibold cursor-pointer shrink-0"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Certifications (String array) */}
+            <div className="p-4 bg-white rounded-xl border border-gray-200">
+              <div className="flex justify-between items-center mb-3">
+                <div>
+                  <h4 className="text-sm font-bold text-gray-800">
+                    Certifications &amp; Accreditations
+                  </h4>
+                  <p className="text-xs text-gray-500">Bullet points of official certifications &amp; accolades</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => addToArray("doctorCard", "certifications", "")}
+                  className="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-semibold rounded-lg cursor-pointer"
+                >
+                  + Add Certification
+                </button>
+              </div>
+
+              {(formData.doctorCard?.certifications || []).length === 0 ? (
+                <p className="text-xs text-gray-400 italic py-2">
+                  No certifications added yet.
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {formData.doctorCard.certifications.map((cert, i) => (
+                    <div key={i} className="flex gap-3 items-center bg-gray-50 p-3 rounded-lg border border-gray-200">
+                      <input
+                        type="text"
+                        value={cert}
+                        onChange={(e) => updateStringArrayItem("doctorCard", "certifications", i, e.target.value)}
+                        placeholder="e.g. Turkey Sapphire FUE Certification — Istanbul Hair Institute"
+                        className="w-full p-2 border rounded-md bg-white text-sm"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => deleteFromArray("doctorCard", "certifications", i)}
+                        className="bg-red-500 hover:bg-red-600 text-white px-2.5 py-1.5 rounded-lg text-xs font-semibold cursor-pointer shrink-0"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Specializations (String array) */}
+            <div className="p-4 bg-white rounded-xl border border-gray-200">
+              <div className="flex justify-between items-center mb-3">
+                <div>
+                  <h4 className="text-sm font-bold text-gray-800">
+                    Specializations &amp; Key Procedures
+                  </h4>
+                  <p className="text-xs text-gray-500">Pills displayed in doctor cards and landing page tags</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => addToArray("doctorCard", "specializations", "")}
+                  className="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-semibold rounded-lg cursor-pointer"
+                >
+                  + Add Specialization
+                </button>
+              </div>
+
+              {(formData.doctorCard?.specializations || []).length === 0 ? (
+                <p className="text-xs text-gray-400 italic py-2">
+                  No specializations added yet. (e.g. Sapphire FUE, Turkish Technique Choi Pen, Beard &amp; Eyebrow Transplant)
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {formData.doctorCard.specializations.map((spec, i) => (
+                    <div key={i} className="flex gap-3 items-center bg-gray-50 p-3 rounded-lg border border-gray-200">
+                      <input
+                        type="text"
+                        value={spec}
+                        onChange={(e) => updateStringArrayItem("doctorCard", "specializations", i, e.target.value)}
+                        placeholder="e.g. Sapphire FUE"
+                        className="w-full p-2 border rounded-md bg-white text-sm"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => deleteFromArray("doctorCard", "specializations", i)}
+                        className="bg-red-500 hover:bg-red-600 text-white px-2.5 py-1.5 rounded-lg text-xs font-semibold cursor-pointer shrink-0"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* 3. META DETAILS */}
@@ -1095,9 +1302,13 @@ function EditDoctorContent() {
           <label className="block text-sm font-semibold text-gray-700">Description</label>
           <textarea rows={2} value={formData.credentials?.description || ""} onChange={(e) => handleNestedChange("credentials", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="What matters is genuine hair-restoration training and verifiable qualifications." />
         </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700">Card Heading (Above Tabs)</label>
+          <input type="text" value={formData.credentials?.cardHeading || ""} onChange={(e) => handleNestedChange("credentials", "cardHeading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Credentials & Registration Breakdown" />
+        </div>
         <button
           type="button"
-          onClick={() => addToArray("credentials", "tabs", { title: "", description: "", icon: "GraduationCap" })}
+          onClick={() => addToArray("credentials", "tabs", { title: "", hint: "", description: "", icon: "GraduationCap", ctaText: "", ctaLink: "" })}
           className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-4 cursor-pointer"
         >
           + Add Credential Tab
@@ -1116,20 +1327,53 @@ function EditDoctorContent() {
                     Delete Tab
                   </button>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700">Degree / Certification Title</label>
+                    <label className="block text-sm font-semibold text-gray-700">Tab Title (e.g. MBBS)</label>
                     <input type="text" value={tab.title || ""} onChange={(e) => updateArrayItem("credentials", "tabs", i, "title", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. MBBS, MD - Dermatology" />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700">Institution / Detail</label>
-                    <input type="text" value={tab.description || ""} onChange={(e) => updateArrayItem("credentials", "tabs", i, "description", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. Recognized Medical Council" />
+                    <label className="block text-sm font-semibold text-gray-700">Subtitle / Hint Badge</label>
+                    <input type="text" value={tab.hint || ""} onChange={(e) => updateArrayItem("credentials", "tabs", i, "hint", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. Primary Qualification" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700">Icon</label>
+                    <select
+                      value={tab.icon || "GraduationCap"}
+                      onChange={(e) => updateArrayItem("credentials", "tabs", i, "icon", e.target.value)}
+                      className="w-full mt-1.5 p-2 border rounded-md bg-white"
+                    >
+                      <option value="GraduationCap">GraduationCap (Degree)</option>
+                      <option value="ShieldCheck">ShieldCheck (Registration)</option>
+                      <option value="Building2">Building2 (Hospital/Clinic)</option>
+                      <option value="Award">Award (Achievement)</option>
+                      <option value="BadgeCheck">BadgeCheck (Council)</option>
+                      <option value="CheckCircle">CheckCircle (Verified)</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700">Detailed Description / Requirements</label>
+                  <textarea rows={2} value={tab.description || ""} onChange={(e) => updateArrayItem("credentials", "tabs", i, "description", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. Primary 5.5-year medical degree required before any surgical training." />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700">CTA Button Text (Optional)</label>
+                    <input type="text" value={tab.ctaText || ""} onChange={(e) => updateArrayItem("credentials", "tabs", i, "ctaText", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. Verify Registration" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700">CTA Button Link (Optional)</label>
+                    <input type="text" value={tab.ctaLink || ""} onChange={(e) => updateArrayItem("credentials", "tabs", i, "ctaLink", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. https://www.nmc.org.in or #contact" />
                   </div>
                 </div>
               </div>
             ))}
           </div>
         )}
+        <div className="mt-4 mb-6">
+          <label className="block text-sm font-semibold text-gray-700">Credentials Bottom Trust Note / Disclaimer</label>
+          <textarea rows={2} value={formData.credentials?.bottomNote || ""} onChange={(e) => handleNestedChange("credentials", "bottomNote", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. All qualifications, registrations, and memberships can be independently verified through respective medical councils and boards before making any surgical decision." />
+        </div>
 
         {/* 8. VERIFICATION */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">8. Verification &amp; Safety Steps</h3>
@@ -1182,6 +1426,46 @@ function EditDoctorContent() {
             ))}
           </div>
         )}
+
+        {/* 8B. VERIFICATION CHECKLIST */}
+        <div className="mt-8 pt-6 border-t border-gray-200">
+          <h4 className="text-lg font-bold text-gray-800 mb-2">Step-by-Step Verification Checklist</h4>
+          <p className="text-xs text-gray-500 mb-4">Interactive checklist shown to patients on the public doctor page.</p>
+          <button
+            type="button"
+            onClick={() => addToArray("verification", "checklist", { title: "", checked: false })}
+            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-4 cursor-pointer text-sm font-medium"
+          >
+            + Add Checklist Item
+          </button>
+          {(formData.verification?.checklist || []).length === 0 ? (
+            <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center my-3">
+              <p className="text-gray-500 text-sm">No checklist items added yet.</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {(formData.verification?.checklist || []).map((item, i) => (
+                <div key={i} className="flex items-center gap-3 bg-white p-3 border rounded-lg shadow-xs">
+                  <span className="text-xs font-bold text-gray-400 w-6 text-center">{i + 1}.</span>
+                  <input
+                    type="text"
+                    value={item.title || ""}
+                    onChange={(e) => updateArrayItem("verification", "checklist", i, "title", e.target.value)}
+                    className="flex-1 p-2 border rounded-md text-sm"
+                    placeholder="e.g. Check state medical council registration online"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => deleteFromArray("verification", "checklist", i)}
+                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer shrink-0"
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* 9. DOCTOR VS TECHNICIAN COMPARISON */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">9. Doctor vs Technician Comparison Matrix</h3>
@@ -1294,6 +1578,136 @@ function EditDoctorContent() {
               placeholder="Doctor's surgical approach..."
             />
           </div>
+        </div>
+
+        {/* 10B. KEY ACHIEVEMENTS */}
+        <div className="mt-6 pt-6 border-t border-gray-200">
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-700">Achievements Section Heading</label>
+            <input
+              type="text"
+              value={formData.surgeonProfile?.achievementsHeading || ""}
+              onChange={(e) => handleNestedChange("surgeonProfile", "achievementsHeading", e.target.value)}
+              className="w-full mt-2 p-2 border rounded-md"
+              placeholder="e.g. Key Achievements"
+            />
+          </div>
+          <button
+            type="button"
+            onClick={() => addToArray("surgeonProfile", "achievements", { title: "", description: "" })}
+            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-4 cursor-pointer text-sm font-medium"
+          >
+            + Add Key Achievement
+          </button>
+          {(formData.surgeonProfile?.achievements || []).length === 0 ? (
+            <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center my-3">
+              <p className="text-gray-500 text-sm">No achievements added yet.</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {(formData.surgeonProfile?.achievements || []).map((ach, i) => (
+                <div key={i} className="border rounded-xl p-4 bg-white shadow-xs space-y-3">
+                  <div className="flex justify-between items-center">
+                    <h5 className="text-sm font-semibold text-gray-800">Achievement #{i + 1}</h5>
+                    <button
+                      type="button"
+                      onClick={() => deleteFromArray("surgeonProfile", "achievements", i)}
+                      className="bg-red-500 hover:bg-red-600 text-white px-2.5 py-1 rounded text-xs font-semibold cursor-pointer"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-700">Title / Headline</label>
+                      <input
+                        type="text"
+                        value={ach.title || (typeof ach === "string" ? ach : "")}
+                        onChange={(e) => updateArrayItem("surgeonProfile", "achievements", i, "title", e.target.value)}
+                        className="w-full mt-1 p-2 border rounded-md text-sm"
+                        placeholder="e.g. Over 5,000+ Successful Procedures"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-700">Description / Details</label>
+                      <input
+                        type="text"
+                        value={ach.description || ""}
+                        onChange={(e) => updateArrayItem("surgeonProfile", "achievements", i, "description", e.target.value)}
+                        className="w-full mt-1 p-2 border rounded-md text-sm"
+                        placeholder="e.g. Across FUE, Sapphire Micro-FUE, and Revision cases"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* 10C. CONSULTATION INCLUSIONS */}
+        <div className="mt-6 pt-6 border-t border-gray-200">
+          <div className="mb-4">
+            <label className="block text-sm font-semibold text-gray-700">Consultation Inclusions Heading</label>
+            <input
+              type="text"
+              value={formData.surgeonProfile?.consultationHeading || ""}
+              onChange={(e) => handleNestedChange("surgeonProfile", "consultationHeading", e.target.value)}
+              className="w-full mt-2 p-2 border rounded-md"
+              placeholder="e.g. Your Consultation Includes"
+            />
+          </div>
+          <button
+            type="button"
+            onClick={() => addToArray("surgeonProfile", "consultationIncludes", { title: "", description: "" })}
+            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-4 cursor-pointer text-sm font-medium"
+          >
+            + Add Consultation Inclusions Item
+          </button>
+          {(formData.surgeonProfile?.consultationIncludes || []).length === 0 ? (
+            <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center my-3">
+              <p className="text-gray-500 text-sm">No consultation items added yet (generic defaults will be displayed if empty).</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {(formData.surgeonProfile?.consultationIncludes || []).map((item, i) => (
+                <div key={i} className="border rounded-xl p-4 bg-white shadow-xs space-y-3">
+                  <div className="flex justify-between items-center">
+                    <h5 className="text-sm font-semibold text-gray-800">Inclusion #{i + 1}</h5>
+                    <button
+                      type="button"
+                      onClick={() => deleteFromArray("surgeonProfile", "consultationIncludes", i)}
+                      className="bg-red-500 hover:bg-red-600 text-white px-2.5 py-1 rounded text-xs font-semibold cursor-pointer shrink-0"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-700">Title</label>
+                      <input
+                        type="text"
+                        value={item.title || (typeof item === "string" ? item : "")}
+                        onChange={(e) => updateArrayItem("surgeonProfile", "consultationIncludes", i, "title", e.target.value)}
+                        className="w-full mt-1 p-2 border rounded-md text-sm"
+                        placeholder="e.g. Free Scalp Analysis & Hair Density Assessment"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-700">Description</label>
+                      <input
+                        type="text"
+                        value={item.description || ""}
+                        onChange={(e) => updateArrayItem("surgeonProfile", "consultationIncludes", i, "description", e.target.value)}
+                        className="w-full mt-1 p-2 border rounded-md text-sm"
+                        placeholder="e.g. In-depth trichoscopy examination with microscopic follicle count"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* 11. SURGERY TIMELINE */}

@@ -14,3 +14,13 @@ export const FaqSection = dynamic(() => import("./faqSection"), {
   loading: () => <div className="py-12 md:py-20" />,
 });
 
+export const DelhiCostSection = dynamic(() => import("./delhiCost"), {
+  loading: () => <div className="py-14 md:py-20" />,
+});
+export const ProcedureAndOverview = dynamic(() => import("./procedureAndOverview"), {
+  loading: () => <div className="py-14 md:py-20" />,
+});
+export const DelhiClinicSection = dynamic(() => import("./delhiClinic"), {
+  loading: () => <div className="py-14 md:py-20" />,
+});
+

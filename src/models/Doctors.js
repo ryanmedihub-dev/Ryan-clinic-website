@@ -174,7 +174,9 @@ const doctorSchema = new mongoose.Schema(
     credentials: {
       sectionLabel: { type: String, trim: true, default: "" },
       heading: { type: String, trim: true, default: "" },
+      cardHeading: { type: String, trim: true, default: "" },
       description: { type: String, trim: true, default: "" },
+      bottomNote: { type: String, trim: true, default: "" },
       tabs: {
         type: [credentialTabSchema],
         default: [],
@@ -215,6 +217,7 @@ const doctorSchema = new mongoose.Schema(
     surgeonProfile: {
       sectionLabel: { type: String, trim: true, default: "" },
       heading: { type: String, trim: true, default: "" },
+      achievementsHeading: { type: String, trim: true, default: "" },
       about: { type: String, trim: true, default: "" },
       philosophy: { type: String, trim: true, default: "" },
       whyChooseDoctor: {
@@ -225,8 +228,9 @@ const doctorSchema = new mongoose.Schema(
         type: [titleDescriptionSchema],
         default: [],
       },
+      consultationHeading: { type: String, trim: true, default: "" },
       consultationIncludes: {
-        type: [orderedTitleSchema],
+        type: [titleDescriptionSchema],
         default: [],
       },
       primaryCTA: { type: ctaSchema, default: () => ({}) },
@@ -296,6 +300,37 @@ const doctorSchema = new mongoose.Schema(
       reviewerName: { type: String, trim: true, default: "" },
       qualifications: { type: String, trim: true, default: "" },
       registration: { type: String, trim: true, default: "" },
+    },
+
+    /* ── Doctor Card Fields (listing + landing pages) ── */
+    doctorCard: {
+      /* One-line credential string shown under doctor name in cards */
+      shortQualification: { type: String, trim: true, default: "" },
+      /* Short paragraph bio shown in /doctors listing cards */
+      cardDescription: { type: String, trim: true, default: "" },
+      /* Education list used in OurDoctorSection on city landing pages */
+      qualifications: {
+        type: [
+          new mongoose.Schema(
+            {
+              degree: { type: String, trim: true, default: "" },
+              institute: { type: String, trim: true, default: "" },
+            },
+            { _id: false }
+          ),
+        ],
+        default: [],
+      },
+      /* Certification & awards list for OurDoctorSection */
+      certifications: {
+        type: [{ type: String, trim: true }],
+        default: [],
+      },
+      /* Specialization tags for both carousel and OurDoctorSection */
+      specializations: {
+        type: [{ type: String, trim: true }],
+        default: [],
+      },
     },
 
     /* ── 13. Great Doctor Qualities ── */

@@ -31,37 +31,30 @@ import {
     Star,
     Play,
 } from "lucide-react";
+const GENERIC_CLINIC_PHONE = "+91-9911111247";
+const GENERIC_CLINIC_WA = "919217958539";
 
-const WA =
-    "https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation";
-const TEL = "tel:+919911111247";
+function formatTelHref(phone) {
+    if (!phone) return "tel:+919911111247";
+    const cleaned = String(phone).trim().replace(/[^\d+]/g, "");
+    return cleaned ? `tel:${cleaned}` : "tel:+919911111247";
+}
 
-const branchData = {
-    Delhi: {
-        metro: "Pitampura Metro Station (Red Line)",
-        areas: "Rohini, Shalimar Bagh, Ashok Vihar, Model Town, Punjabi Bagh, Paschim Vihar, and all of Delhi NCR.",
-        addressTitle: "Ryan Clinic — Pitampura, New Delhi",
-        addressLine1: "CD 163, Block CD, Dakshini Pitampura,",
-        addressLine2: "Pitampura, New Delhi – 110034",
-        mapQuery: "CD+163+Block+CD+Dakshini+Pitampura+New+Delhi+110034",
-    },
-    Mumbai: {
-        metro: "Versova Metro Station (Line 1)",
-        areas: "Andheri, Juhu, Lokhandwala, Bandra, Goregaon, Borivali, and all of Mumbai Suburban.",
-        addressTitle: "Ryan Clinic — Andheri West, Mumbai",
-        addressLine1: "MHADA 4 Bungalow, 168, Phase D, SV Patel Nagar,",
-        addressLine2: "Andheri West, Mumbai – 400053",
-        mapQuery: "MHADA+4+Bungalow+168+Phase+D+SV+Patel+Nagar+Andheri+West+Mumbai+400053",
-    },
-    Hyderabad: {
-        metro: "Jubilee Hills Check Post Metro Station",
-        areas: "Banjara Hills, Jubilee Hills, Gachibowli, Madhapur, Hitec City, Secunderabad, and all of Hyderabad.",
-        addressTitle: "Ryan Clinic — Banjara Hills, Hyderabad",
-        addressLine1: "2nd Floor, 8-2, 316/A/6/A, Road No. 14, Above SBI Bank,",
-        addressLine2: "Banjara Hills, Hyderabad – 500034",
-        mapQuery: "2nd+Floor+8-2+316/A/6/A+Road+No+14+Banjara+Hills+Hyderabad+500034",
-    },
-};
+function formatWhatsAppLink(phone, message = "Hi, I want a free hair transplant consultation") {
+    const raw = String(phone || "").trim();
+    if (raw.startsWith("http://") || raw.startsWith("https://")) {
+        return raw;
+    }
+    const digits = raw.replace(/\D/g, "");
+    let targetPhone = GENERIC_CLINIC_WA;
+    if (digits.length === 10) {
+        targetPhone = `91${digits}`;
+    } else if (digits.length > 10) {
+        targetPhone = digits;
+    }
+    const encoded = encodeURIComponent(message);
+    return `https://api.whatsapp.com/send?phone=${targetPhone}&text=${encoded}`;
+}
 
 /* ─── Scroll Reveal Hook and Component ───────────────────────────────────── */
 function useScrollReveal(options = {}) {
@@ -123,11 +116,14 @@ function SectionLabel({ text, dark = false }) {
     );
 }
 
-function CTAButtons({ primary = "Book Free Consultation", center = false, doctorName = "" }) {
+function CTAButtons({ primary = "Book Free Consultation", center = false, doctorName = "", whatsappNumber = "", phoneNumber = "" }) {
     const trackCTA = useTrackCTA();
-    const waLink = doctorName
-        ? `https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation`
-        : WA;
+    const waLink = formatWhatsAppLink(
+        whatsappNumber,
+        `Hi, I want a free hair transplant consultation${doctorName ? ` with ${doctorName}` : ""}`
+    );
+    const telHref = formatTelHref(phoneNumber);
+    const displayPhone = phoneNumber || GENERIC_CLINIC_PHONE;
     return (
         <div className={`flex flex-wrap gap-3 ${center ? "justify-center" : ""}`}>
             <a
@@ -138,14 +134,147 @@ function CTAButtons({ primary = "Book Free Consultation", center = false, doctor
                 {primary}
             </a>
             <a
-                href={TEL}
+                href={telHref}
                 className="inline-flex items-center justify-center gap-2 border border-gray-200 hover:border-[#D32F2F] text-gray-700 hover:text-[#D32F2F] font-semibold py-3.5 px-6 text-sm tracking-wide transition-all rounded-xl"
                 onClick={() => trackCTA({ type: "call", ctaName: "Doctor Page Call", buttonLocation: "Doctor Page Content" })}
             >
-                Call +91-9911111247
+                Call {displayPhone}
             </a>
         </div>
     );
+}
+
+const FALLBACK_CRED_TABS = [
+    {
+        title: "Medical Degree & Specialisation",
+        hint: "MBBS + MS / Dermatology",
+        desc: "Recognised MBBS and postgraduate training in surgery, dermatology, or dedicated hair-transplant specialisation.",
+        icon: "GraduationCap",
+        image: "/uploads/turkey-doctor.jpg",
+        ctaText: "Verify doctor credentials",
+        ctaLink: "#credentials",
+    },
+    {
+        title: "Medical Board Registration",
+        hint: "Verifiable via State Medical Council / NMC",
+        desc: "Active and verifiable registration with the state or national medical council with an official registration number.",
+        icon: "ShieldCheck",
+        image: "/uploads/about-one.jpg",
+        ctaText: "Verify doctor credentials",
+        ctaLink: "#credentials",
+    },
+    {
+        title: "Technique Certification",
+        hint: "Sapphire FUE & Turkish Technique Choi Pen",
+        desc: "Specific advanced certification in Sapphire FUE and Turkish Technique techniques personally performed by the doctor.",
+        icon: "Award",
+        image: "/uploads/service-two.jpg",
+        ctaText: "Verify doctor credentials",
+        ctaLink: "#credentials",
+    },
+    {
+        title: "Surgical Case Volume",
+        hint: "1,000+ documented procedures",
+        desc: "Years of active surgical practice with a high count of personally completed hair restoration procedures.",
+        icon: "Users",
+        image: "/uploads/service-three.jpg",
+        ctaText: "Verify doctor credentials",
+        ctaLink: "#credentials",
+    },
+    {
+        title: "Professional Memberships",
+        hint: "ISHRS / ABHRS Accredited",
+        desc: "Memberships in globally respected bodies like ISHRS — guaranteeing ongoing surgical education and ethics.",
+        icon: "Globe",
+        image: "/uploads/gallery.jpg",
+        ctaText: "Verify doctor credentials",
+        ctaLink: "#credentials",
+    },
+];
+
+const FALLBACK_CHECKLIST = [
+    "Requested doctor's full name & medical council registration number",
+    "Verify active registration through the relevant State Medical Council / NMC portal",
+    "Confirmed doctor personally performs extraction & implantation",
+    "Reviewed before/after portfolio of doctor's own real patients",
+    "Checked verified reviews on Google or independent platforms",
+];
+
+const FALLBACK_RED_FLAGS = [
+    {
+        title: "No Named Doctor",
+        desc: "No named, credentialed doctor anywhere on the website.",
+        icon: "AlertTriangle",
+    },
+    {
+        title: "Technician Delegation",
+        desc: "No doctor present during the actual surgical procedure.",
+        icon: "X",
+    },
+    {
+        title: "Fake Credentials",
+        desc: "Guaranteeing impossible hair density or 100% graft survival.",
+        icon: "ShieldCheck",
+    },
+    {
+        title: "High-Pressure Booking",
+        desc: "Guaranteed results or pressure to book or pay immediately.",
+        icon: "AlertTriangle",
+    },
+    {
+        title: "Zero Patient Portfolio",
+        desc: "No real before-and-afters of the doctor's own patients.",
+        icon: "Scissors",
+    },
+    {
+        title: "Inconsistent Information",
+        desc: "Inconsistent claims across the website and advertisements.",
+        icon: "X",
+    },
+];
+
+const FALLBACK_SURGICAL_STEPS = [
+    { num: "01", title: "Consultation & Hairline Design", body: "The doctor personally maps your new hairline according to facial symmetry and marks donor and recipient zones for lifetime natural framing." },
+    { num: "02", title: "Graft Extraction (FUE)", body: "Follicular units are harvested one by one from the safe donor area using precision micro-punches (0.7–0.9mm) to protect viability." },
+    { num: "03", title: "Recipient-Site Creation (Sapphire)", body: "Microscopic channels are opened using sharp gemstone sapphire blades, setting exact direction, angle, and radial depth." },
+    { num: "04", title: "Direct Implantation (Turkish Technique)", body: "Using original Choi implanter pens, sorted grafts are loaded and placed directly into channels for maximum density without scalp trauma." },
+    { num: "05", title: "18-Month Growth & Follow-Up", body: "Free structured follow-up check-ups at months 1, 3, 6, 12, and 18 ensure your hair growth progress is fully tracked." },
+];
+
+function getCredIconElement(name, idx) {
+    const defaultIcons = [
+        <GraduationCap key="0" className="w-4 h-4 text-[#D32F2F]" />,
+        <ShieldCheck key="1" className="w-4 h-4 text-[#D32F2F]" />,
+        <Award key="2" className="w-4 h-4 text-[#D32F2F]" />,
+        <Users key="3" className="w-4 h-4 text-[#D32F2F]" />,
+        <Globe key="4" className="w-4 h-4 text-[#D32F2F]" />,
+    ];
+    if (!name) return defaultIcons[idx % defaultIcons.length];
+    const lower = String(name).toLowerCase();
+    if (lower.includes("grad") || lower.includes("degree")) return <GraduationCap className="w-4 h-4 text-[#D32F2F]" />;
+    if (lower.includes("shield") || lower.includes("board")) return <ShieldCheck className="w-4 h-4 text-[#D32F2F]" />;
+    if (lower.includes("award") || lower.includes("cert")) return <Award className="w-4 h-4 text-[#D32F2F]" />;
+    if (lower.includes("user") || lower.includes("case") || lower.includes("vol")) return <Users className="w-4 h-4 text-[#D32F2F]" />;
+    if (lower.includes("globe") || lower.includes("member")) return <Globe className="w-4 h-4 text-[#D32F2F]" />;
+    return defaultIcons[idx % defaultIcons.length];
+}
+
+function getRedFlagIconElement(name, idx) {
+    const defaultIcons = [
+        <AlertTriangle key="0" className="w-5 h-5" />,
+        <X key="1" className="w-5 h-5" />,
+        <ShieldCheck key="2" className="w-5 h-5" />,
+        <AlertTriangle key="3" className="w-5 h-5" />,
+        <Scissors key="4" className="w-5 h-5" />,
+        <X key="5" className="w-5 h-5" />,
+    ];
+    if (!name) return defaultIcons[idx % defaultIcons.length];
+    const lower = String(name).toLowerCase();
+    if (lower.includes("alert") || lower.includes("warn")) return <AlertTriangle className="w-5 h-5" />;
+    if (lower.includes("x") || lower.includes("close") || lower.includes("cancel")) return <X className="w-5 h-5" />;
+    if (lower.includes("shield")) return <ShieldCheck className="w-5 h-5" />;
+    if (lower.includes("scissor")) return <Scissors className="w-5 h-5" />;
+    return defaultIcons[idx % defaultIcons.length];
 }
 
 /* ─── Page Component ─────────────────────────────────────────────────────── */
@@ -153,23 +282,14 @@ function CTAButtons({ primary = "Book Free Consultation", center = false, doctor
 export default function DoctorPageClient({ data }) {
     const trackCTA = useTrackCTA();
     const [openFaq, setOpenFaq] = useState(null);
-    const [checkedSteps, setCheckedSteps] = useState([false, false, false, false, false]);
-    const progressPercent = Math.round((checkedSteps.filter(Boolean).length / 5) * 100);
     const [activeCred, setActiveCred] = useState(0);
     const [openQuestion, setOpenQuestion] = useState(0);
     const [activeStep, setActiveStep] = useState(0);
 
     const {
         goodDoctorTraits,
-        credentialsList,
-        verifySteps,
         comparisonRows,
-        doctorCredentials,
-        doctorStages,
-        questionsToAsk,
         greatDoctorTraits,
-        redFlags,
-        procedures,
         nearbyAreas,
         faqs,
         doctor,
@@ -194,15 +314,71 @@ export default function DoctorPageClient({ data }) {
         medicalReviewer,
     } = data;
 
+    const checklistItems = (verification?.checklist && verification.checklist.length > 0 && verification.checklist.some(c => (typeof c === "string" ? c.trim() : c.title?.trim())))
+        ? verification.checklist.map(c => (typeof c === "string" ? c : c.title || "")).filter(Boolean)
+        : FALLBACK_CHECKLIST;
+
+    const [checkedSteps, setCheckedSteps] = useState(() => checklistItems.map(() => false));
+    const progressPercent = checklistItems.length > 0
+        ? Math.round((checkedSteps.filter(Boolean).length / checklistItems.length) * 100)
+        : 0;
+
+    const resolvedCredTabs = (credentials?.tabs && credentials.tabs.length > 0 && credentials.tabs.some(t => t.title?.trim()))
+        ? credentials.tabs.map((tab, idx) => ({
+            title: tab.title || `Credential 0${idx + 1}`,
+            hint: tab.hint || "",
+            desc: tab.description || tab.desc || "",
+            icon: getCredIconElement(tab.icon, idx),
+            image: tab.image?.image || tab.image || "/uploads/turkey-doctor.jpg",
+            ctaText: tab.ctaText || "Verify doctor credentials",
+            ctaLink: tab.ctaLink || "#credentials",
+        }))
+        : FALLBACK_CRED_TABS.map((tab, idx) => ({
+            ...tab,
+            icon: getCredIconElement(tab.icon, idx),
+        }));
+
+    const resolvedRedFlags = (warningSigns?.cards && warningSigns.cards.length > 0 && warningSigns.cards.some(c => c.title?.trim()))
+        ? warningSigns.cards.map((c, i) => ({
+            num: String(i + 1).padStart(2, "0"),
+            title: c.title || `Warning Sign 0${i + 1}`,
+            desc: c.description || "",
+            icon: getRedFlagIconElement(c.icon, i),
+        }))
+        : FALLBACK_RED_FLAGS.map((f, i) => ({
+            ...f,
+            num: String(i + 1).padStart(2, "0"),
+            icon: getRedFlagIconElement(f.icon, i),
+        }));
+
+    const resolvedProcessSteps = (surgicalProcess?.steps && surgicalProcess.steps.length > 0 && surgicalProcess.steps.some(s => s.title?.trim()))
+        ? surgicalProcess.steps.map((s, idx) => ({
+            num: String(s.stepNumber || s.number || idx + 1).padStart(2, "0"),
+            title: s.title || `Step ${idx + 1}`,
+            body: s.description || s.body || "",
+        }))
+        : (doctor.surgeryTimeline?.steps && doctor.surgeryTimeline.steps.length > 0 && doctor.surgeryTimeline.steps.some(s => s.title?.trim()))
+            ? doctor.surgeryTimeline.steps.map((s, idx) => ({
+                num: String(s.stepNumber || s.number || idx + 1).padStart(2, "0"),
+                title: s.title || `Step ${idx + 1}`,
+                body: s.description || s.body || "",
+            }))
+            : FALLBACK_SURGICAL_STEPS;
+
     const doctorCity = (doctor.location || doctor.city || "").trim();
     const citySlug = doctorCity.toLowerCase().replace(/\s+/g, "-");
-    const activeBranch = branchData[doctorCity] || null;
     const resolvedNearbyAreas = (visitClinic?.nearbyLocations && visitClinic.nearbyLocations.length > 0)
         ? visitClinic.nearbyLocations
-        : (activeBranch?.areas ? activeBranch.areas.split(",").map(a => a.trim().replace(/\.\s*$/, "")) : (nearbyAreas || []));
-    const waDoctorLink = doctor
-        ? `https://api.whatsapp.com/send?phone=+919217958539&text=Hi%2C%20I%20want%20a%20free%20hair%20transplant%20consultation`
-        : WA;
+        : (nearbyAreas || []);
+
+    const doctorWhatsApp = doctor.basicInfo?.whatsappNumber || doctor.whatsapp || "";
+    const doctorPhone = doctor.basicInfo?.phoneNumber || doctor.phone || "";
+    const docTelHref = formatTelHref(doctorPhone);
+    const docDisplayPhone = doctorPhone || GENERIC_CLINIC_PHONE;
+    const waDoctorLink = formatWhatsAppLink(
+        doctorWhatsApp,
+        `Hi, I want a free hair transplant consultation${doctor.name ? ` with ${doctor.name}` : ""}`
+    );
 
     return (
         <>
@@ -509,7 +685,7 @@ export default function DoctorPageClient({ data }) {
                                         )}
                                         {whyItMatters.secondaryCTA?.text && (
                                             <a
-                                                href={whyItMatters.secondaryCTA.url || TEL}
+                                                href={whyItMatters.secondaryCTA.url || docTelHref}
                                                 className="inline-flex items-center gap-2 border border-gray-200 hover:border-[#D32F2F] text-gray-700 hover:text-[#D32F2F] font-bold py-3.5 px-7 rounded-xl text-sm transition-all duration-200"
                                                 onClick={() => trackCTA({ type: "call", ctaName: whyItMatters.secondaryCTA.text, buttonLocation: "Why It Matters" })}
                                             >
@@ -551,48 +727,14 @@ export default function DoctorPageClient({ data }) {
                             <div>
                                 <div className="flex items-center gap-2 mb-6 pb-4 border-b border-gray-100">
                                     <ShieldCheck className="w-5 h-5 text-[#D32F2F]" />
-                                    <h3 className="text-lg font-bold text-gray-900">5 Must-Have Doctor Credentials</h3>
+                                    <h3 className="text-lg font-bold text-gray-900">
+                                        {credentials?.cardHeading || credentials?.subheading || "5 Must-Have Doctor Credentials"}
+                                    </h3>
                                 </div>
 
                                 {/* Accordion list */}
                                 <div className="flex flex-col gap-2.5 mb-6">
-                                    {[
-                                        {
-                                            title: "Medical Degree & Specialisation",
-                                            hint: "MBBS + MS / Dermatology",
-                                            desc: "Recognised MBBS and postgraduate training in surgery, dermatology, or dedicated hair-transplant specialisation.",
-                                            icon: <GraduationCap className="w-4 h-4 text-[#D32F2F]" />,
-                                            image: "/uploads/turkey-doctor.jpg",
-                                        },
-                                        {
-                                            title: "Medical Board Registration",
-                                            hint: "Verifiable via DMC / NMC",
-                                            desc: "Active and verifiable registration with the state or national medical council with an official registration number.",
-                                            icon: <ShieldCheck className="w-4 h-4 text-[#D32F2F]" />,
-                                            image: "/uploads/about-one.jpg",
-                                        },
-                                        {
-                                            title: "Technique Certification",
-                                            hint: "Sapphire FUE & Turkish Technique Choi Pen",
-                                            desc: "Specific advanced certification in Sapphire FUE and Turkish Technique techniques personally performed by the doctor.",
-                                            icon: <Award className="w-4 h-4 text-[#D32F2F]" />,
-                                            image: "/uploads/service-two.jpg",
-                                        },
-                                        {
-                                            title: "Surgical Case Volume",
-                                            hint: "1,000+ documented procedures",
-                                            desc: "Years of active surgical practice with a high count of personally completed hair restoration procedures.",
-                                            icon: <Users className="w-4 h-4 text-[#D32F2F]" />,
-                                            image: "/uploads/service-three.jpg",
-                                        },
-                                        {
-                                            title: "Professional Memberships",
-                                            hint: "ISHRS / ABHRS Accredited",
-                                            desc: "Memberships in globally respected bodies like ISHRS — guaranteeing ongoing surgical education and ethics.",
-                                            icon: <Globe className="w-4 h-4 text-[#D32F2F]" />,
-                                            image: "/uploads/gallery.jpg",
-                                        },
-                                    ].map((tab, i) => (
+                                    {resolvedCredTabs.map((tab, i) => (
                                         <div key={i} className="rounded-2xl border border-gray-100 overflow-hidden">
                                             <button
                                                 onClick={() => setActiveCred(activeCred === i ? -1 : i)}
@@ -607,7 +749,7 @@ export default function DoctorPageClient({ data }) {
                                                     </span>
                                                     <div>
                                                         <span className="text-sm font-bold block">{tab.title}</span>
-                                                        <span className="text-[11px] text-gray-400 font-normal">{tab.hint}</span>
+                                                        {tab.hint && <span className="text-[11px] text-gray-400 font-normal">{tab.hint}</span>}
                                                     </div>
                                                 </div>
                                                 <ChevronDown className={`w-4 h-4 text-[#D32F2F] transition-transform ${activeCred === i ? "rotate-180" : ""}`} />
@@ -620,8 +762,8 @@ export default function DoctorPageClient({ data }) {
                                                     </div>
                                                     <div>
                                                         <p className="text-xs text-gray-600 leading-relaxed font-sans mb-2">{tab.desc}</p>
-                                                        <a href="#credentials" className="text-[11px] font-bold text-[#D32F2F] hover:underline inline-flex items-center gap-1">
-                                                            Verify doctor credentials <ArrowRight className="w-3 h-3" />
+                                                        <a href={tab.ctaLink || "#credentials"} className="text-[11px] font-bold text-[#D32F2F] hover:underline inline-flex items-center gap-1">
+                                                            {tab.ctaText || "Verify doctor credentials"} <ArrowRight className="w-3 h-3" />
                                                         </a>
                                                     </div>
                                                 </div>
@@ -635,7 +777,7 @@ export default function DoctorPageClient({ data }) {
                             <div className="mt-auto pt-4 p-4 rounded-2xl bg-red-50/60 border border-red-100 text-xs text-gray-700 flex items-start gap-3 font-sans">
                                 <AlertTriangle className="w-4 h-4 text-[#D32F2F] shrink-0 mt-0.5" />
                                 <span>
-                                    <strong>Important Note:</strong> Uncredentialed technicians performing extraction risk permanent graft damage. Always confirm your procedure is 100% doctor-led.
+                                    <strong>Important Note:</strong> {credentials?.bottomNote || "Uncredentialed technicians performing extraction risk permanent graft damage. Always confirm your procedure is 100% doctor-led."}
                                 </span>
                             </div>
                         </div>
@@ -669,13 +811,7 @@ export default function DoctorPageClient({ data }) {
 
                                 {/* Checkable List */}
                                 <div className="space-y-2.5 mb-8">
-                                    {[
-                                        "Requested doctor's full name & medical council registration number",
-                                        "Verified active registration on DMC / NMC government portal",
-                                        "Confirmed doctor personally performs extraction & implantation",
-                                        "Reviewed before/after portfolio of doctor's own real patients",
-                                        "Checked verified reviews on Google or independent platforms",
-                                    ].map((task, i) => (
+                                    {checklistItems.map((task, i) => (
                                         <label
                                             key={i}
                                             className={`flex items-start gap-3 p-3.5 rounded-2xl border cursor-pointer select-none transition-all ${checkedSteps[i]
@@ -828,7 +964,7 @@ export default function DoctorPageClient({ data }) {
                                     <div className="bg-white rounded-3xl border border-[#E8E4DF] p-6 sm:p-7 shadow-sm">
                                         <h3 className="text-lg font-extrabold text-gray-900 mb-4 flex items-center gap-2">
                                             <Award className="w-5 h-5 text-[#D32F2F]" />
-                                            Key Achievements
+                                            {surgeonProfile.achievementsHeading || "Key Achievements"}
                                         </h3>
                                         <div className="space-y-3.5">
                                             {surgeonProfile.achievements.map((ach, i) => (
@@ -853,7 +989,9 @@ export default function DoctorPageClient({ data }) {
                                         <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-[#D32F2F] shrink-0">
                                             <Stethoscope className="w-5 h-5" />
                                         </div>
-                                        <h3 className="text-lg font-bold text-gray-900">Your Consultation Includes</h3>
+                                        <h3 className="text-lg font-bold text-gray-900">
+                                            {surgeonProfile.consultationHeading || "Your Consultation Includes"}
+                                        </h3>
                                     </div>
                                     {surgeonProfile.consultationIncludes?.length > 0 ? (
                                         <div className="space-y-3.5 mb-6">
@@ -862,9 +1000,16 @@ export default function DoctorPageClient({ data }) {
                                                     <span className="w-6 h-6 rounded-full bg-[#D32F2F] text-white flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">
                                                         {String(i + 1).padStart(2, "0")}
                                                     </span>
-                                                    <p className="text-sm text-gray-700 font-sans leading-snug">
-                                                        {typeof item === "string" ? item : (item.title || "")}
-                                                    </p>
+                                                    <div className="flex-1">
+                                                        <p className="text-sm font-semibold text-gray-900 font-sans leading-snug">
+                                                            {typeof item === "string" ? item : (item.title || "")}
+                                                        </p>
+                                                        {typeof item === "object" && item?.description && (
+                                                            <p className="text-xs text-gray-600 font-sans mt-0.5 leading-relaxed">
+                                                                {item.description}
+                                                            </p>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             ))}
                                         </div>
@@ -1302,11 +1447,11 @@ export default function DoctorPageClient({ data }) {
                                         Book Free Consultation
                                     </a>
                                     <a
-                                        href={TEL}
+                                        href={docTelHref}
                                         className="block text-center border border-white/20 hover:bg-white/10 hover:border-white/40 text-white/90 font-extrabold py-3.5 px-6 text-xs sm:text-sm tracking-wide transition-all rounded-2xl w-full"
                                         onClick={() => trackCTA({ type: "call", ctaName: "Doctor Page Call", buttonLocation: "Doctor Stage Section" })}
                                     >
-                                        Call +91-9911111247
+                                        Call {docDisplayPhone}
                                     </a>
                                 </div>
                             </div>
@@ -1386,44 +1531,7 @@ export default function DoctorPageClient({ data }) {
 
                         {/* 6-Grid Box (Red Theme matching Image 1 layout) */}
                         <div className="grid grid-cols-1 sm:grid-cols-3 border border-red-200 rounded-3xl overflow-hidden bg-red-200/60 gap-px mb-8 shadow-sm">
-                            {[
-                                {
-                                    num: "01",
-                                    title: "No Named Doctor",
-                                    desc: redFlags[0] || "No named, credentialed doctor anywhere on the website.",
-                                    icon: <AlertTriangle className="w-5 h-5" />,
-                                },
-                                {
-                                    num: "02",
-                                    title: "Technician Delegation",
-                                    desc: redFlags[1] || "No doctor present during the actual surgical procedure.",
-                                    icon: <X className="w-5 h-5" />,
-                                },
-                                {
-                                    num: "03",
-                                    title: "Fake Credentials",
-                                    desc: redFlags[2] || "Guaranteeing impossible hair density or 100% graft survival.",
-                                    icon: <ShieldCheck className="w-5 h-5" />,
-                                },
-                                {
-                                    num: "04",
-                                    title: "High-Pressure Booking",
-                                    desc: redFlags[3] || "Guaranteed results or pressure to book or pay immediately.",
-                                    icon: <AlertTriangle className="w-5 h-5" />,
-                                },
-                                {
-                                    num: "05",
-                                    title: "Zero Patient Portfolio",
-                                    desc: redFlags[4] || "No real before-and-afters of the doctor's own patients.",
-                                    icon: <Scissors className="w-5 h-5" />,
-                                },
-                                {
-                                    num: "06",
-                                    title: "Inconsistent Information",
-                                    desc: redFlags[5] || "Inconsistent claims across the website and advertisements.",
-                                    icon: <X className="w-5 h-5" />,
-                                },
-                            ].map((flag, i) => (
+                            {resolvedRedFlags.map((flag, i) => (
                                 <div
                                     key={i}
                                     className="group bg-white hover:bg-[#D32F2F] transition-all duration-300 p-7 md:p-8 flex flex-col gap-4 justify-between"
@@ -1464,7 +1572,7 @@ export default function DoctorPageClient({ data }) {
                             <div className="bg-white p-6 rounded-2xl border border-red-100 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                                 <div>
                                     <p className="text-xs font-bold text-gray-900 mb-0.5">Clear Your Doubts Before Booking</p>
-                                    <p className="text-xs text-gray-500 font-sans">+91-9911111247 · Direct Scalp & Case Consultation</p>
+                                    <p className="text-xs text-gray-500 font-sans">{docDisplayPhone} · Direct Scalp & Case Consultation</p>
                                 </div>
                                 <a
                                     href={waDoctorLink}
@@ -1556,13 +1664,7 @@ export default function DoctorPageClient({ data }) {
 
                                 {/* connecting line track — behind everything */}
                                 <div className="absolute left-5 right-5 top-5 h-0.5 flex" style={{ zIndex: 0 }}>
-                                    {[
-                                        { num: "01", title: "Consultation & Hairline Design", body: "The doctor personally maps your new hairline according to facial symmetry and marks donor and recipient zones for lifetime natural framing." },
-                                        { num: "02", title: "Graft Extraction (FUE)", body: "Follicular units are harvested one by one from the safe donor area using precision micro-punches (0.7–0.9mm) to protect viability." },
-                                        { num: "03", title: "Recipient-Site Creation (Sapphire)", body: "Microscopic channels are opened using sharp gemstone sapphire blades, setting exact direction, angle, and radial depth." },
-                                        { num: "04", title: "Direct Implantation (Turkish Technique)", body: "Using original Choi implanter pens, sorted grafts are loaded and placed directly into channels for maximum density without scalp trauma." },
-                                        { num: "05", title: "18-Month Growth & Follow-Up", body: "Free structured follow-up check-ups at months 1, 3, 6, 12, and 18 ensure your hair growth progress is fully tracked." },
-                                    ].map((_, idx, arr) => {
+                                    {resolvedProcessSteps.map((_, idx, arr) => {
                                         if (idx === arr.length - 1) return null;
                                         return (
                                             <div
@@ -1575,13 +1677,7 @@ export default function DoctorPageClient({ data }) {
                                 </div>
 
                                 {/* Step circles + labels */}
-                                {[
-                                    { num: "01", title: "Consultation & Hairline Design", body: "The doctor personally maps your new hairline according to facial symmetry and marks donor and recipient zones for lifetime natural framing." },
-                                    { num: "02", title: "Graft Extraction (FUE)", body: "Follicular units are harvested one by one from the safe donor area using precision micro-punches (0.7–0.9mm) to protect viability." },
-                                    { num: "03", title: "Recipient-Site Creation (Sapphire)", body: "Microscopic channels are opened using sharp gemstone sapphire blades, setting exact direction, angle, and radial depth." },
-                                    { num: "04", title: "Direct Implantation (Turkish Technique)", body: "Using original Choi implanter pens, sorted grafts are loaded and placed directly into channels for maximum density without scalp trauma." },
-                                    { num: "05", title: "18-Month Growth & Follow-Up", body: "Free structured follow-up check-ups at months 1, 3, 6, 12, and 18 ensure your hair growth progress is fully tracked." },
-                                ].map((step, idx) => {
+                                {resolvedProcessSteps.map((step, idx) => {
                                     const isActive = activeStep === idx;
                                     const isCompleted = activeStep > idx;
                                     return (
@@ -1621,13 +1717,7 @@ export default function DoctorPageClient({ data }) {
 
                         {/* ── Step Content Cards Row ── */}
                         <div className="grid grid-cols-1 sm:grid-cols-5 border-b border-gray-100">
-                            {[
-                                { num: "01", title: "Consultation & Hairline Design", body: "The doctor personally maps your new hairline according to facial symmetry and marks donor and recipient zones for lifetime natural framing." },
-                                { num: "02", title: "Graft Extraction (FUE)", body: "Follicular units are harvested one by one from the safe donor area using precision micro-punches (0.7–0.9mm) to protect viability." },
-                                { num: "03", title: "Recipient-Site Creation (Sapphire)", body: "Microscopic channels are opened using sharp gemstone sapphire blades, setting exact direction, angle, and radial depth." },
-                                { num: "04", title: "Direct Implantation (Turkish Technique)", body: "Using original Choi implanter pens, sorted grafts are loaded and placed directly into channels for maximum density without scalp trauma." },
-                                { num: "05", title: "18-Month Growth & Follow-Up", body: "Free structured follow-up check-ups at months 1, 3, 6, 12, and 18 ensure your hair growth progress is fully tracked." },
-                            ].map((step, idx) => {
+                            {resolvedProcessSteps.map((step, idx) => {
                                 const isActive = activeStep === idx;
                                 const isCompleted = activeStep > idx;
                                 return (
@@ -1772,7 +1862,7 @@ export default function DoctorPageClient({ data }) {
                                         Full cost breakdown <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                                     </a>
                                     <div>
-                                        <CTAButtons primary="Get Free Cost Estimate" doctorName={doctor.name} />
+                                        <CTAButtons primary="Get Free Cost Estimate" doctorName={doctor.name} whatsappNumber={doctorWhatsApp} phoneNumber={doctorPhone} />
                                     </div>
                                 </div>
                             </RevealSection>
@@ -1922,15 +2012,15 @@ export default function DoctorPageClient({ data }) {
                         {/* Left Column: Address, Phone, Hours & Service Tags */}
                         <div className="space-y-6">
                             <p className="text-gray-500 text-sm md:text-base leading-relaxed font-sans">
-                                {visitClinic?.description || `Our${doctorCity ? ` ${doctorCity}` : ""} centre is convenient from across the city.`}
-                                {activeBranch?.metro ? ` Accessible from ${activeBranch.metro}, serving patients from ${activeBranch.areas}` : (resolvedNearbyAreas.length > 0 ? ` Serving patients from ${resolvedNearbyAreas.slice(0, 6).join(", ")}.` : "")}
+                                {visitClinic?.description || (doctorCity ? `Our centre is convenient for patients across ${doctorCity}.` : "Our centre is convenient for patients across the region.")}
+                                {resolvedNearbyAreas.length > 0 ? ` Serving patients from ${resolvedNearbyAreas.slice(0, 6).join(", ")}.` : ""}
                             </p>
 
                             {/* Address Box */}
                             <div className="rounded-2xl border border-gray-200 overflow-hidden shadow-sm bg-white">
                                 <div className="bg-[#1a1430] px-6 py-3.5 flex items-center justify-between">
                                     <p className="text-white font-bold text-sm">
-                                        {activeBranch?.addressTitle || (doctorCity ? `Ryan Clinic — ${doctorCity}` : "Ryan Clinic")}
+                                        {visitClinic?.heading || (doctorCity ? `Ryan Clinic — ${doctorCity}` : "Ryan Clinic")}
                                     </p>
                                     <span className="inline-flex items-center gap-1 bg-[#D32F2F] text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                                         Open Daily
@@ -1944,13 +2034,7 @@ export default function DoctorPageClient({ data }) {
                                         <div>
                                             <p className="font-bold text-gray-900 text-xs uppercase tracking-wider text-gray-400 mb-0.5 font-sans">Clinic Address</p>
                                             <p className="text-gray-700 text-xs font-semibold leading-relaxed">
-                                                {visitClinic?.address?.streetAddress || doctor.basicInfo?.clinicAddress || activeBranch?.addressLine1 || (doctorCity ? `Ryan Clinic, ${doctorCity}` : "Contact clinic for address")}
-                                                {activeBranch?.addressLine2 && (
-                                                    <>
-                                                        <br />
-                                                        {activeBranch.addressLine2}
-                                                    </>
-                                                )}
+                                                {visitClinic?.address?.streetAddress || doctor.basicInfo?.clinicAddress || (doctorCity ? `Ryan Clinic, ${doctorCity}` : "Contact clinic for address")}
                                             </p>
                                         </div>
                                     </div>
@@ -1962,10 +2046,10 @@ export default function DoctorPageClient({ data }) {
                                         <div>
                                             <p className="font-bold text-xs uppercase tracking-wider text-gray-400 mb-0.5 font-sans">Phone / Appointments</p>
                                             <a
-                                                href={`tel:${doctor.basicInfo?.phoneNumber || visitClinic?.contact?.phone || "+919911111247"}`}
+                                                href={docTelHref}
                                                 className="text-[#D32F2F] text-sm hover:underline font-extrabold"
                                             >
-                                                {doctor.basicInfo?.phoneNumber || visitClinic?.contact?.phone || "+91-9911111247"}
+                                                {docDisplayPhone}
                                             </a>
                                         </div>
                                     </div>
@@ -2003,30 +2087,35 @@ export default function DoctorPageClient({ data }) {
                         </div>
 
                         {/* Right Column: Normal Sized Clean Map Card */}
-                        <div className="w-full h-[380px] rounded-2xl overflow-hidden border border-gray-200 shadow-sm relative">
-                            <iframe
-                                src={`https://maps.google.com/maps?q=${encodeURIComponent(visitClinic?.mapUrl || activeBranch?.mapQuery || (doctorCity ? `Ryan Clinic ${doctorCity}` : "Ryan Clinic Delhi"))}&output=embed`}
-                                width="100%"
-                                height="100%"
-                                style={{ border: 0 }}
-                                allowFullScreen
-                                loading="lazy"
-                                referrerPolicy="no-referrer-when-downgrade"
-                                title={`Ryan Clinic${doctorCity ? ` ${doctorCity}` : ""} location map`}
-                                className="w-full h-full"
-                            />
+                        {(() => {
+                            const mapQuery = visitClinic?.mapUrl || doctor.basicInfo?.clinicAddress || (doctorCity ? `Ryan Clinic ${doctorCity}` : "Ryan Clinic");
+                            return (
+                                <div className="w-full h-[380px] rounded-2xl overflow-hidden border border-gray-200 shadow-sm relative">
+                                    <iframe
+                                        src={`https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`}
+                                        width="100%"
+                                        height="100%"
+                                        style={{ border: 0 }}
+                                        allowFullScreen
+                                        loading="lazy"
+                                        referrerPolicy="no-referrer-when-downgrade"
+                                        title={`Ryan Clinic${doctorCity ? ` ${doctorCity}` : ""} location map`}
+                                        className="w-full h-full"
+                                    />
 
-                            {/* Action Badge */}
-                            <a
-                                href={`https://maps.google.com/?q=${encodeURIComponent(visitClinic?.mapUrl || activeBranch?.mapQuery || (doctorCity ? `Ryan Clinic ${doctorCity}` : "Ryan Clinic Delhi"))}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md border border-gray-200 shadow-md text-xs font-bold text-gray-800 hover:text-[#D32F2F] px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition-colors"
-                            >
-                                <MapPin className="w-3.5 h-3.5 text-[#D32F2F]" />
-                                Open in Google Maps
-                            </a>
-                        </div>
+                                    {/* Action Badge */}
+                                    <a
+                                        href={`https://maps.google.com/?q=${encodeURIComponent(mapQuery)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md border border-gray-200 shadow-md text-xs font-bold text-gray-800 hover:text-[#D32F2F] px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition-colors"
+                                    >
+                                        <MapPin className="w-3.5 h-3.5 text-[#D32F2F]" />
+                                        Open in Google Maps
+                                    </a>
+                                </div>
+                            );
+                        })()}
 
                     </div>
                 </div>
@@ -2099,7 +2188,7 @@ export default function DoctorPageClient({ data }) {
                                                 Book Free Consultation
                                             </a>
                                             <a
-                                                href={TEL}
+                                                href={docTelHref}
                                                 className="inline-flex items-center justify-center gap-2 border border-gray-300 hover:border-[#D32F2F] text-gray-800 hover:text-[#D32F2F] font-bold py-3.5 px-5 text-xs tracking-wide transition-all rounded-xl"
                                                 onClick={() => trackCTA({ type: "call", ctaName: "Split CTA Call Now", buttonLocation: "Split CTA Section" })}
                                             >

@@ -135,23 +135,20 @@ export function SplitCTA() {
                 </div>
               </div>
 
-              <h3 className="text-xl sm:text-2xl font-bold text-white leading-snug mb-3">
-                Results So Natural —<br />
-                <span className="text-[#FFC107]">Nobody Will Know</span>
-              </h3>
+              <h2 className="text-xl sm:text-2xl font-bold text-white leading-snug mb-3">
+                Hair Transplant Before and After Results
+              </h2>
 
-              <p className="text-sm text-gray-400 leading-relaxed mb-6">
-                Every graft is placed with precise control over angle, depth
-                &amp; direction — mimicking your natural hair growth pattern
-                exactly.
+              <p className="text-sm text-gray-300 leading-relaxed mb-6">
+                View hair transplant before-and-after cases from Ryan Clinic to understand how hairline design, graft count and coverage can differ between patients. Results vary based on donor quality, hair characteristics, degree of hair loss, treatment plan and healing. Individual results cannot be guaranteed.
               </p>
 
               <ul className="space-y-2.5 mb-7">
                 {[
-                  "Original Turkey Choi Pen",
-                  "90%+ graft survival rate",
-                  "Zero visible scarring",
-                  "Permanent for life",
+                  "Natural Hairline Design",
+                  "Doctor-Led Implantation",
+                  "Minimal Scalp Trauma",
+                  "Structured Follow-Up",
                 ].map((item) => (
                   <li
                     key={item}
@@ -182,7 +179,7 @@ export function SplitCTA() {
               href="/gallery"
               className="inline-flex items-center justify-center gap-2 border border-gray-700 hover:border-[#FFC107] text-gray-300 hover:text-[#FFC107] font-semibold py-3.5 px-5 text-sm tracking-wide transition-all rounded-xl w-full"
             >
-              View All Patient Results →
+              View Hair Transplant Results →
             </Link>
           </div>
         </div>

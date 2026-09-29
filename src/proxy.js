@@ -27,6 +27,7 @@ export default withAuth(
       pathname.startsWith("/api/send-international") ||
       pathname.startsWith("/api/send-to-sheet") ||
       pathname.startsWith("/api/submitInterviewForm") ||
+      pathname.startsWith("/api/prp-form") ||
       pathname.startsWith("/api/ai-interview") ||
       pathname.startsWith("/api/razorpay") ||
       pathname.startsWith("/api/auth");

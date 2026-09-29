@@ -5,7 +5,7 @@ import ContactForm from "@/components/pages/contactForm";
 import FAQSection from "./FAQSection";
 import PleoFeatures from "./PleoFeatures";
 import OurResults from "../home/ourResults";
-import { getServiceBySlug } from "@/lib/serviceData";
+import { getServiceBySlug, getDoctorByCity } from "@/lib/serviceData";
 import { notFound } from "next/navigation";
 import Testimonials from "../home/testimonial";
 import WhyChooseRyanClinic from "../home/whyChooseUs";
@@ -81,7 +81,7 @@ function getDefaultSections(pageType) {
   ];
 }
 
-function renderSection(key, d, service, branchName) {
+function renderSection(key, d, service, branchName, cmsDoctor) {
   switch (key) {
     case "overview":
       return (
@@ -179,11 +179,13 @@ function renderSection(key, d, service, branchName) {
       );
 
     case "ourDoctor":
+      if (!cmsDoctor && !d.doctor) return null;
       return (
         <OurDoctorSection
           key="ourDoctor"
           city={d.city || branchName}
           doctor={d.doctor}
+          cmsDoctor={cmsDoctor}
         />
       );
 
@@ -289,6 +291,8 @@ export default async function ServicesPage({ params }) {
     return "Delhi";
   })();
 
+  const cmsDoctor = await getDoctorByCity(branchName);
+
   const sections = (
     service?.pageSections?.length
       ? service.pageSections
@@ -309,7 +313,7 @@ export default async function ServicesPage({ params }) {
         />
 
         {sections.map((section) =>
-          renderSection(section.key, section.data || {}, service, branchName),
+          renderSection(section.key, section.data || {}, service, branchName, cmsDoctor),
         )}
       </div>
     </>

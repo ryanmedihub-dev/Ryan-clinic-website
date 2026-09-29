@@ -14,6 +14,7 @@ const getSurgeonPageData = cache(async (slug) => {
   const page = await SurgeonPage.findOne({
     slug: { $regex: new RegExp(`^${escaped}$`, "i") },
     "settings.isDeleted": { $ne: true },
+    "settings.status": "published",
   }).lean();
   return page ? JSON.parse(JSON.stringify(page)) : null;
 });
