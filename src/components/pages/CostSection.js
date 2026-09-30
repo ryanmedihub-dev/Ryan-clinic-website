@@ -2,8 +2,7 @@ import { Playfair_Display, DM_Sans } from "next/font/google";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  style: ["normal", "italic"],
+  display: "swap",
 });
 const dmSans = DM_Sans({ subsets: ["latin"], weight: ["300", "400", "500"] });
 

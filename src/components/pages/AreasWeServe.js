@@ -2,7 +2,6 @@
 
 // AreasWeServe.js
 // Usage: <AreasWeServe city="Delhi" branch="Delhi" />
-import useTrackCTA from "@/lib/useTrackCTA";
 
 const BRANCHES = {
   Delhi: {
@@ -141,7 +140,6 @@ const BRANCHES = {
 };
 
 export default function AreasWeServe({ city = "Delhi", branch = "Delhi", branchData }) {
-  const trackCTA = useTrackCTA();
   const data = branchData || BRANCHES[branch] || BRANCHES.Delhi;
   const otherBranches = Object.keys(BRANCHES).filter((b) => b !== branch);
 
@@ -207,227 +205,72 @@ export default function AreasWeServe({ city = "Delhi", branch = "Delhi", branchD
           {/* Pan-India strip */}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
-          {/* ── Left + Centre: Areas grid ── */}
-          <div className="lg:col-span-2">
-            <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
-              {/* Header */}
-              <div className="flex items-center gap-3 px-5 py-4 bg-[#D32F2F]">
-                <svg
-                  className="w-4 h-4 text-white shrink-0"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-                  />
-                </svg>
-                <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-white">
-                  Areas Served — {branch}
-                </span>
-              </div>
-
-              {/* Area chips */}
-              <div className="p-4 md:p-5 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                {data.areas.map((area, i) => (
-                  <div
-                    key={area}
-                    className={`flex items-center gap-2 px-3 py-5 rounded-lg border transition-colors ${
-                      i % 5 === 0
-                        ? "bg-red-50 border-red-100 text-[#D32F2F]"
-                        : "bg-gray-50 border-gray-200 text-gray-700 hover:bg-red-50 hover:border-red-200 hover:text-[#D32F2F]"
-                    }`}
-                  >
-                    <span
-                      className={`w-1.5 h-1.5 rounded-full shrink-0 ${i % 5 === 0 ? "bg-[#D32F2F]" : "bg-gray-300"}`}
-                    />
-                    <span className="text-xs font-medium truncate">{area}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Footer */}
-              <div className="px-5 py-3.5 flex items-start gap-2 border-t border-gray-100 bg-gray-50">
-                <svg
-                  className="w-3.5 h-3.5 shrink-0 mt-0.5 text-gray-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
-                  />
-                </svg>
-                <p className="text-xs text-gray-400 leading-relaxed">
-                  Don't see your area? Call us — we welcome patients from
-                  anywhere across India and NRI patients worldwide.
-                </p>
-              </div>
+        {/* ── Areas grid ── */}
+        <div className="w-full">
+          <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
+            {/* Header */}
+            <div className="flex items-center gap-3 px-5 py-4 bg-[#D32F2F]">
+              <svg
+                className="w-4 h-4 text-white shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+                />
+              </svg>
+              <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-white">
+                Areas Served — {branch}
+              </span>
             </div>
-          </div>
 
-          {/* ── Right: Clinic info ── */}
-          <div className="flex flex-col gap-4">
-            {/* Info card */}
-            <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
-              <div className="flex items-center gap-2.5 px-5 py-4 bg-[#D32F2F]">
-                <svg
-                  className="w-4 h-4 text-white shrink-0"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
+            {/* Area chips */}
+            <div className="p-4 md:p-5 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+              {data.areas.map((area, i) => (
+                <div
+                  key={area}
+                  className={`flex items-center gap-2 px-3 py-5 rounded-lg border transition-colors ${
+                    i % 5 === 0
+                      ? "bg-red-50 border-red-100 text-[#D32F2F]"
+                      : "bg-gray-50 border-gray-200 text-gray-700 hover:bg-red-50 hover:border-red-200 hover:text-[#D32F2F]"
+                  }`}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 21l1.5-4.5m0 0A9 9 0 1119.5 6.75 9 9 0 012.25 16.5l1.5 4.5z"
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full shrink-0 ${i % 5 === 0 ? "bg-[#D32F2F]" : "bg-gray-300"}`}
                   />
-                </svg>
-                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-white">
-                  {branch} Clinic
-                </span>
-              </div>
+                  <span className="text-xs font-medium truncate">{area}</span>
+                </div>
+              ))}
+            </div>
 
-              <div className="divide-y divide-gray-50">
-                {[
-                  {
-                    label: "Address",
-                    value: data.address,
-                    link: data.mapUrl,
-                    linkText: "View on Map →",
-                    icon: (
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-                        />
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-                        />
-                      </svg>
-                    ),
-                  },
-                  {
-                    label: "Phone",
-                    value: data.phone,
-                    link: `tel:${data.phone}`,
-                    linkText: "Call Now",
-                    icon: (
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
-                        />
-                      </svg>
-                    ),
-                  },
-                  {
-                    label: "Hours",
-                    value: data.hours,
-                    icon: (
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    ),
-                  },
-                  {
-                    label: "Metro",
-                    value: data.metro,
-                    icon: (
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"
-                        />
-                      </svg>
-                    ),
-                  },
-                ].map((item) => (
-                  <div
-                    key={item.label}
-                    className="flex items-start gap-3 px-5 py-4 mt-4"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-red-50 text-[#D32F2F] flex items-center justify-center shrink-0 mt-0.5">
-                      {item.icon}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 mb-0.5">
-                        {item.label}
-                      </p>
-                      <p className="text-sm text-gray-700 leading-snug">
-                        {item.value}
-                      </p>
-                      {item.link && (
-                        <a
-                          href={item.link}
-                          target={
-                            item.link.startsWith("http") ? "_blank" : undefined
-                          }
-                          rel={
-                            item.link.startsWith("http")
-                              ? "noreferrer"
-                              : undefined
-                          }
-                          className="text-xs font-semibold text-[#D32F2F] mt-1 inline-block hover:underline"
-                          onClick={() => trackCTA({
-                            type: item.link.startsWith("tel:") ? "call" : "whatsapp",
-                            ctaName: `Areas We Serve ${item.label}`,
-                            buttonLocation: "Areas We Serve Section"
-                          })}
-                        >
-                          {item.linkText}
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
+            {/* Footer */}
+            <div className="px-5 py-3.5 flex items-start gap-2 border-t border-gray-100 bg-gray-50">
+              <svg
+                className="w-3.5 h-3.5 shrink-0 mt-0.5 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
+                />
+              </svg>
+              <p className="text-xs text-gray-400 leading-relaxed">
+                Don't see your area? Call us — we welcome patients from
+                anywhere across India and NRI patients worldwide.
+              </p>
             </div>
           </div>
         </div>
