@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { withDB } from "@/lib/withDB";
 import Blog from "@/models/blog";
 
-
-
 const handler = async (req) => {
   
 
