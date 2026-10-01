@@ -1,0 +1,844 @@
+﻿{
+    "success":  true,
+    "surgeryPage":  {
+                        "_id":  "6a6852aba16ed81cf55ee9fa",
+                        "slug":  "hair-transplant-surgery-in-delhi",
+                        "pageName":  "Hair Transplant Surgery in Delhi",
+                        "city":  "Delhi",
+                        "status":  "published",
+                        "seo":  {
+                                    "metaTitle":  "Best Hair Transplant Surgery in Delhi | Ryan Clinic",
+                                    "metaDescription":  "Hair transplant surgery in Delhi at Ryan Clinic â doctor-led FUE \u0026 THI in a sterile OT, local anaesthesia, same-day discharge. Free consult. Book your surgery.",
+                                    "keywords":  "hair transplant surgery delhi, fue hair transplant delhi, dhi hair transplant delhi, best hair transplant clinic delhi",
+                                    "canonicalUrl":  "https://www.clinicryan.com/hair-transplant-surgery-in-delhi/",
+                                    "robots":  "index,follow",
+                                    "openGraphImage":  {
+                                                           "image":  "https://res.cloudinary.com/dq1tzl5ir/image/upload/v1785223098/service-one_tmvwnw.webp",
+                                                           "imageAlt":  "Hair Transplant Surgery in Delhi â Ryan Clinic"
+                                                       }
+                                },
+                        "hero":  {
+                                     "breadcrumb":  "Home \u003e Hair Transplant Surgery \u003e Delhi",
+                                     "title":  "Best Hair Transplant Surgery in Delhi",
+                                     "description":  "Hair transplant surgery in Delhi is a minor, minimally-invasive outpatient surgical procedure performed under local anaesthesia â no general anaesthesia and no hospital stay for a standard case. A surgeon moves your own DHT-resistant follicles from the back and sides of your scalp to thinning areas, where they grow permanently. At Ryan Clinic in Pitampura, every step of the hair transplant surgery is doctor-led and carried out in a sterile operating theatre, with a free scalp analysis, an exact graft count, and transparent pricing before you commit.",
+                                     "heroImage":  {
+                                                       "image":  "https://res.cloudinary.com/dq1tzl5ir/image/upload/v1785223123/service-one_jrbcub.webp",
+                                                       "imageAlt":  "Hair Transplant Surgery in Delhi Banner"
+                                                   },
+                                     "stats":  [
+                                                   {
+                                                       "value":  "10,000+",
+                                                       "label":  "Procedures Done"
+                                                   },
+                                                   {
+                                                       "value":  "98%",
+                                                       "label":  "Patient Satisfaction"
+                                                   },
+                                                   {
+                                                       "value":  "Zero",
+                                                       "label":  "Robotic Machines"
+                                                   },
+                                                   {
+                                                       "value":  "Doctor-Led",
+                                                       "label":  "Every Procedure"
+                                                   }
+                                               ],
+                                     "whatsappText":  {
+                                                          "text":  "WhatsApp Us",
+                                                          "link":  "https://api.whatsapp.com/send?phone=+919217958539\u0026text=Hi,%20I%20want%20to%20book%20a%20consultation%20for%20hair%20transplant%20surgery%20in%20Delhi",
+                                                          "external":  true
+                                                      },
+                                     "callText":  {
+                                                      "text":  "Call Now",
+                                                      "link":  "tel:+919217958539",
+                                                      "external":  false
+                                                  }
+                                 },
+                        "introduction":  {
+                                             "smallHeading":  "Why Ryan Clinic Delhi?",
+                                             "title":  "What is hair transplant surgery?",
+                                             "description":  "\u003cp\u003e\u003cbr\u003e\u003c/p\u003e\u003cp\u003e \u003c/p\u003e\u003cp\u003eHair transplant surgery is a \u003cstrong\u003esurgical\u003c/strong\u003e procedure that relocates your own hair follicles from a \"donor\" zone â usually the back and sides of the scalp â to areas that are bald or thinning. It works because of biology: follicles at the back of the scalp resist \u003cstrong\u003eDHT\u003c/strong\u003e (dihydrotestosterone), the hormone behind \u003cstrong\u003eandrogenetic alopecia\u003c/strong\u003e (pattern hair loss). Those follicles keep their DHT-resistance after being moved, so the transplanted hair keeps growing in its new home â generally for life.\u003c/p\u003e\u003cp\u003e \u003c/p\u003e\u003cp\u003eAlthough it\u0027s genuine surgery, a modern hair transplant in Delhi is \u003cstrong\u003eminimally invasive\u003c/strong\u003e: it\u0027s performed under local anaesthesia, on an outpatient basis, with tiny extraction points rather than large incisions. You stay awake and comfortable, and you go home the same day.\u003c/p\u003e\u003cp\u003e \u003c/p\u003e\u003cp\u003eTwo honest points the best surgeons make up fr\u003c/p\u003e\u003cp\u003e \u003c/p\u003e",
+                                             "highlightBoxText":  "\u003cp\u003e\u003cstrong\u003eRyan Guarantee:\u003c/strong\u003e Undetectable, natural results â or we make it right. Every procedure is doctor-performed and backed by our written warranty.\u003c/p\u003e",
+                                             "honestPoints":  [
+
+                                                              ],
+                                             "mainImage":  {
+                                                               "image":  "/uploads/about-one.jpg",
+                                                               "imageAlt":  "Hair Transplant Surgery Introduction"
+                                                           },
+                                             "floatingImage":  {
+                                                                   "image":  "/uploads/service-two.jpg",
+                                                                   "imageAlt":  "Surgeon Performing Hair Transplant"
+                                                               },
+                                             "bottomStats":  [
+                                                                 {
+                                                                     "value":  "Sapphire FUE",
+                                                                     "label":  "Primary Technique"
+                                                                 },
+                                                                 {
+                                                                     "value":  "DHI",
+                                                                     "label":  "Implantation Method"
+                                                                 },
+                                                                 {
+                                                                     "value":  "0%",
+                                                                     "label":  "EMI Available"
+                                                                 },
+                                                                 {
+                                                                     "value":  "12 Months",
+                                                                     "label":  "Follow-Up Care"
+                                                                 }
+                                                             ],
+                                             "primaryCTA":  {
+                                                                "text":  "Book Free Consultation",
+                                                                "link":  "/book-consult",
+                                                                "external":  false
+                                                            },
+                                             "secondaryCTA":  {
+                                                                  "text":  "View Results Gallery",
+                                                                  "link":  "/hair-transplant-results-before-after-gallery",
+                                                                  "external":  false
+                                                              }
+                                         },
+                        "procedureScience":  {
+                                                 "mainHeading":  "The Science Behind Our Hair Transplant Surgery",
+                                                 "description":  "\u003cp\u003eWe combine proven surgical science with the latest Sapphire FUE and DHI techniques for superior graft survival rates and natural-looking density.\u003c/p\u003e",
+                                                 "cards":  [
+                                                               {
+                                                                   "icon":  "Dna",
+                                                                   "title":  "Sapphire FUE Technology",
+                                                                   "description":  "Sapphire-tipped blades create micro-channels with precision, reducing scalp trauma, minimising scarring, and improving graft survival compared to traditional steel blades.",
+                                                                   "advantages":  "",
+                                                                   "clinicalNotes":  "",
+                                                                   "stats":  [
+
+                                                                             ],
+                                                                   "cardImage":  {
+                                                                                     "image":  "https://res.cloudinary.com/dq1tzl5ir/image/upload/v1785222482/service-one_ybz5rj.webp",
+                                                                                     "imageAlt":  ""
+                                                                                 },
+                                                                   "badge":  "",
+                                                                   "bulletPoints":  [
+
+                                                                                    ],
+                                                                   "displayOrder":  0
+                                                               },
+                                                               {
+                                                                   "icon":  "Syringe",
+                                                                   "title":  "DHI Direct Implantation",
+                                                                   "description":  "The DHI Choi pen implants grafts directly without creating pre-made channels, ensuring exact angle, depth, and direction for maximum natural density.",
+                                                                   "advantages":  "",
+                                                                   "clinicalNotes":  "",
+                                                                   "stats":  [
+
+                                                                             ],
+                                                                   "cardImage":  {
+                                                                                     "image":  "https://res.cloudinary.com/dq1tzl5ir/image/upload/v1785222517/IMG_5470.JPG_ln4wu3.jpg",
+                                                                                     "imageAlt":  ""
+                                                                                 },
+                                                                   "badge":  "",
+                                                                   "bulletPoints":  [
+
+                                                                                    ],
+                                                                   "displayOrder":  0
+                                                               },
+                                                               {
+                                                                   "icon":  "Microscope",
+                                                                   "title":  "Sterile Graft Preservation",
+                                                                   "description":  "Extracted grafts are stored in a chilled HypoThermosol solution, which maintains follicle viability and extends the transplantation window safely.",
+                                                                   "advantages":  "",
+                                                                   "clinicalNotes":  "",
+                                                                   "stats":  [
+
+                                                                             ],
+                                                                   "cardImage":  {
+                                                                                     "image":  "https://res.cloudinary.com/dq1tzl5ir/image/upload/v1785222901/service-one_zl5dc9.webp",
+                                                                                     "imageAlt":  ""
+                                                                                 },
+                                                                   "badge":  "",
+                                                                   "bulletPoints":  [
+
+                                                                                    ],
+                                                                   "displayOrder":  0
+                                                               },
+                                                               {
+                                                                   "icon":  "ShieldCheck",
+                                                                   "title":  "Pain-Free Anaesthesia Protocol",
+                                                                   "description":  "Our advanced local anaesthesia system uses micro-injections and buffered lidocaine, making the entire procedure virtually pain-free from start to finish.",
+                                                                   "advantages":  "",
+                                                                   "clinicalNotes":  "",
+                                                                   "stats":  [
+
+                                                                             ],
+                                                                   "cardImage":  {
+                                                                                     "image":  "https://res.cloudinary.com/dq1tzl5ir/image/upload/v1785222905/service-one_c3euef.webp",
+                                                                                     "imageAlt":  ""
+                                                                                 },
+                                                                   "badge":  "",
+                                                                   "bulletPoints":  [
+
+                                                                                    ],
+                                                                   "displayOrder":  0
+                                                               }
+                                                           ]
+                                             },
+                        "safety":  {
+                                       "heading":  "Safety Standards at Ryan Clinic Delhi",
+                                       "description":  "\u003cp\u003eOur Delhi clinic adheres to the highest surgical safety protocols, ensuring every procedure is performed in a sterile, hospital-grade environment with zero compromise.\u003c/p\u003e",
+                                       "safetyCards":  [
+                                                           {
+                                                               "icon":  "ShieldCheck",
+                                                               "title":  "Sterile OT Environment",
+                                                               "description":  "Class 100 clean-room standards with HEPA-filtered air, preventing any risk of infection during surgery.",
+                                                               "displayOrder":  0
+                                                           },
+                                                           {
+                                                               "icon":  "Home",
+                                                               "title":  "Hospital-Grade Facility",
+                                                               "description":  "Our Delhi OT is equipped with crash cart, pulse oximeter, BP monitoring and full emergency protocols.",
+                                                               "displayOrder":  0
+                                                           },
+                                                           {
+                                                               "icon":  "Activity",
+                                                               "title":  "Vitals Monitored Throughout",
+                                                               "description":  "Patient oxygen, BP, and pulse are continuously monitored by trained nursing staff during the entire procedure.",
+                                                               "displayOrder":  0
+                                                           },
+                                                           {
+                                                               "icon":  "Award",
+                                                               "title":  "ISO-Compliant Instruments",
+                                                               "description":  "We use only CE-marked, single-use blades and Choi pens â no reuse, no compromise on patient safety.",
+                                                               "displayOrder":  0
+                                                           }
+                                                       ],
+                                       "rightSideHighlightBox":  {
+                                                                     "smallHeading":  "Our Safety Commitment",
+                                                                     "title":  "Zero Compromise on Patient Safety",
+                                                                     "description":  "Every Ryan Clinic procedure is backed by a comprehensive safety checklist, informed consent process, and post-operative care protocol.",
+                                                                     "metrics":  [
+                                                                                     {
+                                                                                         "value":  "0%",
+                                                                                         "label":  "Infection Rate"
+                                                                                     },
+                                                                                     {
+                                                                                         "value":  "100%",
+                                                                                         "label":  "Sterile Instruments"
+                                                                                     },
+                                                                                     {
+                                                                                         "value":  "24/7",
+                                                                                         "label":  "Doctor Availability"
+                                                                                     }
+                                                                                 ],
+                                                                     "bottomNotice":  "All procedures follow ISHRS (International Society of Hair Restoration Surgery) safety guidelines."
+                                                                 }
+                                   },
+                        "techniques":  {
+                                           "heading":  "Surgical Techniques We Offer",
+                                           "description":  "We offer the three gold-standard hair transplant techniques, each selected based on the patient\u0027s individual hair loss pattern, donor area, and expected density goals.",
+                                           "techniques":  [
+                                                              {
+                                                                  "name":  "Sapphire FUE",
+                                                                  "subtitle":  "",
+                                                                  "description":  "\u003cp\u003eIndividual follicular units are extracted using micro-punches and implanted through Sapphire V-shaped blade channels. Ideal for hairlines, mid-scalp and crown.\u003c/p\u003e",
+                                                                  "benefits":  [
+
+                                                                               ],
+                                                                  "idealCandidate":  "",
+                                                                  "recoveryInfo":  "",
+                                                                  "badge":  "",
+                                                                  "featured":  false,
+                                                                  "bulletPoints":  [
+
+                                                                                   ],
+                                                                  "bottomStatistics":  [
+
+                                                                                       ],
+                                                                  "ctaText":  {
+                                                                                  "text":  "",
+                                                                                  "link":  "",
+                                                                                  "external":  false
+                                                                              },
+                                                                  "displayOrder":  0
+                                                              },
+                                                              {
+                                                                  "name":  "DHI (Direct Hair Implantation)",
+                                                                  "subtitle":  "",
+                                                                  "description":  "\u003cp\u003eGrafts are directly implanted using a Choi implanter pen without pre-made channels, providing higher density and the option to avoid shaving existing hair.\u003c/p\u003e",
+                                                                  "benefits":  [
+
+                                                                               ],
+                                                                  "idealCandidate":  "",
+                                                                  "recoveryInfo":  "",
+                                                                  "badge":  "",
+                                                                  "featured":  false,
+                                                                  "bulletPoints":  [
+
+                                                                                   ],
+                                                                  "bottomStatistics":  [
+
+                                                                                       ],
+                                                                  "ctaText":  {
+                                                                                  "text":  "",
+                                                                                  "link":  "",
+                                                                                  "external":  false
+                                                                              },
+                                                                  "displayOrder":  0
+                                                              },
+                                                              {
+                                                                  "name":  "Combination FUE + DHI",
+                                                                  "subtitle":  "",
+                                                                  "description":  "\u003cp\u003eA hybrid approach combining FUE graft extraction with DHI implantation for patients requiring large-session coverage with maximum density.\u003c/p\u003e",
+                                                                  "benefits":  [
+
+                                                                               ],
+                                                                  "idealCandidate":  "",
+                                                                  "recoveryInfo":  "",
+                                                                  "badge":  "",
+                                                                  "featured":  false,
+                                                                  "bulletPoints":  [
+
+                                                                                   ],
+                                                                  "bottomStatistics":  [
+
+                                                                                       ],
+                                                                  "ctaText":  {
+                                                                                  "text":  "",
+                                                                                  "link":  "",
+                                                                                  "external":  false
+                                                                              },
+                                                                  "displayOrder":  0
+                                                              }
+                                                          ],
+                                           "bottomCTABlock":  {
+                                                                  "heading":  "Not Sure Which Technique Is Right for You?",
+                                                                  "description":  "Book a free consultation with our senior surgeon. We\u0027ll assess your hair loss pattern, donor area, and recommend the best technique and graft count for your goals.",
+                                                                  "primaryCTA":  {
+                                                                                     "text":  "Book Free Consultation",
+                                                                                     "link":  "/book-consult",
+                                                                                     "external":  false
+                                                                                 },
+                                                                  "secondaryCTA":  {
+                                                                                       "text":  "WhatsApp Us",
+                                                                                       "link":  "https://api.whatsapp.com/send?phone=+919217958539",
+                                                                                       "external":  true
+                                                                                   }
+                                                              }
+                                       },
+                        "qualityBenchmarks":  {
+                                                  "heading":  "Our Quality Benchmarks",
+                                                  "description":  "Every hair transplant at Ryan Clinic Delhi is measured against strict quality benchmarks that define our standard of care.",
+                                                  "benchmarkCards":  [
+                                                                         {
+                                                                             "number":  "",
+                                                                             "description":  "No technicians perform graft extraction or implantation. Your surgeon does every step.",
+                                                                             "displayOrder":  0
+                                                                         },
+                                                                         {
+                                                                             "number":  "",
+                                                                             "description":  "Our Sapphire FUE and DHI protocols achieve among the highest graft survival rates in the industry.",
+                                                                             "displayOrder":  0
+                                                                         },
+                                                                         {
+                                                                             "number":  "",
+                                                                             "description":  "We target 40â55 grafts/cmÂ² for a result that looks naturally full, not pluggy or doll-like.",
+                                                                             "displayOrder":  0
+                                                                         },
+                                                                         {
+                                                                             "number":  "",
+                                                                             "description":  "Grafts are never left dry. Immediate preservation in HypoThermosol ensures every follicle reaches your scalp alive.",
+                                                                             "displayOrder":  0
+                                                                         }
+                                                                     ]
+                                              },
+                        "procedureTimeline":  {
+                                                  "heading":  "What Happens on the Day of Surgery?",
+                                                  "description":  "Your procedure day is structured, comfortable, and efficient â designed to minimise waiting and maximise your results.",
+                                                  "timelineSteps":  [
+                                                                        {
+                                                                            "stepNumber":  "",
+                                                                            "badge":  "",
+                                                                            "title":  "Arrival \u0026 Consent",
+                                                                            "description":  "\u003cp\u003eYou arrive at the clinic, meet your surgeon, review and sign the informed consent form, and have pre-op photos taken.\u003c/p\u003e",
+                                                                            "stepImage":  {
+                                                                                              "image":  "https://res.cloudinary.com/dq1tzl5ir/image/upload/v1785222989/service-one_e7she0.webp",
+                                                                                              "imageAlt":  ""
+                                                                                          },
+                                                                            "icon":  "",
+                                                                            "displayOrder":  0
+                                                                        },
+                                                                        {
+                                                                            "stepNumber":  "",
+                                                                            "badge":  "",
+                                                                            "title":  "Donor Area Preparation",
+                                                                            "description":  "\u003cp\u003eThe donor area (back of scalp) is trimmed and local anaesthesia is administered. Anaesthetic takes full effect within minutes.\u003c/p\u003e",
+                                                                            "stepImage":  {
+                                                                                              "image":  "https://res.cloudinary.com/dq1tzl5ir/image/upload/v1785222999/service-one_goljws.webp",
+                                                                                              "imageAlt":  ""
+                                                                                          },
+                                                                            "icon":  "",
+                                                                            "displayOrder":  0
+                                                                        },
+                                                                        {
+                                                                            "stepNumber":  "",
+                                                                            "badge":  "",
+                                                                            "title":  "Graft Extraction (FUE)",
+                                                                            "description":  "\u003cp\u003eYour surgeon uses a micro-punch device to extract individual follicular units from the donor zone with precision.\u003c/p\u003e",
+                                                                            "stepImage":  {
+                                                                                              "image":  "https://res.cloudinary.com/dq1tzl5ir/image/upload/v1785223003/service-one_qe8nlo.webp",
+                                                                                              "imageAlt":  ""
+                                                                                          },
+                                                                            "icon":  "",
+                                                                            "displayOrder":  0
+                                                                        },
+                                                                        {
+                                                                            "stepNumber":  "",
+                                                                            "badge":  "",
+                                                                            "title":  "Graft Preservation \u0026 Count",
+                                                                            "description":  "\u003cp\u003eExtracted grafts are sorted by technicians under a microscope, counted, and stored in chilled preservation solution.\u003c/p\u003e",
+                                                                            "stepImage":  {
+                                                                                              "image":  "https://res.cloudinary.com/dq1tzl5ir/image/upload/v1785223007/service-one_b0zj42.webp",
+                                                                                              "imageAlt":  ""
+                                                                                          },
+                                                                            "icon":  "",
+                                                                            "displayOrder":  0
+                                                                        },
+                                                                        {
+                                                                            "stepNumber":  "",
+                                                                            "badge":  "",
+                                                                            "title":  "Recipient Site Preparation",
+                                                                            "description":  "\u003cp\u003eYour surgeon creates recipient channels in the thinning area using Sapphire blades at the precise angle and direction for natural growth.\u003c/p\u003e",
+                                                                            "stepImage":  {
+                                                                                              "image":  "https://res.cloudinary.com/dq1tzl5ir/image/upload/v1785223011/service-one_bkbllt.webp",
+                                                                                              "imageAlt":  ""
+                                                                                          },
+                                                                            "icon":  "",
+                                                                            "displayOrder":  0
+                                                                        },
+                                                                        {
+                                                                            "stepNumber":  "",
+                                                                            "badge":  "",
+                                                                            "title":  "Graft Implantation (DHI/FUE)",
+                                                                            "description":  "\u003cp\u003eGrafts are implanted one by one into the channels â or directly via Choi pen for DHI â following the natural growth pattern.\u003c/p\u003e",
+                                                                            "stepImage":  {
+                                                                                              "image":  "https://res.cloudinary.com/dq1tzl5ir/image/upload/v1785223013/service-one_vzwknk.webp",
+                                                                                              "imageAlt":  ""
+                                                                                          },
+                                                                            "icon":  "",
+                                                                            "displayOrder":  0
+                                                                        },
+                                                                        {
+                                                                            "stepNumber":  "",
+                                                                            "badge":  "",
+                                                                            "title":  "Bandaging \u0026 Post-Op Briefing",
+                                                                            "description":  "\u003cp\u003eThe treated area is dressed, post-operative care instructions are reviewed, and your first follow-up appointment is scheduled.\u003c/p\u003e",
+                                                                            "stepImage":  {
+                                                                                              "image":  "https://res.cloudinary.com/dq1tzl5ir/image/upload/v1785223017/service-one_a2ld7p.webp",
+                                                                                              "imageAlt":  ""
+                                                                                          },
+                                                                            "icon":  "",
+                                                                            "displayOrder":  0
+                                                                        }
+                                                                    ],
+                                                  "bottomHighlightMessage":  "Most sessions are completed in a single day (6â9 hours). You can return home the same evening. First hairs appear within 3â4 months."
+                                              },
+                        "recoveryTimeline":  {
+                                                 "heading":  "Recovery \u0026 Growth Timeline",
+                                                 "description":  "Understanding what to expect after surgery helps you stay patient and track your progress with confidence.",
+                                                 "leftHighlightCard":  {
+                                                                           "icon":  "Calendar",
+                                                                           "title":  "Full Growth Timeline",
+                                                                           "description":  "Hair growth after transplant follows a predictable cycle. Most patients see significant density by month 8â10.",
+                                                                           "statistics":  [
+                                                                                              {
+                                                                                                  "value":  "Day 3â5",
+                                                                                                  "label":  "Redness fades"
+                                                                                              },
+                                                                                              {
+                                                                                                  "value":  "Week 2",
+                                                                                                  "label":  "Scabs fall off"
+                                                                                              },
+                                                                                              {
+                                                                                                  "value":  "Month 1â3",
+                                                                                                  "label":  "Shedding phase (normal)"
+                                                                                              },
+                                                                                              {
+                                                                                                  "value":  "Month 3â6",
+                                                                                                  "label":  "New growth begins"
+                                                                                              },
+                                                                                              {
+                                                                                                  "value":  "Month 8â12",
+                                                                                                  "label":  "70â90% final density"
+                                                                                              }
+                                                                                          ]
+                                                                       },
+                                                 "recoveryStages":  [
+                                                                        {
+                                                                            "duration":  "",
+                                                                            "title":  "Immediate Post-Op Care",
+                                                                            "description":  "\u003cp\u003eSleep elevated, avoid touching grafts. Use the provided saline spray every 4 hours. Mild redness and swelling is normal.\u003c/p\u003e",
+                                                                            "icon":  "",
+                                                                            "displayOrder":  0
+                                                                        },
+                                                                        {
+                                                                            "duration":  "",
+                                                                            "title":  "Scab Shedding Phase",
+                                                                            "description":  "\u003cp\u003eScabs naturally fall off during gentle washing. You may notice some implanted hairs shedding â this is completely normal.\u003c/p\u003e",
+                                                                            "icon":  "",
+                                                                            "displayOrder":  0
+                                                                        },
+                                                                        {
+                                                                            "duration":  "",
+                                                                            "title":  "Telogen (Rest) Phase",
+                                                                            "description":  "\u003cp\u003eMost transplanted hairs enter a rest phase and temporarily shed. This is a sign that follicles are transitioning to active growth.\u003c/p\u003e",
+                                                                            "icon":  "",
+                                                                            "displayOrder":  0
+                                                                        },
+                                                                        {
+                                                                            "duration":  "",
+                                                                            "title":  "Active Growth Phase",
+                                                                            "description":  "\u003cp\u003eNew hairs begin emerging, gradually thickening and darkening over the following months. By month 10â12, you\u0027ll see near-final density.\u003c/p\u003e",
+                                                                            "icon":  "",
+                                                                            "displayOrder":  0
+                                                                        }
+                                                                    ]
+                                             },
+                        "doctors":  {
+                                        "heading":  "Meet Your Surgeons",
+                                        "description":  "Every procedure at Ryan Clinic Delhi is performed by our senior hair restoration surgeons â not technicians.",
+                                        "doctors":  [
+                                                        {
+                                                            "name":  "Dr. Rajat Sharma",
+                                                            "designation":  "Senior Hair Transplant Surgeon",
+                                                            "doctorImage":  {
+                                                                                "image":  "https://res.cloudinary.com/dq1tzl5ir/image/upload/v1785223025/service-one_qccxft.webp",
+                                                                                "imageAlt":  ""
+                                                                            },
+                                                            "experience":  "12+ Years",
+                                                            "proceduresCount":  "",
+                                                            "qualifications":  [
+                                                                                   "MBBS, MS (General Surgery)",
+                                                                                   "Fellowship in Hair Restoration Surgery",
+                                                                                   "ISHRS Member"
+                                                                               ],
+                                                            "bio":  "",
+                                                            "specializations":  [
+
+                                                                                ],
+                                                            "credentials":  [
+
+                                                                            ],
+                                                            "memberships":  [
+
+                                                                            ],
+                                                            "gallery":  [
+
+                                                                        ],
+                                                            "profileButtonText":  "",
+                                                            "displayOrder":  0
+                                                        },
+                                                        {
+                                                            "name":  "Dr. Priya Mehta",
+                                                            "designation":  "Hair Restoration \u0026 Cosmetic Surgeon",
+                                                            "doctorImage":  {
+                                                                                "image":  "https://res.cloudinary.com/dq1tzl5ir/image/upload/v1785223028/service-one_crbl32.webp",
+                                                                                "imageAlt":  ""
+                                                                            },
+                                                            "experience":  "9+ Years",
+                                                            "proceduresCount":  "",
+                                                            "qualifications":  [
+                                                                                   "MBBS, MD (Dermatology)",
+                                                                                   "Certified DHI Implantation Specialist",
+                                                                                   "AAHRS Member"
+                                                                               ],
+                                                            "bio":  "",
+                                                            "specializations":  [
+
+                                                                                ],
+                                                            "credentials":  [
+
+                                                                            ],
+                                                            "memberships":  [
+
+                                                                            ],
+                                                            "gallery":  [
+
+                                                                        ],
+                                                            "profileButtonText":  "",
+                                                            "displayOrder":  0
+                                                        }
+                                                    ],
+                                        "topButtonText":  "View All Doctors"
+                                    },
+                        "pricing":  {
+                                        "heading":  "Hair Transplant Surgery Pricing in Delhi",
+                                        "description":  "\u003cp\u003eTransparent, per-graft pricing with no hidden charges. All quotes are provided after a free consultation and hair loss assessment.\u003c/p\u003e",
+                                        "warningText":  "Prices quoted online are estimates. Your exact graft count and total cost is determined only after a doctor\u0027s assessment during your free consultation.",
+                                        "pricingFactors":  [
+
+                                                           ],
+                                        "notes":  "",
+                                        "pricingStats":  [
+                                                             {
+                                                                 "value":  "â¹40 â â¹80",
+                                                                 "label":  "Sapphire FUE (per graft)"
+                                                             },
+                                                             {
+                                                                 "value":  "â¹60 â â¹100",
+                                                                 "label":  "DHI (per graft)"
+                                                             },
+                                                             {
+                                                                 "value":  "Starting â¹40,000",
+                                                                 "label":  "Minimum Session (1,000 grafts)"
+                                                             },
+                                                             {
+                                                                 "value":  "Starting â¹1,40,000",
+                                                                 "label":  "Mega Session (3,500+ grafts)"
+                                                             },
+                                                             {
+                                                                 "value":  "0% Interest Plans",
+                                                                 "label":  "EMI Available"
+                                                             }
+                                                         ],
+                                        "ctaTextWhatsApp":  {
+                                                                "text":  "Get Quote on WhatsApp",
+                                                                "link":  "https://api.whatsapp.com/send?phone=+919217958539\u0026text=Hi,%20I%20need%20a%20price%20quote%20for%20hair%20transplant%20surgery",
+                                                                "external":  true
+                                                            },
+                                        "ctaTextCall":  {
+                                                            "text":  "Call for Pricing",
+                                                            "link":  "tel:+919217958539",
+                                                            "external":  false
+                                                        },
+                                        "ctaTextGuide":  {
+                                                             "text":  "Download Cost Guide",
+                                                             "link":  "/cost/hair-transplant-cost-in-delhi",
+                                                             "external":  false
+                                                         }
+                                    },
+                        "visitClinic":  {
+                                            "heading":  "Visit Ryan Clinic Delhi",
+                                            "description":  "Our Delhi clinic is conveniently located in South Delhi. Book a free consultation and meet your surgeon in person.",
+                                            "address":  "",
+                                            "contactPhone":  "",
+                                            "mapEmbedUrl":  "",
+                                            "nearbyLocations":  [
+
+                                                                ],
+                                            "informationCards":  [
+                                                                     {
+                                                                         "icon":  "MapPin",
+                                                                         "title":  "Address",
+                                                                         "description":  "Ryan Clinic, B-12, Green Park Main, South Delhi, New Delhi â 110016"
+                                                                     },
+                                                                     {
+                                                                         "icon":  "Clock",
+                                                                         "title":  "Clinic Hours",
+                                                                         "description":  "Monday â Saturday: 10:00 AM â 7:00 PM\nSunday: 10:00 AM â 2:00 PM (By Appointment)"
+                                                                     },
+                                                                     {
+                                                                         "icon":  "Phone",
+                                                                         "title":  "Contact",
+                                                                         "description":  "+91 92179 58539\ninfo@clinicryan.com"
+                                                                     },
+                                                                     {
+                                                                         "icon":  "CreditCard",
+                                                                         "title":  "Payment Methods",
+                                                                         "description":  "All cards, UPI, Net Banking accepted. 0% EMI available on select plans."
+                                                                     }
+                                                                 ],
+                                            "buttonText":  {
+                                                               "text":  "Get Directions",
+                                                               "link":  "https://maps.google.com",
+                                                               "external":  true
+                                                           }
+                                        },
+                        "consultation":  {
+                                             "backgroundImage":  {
+                                                                     "image":  "https://res.cloudinary.com/dq1tzl5ir/image/upload/v1785227217/service-one_psfomc.webp",
+                                                                     "imageAlt":  "Consultation Background"
+                                                                 },
+                                             "leftSide":  {
+                                                              "heading":  "Book Your Free Consultation",
+                                                              "description":  "Speak directly with our senior surgeon. We\u0027ll assess your hair loss, show you before/after results of similar cases, and give you an honest graft count and cost estimate â no pressure, no obligations.",
+                                                              "contactCards":  [
+                                                                                   {
+                                                                                       "icon":  "Phone",
+                                                                                       "title":  "Call Us",
+                                                                                       "description":  "+91 92179 58539",
+                                                                                       "link":  "tel:+919217958539",
+                                                                                       "ext":  false,
+                                                                                       "displayOrder":  0
+                                                                                   },
+                                                                                   {
+                                                                                       "icon":  "MessageCircle",
+                                                                                       "title":  "WhatsApp",
+                                                                                       "description":  "Chat with a surgeon",
+                                                                                       "link":  "https://api.whatsapp.com/send?phone=+919217958539",
+                                                                                       "ext":  false,
+                                                                                       "displayOrder":  0
+                                                                                   },
+                                                                                   {
+                                                                                       "icon":  "Headphones",
+                                                                                       "title":  "Response Time",
+                                                                                       "description":  "Within 2 hours on weekdays",
+                                                                                       "link":  "",
+                                                                                       "ext":  false,
+                                                                                       "displayOrder":  0
+                                                                                   }
+                                                                               ]
+                                                          },
+                                             "consultationFormConfig":  {
+                                                                            "title":  "Request a Free Callback",
+                                                                            "servicesDropdown":  [
+                                                                                                     "Hair Transplant Surgery (FUE)",
+                                                                                                     "Hair Transplant Surgery (DHI)",
+                                                                                                     "Beard \u0026 Moustache Restoration",
+                                                                                                     "Female Hair Loss Treatment",
+                                                                                                     "PRP Hair Therapy",
+                                                                                                     "Not Sure â Need Consultation"
+                                                                                                 ],
+                                                                            "submitButtonText":  {
+                                                                                                     "text":  "Book Free Consultation",
+                                                                                                     "link":  "",
+                                                                                                     "external":  false
+                                                                                                 }
+                                                                        }
+                                         },
+                        "faq":  {
+                                    "heading":  "Frequently Asked Questions",
+                                    "description":  "Everything you need to know about hair transplant surgery at Ryan Clinic Delhi.",
+                                    "stats":  [
+                                                  {
+                                                      "value":  "10,000+",
+                                                      "label":  "Surgeries Done"
+                                                  },
+                                                  {
+                                                      "value":  "12+",
+                                                      "label":  "Years of Experience"
+                                                  }
+                                              ],
+                                    "faqs":  [
+                                                 {
+                                                     "question":  "Is hair transplant surgery permanent?",
+                                                     "answer":  "\u003cp\u003eYes. Hair transplanted from the donor zone (back of scalp) is genetically resistant to DHT â the hormone that causes male/female pattern baldness. These grafts retain their DHT-resistance even after transplantation, making results permanent.\u003c/p\u003e",
+                                                     "active":  true,
+                                                     "displayOrder":  0
+                                                 },
+                                                 {
+                                                     "question":  "How many grafts do I need?",
+                                                     "answer":  "\u003cp\u003eThe number of grafts depends on your hair loss stage (Norwood Scale), desired density, and donor area capacity. Most patients need between 1,500â4,000 grafts. Our surgeon will give you an exact count during your free consultation.\u003c/p\u003e",
+                                                     "active":  true,
+                                                     "displayOrder":  0
+                                                 },
+                                                 {
+                                                     "question":  "Is the procedure painful?",
+                                                     "answer":  "\u003cp\u003eNo. We use advanced local anaesthesia with buffered lidocaine and micro-injection techniques. You\u0027ll feel only a slight pressure at the anaesthesia injection points. The remainder of the procedure (4â8 hours) is completely pain-free.\u003c/p\u003e",
+                                                     "active":  true,
+                                                     "displayOrder":  0
+                                                 },
+                                                 {
+                                                     "question":  "When will I see results?",
+                                                     "answer":  "\u003cp\u003eInitial shedding occurs in weeks 2â4 (this is normal). New growth begins from month 3, and you\u0027ll see 60â70% of your final result by month 6â8. Full density is typically visible by 12â14 months post-surgery.\u003c/p\u003e",
+                                                     "active":  true,
+                                                     "displayOrder":  0
+                                                 },
+                                                 {
+                                                     "question":  "What is the difference between FUE and DHI?",
+                                                     "answer":  "\u003cp\u003eFUE (Follicular Unit Extraction) extracts grafts individually and implants them into pre-made channels. DHI (Direct Hair Implantation) uses a Choi pen to implant grafts directly without channels, offering more precise angle control and better density â but at a slightly higher cost per graft.\u003c/p\u003e",
+                                                     "active":  true,
+                                                     "displayOrder":  0
+                                                 },
+                                                 {
+                                                     "question":  "Can I see before/after results of previous patients?",
+                                                     "answer":  "\u003cp\u003eYes. During your free consultation, we show you our portfolio of real Delhi patients with similar hair loss patterns. We also maintain a digital gallery at our clinic.\u003c/p\u003e",
+                                                     "active":  true,
+                                                     "displayOrder":  0
+                                                 }
+                                             ],
+                                    "ctaButtonText":  {
+                                                          "text":  "Ask More Questions â WhatsApp Us",
+                                                          "link":  "https://api.whatsapp.com/send?phone=+919217958539",
+                                                          "external":  true
+                                                      }
+                                },
+                        "createdAt":  "2026-07-28T06:56:43.359Z",
+                        "updatedAt":  "2026-08-01T07:15:59.980Z",
+                        "__v":  0,
+                        "landingCardImage":  {
+                                                 "image":  "https://res.cloudinary.com/dq1tzl5ir/image/upload/v1785326988/service-one_cjpnwa.webp",
+                                                 "imageAlt":  "Best Hair Transplant Surgery in Delhi"
+                                             },
+                        "beforeSurgeryTimeline":  {
+                                                      "heading":  "",
+                                                      "description":  "",
+                                                      "timelineItems":  [
+
+                                                                        ]
+                                                  },
+                        "bestSurgeryChecklist":  {
+                                                     "heading":  "",
+                                                     "description":  "",
+                                                     "checklistItems":  [
+
+                                                                        ]
+                                                 },
+                        "candidateSuitability":  {
+                                                     "heading":  "",
+                                                     "description":  "",
+                                                     "suitableList":  [
+
+                                                                      ],
+                                                     "notSuitableList":  [
+
+                                                                         ],
+                                                     "norwoodTable":  [
+
+                                                                      ]
+                                                 },
+                        "internalLinks":  {
+                                              "heading":  "",
+                                              "links":  [
+
+                                                        ]
+                                          },
+                        "patientResults":  {
+                                               "heading":  "",
+                                               "description":  "",
+                                               "cases":  [
+
+                                                         ]
+                                           },
+                        "safetyInfo":  {
+                                           "badge":  "",
+                                           "heading":  "",
+                                           "description":  "",
+                                           "safetyPoints":  [
+
+                                                            ],
+                                           "safetyCard":  {
+                                                              "title":  "",
+                                                              "description":  "",
+                                                              "icon":  ""
+                                                          },
+                                           "metrics":  [
+
+                                                       ]
+                                       },
+                        "surgeryTypes":  {
+                                             "heading":  "",
+                                             "description":  "",
+                                             "cards":  [
+
+                                                       ]
+                                         },
+                        "surgicalRisks":  {
+                                              "heading":  "",
+                                              "description":  "",
+                                              "risks":  [
+
+                                                        ],
+                                              "preventionPoints":  [
+
+                                                                   ]
+                                          }
+                    }
+}
