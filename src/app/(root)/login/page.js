@@ -11,22 +11,32 @@ export default function LoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setErrorMsg("");
+
     const res = await signIn("credentials", {
       email,
       password,
       redirect: false,
     });
 
-    if (!res?.error) {
-      router.push("/admin");
-    } else if (res.error === "CredentialsSignin") {
+    if (!res) {
+      setErrorMsg("Something went wrong. Please try again.");
+      return;
+    }
+
+    if (res.ok && !res.error) {
+      // Full reload so the new session cookie is definitely sent to middleware
+      window.location.href = "/admin";
+      return;
+    }
+
+    if (res.error === "CredentialsSignin") {
       setErrorMsg("Invalid email or password.");
     } else {
       // Lockout message from the server (e.g. "Too many failed attempts...")
       setErrorMsg(res.error);
     }
   };
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-2xl shadow-lg">
@@ -74,7 +84,6 @@ export default function LoginPage() {
             className="w-full cursor-pointer px-4 py-2 font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition"
             placeholder="Submit"
           />
-
         </form>
       </div>
     </div>
