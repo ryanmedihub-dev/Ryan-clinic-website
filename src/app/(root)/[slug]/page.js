@@ -5,7 +5,7 @@ import ContactForm from "@/components/pages/contactForm";
 import FAQSection from "./FAQSection";
 import PleoFeatures from "./PleoFeatures";
 import OurResults from "../home/ourResults";
-import { getServiceBySlug, getDoctorByCity } from "@/lib/serviceData";
+import { getServiceBySlug } from "@/lib/serviceData";
 import { notFound } from "next/navigation";
 import Testimonials from "../home/testimonial";
 import WhyChooseRyanClinic from "../home/whyChooseUs";
@@ -15,6 +15,9 @@ import DifferencesSection from "@/components/pages/DifferencesSection";
 import OurDoctorSection from "@/components/pages/OurDoctorSection";
 import WhyDoctorMattersSection from "@/components/pages/WhyDoctorMattersSection";
 import AreasWeServe from "@/components/pages/AreasWeServe";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -81,7 +84,7 @@ function getDefaultSections(pageType) {
   ];
 }
 
-function renderSection(key, d, service, branchName, cmsDoctor) {
+function renderSection(key, d, service, branchName) {
   switch (key) {
     case "overview":
       return (
@@ -178,16 +181,34 @@ function renderSection(key, d, service, branchName, cmsDoctor) {
         />
       );
 
-    case "ourDoctor":
-      if (!cmsDoctor && !d.doctor) return null;
+    case "ourDoctor": {
+      const meetYourSurgeon = service?.meetYourSurgeon || d?.meetYourSurgeon || {};
+      if (meetYourSurgeon.enabled === false) return null;
+
+      const doctor = service?.assignedDoctor;
+      const isDoctorPublished =
+        doctor?.status ? String(doctor.status).toLowerCase() === "published" : true;
+      const isEligible =
+        doctor &&
+        typeof doctor === "object" &&
+        isDoctorPublished &&
+        !doctor.deletedAt &&
+        doctor.isActive !== false;
+
+      if (!isEligible) return null;
+
       return (
         <OurDoctorSection
           key="ourDoctor"
           city={d.city || branchName}
-          doctor={d.doctor}
-          cmsDoctor={cmsDoctor}
+          doctor={doctor}
+          cmsDoctor={doctor}
+          settings={meetYourSurgeon}
+          sectionSettings={meetYourSurgeon}
+          meetYourSurgeon={meetYourSurgeon}
         />
       );
+    }
 
     case "differencesSection":
       return (
@@ -291,14 +312,31 @@ export default async function ServicesPage({ params }) {
     return "Delhi";
   })();
 
-  const cmsDoctor = await getDoctorByCity(branchName);
-
-  const sections = (
+  let rawSections = (
     service?.pageSections?.length
       ? service.pageSections
       : getDefaultSections(service?.metadata?.pageType)
-  )
-    .filter((s) => s.enabled)
+  );
+
+  const isMeetYourSurgeonEnabled = service?.meetYourSurgeon?.enabled !== false;
+  if (service?.assignedDoctor && isMeetYourSurgeonEnabled) {
+    const hasOurDoc = rawSections.some((s) => s.key === "ourDoctor");
+    if (!hasOurDoc) {
+      const costIdx = rawSections.findIndex((s) => s.key === "costSection");
+      const insertOrder = costIdx !== -1 ? (rawSections[costIdx].order ?? 4) + 1 : 5;
+      rawSections = [
+        ...rawSections,
+        { key: "ourDoctor", enabled: true, order: insertOrder, data: {} },
+      ];
+    } else {
+      rawSections = rawSections.map((s) =>
+        s.key === "ourDoctor" ? { ...s, enabled: true } : s
+      );
+    }
+  }
+
+  const sections = rawSections
+    .filter((s) => (s.key === "ourDoctor" ? isMeetYourSurgeonEnabled : s.enabled))
     .sort((a, b) => a.order - b.order);
 
   return (
@@ -313,7 +351,7 @@ export default async function ServicesPage({ params }) {
         />
 
         {sections.map((section) =>
-          renderSection(section.key, section.data || {}, service, branchName, cmsDoctor),
+          renderSection(section.key, section.data || {}, service, branchName),
         )}
       </div>
     </>

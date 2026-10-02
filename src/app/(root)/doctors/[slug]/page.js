@@ -85,6 +85,14 @@ function normalizeDoctor(dbDoc) {
 const getDoctorData = cache(async (slug) => {
   try {
     const cleanSlug = decodeURIComponent(slug).toLowerCase().trim();
+
+    // Temporary demo profiles must never resolve to a public standalone doctor page.
+    // They are CMS-only records used for branch testing and should return 404.
+    // Branch pages (services) resolve doctors via assignedDoctor populate, not this route.
+    if (cleanSlug.startsWith("demo-doctor-")) {
+      return null;
+    }
+
     const escaped = cleanSlug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
     await DBConnection();

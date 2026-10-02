@@ -4,42 +4,65 @@
 // Usage: <OurDoctorSection city="Delhi" doctor={...} cmsDoctor={...} />
 import useTrackCTA from "@/lib/useTrackCTA";
 
-export default function OurDoctorSection({ city = "Delhi", doctor, cmsDoctor }) {
+export default function OurDoctorSection({
+  city = "Delhi",
+  doctor,
+  cmsDoctor,
+  settings,
+  sectionSettings,
+  meetYourSurgeon,
+}) {
   const trackCTA = useTrackCTA();
 
-  // If no doctor is provided at all, do not render another city's surgeon
-  if (!doctor && !cmsDoctor) {
+  const secSettings = settings || sectionSettings || meetYourSurgeon || {};
+
+  // If section is explicitly disabled in branch settings, do not render
+  if (secSettings?.enabled === false) {
     return null;
   }
 
+  // Single source of truth: doctor must be provided from CMS
+  const doc = doctor || cmsDoctor;
   const name =
-    doctor?.name || cmsDoctor?.basicInfo?.doctorName || "Lead Hair Transplant Surgeon";
+    doc?.basicInfo?.doctorName ||
+    doc?.basicInfo?.name ||
+    doc?.doctorName ||
+    doc?.name;
+
+  if (!doc || !name) {
+    return null;
+  }
+
   const doctorTitle =
-    doctor?.title || cmsDoctor?.basicInfo?.designation || "Hair Restoration Specialist";
+    doc.basicInfo?.designation || doc.designation || "Hair Restoration Specialist";
   const image =
-    doctor?.image ||
-    cmsDoctor?.basicInfo?.profileImage?.image ||
-    cmsDoctor?.basicInfo?.profileImage?.url ||
+    doc.basicInfo?.profileImage?.image ||
+    doc.basicInfo?.profileImage?.url ||
+    doc.profileImage?.image ||
+    doc.profileImage?.url ||
+    doc.image ||
     "/uploads/gallery.jpg";
 
-  // Dynamic CMS-driven badge
+  // Dynamic badge: branch setting override first, then Doctor CMS certs
+  // If branch explicitly sets badgeText (even to ""), respect it — prevents default "Board Certified" on demo doctors
   const badgeText = (() => {
-    if (doctor?.badge) return doctor.badge;
-    const certs = cmsDoctor?.doctorCard?.certifications || [];
+    if (typeof secSettings?.badgeText === "string") return secSettings.badgeText.trim();
+    if (doc.badge) return doc.badge;
+    const certs = doc.doctorCard?.certifications || [];
     const isTurkey = certs.some((c) =>
       /turkey/i.test(typeof c === "string" ? c : c?.title || "")
     );
     if (isTurkey) return "Turkey Certified";
-    if (cmsDoctor?.medicalReviewer?.isVerified) return "Verified Surgeon";
-    if (cmsDoctor?.comparison?.leftCard?.badge) return cmsDoctor.comparison.leftCard.badge;
+    if (doc.medicalReviewer?.isVerified) return "Verified Surgeon";
+    if (doc.comparison?.leftCard?.badge) return doc.comparison.leftCard.badge;
     return "Board Certified";
   })();
 
   // Derive stats dynamically from CMS without inventing fake claims
   const stats = (() => {
-    if (doctor?.stats?.length) return doctor.stats;
+    if (doc.stats?.length) return doc.stats;
     const s = [];
-    const b = cmsDoctor?.basicInfo;
+    const b = doc.basicInfo;
     if (b?.yearsExperience) {
       s.push({ num: `${b.yearsExperience}+ Yrs`, label: "Surgical Experience" });
     }
@@ -55,69 +78,66 @@ export default function OurDoctorSection({ city = "Delhi", doctor, cmsDoctor }) 
     return s;
   })();
 
-  // Derive bio dynamically from CMS without cross-doctor claim contamination
+  // Derive bio dynamically from Doctor CMS without cross-doctor claim contamination
   const bioLines = (() => {
-    if (doctor?.bioLines?.length) return doctor.bioLines;
-    if (cmsDoctor?.doctorCard?.cardDescription?.trim()) {
-      const parts = cmsDoctor.doctorCard.cardDescription
+    if (doc.bioLines?.length) return doc.bioLines;
+    if (doc.doctorCard?.cardDescription?.trim()) {
+      const parts = doc.doctorCard.cardDescription
         .split(/\n+/)
         .map((p) => p.trim())
         .filter(Boolean);
       if (parts.length) return parts;
     }
-    if (cmsDoctor?.surgeonProfile?.about?.trim()) {
-      const parts = cmsDoctor.surgeonProfile.about
+    if (doc.surgeonProfile?.about?.trim()) {
+      const parts = doc.surgeonProfile.about
         .split(/\n+/)
         .map((p) => p.trim())
         .filter(Boolean);
       if (parts.length) return parts;
     }
-    if (cmsDoctor?.hero?.description?.trim()) {
-      return [cmsDoctor.hero.description.trim()];
+    if (doc.hero?.description?.trim()) {
+      return [doc.hero.description.trim()];
     }
-    return [
-      `Your hair restoration procedure in ${city} is led by ${name} at Ryan Clinic. Every procedure is 100% doctor-led with meticulous attention to natural hairline design, graft preservation, and patient safety.`,
-      `Our clinic is committed to medical excellence, ensuring a qualified surgical doctor oversees and personally performs each critical stage of your hair restoration.`,
-    ];
+    return [];
   })();
 
-  // Qualifications dynamically from CMS (no shared fake AIIMS/PGIMER defaults)
+  // Qualifications dynamically from Doctor CMS
   const qualifications = (() => {
-    if (doctor?.qualifications?.length) return doctor.qualifications;
-    if (cmsDoctor?.doctorCard?.qualifications?.length) {
-      const valid = cmsDoctor.doctorCard.qualifications
+    if (doc.qualifications?.length) return doc.qualifications;
+    if (doc.doctorCard?.qualifications?.length) {
+      const valid = doc.doctorCard.qualifications
         .filter((q) => q && (q.degree?.trim() || q.institute?.trim()))
         .map((q) => ({ degree: q.degree || "", institute: q.institute || "" }));
       if (valid.length) return valid;
     }
-    if (cmsDoctor?.credentials?.tabs?.length) {
-      const valid = cmsDoctor.credentials.tabs
+    if (doc.credentials?.tabs?.length) {
+      const valid = doc.credentials.tabs
         .filter((t) => t && t.title?.trim())
         .map((t) => ({ degree: t.title, institute: t.hint || t.description || "" }));
       if (valid.length) return valid;
     }
-    if (cmsDoctor?.keyFacts?.qualifications?.trim()) {
+    if (doc.keyFacts?.qualifications?.trim()) {
       return [
         {
-          degree: cmsDoctor.keyFacts.qualifications.trim(),
-          institute: cmsDoctor.keyFacts.registration || "Medical Council Registered",
+          degree: doc.keyFacts.qualifications.trim(),
+          institute: doc.keyFacts.registration || "Medical Council Registered",
         },
       ];
     }
     return [];
   })();
 
-  // Certifications dynamically from CMS (no shared fake Turkey awards)
+  // Certifications dynamically from Doctor CMS
   const certifications = (() => {
-    if (doctor?.certifications?.length) return doctor.certifications;
-    if (cmsDoctor?.doctorCard?.certifications?.length) {
-      const valid = cmsDoctor.doctorCard.certifications
+    if (doc.certifications?.length) return doc.certifications;
+    if (doc.doctorCard?.certifications?.length) {
+      const valid = doc.doctorCard.certifications
         .map((c) => (typeof c === "string" ? c : c?.title || c?.name || ""))
         .filter((c) => c && c.trim());
       if (valid.length) return valid;
     }
-    if (cmsDoctor?.surgeonProfile?.achievements?.length) {
-      const valid = cmsDoctor.surgeonProfile.achievements
+    if (doc.surgeonProfile?.achievements?.length) {
+      const valid = doc.surgeonProfile.achievements
         .map((c) => (typeof c === "string" ? c : c?.title ? `${c.title}${c.description ? ` — ${c.description}` : ""}` : ""))
         .filter((c) => c && c.trim());
       if (valid.length) return valid;
@@ -125,17 +145,17 @@ export default function OurDoctorSection({ city = "Delhi", doctor, cmsDoctor }) 
     return [];
   })();
 
-  // Specializations dynamically from CMS
+  // Specializations dynamically from Doctor CMS
   const specializations = (() => {
-    if (doctor?.specializations?.length) return doctor.specializations;
-    if (cmsDoctor?.doctorCard?.specializations?.length) {
-      const valid = cmsDoctor.doctorCard.specializations
+    if (doc.specializations?.length) return doc.specializations;
+    if (doc.doctorCard?.specializations?.length) {
+      const valid = doc.doctorCard.specializations
         .map((s) => (typeof s === "string" ? s : s?.title || s?.name || ""))
         .filter((s) => s && s.trim());
       if (valid.length) return valid;
     }
-    if (cmsDoctor?.surgeonProfile?.specializations?.length) {
-      const valid = cmsDoctor.surgeonProfile.specializations
+    if (doc.surgeonProfile?.specializations?.length) {
+      const valid = doc.surgeonProfile.specializations
         .map((s) => (typeof s === "string" ? s : s?.title || s?.name || ""))
         .filter((s) => s && s.trim());
       if (valid.length) return valid;
@@ -143,24 +163,48 @@ export default function OurDoctorSection({ city = "Delhi", doctor, cmsDoctor }) 
     return [];
   })();
 
-  const doctorSlug = cmsDoctor?.slug ? cmsDoctor.slug.replace(/^\/+/, "").replace(/^doctors\//, "") : "";
+  const doctorSlug = doc.slug ? doc.slug.replace(/^\/+/, "").replace(/^doctors\//, "") : "";
   const doctorProfileHref = doctorSlug ? `/doctors/${doctorSlug}` : "/doctors";
 
+  // Branch-specific section labels
+  const eyebrowText = secSettings?.eyebrow?.trim() || `Your Surgeon in ${city}`;
+  const headingText = secSettings?.heading?.trim() || "";
+  const consultationBtnLabel = secSettings?.consultationButtonLabel?.trim() || `Book Consultation with ${name}`;
+  const profileBtnLabel = secSettings?.profileButtonLabel?.trim() || (doctorSlug ? "View Full Profile →" : "View Doctors Directory →");
+
+  // No hardcoded fallback — if doctor has no phone, CTAs are hidden to avoid fake WhatsApp links (demo doctors)
+  const doctorPhone = doc.basicInfo?.whatsappNumber || doc.basicInfo?.phoneNumber || "";
+  const cleanPhone = doctorPhone.replace(/[^\d+]/g, "");
+
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-white" data-debug-section="meet-your-surgeon">
       <div className="containerFull px-4 md:px-6">
 
         {/* ── Header ── */}
         <div className="flex items-center gap-3 mb-6">
           <span className="block w-8 h-px bg-[#D32F2F]" />
           <span className="text-[#D32F2F] text-[11px] font-semibold tracking-[0.22em] uppercase">
-            Your Surgeon in {city}
+            {eyebrowText}
           </span>
         </div>
 
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-[1.1] tracking-tight mb-10">
-          Meet Your Hair Transplant{" "}
-          <span className="text-[#D32F2F]">Surgeon</span>
+          {headingText ? (
+            headingText.includes("Surgeon") ? (
+              <>
+                {headingText.split("Surgeon")[0]}
+                <span className="text-[#D32F2F]">Surgeon</span>
+                {headingText.split("Surgeon").slice(1).join("Surgeon")}
+              </>
+            ) : (
+              headingText
+            )
+          ) : (
+            <>
+              Meet Your Hair Transplant{" "}
+              <span className="text-[#D32F2F]">Surgeon</span>
+            </>
+          )}
         </h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-14 items-start">
@@ -294,28 +338,32 @@ export default function OurDoctorSection({ city = "Delhi", doctor, cmsDoctor }) 
               </div>
             )}
 
-            {/* CTA */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-gray-100">
-              <a
-                href={`https://api.whatsapp.com/send?phone=+919217958539&text=${encodeURIComponent(`Hi, I'd like to book a consultation with ${name} in ${city}.`)}`}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center justify-center gap-2.5 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-4 px-6 text-sm tracking-wide transition-colors rounded-xl"
-                onClick={() => trackCTA({ type: "whatsapp", ctaName: `Doctor Book Consultation: ${name}`, buttonLocation: "Doctor Profile Section" })}
-              >
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z" />
-                  <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.553 4.116 1.52 5.847L.057 23.12a.75.75 0 00.92.92l5.273-1.463A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.666-.523-5.18-1.43l-.372-.223-3.857 1.072 1.072-3.857-.223-.372A9.944 9.944 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
-                </svg>
-                Book Consultation with {name}
-              </a>
-              <a
-                href={doctorProfileHref}
-                className="inline-flex items-center justify-center gap-2 border border-gray-200 hover:border-[#D32F2F] text-gray-600 hover:text-[#D32F2F] font-semibold py-4 px-6 text-sm tracking-wide transition-all rounded-xl"
-              >
-                {doctorSlug ? "View Full Profile →" : "View Doctors Directory →"}
-              </a>
-            </div>
+            {/* CTA — only shown when doctor has a real contact phone/WhatsApp number.
+              Demo doctors (phone = "") intentionally hide both CTAs to prevent
+              fake contact links. Delhi's real doctor is unaffected. */}
+            {cleanPhone && (
+              <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-gray-100">
+                <a
+                  href={`https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(`Hi, I'd like to book a consultation with ${name} in ${city}.`)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center gap-2.5 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-4 px-6 text-sm tracking-wide transition-colors rounded-xl"
+                  onClick={() => trackCTA({ type: "whatsapp", ctaName: `Doctor Book Consultation: ${name}`, buttonLocation: "Doctor Profile Section" })}
+                >
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z" />
+                    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.553 4.116 1.52 5.847L.057 23.12a.75.75 0 00.92.92l5.273-1.463A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.666-.523-5.18-1.43l-.372-.223-3.857 1.072 1.072-3.857-.223-.372A9.944 9.944 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
+                  </svg>
+                  {consultationBtnLabel}
+                </a>
+                <a
+                  href={doctorProfileHref}
+                  className="inline-flex items-center justify-center gap-2 border border-gray-200 hover:border-[#D32F2F] text-gray-600 hover:text-[#D32F2F] font-semibold py-4 px-6 text-sm tracking-wide transition-all rounded-xl"
+                >
+                  {profileBtnLabel}
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </div>

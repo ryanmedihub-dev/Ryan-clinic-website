@@ -34,6 +34,15 @@ const initialFormState = {
   extraDetail1: "",
   extraDetail2: "",
   keywords: [],
+  assignedDoctor: "",
+  meetYourSurgeon: {
+    enabled: true,
+    eyebrow: "",
+    heading: "",
+    badgeText: "",
+    consultationButtonLabel: "",
+    profileButtonLabel: "",
+  },
 };
 
 export default function EditService({ initialData }) {
@@ -43,6 +52,29 @@ export default function EditService({ initialData }) {
   const [isMounted, setIsMounted] = useState(false);
   const [serverMsg, setServerMsg] = useState("");
   const [keywordInput, setKeywordInput] = useState("");
+  const [doctorsList, setDoctorsList] = useState([]);
+  const [loadingDoctors, setLoadingDoctors] = useState(false);
+
+  useEffect(() => {
+    let isSubscribed = true;
+    setLoadingDoctors(true);
+    // Use admin-list endpoint which includes demo-doctor-* profiles for branch assignment.
+    // The public /api/doctors/list endpoint excludes demo doctors by design.
+    fetch("/api/doctors/admin-list?status=published&limit=100")
+      .then((res) => res.json())
+      .then((data) => {
+        if (isSubscribed && data.success && Array.isArray(data.doctors)) {
+          setDoctorsList(data.doctors);
+        }
+      })
+      .catch((err) => console.error("Failed to fetch doctors:", err))
+      .finally(() => {
+        if (isSubscribed) setLoadingDoctors(false);
+      });
+    return () => {
+      isSubscribed = false;
+    };
+  }, []);
 
   // editor instance refs
   const editorRefs = useRef({
@@ -100,6 +132,20 @@ export default function EditService({ initialData }) {
         extraDetail1: initialData.extraFields?.detail1 || "",
         extraDetail2: initialData.extraFields?.detail2 || "",
         keywords: initialData.metadata?.keywords || [],
+        assignedDoctor:
+          initialData.assignedDoctor?._id
+            ? String(initialData.assignedDoctor._id)
+            : (typeof initialData.assignedDoctor === "string" ? initialData.assignedDoctor : ""),
+        meetYourSurgeon: {
+          enabled: initialData.meetYourSurgeon?.enabled !== false,
+          eyebrow: initialData.meetYourSurgeon?.eyebrow || "",
+          heading: initialData.meetYourSurgeon?.heading || "",
+          badgeText: initialData.meetYourSurgeon?.badgeText || "",
+          consultationButtonLabel:
+            initialData.meetYourSurgeon?.consultationButtonLabel || "",
+          profileButtonLabel:
+            initialData.meetYourSurgeon?.profileButtonLabel || "",
+        },
       });
       setDataLoaded(true);
 
@@ -133,6 +179,40 @@ export default function EditService({ initialData }) {
       }
     );
   }, [dataLoaded, editorReady, formData]);
+
+  const selectedDoctor = React.useMemo(() => {
+    if (!formData.assignedDoctor) return null;
+    const targetId = String(formData.assignedDoctor);
+    const found = doctorsList.find((d) => String(d._id) === targetId);
+    if (found) return found;
+    if (
+      initialData?.assignedDoctor &&
+      typeof initialData.assignedDoctor === "object" &&
+      String(initialData.assignedDoctor._id) === targetId
+    ) {
+      return initialData.assignedDoctor;
+    }
+    return null;
+  }, [formData.assignedDoctor, doctorsList, initialData]);
+
+  const handleDoctorChange = (e) => {
+    const val = e.target.value;
+    setFormData((prev) => ({
+      ...prev,
+      assignedDoctor: val,
+      assignedDoctorId: val,
+    }));
+  };
+
+  const handleMeetYourSurgeonChange = (field, val) => {
+    setFormData((prev) => ({
+      ...prev,
+      meetYourSurgeon: {
+        ...prev.meetYourSurgeon,
+        [field]: val,
+      },
+    }));
+  };
 
   const validateForm = () => {
     const newErrors = {};
@@ -270,6 +350,24 @@ export default function EditService({ initialData }) {
 
       const result = await response.json();
       setServerMsg("Service updated successfully!");
+      if (result.service) {
+        if (result.service.assignedDoctor) {
+          const docId = result.service.assignedDoctor._id
+            ? String(result.service.assignedDoctor._id)
+            : String(result.service.assignedDoctor);
+          setFormData((prev) => ({
+            ...prev,
+            assignedDoctor: docId,
+            assignedDoctorId: docId,
+          }));
+        } else if (result.service.assignedDoctor === null) {
+          setFormData((prev) => ({
+            ...prev,
+            assignedDoctor: "",
+            assignedDoctorId: "",
+          }));
+        }
+      }
     } catch (error) {
       console.error("Error updating service:", error);
       setServerMsg(`Error updating service: ${error.message}`);
@@ -435,6 +533,202 @@ export default function EditService({ initialData }) {
                       </button>
                     </div>
                   ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Meet Your Surgeon & Assigned Doctor */}
+          <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-xs">
+            <div className="mb-6 border-b border-gray-100 pb-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-900">
+                    Meet Your Surgeon
+                  </h2>
+                  <p className="text-sm text-gray-500 mt-0.5">
+                    Select the doctor from Doctor CMS who is assigned to this branch and customize branch-specific presentation settings.
+                  </p>
+                </div>
+                <label className="inline-flex items-center gap-2 cursor-pointer bg-gray-50 px-3.5 py-2 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors self-start sm:self-auto">
+                  <input
+                    type="checkbox"
+                    checked={formData.meetYourSurgeon?.enabled !== false}
+                    onChange={(e) =>
+                      handleMeetYourSurgeonChange("enabled", e.target.checked)
+                    }
+                    className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                  />
+                  <span className="text-sm font-medium text-gray-700">
+                    Section Enabled
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            {/* Assigned Doctor Dropdown */}
+            <div className="space-y-5">
+              <div>
+                <label className="block text-sm font-semibold text-gray-800 mb-2">
+                  Assigned Doctor <span className="text-xs font-normal text-gray-500">(Source of truth: Doctor CMS)</span>
+                </label>
+                <select
+                  value={formData.assignedDoctor || ""}
+                  onChange={handleDoctorChange}
+                  disabled={loadingDoctors}
+                  className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                >
+                  <option value="">— None (No Doctor Assigned) —</option>
+                  {formData.assignedDoctor &&
+                    !doctorsList.some((doc) => String(doc._id) === String(formData.assignedDoctor)) && (
+                      <option value={formData.assignedDoctor}>
+                        {selectedDoctor?.basicInfo?.doctorName
+                          ? `${selectedDoctor.basicInfo.doctorName} (Assigned)`
+                          : "Assigned Doctor (Loading...)"}
+                      </option>
+                    )}
+                  {doctorsList.map((doc) => (
+                    <option key={doc._id} value={doc._id}>
+                      {doc.basicInfo?.doctorName} — {doc.basicInfo?.designation || "Surgeon"} {doc.basicInfo?.city ? `(${doc.basicInfo.city})` : ""}
+                    </option>
+                  ))}
+                </select>
+                <p className="mt-1.5 text-xs text-gray-500">
+                  Only published and active doctors from the Doctor CMS are available for assignment.
+                </p>
+              </div>
+
+              {/* Read-only Doctor Preview */}
+              {selectedDoctor ? (
+                <div className="p-4 rounded-xl border border-blue-100 bg-blue-50/50 flex flex-col sm:flex-row items-start gap-4">
+                  <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-200 shrink-0 border border-gray-200">
+                    <img
+                      src={
+                        selectedDoctor.basicInfo?.profileImage?.image ||
+                        selectedDoctor.basicInfo?.profileImage?.url ||
+                        "/uploads/gallery.jpg"
+                      }
+                      alt={selectedDoctor.basicInfo?.doctorName || "Doctor"}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h4 className="font-bold text-gray-900 text-base">
+                        {selectedDoctor.basicInfo?.doctorName}
+                      </h4>
+                      {selectedDoctor.basicInfo?.city && (
+                        <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-blue-100 text-blue-800">
+                          {selectedDoctor.basicInfo.city}
+                        </span>
+                      )}
+                      <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-green-100 text-green-800">
+                        Published
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-600 mt-1 font-medium">
+                      {selectedDoctor.basicInfo?.designation || "Hair Restoration Specialist"}
+                    </p>
+                    {selectedDoctor.doctorCard?.shortQualification && (
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        Qualifications: {selectedDoctor.doctorCard.shortQualification}
+                      </p>
+                    )}
+                    <div className="mt-2 text-xs text-blue-900 bg-blue-100/70 border border-blue-200/60 rounded-md px-3 py-1.5 inline-block">
+                      ℹ️ Doctor information is managed from Doctor CMS. Name, image, qualifications, certifications, and bio cannot be edited here.
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-4 rounded-xl border border-dashed border-gray-300 bg-gray-50/50 text-center">
+                  <p className="text-sm text-gray-500">
+                    No doctor is currently assigned. The "Meet Your Surgeon" section will be safely hidden on the public page until a doctor is assigned.
+                  </p>
+                </div>
+              )}
+
+              {/* Branch-Specific Section Settings */}
+              <div className="pt-4 border-t border-gray-100 space-y-4">
+                <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider">
+                  Branch Section Settings
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                      Eyebrow
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.meetYourSurgeon?.eyebrow || ""}
+                      onChange={(e) =>
+                        handleMeetYourSurgeonChange("eyebrow", e.target.value)
+                      }
+                      placeholder={`YOUR SURGEON IN ${formData.pageName ? formData.pageName.toUpperCase() : "THIS CITY"}`}
+                      className="w-full px-3.5 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                      Heading
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.meetYourSurgeon?.heading || ""}
+                      onChange={(e) =>
+                        handleMeetYourSurgeonChange("heading", e.target.value)
+                      }
+                      placeholder="Meet Your Hair Transplant Surgeon"
+                      className="w-full px-3.5 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                      Badge Text
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.meetYourSurgeon?.badgeText || ""}
+                      onChange={(e) =>
+                        handleMeetYourSurgeonChange("badgeText", e.target.value)
+                      }
+                      placeholder="Board Certified"
+                      className="w-full px-3.5 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                      Consultation Button Label
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.meetYourSurgeon?.consultationButtonLabel || ""}
+                      onChange={(e) =>
+                        handleMeetYourSurgeonChange(
+                          "consultationButtonLabel",
+                          e.target.value
+                        )
+                      }
+                      placeholder="Book Consultation"
+                      className="w-full px-3.5 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+                      Profile Button Label
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.meetYourSurgeon?.profileButtonLabel || ""}
+                      onChange={(e) =>
+                        handleMeetYourSurgeonChange(
+                          "profileButtonLabel",
+                          e.target.value
+                        )
+                      }
+                      placeholder="View Full Profile"
+                      className="w-full px-3.5 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    />
+                  </div>
                 </div>
               </div>
             </div>

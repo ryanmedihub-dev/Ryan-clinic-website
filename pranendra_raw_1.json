@@ -1,0 +1,1037 @@
+{
+  "_id": "6a71a2b929d7e7beb5f7f813",
+  "slug": "hair-transplant-doctor-in-delhi",
+  "pageName": "Hair Transplant Doctor in Delhi — Dr. Pranendra Singh, MDS (Surgeon)",
+  "status": "published",
+  "isActive": true,
+  "deletedAt": null,
+  "schemaVersion": 1,
+  "displayOrder": 1,
+  "featured": true,
+  "basicInfo": {
+    "doctorName": "Dr. Pranendra Singh",
+    "designation": "Medical Director & Chief Hair Transplant Surgeon",
+    "city": "Delhi",
+    "yearsExperience": 15,
+    "proceduresCount": 5000,
+    "successRate": "97%+",
+    "rating": 4.9,
+    "phoneNumber": "+91-9911111247",
+    "whatsappNumber": "+91-9217958539",
+    "email": "info@clinicryan.com",
+    "clinicName": "Ryan Skin & Hair Transplant Clinic",
+    "clinicAddress": "CD 163, Block CD, Dakshini Pitampura, Pitampura, New Delhi – 110034",
+    "languages": [
+      "English",
+      "Hindi"
+    ],
+    "profileImage": {
+      "image": "/uploads/turkey-doctor.jpg",
+      "alt": "Dr. Pranendra Singh — Hair Transplant Doctor in Delhi"
+    }
+  },
+  "seo": {
+    "metaTitle": "Hair Transplant Doctor in Delhi — Dr. Pranendra Singh",
+    "metaDescription": "Looking for a hair transplant doctor in Delhi? Meet Dr. Pranendra Singh, MDS (Surgeon). Doctor-led Sapphire FUE & THI hair restoration at Ryan Clinic.",
+    "keywords": "hair transplant doctor in Delhi, best hair transplant doctor in Delhi, Dr. Pranendra Singh hair transplant, hair transplant surgeon Delhi",
+    "canonicalUrl": "https://www.clinicryan.com/doctors/hair-transplant-doctor-in-delhi",
+    "robots": "index, follow",
+    "openGraphImage": {
+      "image": "/uploads/turkey-doctor.jpg",
+      "alt": "Hair Transplant Doctor in Delhi — Dr. Pranendra Singh, MDS (Surgeon)"
+    },
+    "useGlobalSEO": false
+  },
+  "hero": {
+    "title": "Hair Transplant Doctor in Delhi — Dr. Pranendra Singh, MDS (Surgeon)",
+    "description": "Dr. Pranendra Singh is a hair transplant surgeon in Delhi with over 15 years of experience in Sapphire FUE and THI hair restoration.",
+    "heroImage": {
+      "image": "/uploads/turkey-doctor.jpg",
+      "alt": "Hair Transplant Doctor in Delhi — Dr. Pranendra Singh, MDS (Surgeon)"
+    },
+    "breadcrumbs": [
+      {
+        "key": "",
+        "title": "",
+        "url": "/"
+      },
+      {
+        "key": "",
+        "title": "",
+        "url": "/doctors"
+      },
+      {
+        "key": "",
+        "title": "",
+        "url": "https://www.clinicryan.com/doctors/hair-transplant-doctor-in-delhi"
+      }
+    ],
+    "whatsappCTA": {
+      "text": "WhatsApp Us",
+      "url": "",
+      "link": ""
+    },
+    "callCTA": {
+      "text": "Call Now",
+      "url": "",
+      "link": ""
+    },
+    "stats": []
+  },
+  "whyItMatters": {
+    "sectionLabel": "Why Your Doctor Matters",
+    "heading": "Why your hair transplant doctor in Delhi matters more than anything else",
+    "description": "A hair transplant is a one-time redistribution of a limited donor supply. Done by a skilled doctor, it lasts a lifetime and looks completely natural. Done poorly, it wastes follicles you can never recover and can leave an unnatural result.",
+    "secondaryDescription": "That outcome is decided almost entirely by the hands performing the surgery — which is why choosing the right hair transplant doctor in Delhi is the decision that matters most. A great surgeon influences graft survival, natural hairline design, candidacy judgement, and surgical safety. No technique, blade, or brand name compensates for an inexperienced or absent surgeon.",
+    "highlightBox": "No technique, blade, or brand name compensates for an inexperienced or absent surgeon. The doctor is the procedure.",
+    "image": {
+      "image": "/uploads/1752667815707-fue-banner_ro9ae6.webp",
+      "alt": "Doctor-led hair transplant at Ryan Clinic, Delhi"
+    },
+    "floatingStats": [
+      {
+        "key": "",
+        "value": "5,000+",
+        "suffix": "",
+        "label": "Procedures by Dr. Singh",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "value": "Doctor-led",
+        "suffix": "",
+        "label": "Every surgical step",
+        "displayOrder": 0
+      }
+    ],
+    "bottomCard": {
+      "key": "",
+      "number": 0,
+      "icon": "",
+      "title": "",
+      "hint": "",
+      "description": "",
+      "url": "",
+      "displayOrder": 0
+    },
+    "primaryCTA": {
+      "text": "Book Free Consultation",
+      "url": "tel:+919217958539",
+      "link": ""
+    },
+    "secondaryCTA": {
+      "text": "WhatsApp Us",
+      "url": "https://wa.me/919217958539",
+      "link": ""
+    }
+  },
+  "doctorStandards": {
+    "sectionLabel": "What Makes a Great Doctor",
+    "heading": "What makes a good hair transplant doctor in Delhi?",
+    "description": "The best hair transplant doctor in Delhi combines verified qualifications, real surgical experience, an aesthetic eye, and absolute hands-on involvement.",
+    "cards": [
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "Proper medical qualifications and registration",
+        "hint": "",
+        "description": "Verifiable credentials — MDS and relevant postgraduate training or fellowship, with a medical-council registration number you can check.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "Real, focused experience in hair restoration",
+        "hint": "",
+        "description": "Years in practice and case volume specifically in hair transplantation, with cases similar to yours.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "An aesthetic eye",
+        "hint": "",
+        "description": "Hairline design is as much art as surgery — the best doctors understand facial proportions, natural growth patterns, and age-appropriate design.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "Hands-on involvement",
+        "hint": "",
+        "description": "The doctor performs the surgery personally, including extraction and implantation — not just a brief appearance at consultation.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "Honesty about candidacy and expectations",
+        "hint": "",
+        "description": "A willingness to tell you the truth about expectations, maintenance, and candidacy — including saying no when surgery isn't right for you.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "A real portfolio of results",
+        "hint": "",
+        "description": "Before-and-afters of their own patients (not stock photos), plus genuine verified reviews from real cases.",
+        "url": "",
+        "displayOrder": 0
+      }
+    ]
+  },
+  "credentials": {
+    "sectionLabel": "Credentials to Look For",
+    "heading": "Credentials to look for in a hair transplant doctor in Delhi",
+    "cardHeading": "Credentials & Medical Registrations — Dr. Pranendra Singh",
+    "description": "A qualified hair transplant doctor in Delhi should have verifiable medical qualifications, registration, and specific hair-transplant training.",
+    "bottomNote": "All qualifications, medical council registrations, and board certifications can be independently verified through respective state medical councils prior to any procedure.",
+    "tabs": [
+      {
+        "key": "",
+        "title": "Medical Degree",
+        "hint": "Primary Medical Degree",
+        "badge": "",
+        "image": {
+          "image": "",
+          "alt": ""
+        },
+        "icon": "GraduationCap",
+        "description": "Recognized medical and surgical qualification accredited by the National Medical Commission (NMC).",
+        "ctaText": "",
+        "ctaLink": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "title": "Council Registration",
+        "hint": "Statutory Medical License",
+        "badge": "",
+        "image": {
+          "image": "",
+          "alt": ""
+        },
+        "icon": "ShieldCheck",
+        "description": "Active registration with Delhi Medical Council (DMC-68492) verifying legal license to perform surgical procedures.",
+        "ctaText": "Verify Registration",
+        "ctaLink": "https://www.nmc.org.in",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "title": "Hair Transplant Certification",
+        "hint": "Specialized Training",
+        "badge": "",
+        "image": {
+          "image": "",
+          "alt": ""
+        },
+        "icon": "Award",
+        "description": "Hands-on specialized training and certification in advanced FUE, Sapphire Micro-FUE, and aesthetic hairline reconstruction.",
+        "ctaText": "Our Techniques",
+        "ctaLink": "#why-us",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "title": "Experience & Case Volume",
+        "hint": "Surgical Track Record",
+        "badge": "",
+        "image": {
+          "image": "",
+          "alt": ""
+        },
+        "icon": "Building2",
+        "description": "Proven surgical track record performing high-density graft extractions, natural hairline design, and corrective revision cases.",
+        "ctaText": "Book Consultation",
+        "ctaLink": "#contact",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "title": "Professional Memberships",
+        "hint": "Professional Affiliation",
+        "badge": "",
+        "image": {
+          "image": "",
+          "alt": ""
+        },
+        "icon": "BadgeCheck",
+        "description": "Affiliated with recognized surgical and aesthetic restoration bodies, adhering strictly to global patient safety protocols.",
+        "ctaText": "",
+        "ctaLink": "",
+        "displayOrder": 0
+      }
+    ],
+    "bottomCTA": {
+      "badge": "",
+      "heading": "Not sure what to verify?",
+      "description": "Call us — our team will walk you through Dr. Singh's credentials before you commit to a consultation.",
+      "buttonText": "",
+      "buttonLink": ""
+    }
+  },
+  "verification": {
+    "sectionLabel": "Verify Before You Book",
+    "heading": "How to verify a hair transplant doctor's credentials in Delhi",
+    "description": "Don't take claims at face value — a confident, transparent clinic will welcome these questions. Evasiveness is your answer.",
+    "steps": [
+      {
+        "key": "",
+        "title": "Ask for name, qualifications & registration number",
+        "description": "Request the doctor's full name, qualifications, and medical-council registration number upfront.",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "title": "Check the medical council register",
+        "description": "Verify the registration on the relevant state or national medical council register online.",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "title": "Ask about personal case volume",
+        "description": "Ask how many hair transplant cases they have personally performed, and request to see those before-and-afters.",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "title": "Confirm who does the surgery",
+        "description": "Confirm the doctor performs the surgery themselves — extraction and implantation — not technicians.",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "title": "Read genuine, recent reviews",
+        "description": "Check Google reviews and independent platforms for recent, genuine patient feedback.",
+        "displayOrder": 0
+      }
+    ],
+    "checklist": [
+      {
+        "key": "reg-online",
+        "title": "Verify Delhi state medical council registration on official online register",
+        "checked": true,
+        "displayOrder": 1
+      },
+      {
+        "key": "pg-qualification",
+        "title": "Confirm post-graduate surgical qualification and documented hair restoration experience",
+        "checked": true,
+        "displayOrder": 2
+      },
+      {
+        "key": "doc-led",
+        "title": "Ensure operating doctor personally designs hairline and performs graft recipient incisions",
+        "checked": true,
+        "displayOrder": 3
+      },
+      {
+        "key": "ot-safety",
+        "title": "Inspect clinic OT sterilization protocols and emergency medical backup infrastructure",
+        "checked": true,
+        "displayOrder": 4
+      },
+      {
+        "key": "transparent-pricing",
+        "title": "Demand transparent per-graft pricing with complete written post-op guarantee",
+        "checked": true,
+        "displayOrder": 5
+      }
+    ],
+    "progressCard": {
+      "key": "",
+      "title": "",
+      "description": "",
+      "displayOrder": 0
+    }
+  },
+  "comparison": {
+    "sectionLabel": "The Critical Difference",
+    "heading": "Doctor-led vs technician-led surgery in Delhi",
+    "description": "This is the single most important thing to verify at any clinic in Delhi. In many high-volume 'graft mills,' technicians perform large parts of the surgery — a leading cause of poor graft survival and unnatural hairlines.",
+    "leftCard": {
+      "title": "Doctor-Led (Ryan Clinic)",
+      "subtitle": "",
+      "badge": "",
+      "disclaimer": "",
+      "image": {
+        "image": "",
+        "alt": ""
+      }
+    },
+    "rightCard": {
+      "title": "Technician-Led 'Graft Mill'",
+      "subtitle": "",
+      "badge": "",
+      "disclaimer": "",
+      "image": {
+        "image": "",
+        "alt": ""
+      }
+    },
+    "rows": [
+      {
+        "key": "",
+        "parameter": "Consultation & Scalp Analysis",
+        "doctorValue": "Dr. Pranendra Singh",
+        "technicianValue": "Often a salesperson / counsellor",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "parameter": "Hairline Design & Planning",
+        "doctorValue": "Doctor — personalised to your face",
+        "technicianValue": "Variable / generic template",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "parameter": "Local Anaesthesia Administration",
+        "doctorValue": "Doctor",
+        "technicianValue": "Assistant / Technician",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "parameter": "Graft Extraction (FUE / Sapphire)",
+        "doctorValue": "Doctor",
+        "technicianValue": "Often technicians",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "parameter": "Recipient Site Creation",
+        "doctorValue": "Doctor",
+        "technicianValue": "Often technicians",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "parameter": "Graft Implantation",
+        "doctorValue": "Doctor",
+        "technicianValue": "Often technicians",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "parameter": "Post-Op Inspection & Care Plan",
+        "doctorValue": "Doctor — structured 12-18 month follow-up",
+        "technicianValue": "Often ends at discharge",
+        "displayOrder": 0
+      }
+    ]
+  },
+  "surgeonProfile": {
+    "sectionLabel": "Your Surgeon",
+    "heading": "Meet Dr. Pranendra Singh — Hair Restoration Surgeon in Delhi",
+    "achievementsHeading": "Key Surgical Achievements & Accreditations",
+    "about": "As Medical Director of Ryan Clinic, Dr. Pranendra Singh leads the medical team and oversees clinical standards, treatment planning, surgical protocols and patient-care processes. His background in Oral & Maxillofacial Surgery brings a surgical perspective to hair-restoration planning, including assessment of the patient, donor area, facial proportions and proposed hairline. His approach is centred on an important principle: the treatment plan should be designed around the individual patient rather than using the same approach for everyone.",
+    "philosophy": "Hair restoration is a combination of surgical precision and artistic hairline design tailored to facial proportions.",
+    "whyChooseDoctor": [],
+    "achievements": [
+      {
+        "key": "",
+        "title": "MCh (Plastic Surgery)",
+        "description": "Advanced specialization in cosmetic & reconstructive surgery.",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "title": "Delhi Medical Council",
+        "description": "Active registration (DMC-68492) verifying credentials.",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "title": "5,000+ Procedures",
+        "description": "Extensive hands-on case volume in hair restoration.",
+        "displayOrder": 0
+      }
+    ],
+    "consultationHeading": "What Your Consultation Includes",
+    "consultationIncludes": [
+      {
+        "key": "",
+        "title": "Free scalp analysis & hair density assessment",
+        "description": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "title": "Exact graft count with personalized hairline design",
+        "description": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "title": "Transparent per-graft pricing — no hidden charges",
+        "description": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "title": "Full treatment roadmap & post-op protocol",
+        "description": "",
+        "displayOrder": 0
+      }
+    ],
+    "primaryCTA": {
+      "text": "",
+      "url": "",
+      "link": ""
+    },
+    "secondaryCTA": {
+      "text": "",
+      "url": "",
+      "link": ""
+    }
+  },
+  "surgeryTimeline": {
+    "sectionLabel": "What Your Doctor Does",
+    "heading": "What your hair transplant doctor in Delhi does at every stage",
+    "description": "A good hair transplant doctor in Delhi is involved throughout — not just on the day of surgery.",
+    "steps": [
+      {
+        "key": "",
+        "stepNumber": "1",
+        "number": "",
+        "badge": "",
+        "icon": "",
+        "title": "Free Consultation & Scalp Analysis",
+        "description": "Dr. Singh examines your donor density and hair loss pattern, discusses your goals and history, and gives an honest plan — technique, graft count, and transparent cost.",
+        "image": {
+          "image": "",
+          "alt": ""
+        },
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "stepNumber": "2",
+        "number": "",
+        "badge": "",
+        "icon": "",
+        "title": "Personalised Hairline Design",
+        "description": "The doctor maps a natural, age-appropriate hairline to your facial proportions — accounting for future hair loss so the result looks right for decades.",
+        "image": {
+          "image": "",
+          "alt": ""
+        },
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "stepNumber": "3",
+        "number": "",
+        "badge": "",
+        "icon": "",
+        "title": "Doctor-Performed Surgery",
+        "description": "Dr. Singh personally performs extraction, channel creation, and implantation under local anaesthesia in a sterile operating theatre — no technician hands on your grafts.",
+        "image": {
+          "image": "",
+          "alt": ""
+        },
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "stepNumber": "4",
+        "number": "",
+        "badge": "",
+        "icon": "",
+        "title": "Structured 12–18 Month Follow-Up",
+        "description": "The doctor monitors your healing and growth through your full growth cycle, with scheduled review visits and direct access to his team.",
+        "image": {
+          "image": "",
+          "alt": ""
+        },
+        "displayOrder": 0
+      }
+    ]
+  },
+  "consultation": {
+    "sectionLabel": "Book a Consultation",
+    "heading": "Book a consultation with our hair transplant doctor in Delhi",
+    "description": "Get a free scalp analysis, your exact graft count, and a transparent cost breakdown — no obligation, no pressure.",
+    "contactCards": [
+      {
+        "key": "",
+        "icon": "phone",
+        "title": "Call Us",
+        "value": "+91-9217958539",
+        "link": "tel:+919217958539",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "icon": "whatsapp",
+        "title": "WhatsApp",
+        "value": "+91-9217958539",
+        "link": "https://wa.me/919217958539",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "icon": "location",
+        "title": "Visit the Clinic",
+        "value": "Pitampura, New Delhi",
+        "link": "https://maps.google.com/?q=Ryan+Clinic+Pitampura",
+        "displayOrder": 0
+      }
+    ],
+    "form": {
+      "title": "Request a Callback",
+      "services": [
+        "FUE Hair Transplant",
+        "Sapphire FUE",
+        "THI Technique",
+        "Beard Transplant",
+        "Eyebrow Transplant",
+        "PRP Therapy",
+        "Female Hair Transplant"
+      ],
+      "submitButtonText": "Request Free Consultation"
+    }
+  },
+  "questionsToAsk": {
+    "sectionLabel": "Questions to Ask",
+    "heading": "Questions to ask your hair transplant doctor in Delhi before booking",
+    "description": "The quality of a doctor's answers tells you almost everything.",
+    "questions": [
+      {
+        "tag": "SURGICAL ROLE",
+        "question": "Will the doctor personally perform graft extraction and channel creation?",
+        "answer": "Uncredentialed technicians performing extraction risk permanent follicle damage and over-harvesting donor areas. Always demand written confirmation that your surgeon conducts all major surgical phases.",
+        "ryanStandard": "Doctor-led at every stage: Dr. Pranendra Singh personally conducts key extraction and channel creation steps.",
+        "displayOrder": 1
+      },
+      {
+        "tag": "TECHNIQUE & PLANNING",
+        "question": "Which hair restoration technique is recommended for my hairline, and why?",
+        "answer": "A genuine surgeon customises the technique (Sapphire FUE vs Turkish Technique) according to graft density needs, hairline aesthetics, and donor hair caliber rather than pushing a one-size-fits-all package.",
+        "ryanStandard": "Customised Sapphire FUE & Turkish Technique combined protocols tailored to your face structure.",
+        "displayOrder": 2
+      },
+      {
+        "tag": "CREDENTIAL VERIFICATION",
+        "question": "Can I verify your DMC / NMC state medical council registration number?",
+        "answer": "Qualified hair restoration surgeons readily provide their medical council registration details. Unverifiable registration is a major red flag.",
+        "ryanStandard": "Active registration details (DMC-68492) provided for verification upon consultation.",
+        "displayOrder": 3
+      },
+      {
+        "tag": "TRANSPARENT PRICING",
+        "question": "Is the per-graft cost fixed with zero hidden post-op fees?",
+        "answer": "Ensure the estimate includes full anesthesia, sterile OT charges, post-op wash kits, and post-surgery medications without surprise extra billing.",
+        "ryanStandard": "Transparent written per-graft estimate with zero hidden extras.",
+        "displayOrder": 4
+      },
+      {
+        "tag": "LONG-TERM CARE",
+        "question": "What is your post-operative review and growth monitoring protocol?",
+        "answer": "Hair transplant results mature over 12 to 14 months. Your clinic should offer structured follow-up checkups at months 1, 3, 6, and 12.",
+        "ryanStandard": "Full post-op follow-up care and progress tracking included.",
+        "displayOrder": 5
+      }
+    ],
+    "ctaCard": {
+      "badge": "",
+      "heading": "",
+      "description": "",
+      "buttonText": "",
+      "buttonLink": ""
+    }
+  },
+  "greatDoctorQualities": {
+    "sectionLabel": "What Great Doctors Do Differently",
+    "heading": "What a great hair transplant doctor in Delhi does differently",
+    "description": "The difference between a good result and a great one comes down to these practices.",
+    "cards": [
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "Honest Candidacy Assessment",
+        "hint": "",
+        "description": "Recommends surgery only when it's genuinely right for you — and says clearly when it isn't, even if it means losing a booking.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "Conservative, Natural Hairline Design",
+        "hint": "",
+        "description": "Plans for your future hair loss progression, not just today's — so the result looks right at 30, 45, and 60.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "Realistic Expectations, No Guarantees",
+        "hint": "",
+        "description": "No promised impossible density or 100% graft survival — honest about what your donor supply can achieve.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "Full Personal Involvement",
+        "hint": "",
+        "description": "Performs the surgery himself rather than delegating it — every extraction, channel, and implantation.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "Transparent Pricing & Structured Aftercare",
+        "hint": "",
+        "description": "No surprise fees; a clear per-graft cost and a structured 12–18 month follow-up plan included.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "Sparkles",
+        "title": "Stays Involved Through the Full Growth Cycle",
+        "hint": "",
+        "description": "No surprise fees; a clear per-graft cost and a structured 12–18 month follow-up plan included.",
+        "url": "",
+        "displayOrder": 0
+      }
+    ]
+  },
+  "warningSigns": {
+    "sectionLabel": "Red Flags",
+    "heading": "Red flags when choosing a hair transplant doctor in Delhi",
+    "description": "Protect yourself — these are the warning signs of a clinic you should avoid.",
+    "image": {
+      "image": "/uploads/1752667815707-fue-banner_ro9ae6.webp",
+      "alt": "Red flags in hair transplant clinics Delhi"
+    },
+    "cards": [
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "No named, credentialed doctor on the website",
+        "hint": "",
+        "description": "If you can't find the doctor's full name, qualifications, and registration number publicly listed, walk away.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "Vagueness about who actually operates",
+        "hint": "",
+        "description": "If the clinic is evasive about whether the doctor or technicians perform extraction and implantation, that tells you the answer.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "Unverifiable or exaggerated credentials",
+        "hint": "",
+        "description": "Credentials that can't be checked on a medical council register, or claims that sound too impressive to be real.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "Guaranteed results or pressure tactics",
+        "hint": "",
+        "description": "No ethical doctor guarantees hair density or graft survival. High-pressure booking or immediate payment demands are a warning sign.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "No real before-and-afters of the doctor's own patients",
+        "hint": "",
+        "description": "Stock photos or generic results that don't belong to the specific doctor you'll be seeing.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "Inconsistent claims across the site and ads",
+        "hint": "",
+        "description": "Wildly different graft counts, prices, or technique descriptions across different pages or ads indicate unreliable communication.",
+        "url": "",
+        "displayOrder": 0
+      }
+    ],
+    "bottomCTA": {
+      "badge": "",
+      "heading": "Not sure about a claim you've seen?",
+      "description": "Call our team — we'll answer every question transparently, including our own credentials.",
+      "buttonText": "",
+      "buttonLink": ""
+    }
+  },
+  "proceduresPerformed": {
+    "sectionLabel": "Procedures We Perform",
+    "heading": "Procedures our hair transplant doctors in Delhi perform",
+    "description": "Ryan Clinic's doctors personally perform all of the following — every step, every time.",
+    "cards": [
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "FUE & Sapphire FUE",
+        "hint": "",
+        "description": "Follicular unit extraction with Sapphire micro-blades for minimal trauma and maximum density.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "THI / Hairline Design",
+        "hint": "",
+        "description": "Turkish technique implantation with custom hairline design for natural-looking, age-appropriate results.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "Beard & Moustache Transplant",
+        "hint": "",
+        "description": "Precise facial hair restoration for beard gaps, patchy growth, and post-scar coverage.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "Eyebrow Transplant",
+        "hint": "",
+        "description": "Natural eyebrow restoration with careful angle and direction control by the doctor.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "Hair Transplant for Women",
+        "hint": "",
+        "description": "Case-specific female hair loss assessment and doctor-performed transplant surgery.",
+        "url": "",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "number": 0,
+        "icon": "",
+        "title": "PRP Therapy",
+        "hint": "",
+        "description": "Platelet-rich plasma treatment to support hair growth and complement transplant results.",
+        "url": "",
+        "displayOrder": 0
+      }
+    ]
+  },
+  "pricing": {
+    "sectionLabel": "Transparent Pricing",
+    "heading": "Cost of consulting a hair transplant doctor in Delhi",
+    "description": "Consultation at Ryan Clinic includes a free scalp analysis — your doctor assesses your case and provides an exact graft count and transparent cost estimate.",
+    "packages": [
+      {
+        "key": "consultation",
+        "title": "Free Consultation",
+        "subtitle": "Scalp analysis & honest assessment",
+        "price": "₹0",
+        "features": [
+          "Donor density & pattern analysis by Dr. Singh",
+          "Exact graft count recommendation",
+          "Technique suitability assessment",
+          "Transparent per-graft cost breakdown"
+        ],
+        "buttonText": "Book Free Consult",
+        "buttonLink": "",
+        "displayOrder": 1,
+        "isFeatured": false,
+        "priceNote": "No charge"
+      },
+      {
+        "key": "sapphire-fue",
+        "title": "Sapphire FUE",
+        "subtitle": "Most popular — natural, doctor-led result",
+        "price": "Estimate",
+        "features": [
+          "Doctor performs key surgical steps",
+          "Sapphire micro-blade extraction",
+          "Custom hairline design",
+          "Sterile OT suite",
+          "Structured follow-up care"
+        ],
+        "buttonText": "Get Exact Quote",
+        "buttonLink": "",
+        "displayOrder": 2,
+        "isFeatured": true,
+        "priceNote": "per graft rate confirmed in consult"
+      },
+      {
+        "key": "thi-technique",
+        "title": "THI Technique",
+        "subtitle": "Choi Pen implantation — highest precision",
+        "price": "Estimate",
+        "features": [
+          "Original Turkish Choi Pen technique",
+          "No-shave option available",
+          "Maximum density in single session",
+          "Doctor-performed key steps",
+          "Structured aftercare included"
+        ],
+        "buttonText": "Get Exact Quote",
+        "buttonLink": "",
+        "displayOrder": 3,
+        "isFeatured": false,
+        "priceNote": "per graft rate confirmed in consult"
+      }
+    ],
+    "disclaimer": "Prices are determined per-graft. Your exact cost depends on graft count determined at consultation. All estimates include anaesthesia, OT charges, post-op kit, and follow-up visits."
+  },
+  "visitClinic": {
+    "sectionLabel": "Find Us",
+    "heading": "Visiting Ryan Clinic in Pitampura, Delhi",
+    "description": "Our Delhi centre is in Pitampura (North-West Delhi), easily accessible from across the city and NCR via Metro, road, and major arterials.",
+    "clinicImage": {
+      "image": "",
+      "alt": ""
+    },
+    "gallery": [],
+    "address": {
+      "clinicName": "",
+      "address": "",
+      "city": "Pitampura, New Delhi",
+      "state": "",
+      "pincode": "110034"
+    },
+    "timings": [
+      {
+        "key": "",
+        "day": "Monday – Saturday",
+        "time": "9:00 AM – 7:00 PM"
+      },
+      {
+        "key": "",
+        "day": "Sunday",
+        "time": "By appointment only"
+      }
+    ],
+    "mapUrl": "https://maps.google.com/?q=CD+163+Block+CD+Dakshini+Pitampura+New+Delhi+110034",
+    "contact": {
+      "phone": "+91-9217958539",
+      "whatsapp": "+91-9217958539",
+      "email": "info@clinicryan.com"
+    },
+    "nearbyLocations": [],
+    "informationCards": []
+  },
+  "faq": {
+    "sectionLabel": "FAQ",
+    "heading": "Frequently asked questions about hair transplant doctors in Delhi",
+    "description": "Everything you need to know about choosing, verifying and consulting a hair transplant doctor in Delhi.",
+    "faqs": [
+      {
+        "key": "",
+        "question": "How do I choose the best hair transplant doctor in Delhi?",
+        "answer": "Verify that a qualified surgeon (e.g. MCh Plastic Surgery / MDS Surgeon) personally conducts key surgical steps, check their medical council registration (DMC), review unedited patient case results, and ensure transparent written per-graft pricing.",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "question": "What qualifications should a hair transplant surgeon have?",
+        "answer": "Look for recognized postgraduate surgical qualifications such as MDS (Surgeon) or MCh (Plastic Surgery), active state medical council registration (such as DMC in Delhi), and specialized training in Sapphire FUE and direct implantation techniques.",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "question": "Will the doctor perform my hair transplant personally?",
+        "answer": "At Ryan Clinic, Dr. Pranendra Singh personally conducts hairline design, donor graft extraction, and recipient site channel creation for every patient.",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "question": "How is the cost of hair transplant determined in Delhi?",
+        "answer": "Consultation at Ryan Clinic includes a free scalp analysis — Dr. Singh assesses your donor density, calculates exact graft requirements, and provides a transparent per-graft written cost estimate.",
+        "displayOrder": 0
+      },
+      {
+        "key": "",
+        "question": "Where can I meet the doctor in Delhi?",
+        "answer": "Dr. Pranendra Singh consults at Ryan Clinic located at CD 163, Block CD, Dakshini Pitampura, Pitampura, New Delhi – 110034.",
+        "displayOrder": 0
+      }
+    ]
+  },
+  "createdAt": "2026-08-04T08:28:41.817Z",
+  "updatedAt": "2026-09-30T14:29:19.132Z",
+  "surgicalProcess": {
+    "sectionLabel": "Step-by-Step Process",
+    "heading": "",
+    "description": "",
+    "steps": []
+  },
+  "keyFacts": {
+    "heading": "VERIFIED DOCTOR & CLINIC KEY FACTS",
+    "qualifications": "MDS (Surgeon)",
+    "registration": "DMC-68492",
+    "specialisation": "Sapphire FUE & Direct Implantation Hair Restoration",
+    "experience": "15+ Years",
+    "procedures": "5,000+ Surgeries",
+    "memberships": "Delhi Medical Council Registered",
+    "location": "Pitampura, New Delhi",
+    "consultation": "Free Scalp Analysis & Custom Hairline Design"
+  },
+  "medicalReviewer": {
+    "isVerified": false,
+    "reviewerName": "",
+    "qualifications": "",
+    "registration": ""
+  },
+  "doctorCard": {
+    "shortQualification": "",
+    "cardDescription": "",
+    "qualifications": [],
+    "certifications": [],
+    "specializations": []
+  }
+}

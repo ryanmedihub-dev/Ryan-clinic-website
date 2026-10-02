@@ -22,6 +22,15 @@ const handler = async (req) => {
             );
         }
 
+        // Block demo-doctor-* profiles from any public access via this endpoint.
+        // They are CMS-only records used for branch testing.
+        if (slug && slug.trim().toLowerCase().startsWith("demo-doctor-")) {
+            return NextResponse.json(
+                { success: false, message: "Doctor not found." },
+                { status: 404 }
+            );
+        }
+
         let doctor;
 
         if (id) {
