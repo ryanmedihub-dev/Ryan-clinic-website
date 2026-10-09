@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import useTrackCTA from "@/lib/useTrackCTA";
+import { getValidImageSrc } from "@/lib/utils";
 
 /* ─────────────────────────────────────────
    DATA
@@ -113,8 +114,8 @@ function DoctorCard({ doctor }) {
       {/* ── PHOTO PANEL ────────────────────── */}
       <div className="relative aspect-[4/5] lg:aspect-auto lg:w-[38%] xl:w-[36%] shrink-0 overflow-hidden">
         <Image
-          src={doctor.image}
-          alt={doctor.name}
+          src={getValidImageSrc(doctor.image, "/uploads/turkey-doctor.jpg")}
+          alt={doctor.name || "Doctor"}
           fill
           className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
           unoptimized
@@ -367,7 +368,7 @@ function normalizeDbDoctor(doc) {
     experience: b.yearsExperience ? `${b.yearsExperience}` : "15",
     procedures: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : "5,000+",
     rating: b.rating || 4.9,
-    image: b.profileImage?.image || "/uploads/turkey-doctor.jpg",
+    image: getValidImageSrc(b.profileImage, "/uploads/turkey-doctor.jpg"),
     languages: b.languages?.length ? b.languages : ["English", "Hindi"],
     slug: doc.slug,
     specialtyBadge: b.designation || "Turkey Certified",

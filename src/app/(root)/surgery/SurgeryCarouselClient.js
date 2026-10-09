@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowRight, Scissors, Sparkles } from "lucide-react";
+import { getValidImageSrc } from "@/lib/utils";
 
 export default function SurgeryCarouselClient({ dbPages = [] }) {
   // Map dynamic MongoDB surgery pages directly
@@ -22,14 +23,16 @@ export default function SurgeryCarouselClient({ dbPages = [] }) {
         "Doctor-led precision hair transplant procedure.";
 
       // Dedicated procedure/location image — admin-uploaded card image takes priority
-      let image =
-        page.landingCardImage?.image ||
-        page.hero?.heroImage?.image ||
-        page.seo?.openGraphImage?.image ||
-        page.introduction?.mainImage?.image ||
-        page.hero?.bgImage ||
-        page.hero?.doctorCard?.image?.url ||
-        page.introduction?.image?.url;
+      const candidateImage =
+        getValidImageSrc(page.landingCardImage) ||
+        getValidImageSrc(page.hero?.heroImage) ||
+        getValidImageSrc(page.seo?.openGraphImage) ||
+        getValidImageSrc(page.introduction?.mainImage) ||
+        getValidImageSrc(page.hero?.bgImage) ||
+        getValidImageSrc(page.hero?.doctorCard?.image) ||
+        getValidImageSrc(page.introduction?.image);
+
+      let image = candidateImage;
       if (!image) {
         const slugLower = (page.slug || "").toLowerCase();
         if (slugLower.includes("mumbai")) {
@@ -181,8 +184,8 @@ export default function SurgeryCarouselClient({ dbPages = [] }) {
                 >
                   {/* Cover Image */}
                   <Image
-                    src={item.image}
-                    alt={item.title}
+                    src={getValidImageSrc(item.image, "/uploads/1752734248947-Hair Transplant 1.jpg")}
+                    alt={item.title || "Hair transplant surgery"}
                     fill
                     className="object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-90"
                     unoptimized
@@ -272,8 +275,8 @@ export default function SurgeryCarouselClient({ dbPages = [] }) {
                       }`}
                     >
                       <Image
-                        src={item.image}
-                        alt={item.title}
+                        src={getValidImageSrc(item.image, "/uploads/1752734248947-Hair Transplant 1.jpg")}
+                        alt={item.title || "Hair transplant surgery"}
                         fill
                         className="object-cover object-center opacity-90"
                         unoptimized

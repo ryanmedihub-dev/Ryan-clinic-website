@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { Plus, Trash, Save } from "lucide-react";
+import { getValidImageSrc } from "@/lib/utils";
 
 const Editor = dynamic(() => import("@/components/textEditor"), {
   ssr: false,
@@ -603,11 +604,7 @@ export default function EditService({ initialData }) {
                 <div className="p-4 rounded-xl border border-blue-100 bg-blue-50/50 flex flex-col sm:flex-row items-start gap-4">
                   <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-200 shrink-0 border border-gray-200">
                     <img
-                      src={
-                        selectedDoctor.basicInfo?.profileImage?.image ||
-                        selectedDoctor.basicInfo?.profileImage?.url ||
-                        "/uploads/gallery.jpg"
-                      }
+                      src={getValidImageSrc(selectedDoctor.basicInfo?.profileImage, "/uploads/gallery.jpg")}
                       alt={selectedDoctor.basicInfo?.doctorName || "Doctor"}
                       className="w-full h-full object-cover"
                     />

@@ -4,6 +4,7 @@ import { useRef, useState, useCallback, useMemo, memo } from "react";
 import dynamic from "next/dynamic";
 import { Plus, Trash, Save } from "lucide-react";
 import ImageUploader from "@/components/admin/ImageUploader";
+import { getValidImageSrc } from "@/lib/utils";
 
 const SunEditor = dynamic(() => import("suneditor-react"), { ssr: false });
 import "suneditor/dist/css/suneditor.min.css";
@@ -382,12 +383,8 @@ const OurDoctorEditor = memo(({ value, onChange }) => {
         <div className="p-3.5 rounded-xl border border-blue-100 bg-blue-50/50 flex items-start gap-3">
           <div className="w-14 h-14 rounded-lg overflow-hidden bg-gray-200 shrink-0 border border-gray-200">
             <img
-              src={
-                selectedDoctor.basicInfo?.profileImage?.image ||
-                selectedDoctor.basicInfo?.profileImage?.url ||
-                "/uploads/gallery.jpg"
-              }
-              alt={selectedDoctor.basicInfo?.doctorName}
+              src={getValidImageSrc(selectedDoctor.basicInfo?.profileImage, "/uploads/gallery.jpg")}
+              alt={selectedDoctor.basicInfo?.doctorName || "Doctor"}
               className="w-full h-full object-cover"
             />
           </div>

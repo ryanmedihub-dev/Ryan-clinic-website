@@ -3,6 +3,7 @@
 // OurDoctorSection.js
 // Usage: <OurDoctorSection city="Delhi" doctor={...} cmsDoctor={...} />
 import useTrackCTA from "@/lib/useTrackCTA";
+import { getValidImageSrc } from "@/lib/utils";
 
 export default function OurDoctorSection({
   city = "Delhi",
@@ -35,13 +36,13 @@ export default function OurDoctorSection({
 
   const doctorTitle =
     doc.basicInfo?.designation || doc.designation || "Hair Restoration Specialist";
-  const image =
-    doc.basicInfo?.profileImage?.image ||
-    doc.basicInfo?.profileImage?.url ||
-    doc.profileImage?.image ||
-    doc.profileImage?.url ||
-    doc.image ||
-    "/uploads/gallery.jpg";
+  const image = getValidImageSrc(
+    doc.basicInfo?.profileImage,
+    getValidImageSrc(
+      doc.profileImage,
+      getValidImageSrc(doc.image, "/uploads/gallery.jpg")
+    )
+  );
 
   // Dynamic badge: branch setting override first, then Doctor CMS certs
   // If branch explicitly sets badgeText (even to ""), respect it — prevents default "Board Certified" on demo doctors

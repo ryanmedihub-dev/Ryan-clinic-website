@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import PageBanner from "@/components/layouts/pageBanner";
 import useTrackCTA from "@/lib/useTrackCTA";
+import { getValidImageSrc } from "@/lib/utils";
 import {
   MapPin,
   ShieldCheck,
@@ -63,8 +64,8 @@ function BeforeAfterSlider({ src, afterSrc, alt, className = "" }) {
     };
   }, [isTouchDragging]);
 
-  const beforeSrc = src;
-  const resolvedAfterSrc = afterSrc || src;
+  const beforeSrc = getValidImageSrc(src, "/uploads/gallery.jpg");
+  const resolvedAfterSrc = getValidImageSrc(afterSrc, beforeSrc);
 
   return (
     <div
@@ -135,7 +136,8 @@ function SectionLabel({ label }) {
 }
 
 function ImageCard({ src, alt, caption, onClick }) {
-  const isUrl = typeof src === "string";
+  const validSrc = getValidImageSrc(src, "/uploads/gallery.jpg");
+  const isUrl = typeof validSrc === "string";
   return (
     <div
       onClick={onClick}
@@ -143,8 +145,8 @@ function ImageCard({ src, alt, caption, onClick }) {
     >
       <div className="relative w-full h-52 sm:h-64 md:h-72 overflow-hidden bg-stone-900">
         <Image
-          src={src}
-          alt={alt}
+          src={validSrc}
+          alt={alt || "Ryan Clinic Hair Transplant"}
           fill
           className="object-cover transform group-hover:scale-105 transition-transform duration-700"
           sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"

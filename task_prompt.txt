@@ -1,0 +1,74 @@
+<USER_REQUEST>
+# Ryan Clinic — Make Surgery Comparison Section Fully CMS-Editable + Restore Shared Doctor Page Banner
+
+Work in the existing Ryan Clinic Next.js project. Inspect the current implementation before changing anything. Make targeted, production-safe changes without rebuilding unrelated modules.
+
+## Task 1: Audit the Entire Doctor-Led vs Technician-Led Section
+
+The section shown in the uploaded screenshot contains:
+- The heading “Doctor-led vs technician-led surgery in Gurgaon”
+- The supporting paragraph at the top right
+- The green Doctor-Led comparison card with the clinic image, clinic name, description, experience/case-volume/medical-council badges, surgical steps, and booking button
+- The red Technician-Led comparison card with its heading, warning message, risk label, surgical steps, and safety notice
+
+First, inspect the actual public component, Admin CMS forms, API routes, Mongoose models, and existing database fields. Produce a field-by-field audit of what is already dynamic, what is hardcoded, and what is editable in Admin. Do not assume that content is editable merely because it comes from a variable or database.
+
+## Task 2: Make Every Text Element Editable Through Admin
+
+If any content is hardcoded or lacks an Admin control, make it CMS-editable. Include all large and small text, labels, badges, buttons, and supporting copy.
+
+### A. Section heading and introductory content
+- Main heading, including the city-specific wording
+- Introductory paragraph
+- Any eyebrow labels or captions
+
+### B. Doctor-led card
+- Doctor-led badge text
+- Clinic/brand name
+- Description below the clinic name
+- Experience badge label and value, such as `15+ Yrs` and `Exp`
+- Case-volume badge label and value, such as `5,000+` and `Cases Done`
+- Medical registration badge text, including **“Medical Council Registered”**
+- All four surgical step labels:
+  1. Consultation & Scalp Analysis
+  2. Hairline Design & Planning
+  3. Graft Extraction (FUE)
+  4. Direct Graft Implantation
+
+<truncated 3697 bytes>
+g those two removed sections back.**
+6. Verify the banner is present on the initial page load, not only after client-side navigation or hydration.
+
+## Task 5: Test and Report
+
+Test all of the following:
+1. Every visible text element in the comparison section has an Admin-editable field.
+2. Change several small labels—including “Medical Council Registered”, “Confirm Doctor Presence”, “Ask Surgical Role”, and “Verify Registration”—save, reload Admin, and confirm the values persist.
+3. Confirm the public section reflects those edits without hardcoded text replacing them.
+4. Confirm the four steps on both sides render correctly on desktop and mobile.
+5. Confirm branch-specific changes do not leak into other cities.
+6. Confirm the existing booking button destinations and behavior still work.
+7. Confirm the shared banner appears at the top of Doctor profile pages and remains unchanged on other pages.
+8. Confirm the two previously removed credentials sections remain absent.
+9. Run relevant tests and the production build.
+
+At completion, provide:
+- The original field-by-field audit
+- The final list of CMS fields added or reused
+- The exact files changed
+- Test and build results
+- Any content that is intentionally global versus branch-specific
+
+Do not report the section as fully dynamic until you have verified every visible label against its Admin field and confirmed the saved values render on the public page.
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-09T14:38:44+05:30.
+
+The user's current state is as follows:
+Active Document: c:\Users\patwa\Desktop\clinicRyan\Ryan-next-project-new\src\app\api\service\get-service\route.js (LANGUAGE_JAVASCRIPT)
+Cursor is on line: 25
+Other open documents:
+- c:\Users\patwa\Desktop\clinicRyan\Ryan-next-project-new\src\app\api\service\get-service\route.js (LANGUAGE_JAVASCRIPT)
+Running terminal commands:
+- npm run dev (in c:\Users\patwa\Desktop\clinicRyan\Ryan-next-project-new, running for 3h48m44s)
+</ADDITIONAL_METADATA>

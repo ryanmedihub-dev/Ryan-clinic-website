@@ -6,6 +6,38 @@ export function cn(...inputs) {
 }
 
 /**
+ * Safely resolves an image source to a non-empty string URL or valid static image object.
+ * Returns fallback if input is null, empty string, empty object, or invalid.
+ * Prevents Next.js "Image is missing required src property: {}" and React "empty string passed to src" errors.
+ */
+export function getValidImageSrc(src, fallback = null) {
+  if (!src) return fallback;
+  if (typeof src === "string") {
+    const trimmed = src.trim();
+    return trimmed.length > 0 ? trimmed : fallback;
+  }
+  if (typeof src === "object") {
+    // Next.js static imported image: { src: string, height: number, width: number }
+    if (typeof src.src === "string" && src.src.trim().length > 0) {
+      return src;
+    }
+    // Webpack / ES module default export
+    if (typeof src.default === "string" && src.default.trim().length > 0) {
+      return src.default.trim();
+    }
+    if (typeof src.default === "object" && typeof src.default?.src === "string" && src.default.src.trim().length > 0) {
+      return src.default;
+    }
+    // Mongoose / CMS image schema: { url?: string, image?: string, secure_url?: string }
+    const candidate = src.url || src.image || src.secure_url || "";
+    if (typeof candidate === "string" && candidate.trim().length > 0) {
+      return candidate.trim();
+    }
+  }
+  return fallback;
+}
+
+/**
  * Strips HTML tags that belong only in <head> from CMS-stored content.
  * Also fixes image accessibility and performance issues in CMS HTML:
  * - Strips HTML comments first (some crawlers parse tags inside comments)

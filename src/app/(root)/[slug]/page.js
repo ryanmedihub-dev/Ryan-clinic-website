@@ -1,6 +1,6 @@
 import Image from "next/image";
 import PageBanner from "@/components/layouts/pageBanner";
-import { sanitizeContent } from "@/lib/utils";
+import { sanitizeContent, getValidImageSrc } from "@/lib/utils";
 import ContactForm from "@/components/pages/contactForm";
 import FAQSection from "./FAQSection";
 import PleoFeatures from "./PleoFeatures";
@@ -116,38 +116,47 @@ function renderSection(key, d, service, branchName) {
               <div className="w-full lg:w-5/12">
                 <div className="h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[45%_55%] gap-4 md:gap-6 sticky top-40">
                   <div className="relative rounded-xl h-48 md:h-60 lg:h-full overflow-hidden shadow-md">
-                    <Image
-                      src={service?.typesData?.images[0]?.url}
-                      alt={
-                        service?.typesData?.images[0]?.alt || "Service image"
-                      }
-                      fill
-                      unoptimized
-                      className="object-cover"
-                    />
+                    {(() => {
+                      const img0 = getValidImageSrc(service?.typesData?.images?.[0]?.url || service?.typesData?.images?.[0]);
+                      return img0 ? (
+                        <Image
+                          src={img0}
+                          alt={service?.typesData?.images?.[0]?.alt || "Service image"}
+                          fill
+                          unoptimized
+                          className="object-cover"
+                        />
+                      ) : null;
+                    })()}
                   </div>
                   <div className="grid grid-cols-1 md:grid-rows-2 gap-4 md:gap-6">
                     <div className="relative rounded-xl h-48 overflow-hidden shadow-md">
-                      <Image
-                        src={service?.typesData?.images[1]?.url}
-                        alt={
-                          service?.typesData?.images[1]?.alt || "Service image"
-                        }
-                        fill
-                        unoptimized
-                        className="object-cover"
-                      />
+                      {(() => {
+                        const img1 = getValidImageSrc(service?.typesData?.images?.[1]?.url || service?.typesData?.images?.[1]);
+                        return img1 ? (
+                          <Image
+                            src={img1}
+                            alt={service?.typesData?.images?.[1]?.alt || "Service image"}
+                            fill
+                            unoptimized
+                            className="object-cover"
+                          />
+                        ) : null;
+                      })()}
                     </div>
                     <div className="relative rounded-xl h-48 overflow-hidden shadow-md">
-                      <Image
-                        src={service?.typesData?.images[2]?.url}
-                        alt={
-                          service?.typesData?.images[2]?.alt || "Service image"
-                        }
-                        fill
-                        unoptimized
-                        className="object-cover"
-                      />
+                      {(() => {
+                        const img2 = getValidImageSrc(service?.typesData?.images?.[2]?.url || service?.typesData?.images?.[2]);
+                        return img2 ? (
+                          <Image
+                            src={img2}
+                            alt={service?.typesData?.images?.[2]?.alt || "Service image"}
+                            fill
+                            unoptimized
+                            className="object-cover"
+                          />
+                        ) : null;
+                      })()}
                     </div>
                   </div>
                 </div>

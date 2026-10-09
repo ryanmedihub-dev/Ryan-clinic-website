@@ -2,6 +2,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import { DBConnection } from "@/lib/db";
+import { getValidImageSrc } from "@/lib/utils";
 import CostPage from "@/models/CostPage";
 import PageBanner from "@/components/layouts/pageBanner";
 import ContactForm from "@/components/pages/contactForm";
@@ -892,39 +893,43 @@ export default async function DynamicCostPage({ params }) {
                       className="group bg-white rounded-3xl border border-[#E8E4DF] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 flex flex-col"
                     >
                       {/* Image Container — taller, deeper gradient */}
-                      {card.image && (
-                        <div className="relative h-60 w-full overflow-hidden bg-gray-100 shrink-0">
-                          <Image
-                            src={card.image}
-                            alt={card.title}
-                            fill
-                            className="object-cover object-top group-hover:scale-108 transition-transform duration-700"
-                            unoptimized
-                          />
-                          {/* Deep gradient for strong text contrast */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                      {(() => {
+                        const cardImgSrc = getValidImageSrc(card?.image);
+                        if (!cardImgSrc) return null;
+                        return (
+                          <div className="relative h-60 w-full overflow-hidden bg-gray-100 shrink-0">
+                            <Image
+                              src={cardImgSrc}
+                              alt={card.title || "Procedure"}
+                              fill
+                              className="object-cover object-top group-hover:scale-108 transition-transform duration-700"
+                              unoptimized
+                            />
+                            {/* Deep gradient for strong text contrast */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
-                          {/* Card number — top left */}
-                          <span className="absolute top-3.5 left-3.5 w-6 h-6 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white text-[10px] font-black">
-                            {String(i + 1).padStart(2, "0")}
-                          </span>
-
-                          {/* Badge — top right */}
-                          {card.badge && (
-                            <span className="absolute top-3.5 right-3.5 bg-[#e30a17] text-white text-[9px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full shadow-md">
-                              {card.badge}
+                            {/* Card number — top left */}
+                            <span className="absolute top-3.5 left-3.5 w-6 h-6 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white text-[10px] font-black">
+                              {String(i + 1).padStart(2, "0")}
                             </span>
-                          )}
 
-                          {/* Price glass chip — bottom left */}
-                          {card.startingPrice && (
-                            <div className="absolute bottom-4 left-4">
-                              <p className="text-white/70 text-[9px] font-bold uppercase tracking-widest mb-0.5">Starting From</p>
-                              <p className="text-2xl font-black text-white leading-none drop-shadow-lg">{card.startingPrice}</p>
-                            </div>
-                          )}
-                        </div>
-                      )}
+                            {/* Badge — top right */}
+                            {card.badge && (
+                              <span className="absolute top-3.5 right-3.5 bg-[#e30a17] text-white text-[9px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full shadow-md">
+                                {card.badge}
+                              </span>
+                            )}
+
+                            {/* Price glass chip — bottom left */}
+                            {card.startingPrice && (
+                              <div className="absolute bottom-4 left-4">
+                                <p className="text-white/70 text-[9px] font-bold uppercase tracking-widest mb-0.5">Starting From</p>
+                                <p className="text-2xl font-black text-white leading-none drop-shadow-lg">{card.startingPrice}</p>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })()}
 
                       {/* Body */}
                       <div className="p-5 flex-1 flex flex-col justify-between">
