@@ -1,11 +1,11 @@
 import Image from "next/image";
 import PageBanner from "@/components/layouts/pageBanner";
-import { sanitizeContent } from "@/lib/utils";
+import { sanitizeContent, getValidImageSrc } from "@/lib/utils";
 import ContactForm from "@/components/pages/contactForm";
 import FAQSection from "./FAQSection";
 import PleoFeatures from "./PleoFeatures";
 import OurResults from "../home/ourResults";
-import { getServiceBySlug, getDoctorByCity } from "@/lib/serviceData";
+import { getServiceBySlug } from "@/lib/serviceData";
 import { notFound } from "next/navigation";
 import Testimonials from "../home/testimonial";
 import WhyChooseRyanClinic from "../home/whyChooseUs";
@@ -15,6 +15,9 @@ import DifferencesSection from "@/components/pages/DifferencesSection";
 import OurDoctorSection from "@/components/pages/OurDoctorSection";
 import WhyDoctorMattersSection from "@/components/pages/WhyDoctorMattersSection";
 import AreasWeServe from "@/components/pages/AreasWeServe";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -81,7 +84,7 @@ function getDefaultSections(pageType) {
   ];
 }
 
-function renderSection(key, d, service, branchName, cmsDoctor) {
+function renderSection(key, d, service, branchName) {
   switch (key) {
     case "overview":
       return (
@@ -113,38 +116,47 @@ function renderSection(key, d, service, branchName, cmsDoctor) {
               <div className="w-full lg:w-5/12">
                 <div className="h-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[45%_55%] gap-4 md:gap-6 sticky top-40">
                   <div className="relative rounded-xl h-48 md:h-60 lg:h-full overflow-hidden shadow-md">
-                    <Image
-                      src={service?.typesData?.images[0]?.url}
-                      alt={
-                        service?.typesData?.images[0]?.alt || "Service image"
-                      }
-                      fill
-                      unoptimized
-                      className="object-cover"
-                    />
+                    {(() => {
+                      const img0 = getValidImageSrc(service?.typesData?.images?.[0]?.url || service?.typesData?.images?.[0]);
+                      return img0 ? (
+                        <Image
+                          src={img0}
+                          alt={service?.typesData?.images?.[0]?.alt || "Service image"}
+                          fill
+                          unoptimized
+                          className="object-cover"
+                        />
+                      ) : null;
+                    })()}
                   </div>
                   <div className="grid grid-cols-1 md:grid-rows-2 gap-4 md:gap-6">
                     <div className="relative rounded-xl h-48 overflow-hidden shadow-md">
-                      <Image
-                        src={service?.typesData?.images[1]?.url}
-                        alt={
-                          service?.typesData?.images[1]?.alt || "Service image"
-                        }
-                        fill
-                        unoptimized
-                        className="object-cover"
-                      />
+                      {(() => {
+                        const img1 = getValidImageSrc(service?.typesData?.images?.[1]?.url || service?.typesData?.images?.[1]);
+                        return img1 ? (
+                          <Image
+                            src={img1}
+                            alt={service?.typesData?.images?.[1]?.alt || "Service image"}
+                            fill
+                            unoptimized
+                            className="object-cover"
+                          />
+                        ) : null;
+                      })()}
                     </div>
                     <div className="relative rounded-xl h-48 overflow-hidden shadow-md">
-                      <Image
-                        src={service?.typesData?.images[2]?.url}
-                        alt={
-                          service?.typesData?.images[2]?.alt || "Service image"
-                        }
-                        fill
-                        unoptimized
-                        className="object-cover"
-                      />
+                      {(() => {
+                        const img2 = getValidImageSrc(service?.typesData?.images?.[2]?.url || service?.typesData?.images?.[2]);
+                        return img2 ? (
+                          <Image
+                            src={img2}
+                            alt={service?.typesData?.images?.[2]?.alt || "Service image"}
+                            fill
+                            unoptimized
+                            className="object-cover"
+                          />
+                        ) : null;
+                      })()}
                     </div>
                   </div>
                 </div>
@@ -178,16 +190,34 @@ function renderSection(key, d, service, branchName, cmsDoctor) {
         />
       );
 
-    case "ourDoctor":
-      if (!cmsDoctor && !d.doctor) return null;
+    case "ourDoctor": {
+      const meetYourSurgeon = service?.meetYourSurgeon || d?.meetYourSurgeon || {};
+      if (meetYourSurgeon.enabled === false) return null;
+
+      const doctor = service?.assignedDoctor;
+      const isDoctorPublished =
+        doctor?.status ? String(doctor.status).toLowerCase() === "published" : true;
+      const isEligible =
+        doctor &&
+        typeof doctor === "object" &&
+        isDoctorPublished &&
+        !doctor.deletedAt &&
+        doctor.isActive !== false;
+
+      if (!isEligible) return null;
+
       return (
         <OurDoctorSection
           key="ourDoctor"
           city={d.city || branchName}
-          doctor={d.doctor}
-          cmsDoctor={cmsDoctor}
+          doctor={doctor}
+          cmsDoctor={doctor}
+          settings={meetYourSurgeon}
+          sectionSettings={meetYourSurgeon}
+          meetYourSurgeon={meetYourSurgeon}
         />
       );
+    }
 
     case "differencesSection":
       return (
@@ -291,14 +321,31 @@ export default async function ServicesPage({ params }) {
     return "Delhi";
   })();
 
-  const cmsDoctor = await getDoctorByCity(branchName);
-
-  const sections = (
+  let rawSections = (
     service?.pageSections?.length
       ? service.pageSections
       : getDefaultSections(service?.metadata?.pageType)
-  )
-    .filter((s) => s.enabled)
+  );
+
+  const isMeetYourSurgeonEnabled = service?.meetYourSurgeon?.enabled !== false;
+  if (service?.assignedDoctor && isMeetYourSurgeonEnabled) {
+    const hasOurDoc = rawSections.some((s) => s.key === "ourDoctor");
+    if (!hasOurDoc) {
+      const costIdx = rawSections.findIndex((s) => s.key === "costSection");
+      const insertOrder = costIdx !== -1 ? (rawSections[costIdx].order ?? 4) + 1 : 5;
+      rawSections = [
+        ...rawSections,
+        { key: "ourDoctor", enabled: true, order: insertOrder, data: {} },
+      ];
+    } else {
+      rawSections = rawSections.map((s) =>
+        s.key === "ourDoctor" ? { ...s, enabled: true } : s
+      );
+    }
+  }
+
+  const sections = rawSections
+    .filter((s) => (s.key === "ourDoctor" ? isMeetYourSurgeonEnabled : s.enabled))
     .sort((a, b) => a.order - b.order);
 
   return (
@@ -313,7 +360,7 @@ export default async function ServicesPage({ params }) {
         />
 
         {sections.map((section) =>
-          renderSection(section.key, section.data || {}, service, branchName, cmsDoctor),
+          renderSection(section.key, section.data || {}, service, branchName),
         )}
       </div>
     </>

@@ -54,6 +54,7 @@ const initialState = {
     robots: "index, follow",
     openGraphImage: { image: "", alt: "" },
     useGlobalSEO: false,
+    customJsonLd: "",
   },
   hero: {
     description: "",
@@ -1209,187 +1210,6 @@ export default function CreateDoctorPage() {
           </div>
         )}
 
-        {/* 7. CREDENTIALS */}
-        <h3 className="text-2xl font-bold underline mt-10 mb-5">7. Qualifications &amp; Credentials</h3>
-        <div className="flex gap-4 flex-col md:flex-row mb-4">
-          <div className="w-full">
-            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
-            <input type="text" value={formData.credentials.sectionLabel} onChange={(e) => handleNestedChange("credentials", "sectionLabel", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Verification & Credentials" />
-          </div>
-          <div className="w-full">
-            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
-            <input type="text" value={formData.credentials.heading} onChange={(e) => handleNestedChange("credentials", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md font-semibold" placeholder="e.g. Credentials to look for in a hair transplant doctor in Delhi" />
-          </div>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold text-gray-700">Description</label>
-          <textarea rows={2} value={formData.credentials.description} onChange={(e) => handleNestedChange("credentials", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="What matters is genuine hair-restoration training." />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold text-gray-700">Card Heading (Above Tabs)</label>
-          <input type="text" value={formData.credentials.cardHeading || ""} onChange={(e) => handleNestedChange("credentials", "cardHeading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Credentials & Registration Breakdown" />
-        </div>
-        <button
-          type="button"
-          onClick={() => addToArray("credentials", "tabs", { title: "", hint: "", description: "", icon: "GraduationCap", ctaText: "", ctaLink: "" })}
-          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-4 cursor-pointer"
-        >
-          + Add Credential Tab
-        </button>
-        {formData.credentials.tabs.length === 0 ? (
-          <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center my-3">
-            <p className="text-gray-500">No credential tabs added yet.</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {formData.credentials.tabs.map((tab, i) => (
-              <div key={i} className="border rounded-xl p-5 bg-white shadow-sm space-y-3">
-                <div className="flex justify-between items-center">
-                  <h4 className="text-base font-semibold text-gray-800">Credential Tab #{i + 1}</h4>
-                  <button type="button" onClick={() => deleteFromArray("credentials", "tabs", i)} className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer">
-                    Delete Tab
-                  </button>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700">Tab Title (e.g. MBBS)</label>
-                    <input type="text" value={tab.title} onChange={(e) => updateArrayItem("credentials", "tabs", i, "title", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. MBBS, MD - Dermatology" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700">Subtitle / Hint Badge</label>
-                    <input type="text" value={tab.hint || ""} onChange={(e) => updateArrayItem("credentials", "tabs", i, "hint", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. Primary Qualification" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700">Icon</label>
-                    <select
-                      value={tab.icon || "GraduationCap"}
-                      onChange={(e) => updateArrayItem("credentials", "tabs", i, "icon", e.target.value)}
-                      className="w-full mt-1.5 p-2 border rounded-md bg-white"
-                    >
-                      <option value="GraduationCap">GraduationCap (Degree)</option>
-                      <option value="ShieldCheck">ShieldCheck (Registration)</option>
-                      <option value="Building2">Building2 (Hospital/Clinic)</option>
-                      <option value="Award">Award (Achievement)</option>
-                      <option value="BadgeCheck">BadgeCheck (Council)</option>
-                      <option value="CheckCircle">CheckCircle (Verified)</option>
-                    </select>
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700">Detailed Description / Requirements</label>
-                  <textarea rows={2} value={tab.description} onChange={(e) => updateArrayItem("credentials", "tabs", i, "description", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. Primary 5.5-year medical degree required before any surgical training." />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700">CTA Button Text (Optional)</label>
-                    <input type="text" value={tab.ctaText || ""} onChange={(e) => updateArrayItem("credentials", "tabs", i, "ctaText", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. Verify Registration" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700">CTA Button Link (Optional)</label>
-                    <input type="text" value={tab.ctaLink || ""} onChange={(e) => updateArrayItem("credentials", "tabs", i, "ctaLink", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. https://www.nmc.org.in or #contact" />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-        <div className="mt-4 mb-6">
-          <label className="block text-sm font-semibold text-gray-700">Credentials Bottom Trust Note / Disclaimer</label>
-          <textarea rows={2} value={formData.credentials.bottomNote || ""} onChange={(e) => handleNestedChange("credentials", "bottomNote", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. All qualifications, registrations, and memberships can be independently verified through respective medical councils and boards before making any surgical decision." />
-        </div>
-
-        {/* 8. VERIFICATION */}
-        <h3 className="text-2xl font-bold underline mt-10 mb-5">8. Verification &amp; Safety Steps</h3>
-        <div className="flex gap-4 flex-col md:flex-row mb-4">
-          <div className="w-full">
-            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
-            <input type="text" value={formData.verification.sectionLabel} onChange={(e) => handleNestedChange("verification", "sectionLabel", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Doctor Verification" />
-          </div>
-          <div className="w-full">
-            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
-            <input type="text" value={formData.verification.heading} onChange={(e) => handleNestedChange("verification", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md font-semibold" placeholder="e.g. How to verify a hair transplant doctor's credentials in Delhi" />
-          </div>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold text-gray-700">Description</label>
-          <textarea rows={2} value={formData.verification.description} onChange={(e) => handleNestedChange("verification", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Tick off each item before booking your hair transplant procedure." />
-        </div>
-        <button
-          type="button"
-          onClick={() => addToArray("verification", "steps", { title: "", description: "" })}
-          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-4 cursor-pointer"
-        >
-          + Add Verification Step
-        </button>
-        {formData.verification.steps.length === 0 ? (
-          <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center my-3">
-            <p className="text-gray-500">No verification steps added yet.</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {formData.verification.steps.map((step, i) => (
-              <div key={i} className="border rounded-xl p-5 bg-white shadow-sm space-y-3">
-                <div className="flex justify-between items-center">
-                  <h4 className="text-base font-semibold text-gray-800">Verification Step #{i + 1}</h4>
-                  <button type="button" onClick={() => deleteFromArray("verification", "steps", i)} className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer">
-                    Delete Step
-                  </button>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700">Title</label>
-                    <input type="text" value={step.title} onChange={(e) => updateArrayItem("verification", "steps", i, "title", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="Check Medical Registration" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700">Description</label>
-                    <input type="text" value={step.description} onChange={(e) => updateArrayItem("verification", "steps", i, "description", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="Verify details online..." />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* 8B. VERIFICATION CHECKLIST */}
-        <div className="mt-8 pt-6 border-t border-gray-200">
-          <h4 className="text-lg font-bold text-gray-800 mb-2">Step-by-Step Verification Checklist</h4>
-          <p className="text-xs text-gray-500 mb-4">Interactive checklist shown to patients on the public doctor page.</p>
-          <button
-            type="button"
-            onClick={() => addToArray("verification", "checklist", { title: "", checked: false })}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-4 cursor-pointer text-sm font-medium"
-          >
-            + Add Checklist Item
-          </button>
-          {(formData.verification?.checklist || []).length === 0 ? (
-            <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center my-3">
-              <p className="text-gray-500 text-sm">No checklist items added yet.</p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {(formData.verification?.checklist || []).map((item, i) => (
-                <div key={i} className="flex items-center gap-3 bg-white p-3 border rounded-lg shadow-xs">
-                  <span className="text-xs font-bold text-gray-400 w-6 text-center">{i + 1}.</span>
-                  <input
-                    type="text"
-                    value={item.title || ""}
-                    onChange={(e) => updateArrayItem("verification", "checklist", i, "title", e.target.value)}
-                    className="flex-1 p-2 border rounded-md text-sm"
-                    placeholder="e.g. Check state medical council registration online"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => deleteFromArray("verification", "checklist", i)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer shrink-0"
-                  >
-                    Delete
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
         {/* 9. DOCTOR VS TECHNICIAN COMPARISON */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">9. Doctor vs Technician Comparison Matrix</h3>
         <div className="flex gap-4 flex-col md:flex-row mb-4">
@@ -1745,108 +1565,6 @@ export default function CreateDoctorPage() {
           </div>
         </div>
 
-        {/* 13. QUESTIONS TO ASK */}
-        <h3 className="text-2xl font-bold underline mt-10 mb-5">13. Questions to Ask Your Surgeon</h3>
-        <div className="flex gap-4 flex-col md:flex-row mb-4">
-          <div className="w-full">
-            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
-            <input type="text" value={formData.questionsToAsk.sectionLabel} onChange={(e) => handleNestedChange("questionsToAsk", "sectionLabel", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Questions to Ask" />
-          </div>
-          <div className="w-full">
-            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
-            <input type="text" value={formData.questionsToAsk.heading} onChange={(e) => handleNestedChange("questionsToAsk", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md font-semibold" placeholder="e.g. Questions to ask your hair transplant doctor in Delhi before booking" />
-          </div>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold text-gray-700">Description</label>
-          <textarea rows={2} value={formData.questionsToAsk.description} onChange={(e) => handleNestedChange("questionsToAsk", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="The quality of a doctor's answers tells you almost everything." />
-        </div>
-        <button
-          type="button"
-          onClick={() => addToArray("questionsToAsk", "questions", { question: "", answer: "" })}
-          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-4 cursor-pointer"
-        >
-          + Add Question
-        </button>
-        {formData.questionsToAsk.questions.length === 0 ? (
-          <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center my-3">
-            <p className="text-gray-500">No questions to ask added yet.</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {formData.questionsToAsk.questions.map((qItem, i) => (
-              <div key={i} className="border rounded-xl p-5 bg-white shadow-sm space-y-3">
-                <div className="flex justify-between items-center">
-                  <h4 className="text-base font-semibold text-gray-800">Question #{i + 1}</h4>
-                  <button type="button" onClick={() => deleteFromArray("questionsToAsk", "questions", i)} className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer">
-                    Delete Question
-                  </button>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700">Question</label>
-                  <input type="text" value={qItem.question} onChange={(e) => updateArrayItem("questionsToAsk", "questions", i, "question", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. Will the doctor perform the surgery?" />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700">Answer / Key Point</label>
-                  <textarea rows={2} value={qItem.answer} onChange={(e) => updateArrayItem("questionsToAsk", "questions", i, "answer", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="Explanation..." />
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* 14. GREAT DOCTOR QUALITIES */}
-        <h3 className="text-2xl font-bold underline mt-10 mb-5">14. Great Doctor Qualities</h3>
-        <div className="flex gap-4 flex-col md:flex-row mb-4">
-          <div className="w-full">
-            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
-            <input type="text" value={formData.greatDoctorQualities.sectionLabel} onChange={(e) => handleNestedChange("greatDoctorQualities", "sectionLabel", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Excellence Standard" />
-          </div>
-          <div className="w-full">
-            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
-            <input type="text" value={formData.greatDoctorQualities.heading} onChange={(e) => handleNestedChange("greatDoctorQualities", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md font-semibold" placeholder="e.g. What a great hair transplant doctor in Delhi does differently" />
-          </div>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold text-gray-700">Description</label>
-          <textarea rows={2} value={formData.greatDoctorQualities.description} onChange={(e) => handleNestedChange("greatDoctorQualities", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Every stage of your treatment is personally performed with high medical rigor..." />
-        </div>
-        <button
-          type="button"
-          onClick={() => addToArray("greatDoctorQualities", "cards", { title: "", description: "", icon: "Sparkles" })}
-          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-4 cursor-pointer"
-        >
-          + Add Doctor Quality
-        </button>
-        {formData.greatDoctorQualities.cards.length === 0 ? (
-          <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center my-3">
-            <p className="text-gray-500">No doctor qualities added yet.</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {formData.greatDoctorQualities.cards.map((card, i) => (
-              <div key={i} className="border rounded-xl p-5 bg-white shadow-sm space-y-3">
-                <div className="flex justify-between items-center">
-                  <h4 className="text-base font-semibold text-gray-800">Quality #{i + 1}</h4>
-                  <button type="button" onClick={() => deleteFromArray("greatDoctorQualities", "cards", i)} className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer">
-                    Delete Quality
-                  </button>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700">Title</label>
-                    <input type="text" value={card.title} onChange={(e) => updateArrayItem("greatDoctorQualities", "cards", i, "title", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. Surgical Precision" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700">Description</label>
-                    <input type="text" value={card.description} onChange={(e) => updateArrayItem("greatDoctorQualities", "cards", i, "description", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="Quality details..." />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
         {/* 15. WARNING SIGNS */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">15. Warning Signs &amp; Red Flags</h3>
         <div className="flex gap-4 flex-col md:flex-row mb-4">
@@ -1955,81 +1673,6 @@ export default function CreateDoctorPage() {
           </div>
         )}
 
-        {/* 17. PRICING */}
-        <h3 className="text-2xl font-bold underline mt-10 mb-5">17. Pricing &amp; Packages</h3>
-        <div className="flex gap-4 flex-col md:flex-row mb-4">
-          <div className="w-full">
-            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
-            <input type="text" value={formData.pricing.sectionLabel} onChange={(e) => handleNestedChange("pricing", "sectionLabel", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Cost & Consultation" />
-          </div>
-          <div className="w-full">
-            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
-            <input type="text" value={formData.pricing.heading} onChange={(e) => handleNestedChange("pricing", "heading", e.target.value)} className="w-full mt-2 p-2 border rounded-md font-semibold" placeholder="e.g. Cost of consulting a hair transplant doctor in Delhi" />
-          </div>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-semibold text-gray-700">Section Description</label>
-          <textarea rows={2} value={formData.pricing.description} onChange={(e) => handleNestedChange("pricing", "description", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="Consultation at Ryan Clinic includes a free scalp analysis..." />
-        </div>
-        <div className="flex gap-4 flex-col md:flex-row mb-4 bg-blue-50 border border-blue-200 rounded-xl p-4">
-          <div className="w-full">
-            <label className="block text-sm font-semibold text-gray-700">Package Section Heading</label>
-            <input type="text" value={formData.pricing.packageSectionHeading || ""} onChange={(e) => handleNestedChange("pricing", "packageSectionHeading", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Hair Transplant Cost in Delhi" />
-          </div>
-          <div className="w-full">
-            <label className="block text-sm font-semibold text-gray-700">Package Section Description</label>
-            <input type="text" value={formData.pricing.packageSectionDescription || ""} onChange={(e) => handleNestedChange("pricing", "packageSectionDescription", e.target.value)} className="w-full mt-2 p-2 border rounded-md" placeholder="e.g. Per-graft pricing — confirmed in writing at your free consultation." />
-          </div>
-        </div>
-        <div>
-          <label className="block text-sm font-semibold text-gray-700">Pricing Disclaimer</label>
-          <input
-            type="text"
-            value={formData.pricing.disclaimer}
-            onChange={(e) => handleNestedChange("pricing", "disclaimer", e.target.value)}
-            className="w-full mt-2 p-2 border rounded-md"
-            placeholder="*Prices may vary based on graft count"
-          />
-        </div>
-        <button
-          type="button"
-          onClick={() => addToArray("pricing", "packages", { title: "", price: "", subtitle: "", buttonText: "Book Now" })}
-          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mt-4 mb-4 cursor-pointer"
-        >
-          + Add Package
-        </button>
-        {formData.pricing.packages.length === 0 ? (
-          <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center my-3">
-            <p className="text-gray-500">No pricing packages added yet.</p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {formData.pricing.packages.map((pkg, i) => (
-              <div key={i} className="border rounded-xl p-5 bg-white shadow-sm space-y-3">
-                <div className="flex justify-between items-center">
-                  <h4 className="text-base font-semibold text-gray-800">Package #{i + 1}</h4>
-                  <button type="button" onClick={() => deleteFromArray("pricing", "packages", i)} className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer">
-                    Delete Package
-                  </button>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700">Package Title</label>
-                    <input type="text" value={pkg.title} onChange={(e) => updateArrayItem("pricing", "packages", i, "title", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. Standard FUE" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700">Price</label>
-                    <input type="text" value={pkg.price} onChange={(e) => updateArrayItem("pricing", "packages", i, "price", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. ₹45,000" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700">Subtitle / Badge</label>
-                    <input type="text" value={pkg.subtitle} onChange={(e) => updateArrayItem("pricing", "packages", i, "subtitle", e.target.value)} className="w-full mt-1.5 p-2 border rounded-md" placeholder="e.g. Recommended" />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
 
         {/* 18. VISIT CLINIC */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">18. Visit Clinic Information</h3>
@@ -2243,6 +1886,65 @@ export default function CreateDoctorPage() {
             ))}
           </div>
         )}
+
+        {/* JSON-LD EDITOR SECTION */}
+        <h3 className="text-2xl font-bold underline mt-10 mb-2">SEO &amp; Structured Data (JSON-LD)</h3>
+        <p className="text-sm text-gray-500 mb-4">
+          Enter a complete JSON-LD object or array below. This structured data is embedded in the public Doctor page inside a{" "}
+          <code className="bg-gray-100 px-1 rounded">&lt;script type=&quot;application/ld+json&quot;&gt;</code> tag.
+          When saved, it <strong>replaces</strong> the automatically generated Physician / ProfilePage schemas.
+          Leave blank to use the auto-generated structured data instead.
+          <br />
+          <span className="text-amber-600 font-semibold">Input format: raw JSON only — do NOT wrap in &lt;script&gt; tags.</span>
+        </p>
+
+        {/* Validation feedback */}
+        {(() => {
+          const val = formData.seo.customJsonLd?.trim();
+          if (!val) return (
+            <p className="text-xs text-gray-400 mb-3">ℹ️ Auto-generated structured data is active (no custom JSON-LD entered).</p>
+          );
+          try {
+            JSON.parse(val);
+            return <p className="text-xs text-green-600 font-semibold mb-3">✅ Valid JSON — custom JSON-LD will be used on the public page.</p>;
+          } catch (err) {
+            return <p className="text-xs text-red-600 font-semibold mb-3">❌ Invalid JSON: {err.message}. Fix before saving, or clear the field to use auto-generated schemas.</p>;
+          }
+        })()}
+
+        <textarea
+          rows={14}
+          value={formData.seo.customJsonLd || ""}
+          onChange={(e) => handleNestedChange("seo", "customJsonLd", e.target.value)}
+          className="w-full p-3 border rounded-md font-mono text-xs bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+          placeholder={'[\n  {\n    "@context": "https://schema.org",\n    "@type": "Physician",\n    "name": "Dr. Example"\n  }\n]'}
+          spellCheck={false}
+        />
+        <div className="flex gap-3 mt-2">
+          <button
+            type="button"
+            className="text-xs text-gray-500 underline hover:text-gray-800"
+            onClick={() => {
+              const val = formData.seo.customJsonLd?.trim();
+              if (!val) { alert("Nothing to format — field is empty."); return; }
+              try {
+                const pretty = JSON.stringify(JSON.parse(val), null, 2);
+                handleNestedChange("seo", "customJsonLd", pretty);
+              } catch (err) {
+                alert("Cannot format — invalid JSON: " + err.message);
+              }
+            }}
+          >
+            Format JSON
+          </button>
+          <button
+            type="button"
+            className="text-xs text-red-500 underline hover:text-red-700"
+            onClick={() => handleNestedChange("seo", "customJsonLd", "")}
+          >
+            Clear (revert to auto-generated)
+          </button>
+        </div>
 
         {/* SUBMIT BUTTON */}
         <div className="mt-10">

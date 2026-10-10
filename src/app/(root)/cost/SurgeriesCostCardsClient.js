@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import useTrackCTA from "@/lib/useTrackCTA";
+import { getValidImageSrc } from "@/lib/utils";
 
 const SURGERIES_DATA = [
   {
@@ -112,31 +113,35 @@ export default function SurgeriesCostCardsClient() {
               className="group bg-white rounded-3xl border border-[#E8E4DF] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between"
             >
               {/* Top Image Container */}
-              {card.image && (
-                <div className="relative h-52 w-full overflow-hidden bg-gray-100">
-                  <Image
-                    src={card.image}
-                    alt={card.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    unoptimized
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              {(() => {
+                const cardImg = getValidImageSrc(card?.image);
+                if (!cardImg) return null;
+                return (
+                  <div className="relative h-52 w-full overflow-hidden bg-gray-100">
+                    <Image
+                      src={cardImg}
+                      alt={card.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      unoptimized
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
-                  {card.tag && (
-                    <span className="absolute top-3.5 left-3.5 bg-[#e30a17] text-white text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-sm">
-                      {card.tag}
-                    </span>
-                  )}
+                    {card.tag && (
+                      <span className="absolute top-3.5 left-3.5 bg-[#e30a17] text-white text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-sm">
+                        {card.tag}
+                      </span>
+                    )}
 
-                  {card.totalRange && (
-                    <div className="absolute bottom-3.5 left-3.5 right-3.5">
-                      <span className="text-[10px] text-white/70 font-bold uppercase tracking-widest block">Starting From</span>
-                      <span className="text-xl font-black text-white">{card.totalRange.split("–")[0]}</span>
-                    </div>
-                  )}
-                </div>
-              )}
+                    {card.totalRange && (
+                      <div className="absolute bottom-3.5 left-3.5 right-3.5">
+                        <span className="text-[10px] text-white/70 font-bold uppercase tracking-widest block">Starting From</span>
+                        <span className="text-xl font-black text-white">{card.totalRange.split("–")[0]}</span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
 
               {/* Body Content */}
               <div className="p-6 flex-1 flex flex-col justify-between">

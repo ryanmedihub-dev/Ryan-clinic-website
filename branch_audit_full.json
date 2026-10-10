@@ -1,0 +1,398 @@
+[
+  {
+    "id": "68c532400c33eb28b88dc4c9",
+    "branchName": "hair-transplant-in-delhi",
+    "slug": "hair-transplant-in-delhi",
+    "pageType": "branch",
+    "assignedDoctorId": "6a71a2b929d7e7beb5f7f813",
+    "assignedDoctorName": "Dr. Pranendra Singh",
+    "assignedDoctorSlug": "hair-transplant-doctor-in-delhi",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN DELHI",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "Turkey Certified",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  },
+  {
+    "id": "6a27d2f49c4a8d181f4eeffc",
+    "branchName": "hair-transplant-in-mumbai",
+    "slug": "hair-transplant-in-mumbai",
+    "pageType": "branch",
+    "assignedDoctorId": "6abf79b03572e74794c59cda",
+    "assignedDoctorName": "Demo Doctor — Mumbai",
+    "assignedDoctorSlug": "demo-doctor-mumbai",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN MUMBAI",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  },
+  {
+    "id": "6a27d2f49c4a8d181f4eeffe",
+    "branchName": "hair-transplant-in-hyderabad",
+    "slug": "hair-transplant-in-hyderabad",
+    "pageType": "branch",
+    "assignedDoctorId": "6abf79b03572e74794c59cdb",
+    "assignedDoctorName": "Demo Doctor — Hyderabad",
+    "assignedDoctorSlug": "demo-doctor-hyderabad",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN HYDERABAD",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  },
+  {
+    "id": "6a27d2f49c4a8d181f4ef000",
+    "branchName": "hair-transplant-in-bangalore",
+    "slug": "hair-transplant-in-bangalore",
+    "pageType": "branch",
+    "assignedDoctorId": "6abf79b03572e74794c59cdc",
+    "assignedDoctorName": "Demo Doctor — Bangalore",
+    "assignedDoctorSlug": "demo-doctor-bangalore",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN BANGALORE",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  },
+  {
+    "id": "6a27d2f49c4a8d181f4ef002",
+    "branchName": "hair-transplant-in-chennai",
+    "slug": "hair-transplant-in-chennai",
+    "pageType": "branch",
+    "assignedDoctorId": "6abf79b03572e74794c59cdd",
+    "assignedDoctorName": "Demo Doctor — Chennai",
+    "assignedDoctorSlug": "demo-doctor-chennai",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN CHENNAI",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  },
+  {
+    "id": "6a27d2f49c4a8d181f4ef004",
+    "branchName": "hair-transplant-in-pune",
+    "slug": "hair-transplant-in-pune",
+    "pageType": "branch",
+    "assignedDoctorId": "6abf79b03572e74794c59cde",
+    "assignedDoctorName": "Demo Doctor — Pune",
+    "assignedDoctorSlug": "demo-doctor-pune",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN PUNE",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  },
+  {
+    "id": "6a27d2f49c4a8d181f4ef006",
+    "branchName": "hair-transplant-in-kolkata",
+    "slug": "hair-transplant-in-kolkata",
+    "pageType": "branch",
+    "assignedDoctorId": "6abf79b03572e74794c59cdf",
+    "assignedDoctorName": "Demo Doctor — Kolkata",
+    "assignedDoctorSlug": "demo-doctor-kolkata",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN KOLKATA",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  },
+  {
+    "id": "6a27d2f49c4a8d181f4ef008",
+    "branchName": "hair-transplant-in-ahmedabad",
+    "slug": "hair-transplant-in-ahmedabad",
+    "pageType": "branch",
+    "assignedDoctorId": "6abf79b03572e74794c59ce0",
+    "assignedDoctorName": "Demo Doctor — Ahmedabad",
+    "assignedDoctorSlug": "demo-doctor-ahmedabad",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN AHMEDABAD",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  },
+  {
+    "id": "6a27d2f49c4a8d181f4ef00a",
+    "branchName": "hair-transplant-in-lucknow",
+    "slug": "hair-transplant-in-lucknow",
+    "pageType": "branch",
+    "assignedDoctorId": "6abf79b03572e74794c59ce1",
+    "assignedDoctorName": "Demo Doctor — Lucknow",
+    "assignedDoctorSlug": "demo-doctor-lucknow",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN LUCKNOW",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  },
+  {
+    "id": "6a27d2f49c4a8d181f4ef00c",
+    "branchName": "hair-transplant-in-jammu",
+    "slug": "hair-transplant-in-jammu",
+    "pageType": "branch",
+    "assignedDoctorId": "6abf79b03572e74794c59ce2",
+    "assignedDoctorName": "Demo Doctor — Jammu",
+    "assignedDoctorSlug": "demo-doctor-jammu",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN JAMMU",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  },
+  {
+    "id": "6a27d2f49c4a8d181f4ef00e",
+    "branchName": "hair-transplant-in-patna",
+    "slug": "hair-transplant-in-patna",
+    "pageType": "branch",
+    "assignedDoctorId": "6abf79b03572e74794c59ce3",
+    "assignedDoctorName": "Demo Doctor — Patna",
+    "assignedDoctorSlug": "demo-doctor-patna",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN PATNA",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  },
+  {
+    "id": "6aa0f1a894bf6cf81ca1c722",
+    "branchName": "hair-transplant-in-gurgaon",
+    "slug": "hair-transplant-in-gurgaon",
+    "pageType": "branch",
+    "assignedDoctorId": "6abf79b13572e74794c59ce4",
+    "assignedDoctorName": "Demo Doctor — Gurgaon",
+    "assignedDoctorSlug": "demo-doctor-gurgaon",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN GURGAON",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  },
+  {
+    "id": "6ab5fbc16142e7b8aa8062d9",
+    "branchName": "hair-transplant-in-delhi-copy",
+    "slug": "hair-transplant-in-delhi-copy",
+    "pageType": "branch",
+    "assignedDoctorId": null,
+    "assignedDoctorName": null,
+    "assignedDoctorSlug": null,
+    "meetYourSurgeon": {
+      "enabled": false,
+      "eyebrow": "YOUR SURGEON IN DELHI",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": false
+  },
+  {
+    "id": "6ab651e33d119a522a6edb67",
+    "branchName": "hair-transplant-in-noida",
+    "slug": "hair-transplant-in-noida",
+    "pageType": "branch",
+    "assignedDoctorId": "6abf79b13572e74794c59ce5",
+    "assignedDoctorName": "Demo Doctor — Noida",
+    "assignedDoctorSlug": "demo-doctor-noida",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN NOIDA",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  },
+  {
+    "id": "6ab6548a3d119a522a6edc31",
+    "branchName": "hair-transplant-in-bhopal",
+    "slug": "hair-transplant-in-bhopal",
+    "pageType": "branch",
+    "assignedDoctorId": "6abf79b13572e74794c59ce6",
+    "assignedDoctorName": "Demo Doctor — Bhopal",
+    "assignedDoctorSlug": "demo-doctor-bhopal",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN BHOPAL",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  },
+  {
+    "id": "6ab665dbe3ce81e2c94779a3",
+    "branchName": "hair-transplant-in-indore",
+    "slug": "hair-transplant-in-indore",
+    "pageType": "branch",
+    "assignedDoctorId": "6abf79b13572e74794c59ce7",
+    "assignedDoctorName": "Demo Doctor — Indore",
+    "assignedDoctorSlug": "demo-doctor-indore",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN INDORE",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  },
+  {
+    "id": "6ab76064ec199976d0bcd415",
+    "branchName": "hair-transplant-in-chandigarh",
+    "slug": "hair-transplant-in-chandigarh",
+    "pageType": "branch",
+    "assignedDoctorId": "6abf79b13572e74794c59ce8",
+    "assignedDoctorName": "Demo Doctor — Chandigarh",
+    "assignedDoctorSlug": "demo-doctor-chandigarh",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN CHANDIGARH",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  },
+  {
+    "id": "6ab765dcec199976d0bcd49a",
+    "branchName": "hair-transplant-in-rachi",
+    "slug": "hair-transplant-in-rachi",
+    "pageType": "branch",
+    "assignedDoctorId": "6abf79b13572e74794c59ce9",
+    "assignedDoctorName": "Demo Doctor — Ranchi",
+    "assignedDoctorSlug": "demo-doctor-ranchi",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN RACHI",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  },
+  {
+    "id": "6ab76819ec199976d0bcd516",
+    "branchName": "hair-transplant-in-dehradun",
+    "slug": "hair-transplant-in-dehradun",
+    "pageType": "branch",
+    "assignedDoctorId": "6abf79b13572e74794c59cea",
+    "assignedDoctorName": "Demo Doctor — Dehradun",
+    "assignedDoctorSlug": "demo-doctor-dehradun",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN DEHRADUN",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  },
+  {
+    "id": "6ab76a00ec199976d0bcd596",
+    "branchName": "hair-transplant-in-delhi-copy-2",
+    "slug": "hair-transplant-in-delhi-copy-2",
+    "pageType": "branch",
+    "assignedDoctorId": null,
+    "assignedDoctorName": null,
+    "assignedDoctorSlug": null,
+    "meetYourSurgeon": {
+      "enabled": false,
+      "eyebrow": "YOUR SURGEON IN DELHI-COPY-",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": false
+  },
+  {
+    "id": "6ab77111ec199976d0bcd5d2",
+    "branchName": "hair-transplant-in-jaipur",
+    "slug": "hair-transplant-in-jaipur",
+    "pageType": "branch",
+    "assignedDoctorId": "6abf79b13572e74794c59ceb",
+    "assignedDoctorName": "Demo Doctor — Jaipur",
+    "assignedDoctorSlug": "demo-doctor-jaipur",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN JAIPUR",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  },
+  {
+    "id": "6ab8b22809eb2120c618e60d",
+    "branchName": "hair-transplant-in-nagpur",
+    "slug": "hair-transplant-in-nagpur",
+    "pageType": "branch",
+    "assignedDoctorId": "6abf79b13572e74794c59cec",
+    "assignedDoctorName": "Demo Doctor — Nagpur",
+    "assignedDoctorSlug": "demo-doctor-nagpur",
+    "meetYourSurgeon": {
+      "enabled": true,
+      "eyebrow": "YOUR SURGEON IN NAGPUR",
+      "heading": "Meet Your Hair Transplant Surgeon",
+      "badgeText": "",
+      "consultationButtonLabel": "Book Consultation",
+      "profileButtonLabel": "View Full Profile"
+    },
+    "meetYourSurgeonEnabled": true
+  }
+]

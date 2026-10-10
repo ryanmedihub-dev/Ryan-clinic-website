@@ -37,6 +37,10 @@ const handler = async (req) => {
         // Base filter
         const filter = {
             deletedAt: null,
+            // Temporary demo-doctor-* profiles are excluded from ALL public API responses.
+            // They are CMS-only records used for branch testing.
+            // Admin consumers must use /api/doctors/admin-list (requires session auth).
+            slug: { $not: /^demo-doctor-/i },
         };
 
         if (status) {

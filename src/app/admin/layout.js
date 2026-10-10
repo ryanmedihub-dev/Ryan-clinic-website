@@ -26,21 +26,12 @@ import {
 } from "lucide-react";
 
 
-export default function RootLayout({ children }) {
+export default function AdminLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <title>Ryan Clinic Admin</title>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="Ryan Clinic Admin Dashboard" />
-        <link rel="icon" href="/uploads/r-logo.png" />
-      </head>
-
-      <body suppressHydrationWarning>
-        <LayoutWrapper>{children}</LayoutWrapper>
-      </body>
-    </html>
+    <>
+      <title>Ryan Clinic Admin</title>
+      <LayoutWrapper>{children}</LayoutWrapper>
+    </>
   );
 }
 

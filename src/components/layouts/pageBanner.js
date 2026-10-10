@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Fragment } from "react";
 import useTrackCTA from "@/lib/useTrackCTA";
+import { getValidImageSrc } from "@/lib/utils";
 
 function getBreadcrumbHref(part, isLast) {
   if (isLast) return null;
@@ -115,6 +116,8 @@ export default function PageBanner({
     alt ||
     (title ? `${title} — Ryan Clinic Hair Restoration` : "Ryan Clinic Turkey Sapphire FUE Hair Restoration Procedure");
 
+  const bannerImgSrc = getValidImageSrc(bgImage, "/uploads/banner.jpg");
+
   return (
     <header className="relative w-full overflow-hidden">
       <div className="hidden md:block">
@@ -122,7 +125,7 @@ export default function PageBanner({
           {/* RIGHT SIDE IMAGE (49%) */}
           <div className="absolute right-0 top-0 h-full w-[49%]">
             <Image
-              src={bgImage || "/uploads/banner.jpg"}
+              src={bannerImgSrc}
               alt={computedAlt}
               fill
               className="object-cover object-center"
@@ -227,7 +230,7 @@ export default function PageBanner({
         {/* Full-bleed background image */}
         <div className="absolute inset-0">
           <Image
-            src={bgImage || "/uploads/banner.jpg"}
+            src={bannerImgSrc}
             alt=""
             aria-hidden="true"
             fill

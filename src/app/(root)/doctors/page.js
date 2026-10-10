@@ -50,6 +50,10 @@ async function getAllDoctorsPages() {
     const doctors = await Doctor.find({
       deletedAt: null,
       status: "published",
+      // Exclude temporary demo profiles — they are CMS-only records for branch testing,
+      // not real public doctor profiles. Branch pages resolve doctors via
+      // services.assignedDoctor (Mongoose populate), so they are unaffected.
+      slug: { $not: /^demo-doctor-/i },
     })
       .sort({ displayOrder: 1, createdAt: -1 })
       .lean();

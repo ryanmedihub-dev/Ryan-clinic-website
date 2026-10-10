@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { getValidImageSrc } from "@/lib/utils";
 
 const BlogCarousel = ({ blogsdata }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -194,8 +195,8 @@ const BlogCarousel = ({ blogsdata }) => {
                     {/* Main featured post */}
                     <div className="relative overflow-hidden rounded-xl h-80 md:h-96 group">
                       <Image
-                        src={blog.pageImageUrl || "/api/placeholder/400/250"}
-                        alt={blog.blogTitle}
+                        src={getValidImageSrc(blog.pageImageUrl, "/uploads/banner.jpg")}
+                        alt={blog.blogTitle || "Blog"}
                         fill
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
                       />
@@ -278,11 +279,8 @@ const BlogCarousel = ({ blogsdata }) => {
                               style={{ borderLeft: "3px solid var(--primary-red)" }}
                             >
                               <Image
-                                src={
-                                  sideBlog.pageImageUrl ||
-                                  "/api/placeholder/100/100"
-                                }
-                                alt={sideBlog.blogTitle}
+                                src={getValidImageSrc(sideBlog.pageImageUrl, "/uploads/banner.jpg")}
+                                alt={sideBlog.blogTitle || "Blog"}
                                 fill
                                 className="object-cover"
                               />

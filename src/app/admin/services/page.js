@@ -4,6 +4,7 @@ import { useRef, useState, useCallback, useMemo, memo } from "react";
 import dynamic from "next/dynamic";
 import { Plus, Trash, Save } from "lucide-react";
 import ImageUploader from "@/components/admin/ImageUploader";
+import { getValidImageSrc } from "@/lib/utils";
 
 const SunEditor = dynamic(() => import("suneditor-react"), { ssr: false });
 import "suneditor/dist/css/suneditor.min.css";
@@ -299,55 +300,172 @@ CostSectionEditor.displayName = "CostSectionEditor";
 // ── OurDoctor editor ───────────────────────────────────────────────────────
 const OurDoctorEditor = memo(({ value, onChange }) => {
   const data = useMemo(() => parseData(value), [value]);
-  const doctor = data.doctor || {};
+  const [doctorsList, setDoctorsList] = useState([]);
+  const [loadingDoctors, setLoadingDoctors] = useState(false);
 
-  const setTop = useCallback((k, v) => {
-    const d = { ...data };
-    if (v) d[k] = v; else delete d[k];
-    onChange(JSON.stringify(d));
-  }, [data, onChange]);
+  useEffect(() => {
+    let isSubscribed = true;
+    setLoadingDoctors(true);
+    fetch("/api/doctors/list?status=published&limit=100")
+      .then((res) => res.json())
+      .then((d) => {
+        if (isSubscribed && d.success && Array.isArray(d.doctors)) {
+          setDoctorsList(d.doctors);
+        }
+      })
+      .catch((err) => console.error("Failed to fetch doctors:", err))
+      .finally(() => {
+        if (isSubscribed) setLoadingDoctors(false);
+      });
+    return () => {
+      isSubscribed = false;
+    };
+  }, []);
 
-  const setDoctor = useCallback((k, v) => {
-    const d = { ...data, doctor: { ...doctor } };
-    if (v) d.doctor[k] = v; else delete d.doctor[k];
-    if (!Object.keys(d.doctor).length) delete d.doctor;
-    onChange(JSON.stringify(d));
-  }, [data, doctor, onChange]);
+  const selectedDoctorId = data.assignedDoctorId || data.assignedDoctor || "";
+  const selectedDoctor = useMemo(() => {
+    return doctorsList.find((d) => d._id === selectedDoctorId) || null;
+  }, [doctorsList, selectedDoctorId]);
 
-  const setBioLine = useCallback((idx, v) => {
-    const lines = [...(doctor.bioLines || ["", ""])];
-    lines[idx] = v;
-    setDoctor("bioLines", lines.some(Boolean) ? lines : undefined);
-  }, [doctor, setDoctor]);
+  const setDoctorId = useCallback(
+    (id) => {
+      const d = { ...data };
+      if (id) {
+        d.assignedDoctorId = id;
+        d.assignedDoctor = id;
+      } else {
+        delete d.assignedDoctorId;
+        delete d.assignedDoctor;
+      }
+      onChange(Object.keys(d).length ? JSON.stringify(d) : "");
+    },
+    [data, onChange]
+  );
+
+  const setMeetYourSurgeon = useCallback(
+    (field, val) => {
+      const d = {
+        ...data,
+        meetYourSurgeon: {
+          ...(data.meetYourSurgeon || {}),
+          [field]: val,
+        },
+      };
+      onChange(JSON.stringify(d));
+    },
+    [data, onChange]
+  );
+
+  const mys = data.meetYourSurgeon || {};
 
   return (
-    <div className="space-y-3">
-      <p className="text-xs text-gray-400 italic">All fields optional — blank means use default doctor info.</p>
+    <div className="space-y-4">
       <div>
-        <label className={LC}>City Override</label>
-        <input type="text" className={FC} value={data.city || ""} onChange={e => setTop("city", e.target.value)} placeholder="e.g. Pune" />
+        <label className={LC}>
+          Assigned Doctor <span className="text-gray-400 font-normal">(Source of truth: Doctor CMS)</span>
+        </label>
+        <select
+          className={FC}
+          value={selectedDoctorId}
+          disabled={loadingDoctors}
+          onChange={(e) => setDoctorId(e.target.value)}
+        >
+          <option value="">— None (No Doctor Assigned) —</option>
+          {doctorsList.map((doc) => (
+            <option key={doc._id} value={doc._id}>
+              {doc.basicInfo?.doctorName} — {doc.basicInfo?.designation || "Surgeon"} {doc.basicInfo?.city ? `(${doc.basicInfo.city})` : ""}
+            </option>
+          ))}
+        </select>
       </div>
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <label className={LC}>Doctor Name</label>
-          <input type="text" className={FC} value={doctor.name || ""} onChange={e => setDoctor("name", e.target.value)} placeholder="Dr. Pranendra Singh" />
+
+      {selectedDoctor ? (
+        <div className="p-3.5 rounded-xl border border-blue-100 bg-blue-50/50 flex items-start gap-3">
+          <div className="w-14 h-14 rounded-lg overflow-hidden bg-gray-200 shrink-0 border border-gray-200">
+            <img
+              src={getValidImageSrc(selectedDoctor.basicInfo?.profileImage, "/uploads/gallery.jpg")}
+              alt={selectedDoctor.basicInfo?.doctorName || "Doctor"}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h4 className="font-bold text-gray-900 text-sm">
+              {selectedDoctor.basicInfo?.doctorName}
+            </h4>
+            <p className="text-xs text-gray-600 mt-0.5">
+              {selectedDoctor.basicInfo?.designation || "Hair Restoration Specialist"} {selectedDoctor.basicInfo?.city ? `• ${selectedDoctor.basicInfo.city}` : ""}
+            </p>
+            <p className="text-[11px] text-amber-800 bg-amber-50 border border-amber-200/80 rounded px-2 py-1 mt-2 inline-block">
+              ℹ️ Doctor information is managed from Doctor CMS.
+            </p>
+          </div>
         </div>
-        <div>
-          <label className={LC}>Doctor Title</label>
-          <input type="text" className={FC} value={doctor.title || ""} onChange={e => setDoctor("title", e.target.value)} placeholder="Medical Director & Chief Surgeon" />
+      ) : (
+        <p className="text-xs text-gray-400 italic">
+          No doctor assigned. Section will be safely hidden on the public page.
+        </p>
+      )}
+
+      <div className="pt-2 border-t border-gray-100 space-y-3">
+        <p className="text-xs font-bold text-gray-700 uppercase tracking-wider">
+          Branch Section Settings
+        </p>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className={LC}>Eyebrow</label>
+            <input
+              type="text"
+              className={FC}
+              value={mys.eyebrow || ""}
+              onChange={(e) => setMeetYourSurgeon("eyebrow", e.target.value)}
+              placeholder="e.g. YOUR SURGEON IN GURGAON"
+            />
+          </div>
+          <div>
+            <label className={LC}>Heading</label>
+            <input
+              type="text"
+              className={FC}
+              value={mys.heading || ""}
+              onChange={(e) => setMeetYourSurgeon("heading", e.target.value)}
+              placeholder="Meet Your Hair Transplant Surgeon"
+            />
+          </div>
+          <div>
+            <label className={LC}>Badge Text</label>
+            <input
+              type="text"
+              className={FC}
+              value={mys.badgeText || ""}
+              onChange={(e) => setMeetYourSurgeon("badgeText", e.target.value)}
+              placeholder="Board Certified"
+            />
+          </div>
+          <div>
+            <label className={LC}>Consultation Button Label</label>
+            <input
+              type="text"
+              className={FC}
+              value={mys.consultationButtonLabel || ""}
+              onChange={(e) =>
+                setMeetYourSurgeon("consultationButtonLabel", e.target.value)
+              }
+              placeholder="Book Consultation"
+            />
+          </div>
+          <div className="col-span-2">
+            <label className={LC}>Profile Button Label</label>
+            <input
+              type="text"
+              className={FC}
+              value={mys.profileButtonLabel || ""}
+              onChange={(e) =>
+                setMeetYourSurgeon("profileButtonLabel", e.target.value)
+              }
+              placeholder="View Full Profile"
+            />
+          </div>
         </div>
-      </div>
-      <div>
-        <label className={LC}>Doctor Photo URL</label>
-        <input type="text" className={FC} value={doctor.image || ""} onChange={e => setDoctor("image", e.target.value)} placeholder="/uploads/doctor-photo.jpg" />
-      </div>
-      <div>
-        <label className={LC}>Bio — Paragraph 1</label>
-        <textarea className={FC + " resize-none"} rows={3} value={doctor.bioLines?.[0] || ""} onChange={e => setBioLine(0, e.target.value)} placeholder={`Your hair transplant in [city] is led by Dr. Pranendra Singh...`} />
-      </div>
-      <div>
-        <label className={LC}>Bio — Paragraph 2</label>
-        <textarea className={FC + " resize-none"} rows={2} value={doctor.bioLines?.[1] || ""} onChange={e => setBioLine(1, e.target.value)} placeholder="His commitment is simple: every patient receives world-class care..." />
       </div>
     </div>
   );
@@ -438,7 +556,7 @@ const ALL_SECTIONS = [
   { key: "typesSection",       label: "Service Types / Images",         hasData: false },
   { key: "whyChooseUs",        label: "Why Choose Ryan Clinic",         hasData: true,  dataHelp: '{"city":"Pune"}' },
   { key: "costSection",        label: "Cost / Pricing",                 hasData: true,  dataHelp: '{"city":"Delhi","sectionTitle":"Hair Transplant Cost","sectionDescription":"Custom description","pricing":[{"num":"01","grafts":"Up to 1,000 Grafts","min":"Rs. 30,000/-","max":"Rs. 40,000/-","time":"4–5 hrs"}]}' },
-  { key: "ourDoctor",          label: "Our Doctor Profile",             hasData: true,  dataHelp: '{"city":"Delhi","doctor":{"name":"Dr. Name","title":"Surgeon","image":"/uploads/photo.jpg","bioLines":["Bio line 1","Bio line 2"],"stats":[{"num":"12+","label":"Years Exp"}],"qualifications":[{"degree":"MBBS","institute":"AIIMS"}],"certifications":["Cert 1"],"specializations":["FUE"]}}' },
+  { key: "ourDoctor",          label: "Meet Your Surgeon",              hasData: true,  dataHelp: '{"assignedDoctorId":"<DoctorObjectId>","meetYourSurgeon":{"enabled":true,"eyebrow":"YOUR SURGEON IN GURGAON","heading":"Meet Your Hair Transplant Surgeon","badgeText":"Board Certified","consultationButtonLabel":"Book Consultation","profileButtonLabel":"View Full Profile"}}' },
   { key: "differencesSection", label: "Technique Comparison (FUT/FUE)", hasData: true,  dataHelp: '{"features":[{"label":"Scarring","fut":{"value":"Linear scar","bad":true},"fue":{"value":"Tiny dots"},"sapphire":{"value":"Minimal dots"}}]}' },
   { key: "pleoFeatures",       label: "Benefits / Features",            hasData: false },
   { key: "whyDoctorMatters",   label: "Why Doctor Matters",             hasData: true,  dataHelp: '{"risks":[{"number":"01","title":"Confirm who operates","body":"Body text","type":"check"}],"comparison":[{"aspect":"Who operates","doctorLed":"Certified doctor","techLed":"Technician"}]}' },
@@ -848,10 +966,22 @@ export default function CreateServicePage() {
           data: s.hasData ? parseSectionData(s.key) : {},
         }));
 
+        const ourDocSec = sectionsPayload.find((s) => s.key === "ourDoctor");
+        const assignedDoctor =
+          ourDocSec?.data?.assignedDoctorId ||
+          ourDocSec?.data?.assignedDoctor ||
+          null;
+        const meetYourSurgeon = ourDocSec?.data?.meetYourSurgeon || undefined;
+
         const res = await fetch("/api/service/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...form, pageSections: sectionsPayload }),
+          body: JSON.stringify({
+            ...form,
+            assignedDoctor,
+            meetYourSurgeon,
+            pageSections: sectionsPayload,
+          }),
         });
         
         if (!res.ok) {

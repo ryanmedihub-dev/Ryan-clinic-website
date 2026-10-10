@@ -113,11 +113,13 @@ export default function ComponentsPage() {
               {history.map((item) => (
                 <div key={item.ts} className="flex items-center gap-4 px-6 py-3.5 hover:bg-gray-50/60 transition-colors group">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={item.url}
-                    alt=""
-                    className="w-10 h-10 rounded-lg object-cover border border-gray-200 shrink-0"
-                  />
+                  {item.url && typeof item.url === "string" && item.url.trim() ? (
+                    <img
+                      src={item.url.trim()}
+                      alt=""
+                      className="w-10 h-10 rounded-lg object-cover border border-gray-200 shrink-0"
+                    />
+                  ) : null}
                   <span className="flex-1 text-xs text-gray-500 font-mono truncate">{item.url}</span>
                   <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button

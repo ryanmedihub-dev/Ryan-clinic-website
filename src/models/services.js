@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Doctor from "./Doctors.js";
 
 const serviceSchema = new mongoose.Schema(
   {
@@ -64,11 +65,32 @@ const serviceSchema = new mongoose.Schema(
         data: { type: mongoose.Schema.Types.Mixed, default: {} },
       },
     ],
+    assignedDoctor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Doctor",
+      default: null,
+    },
+    meetYourSurgeon: {
+      enabled: { type: Boolean, default: true },
+      eyebrow: { type: String, default: "" },
+      heading: { type: String, default: "" },
+      badgeText: { type: String, default: "" },
+      consultationButtonLabel: { type: String, default: "" },
+      profileButtonLabel: { type: String, default: "" },
+    },
   },
   {
     timestamps: true,
   }
 );
+
+if (
+  mongoose.models.Services &&
+  (!mongoose.models.Services.schema.paths.assignedDoctor ||
+    !mongoose.models.Services.schema.paths.meetYourSurgeon)
+) {
+  delete mongoose.models.Services;
+}
 
 export default mongoose.models.Services ||
   mongoose.model("Services", serviceSchema);

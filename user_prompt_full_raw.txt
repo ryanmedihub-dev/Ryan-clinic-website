@@ -1,0 +1,49 @@
+Created At: 2026-08-26T10:41:36+05:30
+Completed At: 2026-08-26T10:41:36+05:30
+File Path: `file:///c:/Users/patwa/Desktop/clinicRyan/Ryan-next-project-new/src/app/%28root%29/doctors/%5Bslug%5D/DoctorsPageClient.js`
+Total Lines: 2203
+Total Bytes: 162022
+Showing lines 960 to 1215
+The following code has been modified to include a line number before every line, in the format: <line_number>: <original_line>. Please note that any changes targeting the original code should remove the line number, colon, and leading space.
+960:             <section className="bg-[#F7F5F2] py-20 md:py-28 overflow-hidden relative">
+961:                 {/* Background glows */}
+962:                 <div className="absolute top-0 left-0 w-96 h-96 bg-emerald-100/60 rounded-full blur-3xl pointer-events-none -translate-x-1/2 -translate-y-1/2" />
+963:                 <div className="absolute bottom-0 right-0 w-96 h-96 bg-rose-100/50 rounded-full blur-3xl pointer-events-none translate-x-1/2 translate-y-1/2" />
+964: 
+965:                 <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+966: 
+967:                     {/* Header (Smaller Heading font size as requested) */}
+968:                     <div className="mb-12">
+969:                         <SectionLabel text="The Critical Difference" />
+970:                         <div className="flex flex-col md:flex-row md:items-end gap-4 md:justify-between">
+971:                             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight max-w-2xl">
+972:                                 {comparison?.heading || "Doctor-led vs technician-led surgery in Delhi: the difference that defines your result"}
+973:                             </h2>
+974:                             <p className="text-gray-500 text-xs sm:text-sm leading-relaxed max-w-sm md:text-right font-sans">
+975:                                 The person performing each step is what determines your result.
+976:                             </p>
+977:   
+<truncated 17572 bytes>
+on className="bg-white py-16 md:py-24 border-b border-gray-100">
+1195:                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+1196:                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+1197: 
+1198:                         {/* Left Column: Rich Interactive Questions Cards */}
+1199:                         <div className="lg:col-span-7">
+1200:                             <SectionLabel text={questionsToAskSection?.sectionLabel || "Questions to Ask"} />
+1201:                             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight tracking-tight mb-3">
+1202:                                 {questionsToAskSection?.heading || "Questions to ask your hair transplant doctor in Delhi before booking"}
+1203:                             </h2>
+1204:                             <p className="text-gray-500 text-xs sm:text-sm leading-relaxed mb-8 font-sans">
+1205:                                 {questionsToAskSection?.description || "The quality of a doctor\u2019s answers tells you almost everything."}
+1206:                             </p>
+1207: 
+1208:                             {/* Question Cards List from CMS */}
+1209:                             <div className="space-y-4">
+1210:                                 {(questionsToAskSection?.questions || []).length > 0 ? (
+1211:                                     (questionsToAskSection?.questions || []).map((q, i) => (
+1212:                                         <div
+1213:                                             key={i}
+1214:                                             className={`rounded-2xl border transition-all duration-300 overflow-hidden ${openQuestion === i
+1215:                                                     ? "bg-[#FAF6F3] border-red-200 shadow-md"
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.

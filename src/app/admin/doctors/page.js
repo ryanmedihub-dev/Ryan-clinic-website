@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { getValidImageSrc } from "@/lib/utils";
 import AdminHeader from "@/components/admin/adminHeader";
 import ToastContainer from "@/components/admin/Toast";
 
@@ -225,7 +226,7 @@ export default function DoctorListingPage() {
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {doctors.map((doc) => {
-                    const profileImg = doc.basicInfo?.profileImage?.image || "/uploads/turkey-doctor.jpg";
+                    const profileImg = getValidImageSrc(doc.basicInfo?.profileImage, "/uploads/turkey-doctor.jpg");
                     const doctorName = doc.basicInfo?.doctorName || doc.pageName || "Doctor";
                     const designation = doc.basicInfo?.designation || "Surgeon";
                     const city = doc.basicInfo?.city || "Delhi";

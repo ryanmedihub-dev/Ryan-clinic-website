@@ -96,6 +96,19 @@ const Header = () => {
   };
 
   useEffect(() => {
+    const handleOpenPopup = () => setShowPopup(true);
+    window.addEventListener("open-appointment-popup", handleOpenPopup);
+    const handleEsc = (e) => {
+      if (e.key === "Escape") setShowPopup(false);
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => {
+      window.removeEventListener("open-appointment-popup", handleOpenPopup);
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!showPopup || !formRef.current) return;
     const rect = formRef.current.getBoundingClientRect();
     const origin = {
@@ -413,7 +426,12 @@ const Header = () => {
 
       {/* Popup Modal */}
       {showPopup && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowPopup(false);
+          }}
+        >
           <div
             ref={formRef}
             className="rounded-lg w-full max-w-md p-6 relative animate-zoomIn"

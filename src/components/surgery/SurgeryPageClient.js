@@ -6,7 +6,7 @@ import ContactForm from "@/components/pages/contactForm";
 import FAQSection from "@/components/surgery/FAQSection";
 import PageBanner from "@/components/layouts/pageBanner";
 import useTrackCTA from "@/lib/useTrackCTA";
-import { sanitizeContent } from "@/lib/utils";
+import { sanitizeContent, getValidImageSrc } from "@/lib/utils";
 import WhyDoctorMattersSection from "@/components/pages/WhyDoctorMattersSection";
 import {
   AnimatedCard,
@@ -229,9 +229,9 @@ export default function SurgeryPageClient({ data }) {
     "Same-day procedure with zero hospital stay required",
     "Transparent pricing confirmed after free scalp analysis"
   ];
-  const introMainImage = introduction.mainImage?.image || "/uploads/1752734248947-Hair Transplant 1.jpg";
+  const introMainImage = getValidImageSrc(introduction.mainImage, "/uploads/1752734248947-Hair Transplant 1.jpg");
   const introMainImageAlt = introduction.mainImage?.imageAlt || `Hair transplant surgery consultation at Ryan Clinic in ${cityName}`;
-  const introFloatImage = introduction.floatingImage?.image || "/uploads/turkey-doctor.jpg";
+  const introFloatImage = getValidImageSrc(introduction.floatingImage, "/uploads/turkey-doctor.jpg");
   const introFloatImageAlt = introduction.floatingImage?.imageAlt || "Surgeon inspecting graft density";
   const introStats = introduction.bottomStats ?? [];
   const introPrimaryWA = introduction.primaryCTA?.link || heroWALink;
@@ -1084,8 +1084,8 @@ export default function SurgeryPageClient({ data }) {
                   {/* Technique illustration (increased height h-44 sm:h-48 with zoom animation) */}
                   <div className="relative w-full h-44 sm:h-48 rounded-2xl overflow-hidden bg-gray-50 mb-5 border border-gray-100 shadow-xs">
                     <Image
-                      src={card.image}
-                      alt={card.imageAlt}
+                      src={getValidImageSrc(card.image, "/uploads/turkey-doctor.jpg")}
+                      alt={card.imageAlt || "Hair restoration technique"}
                       fill
                       className="object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
                       unoptimized
@@ -1270,8 +1270,8 @@ export default function SurgeryPageClient({ data }) {
                         /* Even Step Left: Image Card */
                         <div className="relative w-full h-64 sm:h-72 rounded-[28px] overflow-hidden shadow-lg border-4 border-white bg-gray-900 group">
                           <Image
-                            src={step.image}
-                            alt={step.alt || step.title}
+                            src={getValidImageSrc(step.image, "/uploads/turkey-doctor.jpg")}
+                            alt={step.alt || step.title || "Procedure step"}
                             fill
                             className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
                             unoptimized
@@ -1319,8 +1319,8 @@ export default function SurgeryPageClient({ data }) {
                         /* Odd Step Right: Image Card */
                         <div className="relative w-full h-64 sm:h-72 rounded-[28px] overflow-hidden shadow-lg border-4 border-white bg-gray-900 group">
                           <Image
-                            src={step.image}
-                            alt={step.alt || step.title}
+                            src={getValidImageSrc(step.image, "/uploads/turkey-doctor.jpg")}
+                            alt={step.alt || step.title || "Procedure step"}
                             fill
                             className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
                             unoptimized
@@ -1397,8 +1397,8 @@ export default function SurgeryPageClient({ data }) {
                       {/* Phase Result Image */}
                       <div className="relative w-full h-48 rounded-2xl overflow-hidden bg-gray-900 border border-gray-100 mb-5 shadow-xs">
                         <Image
-                          src={card.image}
-                          alt={card.imageAlt}
+                          src={getValidImageSrc(card.image, "/uploads/turkey-doctor.jpg")}
+                          alt={card.imageAlt || "Phase result"}
                           fill
                           className="object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
                           unoptimized
@@ -1869,8 +1869,8 @@ export default function SurgeryPageClient({ data }) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {RESULT_CASES.map((c, i) => {
-              const bImg = typeof c.beforeImage === "string" ? c.beforeImage : c.beforeImage?.image;
-              const aImg = typeof c.afterImage === "string" ? c.afterImage : c.afterImage?.image;
+              const bImg = getValidImageSrc(c.beforeImage, "/uploads/turkey-doctor.jpg");
+              const aImg = getValidImageSrc(c.afterImage, "/uploads/1752667815707-fue-banner_ro9ae6.webp");
               const bAlt = c.beforeImage?.imageAlt || `Hair transplant before result, ${c.technique || "FUE"}`;
               const aAlt = c.afterImage?.imageAlt || `Hair transplant after result, ${c.technique || "FUE"}`;
 
@@ -1880,11 +1880,11 @@ export default function SurgeryPageClient({ data }) {
                     {/* Before & After Image Pair */}
                     <div className="grid grid-cols-2 h-[340px] relative divide-x divide-white/20 bg-gray-900 overflow-hidden">
                       <div className="relative h-full w-full overflow-hidden">
-                        <Image src={bImg} alt={bAlt} fill className="object-cover group-hover:scale-105 transition-transform duration-700" unoptimized />
+                        <Image src={bImg || "/uploads/turkey-doctor.jpg"} alt={bAlt} fill className="object-cover group-hover:scale-105 transition-transform duration-700" unoptimized />
                         <span className="absolute top-3 left-3 bg-black/80 text-white text-[10px] font-extrabold px-3 py-1 rounded-md uppercase tracking-wider backdrop-blur-xs">BEFORE</span>
                       </div>
                       <div className="relative h-full w-full overflow-hidden">
-                        <Image src={aImg} alt={aAlt} fill className="object-cover group-hover:scale-105 transition-transform duration-700" unoptimized />
+                        <Image src={aImg || "/uploads/1752667815707-fue-banner_ro9ae6.webp"} alt={aAlt} fill className="object-cover group-hover:scale-105 transition-transform duration-700" unoptimized />
                         <span className="absolute top-3 right-3 bg-[#e30a17] text-white text-[10px] font-extrabold px-3 py-1 rounded-md uppercase tracking-wider shadow-sm">AFTER</span>
                       </div>
                     </div>
@@ -2067,8 +2067,8 @@ export default function SurgeryPageClient({ data }) {
                 {/* Right Doctor Image Column */}
                 <div className="lg:col-span-5 relative min-h-[380px] sm:min-h-[440px] rounded-3xl overflow-hidden shadow-md border border-gray-200 group">
                   <Image
-                    src={doc.image}
-                    alt={doc.imageAlt || doc.name}
+                    src={getValidImageSrc(doc.image, "/uploads/turkey-doctor.jpg")}
+                    alt={doc.imageAlt || doc.name || "Doctor"}
                     fill
                     className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                     unoptimized

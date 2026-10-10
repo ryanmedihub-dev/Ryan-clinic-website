@@ -553,8 +553,8 @@ function Dashboard() {
                       return (
                         <tr key={app._id} onClick={() => setSelected(app)}>
                           <td>
-                            {app.photoUrl
-                              ? <img src={app.photoUrl} alt={app.fullName} className="avatar" />
+                            {typeof app.photoUrl === "string" && app.photoUrl.trim()
+                              ? <img src={app.photoUrl.trim()} alt={app.fullName || "Applicant"} className="avatar" />
                               : <div className="avatar-placeholder">👤</div>}
                           </td>
                           <td style={{ fontWeight: 500, color: "#f0e8e2", whiteSpace: "nowrap" }}>{app.fullName || "—"}</td>
@@ -595,8 +595,8 @@ function Dashboard() {
                   return (
                     <div key={app._id} className="app-card" onClick={() => setSelected(app)}>
                       <div className="card-top">
-                        {app.photoUrl
-                          ? <img src={app.photoUrl} alt={app.fullName} className="card-avatar" />
+                        {typeof app.photoUrl === "string" && app.photoUrl.trim()
+                          ? <img src={app.photoUrl.trim()} alt={app.fullName || "Applicant"} className="card-avatar" />
                           : <div className="card-avatar-ph">👤</div>}
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div className="card-name">{app.fullName || "—"}</div>
@@ -658,8 +658,8 @@ function Dashboard() {
 
             {/* Profile header */}
             <div className="modal-profile">
-              {selected.photoUrl
-                ? <img src={selected.photoUrl} alt={selected.fullName} className="modal-avatar" />
+              {typeof selected.photoUrl === "string" && selected.photoUrl.trim()
+                ? <img src={selected.photoUrl.trim()} alt={selected.fullName || "Applicant"} className="modal-avatar" />
                 : <div className="modal-avatar-ph">👤</div>}
               <div>
                 <h2 className="modal-name">{selected.fullName || "—"}</h2>

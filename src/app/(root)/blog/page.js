@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import PageBanner from "@/components/layouts/pageBanner";
 import { getAllBlogs } from "@/lib/blogData";
+import { getValidImageSrc } from "@/lib/utils";
 import AboutBanner from "../../../../public/uploads/blog.jpg";
 import BlogCTAButtons from "./BlogCTAButtons";
 
@@ -56,8 +57,8 @@ function FeaturedCard({ blog }) {
       {/* Image */}
       <div className="relative w-full lg:w-3/5 h-64 sm:h-80 lg:h-105 shrink-0 overflow-hidden">
         <Image
-          src={blog.pageImageUrl || "/uploads/banner.jpg"}
-          alt={blog.pageImageAlt || blog.blogTitle}
+          src={getValidImageSrc(blog.pageImageUrl, "/uploads/banner.jpg")}
+          alt={blog.pageImageAlt || blog.blogTitle || "Blog"}
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-105"
           priority
@@ -157,8 +158,8 @@ function BlogCard({ blog }) {
       {/* Thumbnail */}
       <div className="relative w-full h-52 overflow-hidden shrink-0">
         <Image
-          src={blog.pageImageUrl || "/uploads/banner.jpg"}
-          alt={blog.pageImageAlt || blog.blogTitle}
+          src={getValidImageSrc(blog.pageImageUrl, "/uploads/banner.jpg")}
+          alt={blog.pageImageAlt || blog.blogTitle || "Blog"}
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-105"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

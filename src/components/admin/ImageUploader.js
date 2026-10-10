@@ -13,8 +13,11 @@ export default function ImageUploader({
 }) {
   const getUrl = (val) => {
     if (!val) return '';
-    if (typeof val === 'string') return val;
-    if (typeof val === 'object' && val.url) return val.url;
+    if (typeof val === 'string') return val.trim();
+    if (typeof val === 'object') {
+      const candidate = val.url || val.image || val.secure_url || '';
+      return typeof candidate === 'string' ? candidate.trim() : '';
+    }
     return '';
   };
 
@@ -122,10 +125,10 @@ export default function ImageUploader({
         </div>
       )}
 
-      {imageURL && (
+      {Boolean(imageURL && typeof imageURL === 'string' && imageURL.trim()) && (
         <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={imageURL} alt="Preview" className="w-14 h-14 object-cover rounded-lg border border-gray-200 shrink-0" />
+          <img src={imageURL.trim()} alt="Preview" className="w-14 h-14 object-cover rounded-lg border border-gray-200 shrink-0" />
           <div className="flex-1 min-w-0">
             <p className="text-xs font-semibold text-gray-600 mb-0.5">Uploaded / Selected</p>
             <a

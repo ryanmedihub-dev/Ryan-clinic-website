@@ -3,6 +3,7 @@
 import Image from "next/image";
 import PageBanner from "@/components/layouts/pageBanner";
 import ContactForm from "@/components/pages/contactForm";
+import { getValidImageSrc } from "@/lib/utils";
 import {
   Reveal,
   RevealSection,
@@ -236,8 +237,7 @@ export default function HairFallPageClient({ data }) {
                   <div className="absolute top-0 left-0 w-[90%] h-[90%] rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
                     <Image
                       src={
-                        introduction.mainImage?.image ||
-                        "/uploads/hairline-banner.webp"
+                        getValidImageSrc(introduction.mainImage, "/uploads/hairline-banner.webp")
                       }
                       alt={
                         introduction.mainImage?.imageAlt ||
@@ -260,8 +260,7 @@ export default function HairFallPageClient({ data }) {
                   <div className="absolute bottom-0 right-0 w-[52%] h-[52%] rounded-2xl overflow-hidden shadow-2xl border-4 border-white z-10">
                     <Image
                       src={
-                        introduction.floatingImage?.image ||
-                        "/uploads/turkey-2.jpeg"
+                        getValidImageSrc(introduction.floatingImage, "/uploads/turkey-2.jpeg")
                       }
                       alt={
                         introduction.floatingImage?.imageAlt ||
@@ -325,7 +324,7 @@ export default function HairFallPageClient({ data }) {
               >
                 <div className="lg:w-[45%] relative min-h-[280px]">
                   <Image
-                    src={c.cardImage?.image || "/uploads/turkey-doctor.jpg"}
+                    src={getValidImageSrc(c.cardImage, "/uploads/turkey-doctor.jpg")}
                     alt={c.cardImage?.imageAlt || c.title || "Hair loss diagnosis and clinical treatment — Ryan Clinic"}
                     fill
                     className="object-cover"
@@ -454,7 +453,7 @@ export default function HairFallPageClient({ data }) {
                   <div className="relative h-full min-h-[420px] rounded-3xl overflow-hidden shadow-xl">
                     <Image
                       src={
-                        warning.calloutImage?.image || "/uploads/turkey-2.jpeg"
+                        getValidImageSrc(warning.calloutImage, "/uploads/turkey-2.jpeg")
                       }
                       alt={
                         warning.calloutImage?.imageAlt ||
@@ -508,7 +507,7 @@ export default function HairFallPageClient({ data }) {
               <Reveal direction="left" className="lg:col-span-5">
                 <div className="rounded-3xl overflow-hidden shadow-xl border border-gray-200">
                   <Image
-                    src={diagnosis.sideImage?.image || "/uploads/turkey-2.jpeg"}
+                    src={getValidImageSrc(diagnosis.sideImage, "/uploads/turkey-2.jpeg")}
                     alt={
                       diagnosis.sideImage?.imageAlt ||
                       "Ryan Clinic medical team"
@@ -575,7 +574,8 @@ export default function HairFallPageClient({ data }) {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {treatmentItems.map((t, i) => {
                 const Icon = getIcon(t.icon);
-                if (t.treatmentImage?.image) {
+                const validTreatmentImg = getValidImageSrc(t.treatmentImage);
+                if (validTreatmentImg) {
                   return (
                     <AnimatedCard
                       key={i}
@@ -584,8 +584,8 @@ export default function HairFallPageClient({ data }) {
                     >
                       <div className="relative h-44">
                         <Image
-                          src={t.treatmentImage.image}
-                          alt={t.treatmentImage.imageAlt || t.title || "Clinical hair restoration treatment — Ryan Clinic"}
+                          src={validTreatmentImg}
+                          alt={t.treatmentImage?.imageAlt || t.treatmentImage?.alt || t.title || "Clinical hair restoration treatment — Ryan Clinic"}
                           fill
                           className="object-cover"
                           unoptimized
@@ -775,8 +775,7 @@ export default function HairFallPageClient({ data }) {
                 <div className="relative overflow-hidden rounded-3xl shadow-xl h-[320px] lg:h-[440px]">
                   <Image
                     src={
-                      results.resultImage?.image ||
-                      "/uploads/gallery.jpg"
+                      getValidImageSrc(results.resultImage, "/uploads/gallery.jpg")
                     }
                     alt={
                       results.resultImage?.imageAlt ||
@@ -860,7 +859,7 @@ export default function HairFallPageClient({ data }) {
               <Reveal direction="right" delay={150} className="lg:col-span-5">
                 <div className="relative rounded-3xl overflow-hidden shadow-xl h-[380px]">
                   <Image
-                    src={doctor.teamImage?.image || "/uploads/gallery.jpg"}
+                    src={getValidImageSrc(doctor.teamImage, "/uploads/gallery.jpg")}
                     alt={
                       doctor.teamImage?.imageAlt || "Ryan Clinic medical team"
                     }
@@ -899,7 +898,7 @@ export default function HairFallPageClient({ data }) {
           <div className="absolute inset-0">
             <Image
               src={
-                whyChoose.backgroundImage?.image || "/uploads/turkey-doctor.jpg"
+                getValidImageSrc(whyChoose.backgroundImage, "/uploads/turkey-doctor.jpg")
               }
               alt=""
               aria-hidden="true"
@@ -1080,8 +1079,7 @@ export default function HairFallPageClient({ data }) {
               <Reveal className="relative rounded-3xl overflow-hidden shadow-xl h-[260px] md:h-[340px] mb-8">
                 <Image
                   src={
-                    visitClinic.bannerImage?.image ||
-                    "/uploads/turkey-doctor.jpg"
+                    getValidImageSrc(visitClinic.bannerImage, "/uploads/turkey-doctor.jpg")
                   }
                   alt={visitClinic.bannerImage?.imageAlt || "Ryan Clinic"}
                   fill
@@ -1155,8 +1153,7 @@ export default function HairFallPageClient({ data }) {
           <div className="relative w-full lg:w-1/2">
             <Image
               src={
-                consultation.backgroundImage?.image ||
-                "/uploads/1752746168716-PRP 1.jpg"
+                getValidImageSrc(consultation.backgroundImage, "/uploads/1752746168716-PRP 1.jpg")
               }
               alt=""
               aria-hidden="true"

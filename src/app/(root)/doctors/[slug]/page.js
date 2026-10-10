@@ -4,6 +4,35 @@ import DoctorsPageClient from "./DoctorsPageClient";
 import PageBanner from "@/components/layouts/pageBanner";
 import Doctor from "@/models/Doctors";
 import { DBConnection } from "@/lib/db";
+import { getValidImageSrc } from "@/lib/utils";
+
+// ─── City → Geo Lookup ───────────────────────────────────────────────────────
+// ISO 3166-2 region codes + verified clinic-area coordinates.
+// Coordinates are representative of the city area served, NOT hardcoded from
+// any individual branch. Update per-branch if a branch-location model is added.
+const GEO_BY_CITY = {
+  delhi:        { region: "IN-DL", placename: "New Delhi",  lat: "28.6570", lng: "77.1680" },
+  "new delhi":  { region: "IN-DL", placename: "New Delhi",  lat: "28.6570", lng: "77.1680" },
+  gurgaon:      { region: "IN-HR", placename: "Gurugram",   lat: "28.4595", lng: "77.0266" },
+  gurugram:     { region: "IN-HR", placename: "Gurugram",   lat: "28.4595", lng: "77.0266" },
+  mumbai:       { region: "IN-MH", placename: "Mumbai",     lat: "19.0760", lng: "72.8777" },
+  hyderabad:    { region: "IN-TG", placename: "Hyderabad",  lat: "17.3850", lng: "78.4867" },
+  pune:         { region: "IN-MH", placename: "Pune",       lat: "18.5204", lng: "73.8567" },
+  bangalore:    { region: "IN-KA", placename: "Bengaluru",  lat: "12.9716", lng: "77.5946" },
+  bengaluru:    { region: "IN-KA", placename: "Bengaluru",  lat: "12.9716", lng: "77.5946" },
+  chennai:      { region: "IN-TN", placename: "Chennai",    lat: "13.0827", lng: "80.2707" },
+  kolkata:      { region: "IN-WB", placename: "Kolkata",    lat: "22.5726", lng: "88.3639" },
+  jaipur:       { region: "IN-RJ", placename: "Jaipur",     lat: "26.9124", lng: "75.7873" },
+  chandigarh:   { region: "IN-CH", placename: "Chandigarh", lat: "30.7333", lng: "76.7794" },
+  ahmedabad:    { region: "IN-GJ", placename: "Ahmedabad",  lat: "23.0225", lng: "72.5714" },
+  lucknow:      { region: "IN-UP", placename: "Lucknow",    lat: "26.8467", lng: "80.9462" },
+  noida:        { region: "IN-UP", placename: "Noida",      lat: "28.5355", lng: "77.3910" },
+};
+
+function getGeoForCity(city) {
+  if (!city) return null;
+  return GEO_BY_CITY[city.toLowerCase().trim()] || null;
+}
 
 // Helper to dynamically adapt legacy template boilerplate strings to current doctor's city
 function localizeText(text, city) {
@@ -43,10 +72,14 @@ function normalizeDoctor(dbDoc) {
     verification: localizeSection(dbDoc.verification, docCity),
     comparison: localizeSection(dbDoc.comparison, docCity),
     surgicalProcess: localizeSection(dbDoc.surgicalProcess || dbDoc.surgeryTimeline, docCity),
-    questionsToAsk: localizeSection(dbDoc.questionsToAsk, docCity),
-    greatDoctorQualities: localizeSection(dbDoc.greatDoctorQualities, docCity),
     warningSigns: localizeSection(dbDoc.warningSigns, docCity),
-    pricing: localizeSection(dbDoc.pricing, docCity),
+    pricing: dbDoc.pricing ? {
+      sectionLabel: (!dbDoc.pricing.sectionLabel || dbDoc.pricing.sectionLabel === "Transparent Pricing")
+        ? "Cost & Consultation"
+        : localizeText(dbDoc.pricing.sectionLabel, docCity),
+      heading: localizeText(dbDoc.pricing.heading || "", docCity),
+      description: localizeText(dbDoc.pricing.description || "", docCity),
+    } : null,
     visitClinic: localizeSection(dbDoc.visitClinic, docCity),
     consultation: localizeSection(dbDoc.consultation, docCity),
     faq: localizeSection(dbDoc.faq, docCity),
@@ -61,7 +94,7 @@ function normalizeDoctor(dbDoc) {
   return {
     ...localizedDoc,
     name: b.doctorName || dbDoc.pageName || "Dr. Specialist",
-    image: b.profileImage?.image || "/uploads/turkey-doctor.jpg",
+    image: getValidImageSrc(b.profileImage, "/uploads/turkey-doctor.jpg"),
     designation: b.designation || "Hair Transplant Surgeon",
     location: docCity,
     city: docCity,
@@ -85,6 +118,14 @@ function normalizeDoctor(dbDoc) {
 const getDoctorData = cache(async (slug) => {
   try {
     const cleanSlug = decodeURIComponent(slug).toLowerCase().trim();
+
+    // Temporary demo profiles must never resolve to a public standalone doctor page.
+    // They are CMS-only records used for branch testing and should return 404.
+    // Branch pages (services) resolve doctors via assignedDoctor populate, not this route.
+    if (cleanSlug.startsWith("demo-doctor-")) {
+      return null;
+    }
+
     const escaped = cleanSlug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
     await DBConnection();
@@ -123,8 +164,35 @@ export async function generateMetadata({ params }) {
   const metaTitle = seo.metaTitle || `${doctor.name} — Hair Transplant Doctor${locationText} | Ryan Clinic`;
   const metaDesc = seo.metaDescription || `${doctor.name} is a hair transplant surgeon${locationText} at Ryan Clinic. Book a free consultation.`;
   const canonicalUrl = seo.canonicalUrl || `https://www.clinicryan.com/doctors/${slug}`;
-  const ogImageUrl = seo.openGraphImage?.image || doctor.image;
+  const ogImageUrl = getValidImageSrc(seo.openGraphImage, getValidImageSrc(doctor.image, "/uploads/turkey-doctor.jpg"));
   const fullOgImage = ogImageUrl.startsWith("http") ? ogImageUrl : `https://www.clinicryan.com${ogImageUrl}`;
+
+  // Task 1: Dynamic author — [Doctor Name], Ryan Clinic
+  const doctorAuthor = doctor.name ? `${doctor.name}, Ryan Clinic` : "Ryan Clinic";
+
+  // Task 2: Doctor-specific keywords from Admin CMS
+  // Only emit if the admin has set them; never fall back to the Delhi global list
+  const doctorKeywords = seo.keywords?.trim() || null;
+
+  // Task 3: City-specific geo tags — override the global Delhi defaults
+  const geo = getGeoForCity(doctor.city);
+
+  // Task 4: Use doctor.updatedAt as article:modified_time
+  // This is the Mongoose timestamp updated on every save.
+  // It is the best available content-update indicator in the current schema.
+  const modifiedIso = doctor.updatedAt
+    ? new Date(doctor.updatedAt).toISOString()
+    : null;
+
+  const otherMeta = {
+    ...(geo && {
+      "geo.region": geo.region,
+      "geo.placename": geo.placename,
+      "geo.position": `${geo.lat};${geo.lng}`,
+      ICBM: `${geo.lat}, ${geo.lng}`,
+    }),
+    ...(modifiedIso && { "article:modified_time": modifiedIso }),
+  };
 
   return {
     title: metaTitle,
@@ -133,12 +201,17 @@ export async function generateMetadata({ params }) {
       canonical: canonicalUrl,
     },
     robots: seo.robots || "index, follow",
+    // Task 1: Override the hardcoded layout-level author
+    authors: [{ name: doctorAuthor }],
+    // Task 2: Doctor-specific keywords (null means Next.js won't emit the tag)
+    keywords: doctorKeywords,
     openGraph: {
       title: metaTitle,
       description: metaDesc,
       url: canonicalUrl,
       siteName: "Ryan Clinic",
       type: "profile",
+      modifiedTime: modifiedIso || undefined,
       images: [
         {
           url: fullOgImage,
@@ -152,6 +225,8 @@ export async function generateMetadata({ params }) {
       description: metaDesc,
       images: [fullOgImage],
     },
+    // Task 3 & 4: Doctor-specific geo + modified_time override layout defaults
+    other: Object.keys(otherMeta).length > 0 ? otherMeta : undefined,
   };
 }
 
@@ -193,20 +268,6 @@ const DEFAULT_COMPARISON_ROWS = [
   ["Post-Op Inspection & Care Plan", "Doctor / Senior Specialist", "General Clinic Staff"],
 ];
 
-const GREAT_DOCTOR_TRAITS = [
-  {
-    title: "Full Density Transparency",
-    desc: "Provides honest expectations on achievable density and donor graft availability.",
-  },
-  {
-    title: "Personalized Surgical Planning",
-    desc: "Custom hairline design and temporal angle restoration tailored to individual facial symmetry.",
-  },
-  {
-    title: "Strict Surgical Safety Protocols",
-    desc: "Operates exclusively in sterile OT suites under international medical hygiene standards.",
-  },
-];
 
 const cityNearbyAreas = {
   Delhi: [
@@ -277,13 +338,6 @@ export default async function DoctorPage({ params }) {
     ]);
   }
 
-  let greatDoctorTraits = GREAT_DOCTOR_TRAITS;
-  if (doctor.greatDoctorQualities?.cards?.length) {
-    greatDoctorTraits = doctor.greatDoctorQualities.cards.map((c) => ({
-      title: c.title || "",
-      desc: c.description || "",
-    }));
-  }
 
   let goodDoctorTraits = GOOD_DOCTOR_TRAITS;
   if (doctor.doctorStandards?.cards?.length) {
@@ -311,7 +365,7 @@ export default async function DoctorPage({ params }) {
       description: localizeText(wim.description || "", doctor.city),
       secondaryDescription: localizeText(wim.secondaryDescription || "", doctor.city),
       highlightBox: localizeText(wim.highlightBox || "", doctor.city),
-      image: wim.image?.image || "",
+      image: getValidImageSrc(wim.image) || "",
       imageAlt: localizeText(wim.image?.alt || "", doctor.city),
       floatingStats: Array.isArray(wim.floatingStats) ? wim.floatingStats.map(s => ({ value: s.value || "", label: s.label || "" })) : [],
       primaryCTA: { text: wim.primaryCTA?.text || "", url: wim.primaryCTA?.url || "" },
@@ -319,48 +373,26 @@ export default async function DoctorPage({ params }) {
     };
   }
 
-  // ── NEW: surgeonProfile normalization ──
-  let surgeonProfileData = null;
-  if (doctor.surgeonProfile?.about || doctor.surgeonProfile?.achievements?.length) {
-    const sp = doctor.surgeonProfile;
-    surgeonProfileData = {
-      sectionLabel: sp.sectionLabel || "Your Surgeon",
-      heading: localizeText(sp.heading || `Meet ${doctor.name}`, doctor.city),
-      achievementsHeading: localizeText(sp.achievementsHeading || "", doctor.city),
-      about: localizeText(sp.about || "", doctor.city),
-      philosophy: localizeText(sp.philosophy || "", doctor.city),
-      achievements: sp.achievements?.length ? sp.achievements : [],
-      consultationHeading: localizeText(sp.consultationHeading || "", doctor.city),
-      consultationIncludes: sp.consultationIncludes?.length ? sp.consultationIncludes : [],
-    };
-  }
+  // ── surgeonProfile normalization ──
+  const sp = doctor.surgeonProfile || {};
+  const surgeonProfileData = {
+    sectionLabel: sp.sectionLabel || "YOUR SURGEON",
+    heading: sp.heading ? localizeText(sp.heading, doctor.city) : "",
+    achievementsHeading: sp.achievementsHeading ? localizeText(sp.achievementsHeading, doctor.city) : "",
+    about: sp.about ? localizeText(sp.about, doctor.city) : (doctor.about || ""),
+    philosophy: sp.philosophy ? localizeText(sp.philosophy, doctor.city) : "",
+    achievements: Array.isArray(sp.achievements) ? sp.achievements : [],
+    consultationHeading: sp.consultationHeading ? localizeText(sp.consultationHeading, doctor.city) : "",
+    consultationIncludes: Array.isArray(sp.consultationIncludes) ? sp.consultationIncludes : [],
+  };
 
-  // ── NEW: pricing normalization ──
-  let pricingPackages = [];
-  let pricingDisclaimer = "";
-  if (doctor.pricing?.packages?.length) {
-    pricingPackages = doctor.pricing.packages.map((p, i) => ({
-      title: p.title || `Package ${i + 1}`,
-      price: p.price || "",
-      priceNote: p.priceNote || "onwards",
-      subtitle: p.subtitle || "",
-      isFeatured: !!p.isFeatured,
-      features: Array.isArray(p.features)
-        ? p.features.map((f) =>
-            typeof f === "string" ? f : f.title || f.text || f.description || ""
-          ).filter(Boolean)
-        : [],
-      buttonText: p.buttonText || "Get Free Estimate",
-    }));
-    pricingDisclaimer = doctor.pricing.disclaimer || "";
-  }
 
   const qualSuffix = doctor.keyFacts?.qualifications ? `, ${doctor.keyFacts.qualifications}` : "";
   const cityLabel = doctor.city ? ` in ${doctor.city}` : "";
   const defaultHeading = `Hair Transplant Doctor${cityLabel} — ${doctor.name}${qualSuffix}`;
   const bannerTitle = doctor.hero?.title || doctor.seo?.metaTitle || defaultHeading;
   const bannerDesc = doctor.hero?.description || `${doctor.designation} at Ryan Clinic. Experienced hair restoration specialist.`;
-  const bannerImage = doctor.hero?.heroImage?.image || "/uploads/1752667815707-fue-banner_ro9ae6.webp";
+  const bannerImage = getValidImageSrc(doctor.hero?.heroImage, "/uploads/1752667815707-fue-banner_ro9ae6.webp");
   const bannerAlt = doctor.hero?.heroImage?.alt || `${doctor.name} — Ryan Clinic`;
 
   const canonicalUrl = doctor.seo?.canonicalUrl || `https://www.clinicryan.com/doctors/${slug}`;
@@ -381,7 +413,7 @@ export default async function DoctorPage({ params }) {
       "name": "Ryan Clinic",
       "url": "https://www.clinicryan.com"
     },
-    "image": doctor.image?.startsWith("http") ? doctor.image : `https://www.clinicryan.com${doctor.image}`
+    "image": doctor.image ? (doctor.image.startsWith("http") ? doctor.image : `https://www.clinicryan.com${doctor.image}`) : "https://www.clinicryan.com/uploads/turkey-doctor.jpg"
   };
 
   const profilePageSchema = {
@@ -457,57 +489,79 @@ export default async function DoctorPage({ params }) {
     "logo": "https://www.clinicryan.com/uploads/logo.png"
   };
 
-  const jsonLdSchemas = [
-    physicianSchema,
-    profilePageSchema,
-    medicalClinicSchema,
-    faqSchemaData,
-    breadcrumbSchemaData,
-    organizationSchema
-  ];
+  // Task 5: Use custom JSON-LD from Admin if present and valid;
+  // otherwise fall back to the generated array of schemas.
+  let jsonLdOutput = null;
+  const rawCustomJsonLd = doctor.seo?.customJsonLd?.trim();
+  if (rawCustomJsonLd) {
+    try {
+      // Parse to validate, then re-stringify safely
+      const parsed = JSON.parse(rawCustomJsonLd);
+      // Safely serialize: escape </script> sequences to prevent injection
+      jsonLdOutput = JSON.stringify(parsed).replace(/<\/script>/gi, "<\/script>");
+    } catch {
+      // Invalid custom JSON — silently fall back to generated schemas
+      // Admin is notified via the editor's validation UI
+      jsonLdOutput = null;
+    }
+  }
 
-  const bannerStats = [
-    doctor.experience ? { value: doctor.experience, label: "Experience" } : null,
-    doctor.proceduresCount ? { value: `${doctor.proceduresCount.toLocaleString()}+`, label: "Procedures" } : null,
-    doctor.rating ? { value: `${doctor.rating}★`, label: "Google Rating" } : null,
-  ].filter(Boolean);
+  if (!jsonLdOutput) {
+    const jsonLdSchemas = [
+      physicianSchema,
+      profilePageSchema,
+      medicalClinicSchema,
+      faqSchemaData,
+      breadcrumbSchemaData,
+      organizationSchema
+    ];
+    jsonLdOutput = JSON.stringify(jsonLdSchemas).replace(/<\/script>/gi, "<\/script>");
+  }
+
+  const cleanDoctor = { ...doctor };
+  delete cleanDoctor.greatDoctorQualities;
+  delete cleanDoctor.questionsToAsk;
+  if (cleanDoctor.pricing) {
+    cleanDoctor.pricing = {
+      sectionLabel: (!cleanDoctor.pricing.sectionLabel || cleanDoctor.pricing.sectionLabel === "Transparent Pricing")
+        ? "Cost & Consultation"
+        : cleanDoctor.pricing.sectionLabel,
+      heading: cleanDoctor.pricing.heading || "",
+      description: cleanDoctor.pricing.description || "",
+    };
+  }
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdSchemas) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdOutput }}
       />
       <PageBanner
-        breadcrumb={`Doctors / ${doctor.name}`}
+        breadcrumb={`Doctors > ${doctor.name}`}
         title={bannerTitle}
         description={bannerDesc}
         bgImage={bannerImage}
         alt={bannerAlt}
-        stats={bannerStats}
+        city={doctor.city || ""}
       />
       <DoctorsPageClient
         data={{
           goodDoctorTraits,
           comparisonRows,
-          greatDoctorTraits,
           nearbyAreas: (cityNearbyAreas[doctor.city] || []),
           faqs,
-          doctor,
+          doctor: cleanDoctor,
           whyItMatters,
           surgeonProfile: surgeonProfileData,
-          pricingPackages,
-          pricingDisclaimer,
           proceduresPerformed: localizeSection(doctor.proceduresPerformed, doctor.city) || null,
           doctorStandards: localizeSection(doctor.doctorStandards, doctor.city) || null,
           credentials: localizeSection(doctor.credentials, doctor.city) || null,
           verification: localizeSection(doctor.verification, doctor.city) || null,
           comparison: localizeSection(doctor.comparison, doctor.city) || null,
           surgicalProcess: localizeSection(doctor.surgicalProcess || doctor.surgeryTimeline, doctor.city) || null,
-          questionsToAskSection: localizeSection(doctor.questionsToAsk, doctor.city) || null,
-          greatDoctorQualities: localizeSection(doctor.greatDoctorQualities, doctor.city) || null,
           warningSigns: localizeSection(doctor.warningSigns, doctor.city) || null,
-          pricing: localizeSection(doctor.pricing, doctor.city) || null,
+          pricing: cleanDoctor.pricing,
           visitClinic: localizeSection(doctor.visitClinic, doctor.city) || null,
           consultation: localizeSection(doctor.consultation, doctor.city) || null,
           faqSection: localizeSection(doctor.faq, doctor.city) || null,

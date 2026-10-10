@@ -1,0 +1,351 @@
+[
+  {
+    "branchName": "hair-transplant-in-delhi",
+    "cityName": "Delhi",
+    "slug": "/hair-transplant-in-delhi",
+    "assignedDoctorId": "6a71a2b929d7e7beb5f7f813",
+    "assignedDoctorName": "Dr. Pranendra Singh",
+    "assignedDoctorSlug": "hair-transplant-doctor-in-delhi",
+    "meetYourSurgeonEnabled": true,
+    "currentlyRendersOurDoctorSection": true,
+    "suitableDoctorInCMS": {
+      "id": "6a71a2b929d7e7beb5f7f813",
+      "name": "Dr. Pranendra Singh",
+      "slug": "hair-transplant-doctor-in-delhi",
+      "city": "Delhi",
+      "status": "published"
+    },
+    "meetYourSurgeonConfig": {
+      "enabled": true,
+      "eyebrow": "",
+      "heading": "",
+      "badgeText": "",
+      "consultationButtonLabel": "",
+      "profileButtonLabel": ""
+    }
+  },
+  {
+    "branchName": "hair-transplant-in-mumbai",
+    "cityName": "Mumbai",
+    "slug": "/hair-transplant-in-mumbai",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": {
+      "id": "6a8e969f322f85061ac1aa0d",
+      "name": "Dr. Harshada Vijay Rakh",
+      "slug": "hair-transplant-doctor-in-mumbai",
+      "city": "Mumbai",
+      "status": "published"
+    },
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-hyderabad",
+    "cityName": "Hyderabad",
+    "slug": "/hair-transplant-in-hyderabad",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": {
+      "id": "6a8e969f322f85061ac1aa0e",
+      "name": "Dr. Ede Akhila",
+      "slug": "hair-transplant-doctor-in-hyderabad",
+      "city": "Hyderabad",
+      "status": "published"
+    },
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-bangalore",
+    "cityName": "Bangalore",
+    "slug": "/hair-transplant-in-bangalore",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": {
+      "id": "6a8e96a0322f85061ac1aa16",
+      "name": "Dr. Saket",
+      "slug": "hair-transplant-doctor-in-bangalore",
+      "city": "Bangalore",
+      "status": "published"
+    },
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-chennai",
+    "cityName": "Chennai",
+    "slug": "/hair-transplant-in-chennai",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": {
+      "id": "6a8e969f322f85061ac1aa14",
+      "name": "Dr. Pranendra Singh",
+      "slug": "hair-transplant-doctor-in-chennai",
+      "city": "Chennai",
+      "status": "published"
+    },
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-pune",
+    "cityName": "Pune",
+    "slug": "/hair-transplant-in-pune",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": {
+      "id": "6a8e969f322f85061ac1aa0f",
+      "name": "Dr. Anaya Patil",
+      "slug": "hair-transplant-doctor-in-pune",
+      "city": "Pune",
+      "status": "published"
+    },
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-kolkata",
+    "cityName": "Kolkata",
+    "slug": "/hair-transplant-in-kolkata",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": {
+      "id": "6a8e969f322f85061ac1aa11",
+      "name": "Dr. Jai Kishan Solanki",
+      "slug": "hair-transplant-doctor-in-kolkata",
+      "city": "Kolkata",
+      "status": "published"
+    },
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-ahmedabad",
+    "cityName": "Ahmedabad",
+    "slug": "/hair-transplant-in-ahmedabad",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": {
+      "id": "6a8e969f322f85061ac1aa13",
+      "name": "Dr. Chandrashekhar Singh",
+      "slug": "hair-transplant-doctor-in-ahmedabad",
+      "city": "Ahmedabad",
+      "status": "published"
+    },
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-lucknow",
+    "cityName": "Lucknow",
+    "slug": "/hair-transplant-in-lucknow",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": {
+      "id": "6a8e969f322f85061ac1aa15",
+      "name": "Dr. Badruddine Ahmed Rine",
+      "slug": "hair-transplant-doctor-in-lucknow",
+      "city": "Lucknow",
+      "status": "published"
+    },
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-jammu",
+    "cityName": "Jammu",
+    "slug": "/hair-transplant-in-jammu",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": {
+      "id": "6a8e969f322f85061ac1aa12",
+      "name": "Dr. Abroo Hussain",
+      "slug": "hair-transplant-doctor-in-jammu",
+      "city": "Jammu",
+      "status": "published"
+    },
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-patna",
+    "cityName": "Patna",
+    "slug": "/hair-transplant-in-patna",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": {
+      "id": "6a8e969f322f85061ac1aa10",
+      "name": "Dr. Manoj Kumar",
+      "slug": "hair-transplant-doctor-in-patna",
+      "city": "Patna",
+      "status": "published"
+    },
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-gurgaon",
+    "cityName": "Gurgaon",
+    "slug": "/hair-transplant-in-gurgaon",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": {
+      "id": "6aa0fda669bae9798c18c074",
+      "name": "Dr. Pranendra Singh",
+      "slug": "hair-transplant-doctor-in-gurgaon",
+      "city": "Gurgaon",
+      "status": "published"
+    },
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-delhi-copy",
+    "cityName": "Delhi",
+    "slug": "/hair-transplant-in-delhi-copy",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": {
+      "id": "6a71a2b929d7e7beb5f7f813",
+      "name": "Dr. Pranendra Singh",
+      "slug": "hair-transplant-doctor-in-delhi",
+      "city": "Delhi",
+      "status": "published"
+    },
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-noida",
+    "cityName": "Noida",
+    "slug": "/hair-transplant-in-noida",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": null,
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-bhopal",
+    "cityName": "Bhopal",
+    "slug": "/hair-transplant-in-bhopal",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": null,
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-indore",
+    "cityName": "Indore",
+    "slug": "/hair-transplant-in-indore",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": null,
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-chandigarh",
+    "cityName": "Chandigarh",
+    "slug": "/hair-transplant-in-chandigarh",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": null,
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-rachi",
+    "cityName": "Rachi",
+    "slug": "/hair-transplant-in-rachi",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": null,
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-dehradun",
+    "cityName": "Dehradun",
+    "slug": "/hair-transplant-in-dehradun",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": null,
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-delhi-copy-2",
+    "cityName": "Delhi-copy-",
+    "slug": "/hair-transplant-in-delhi-copy-2",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": null,
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-jaipur",
+    "cityName": "Jaipur",
+    "slug": "/hair-transplant-in-jaipur",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": null,
+    "meetYourSurgeonConfig": null
+  },
+  {
+    "branchName": "hair-transplant-in-nagpur",
+    "cityName": "Nagpur",
+    "slug": "/hair-transplant-in-nagpur",
+    "assignedDoctorId": null,
+    "assignedDoctorName": "NONE",
+    "assignedDoctorSlug": null,
+    "meetYourSurgeonEnabled": false,
+    "currentlyRendersOurDoctorSection": false,
+    "suitableDoctorInCMS": null,
+    "meetYourSurgeonConfig": null
+  }
+]

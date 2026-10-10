@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import useTrackCTA from "@/lib/useTrackCTA";
+import { getValidImageSrc } from "@/lib/utils";
 import {
   ChevronLeft,
   ChevronRight,
@@ -146,7 +147,7 @@ export default function DoctorCarouselClient({ initialDoctors = [] }) {
         procedures: b.proceduresCount ? `${Number(b.proceduresCount).toLocaleString()}+` : "—",
         rating: b.rating ? `${b.rating} ★` : "—",
         survivalRate: b.successRate || "—",
-        image: b.profileImage?.image || b.profileImage?.url || DEFAULT_DOCTORS[idx % DEFAULT_DOCTORS.length].image,
+        image: getValidImageSrc(b.profileImage, DEFAULT_DOCTORS[idx % DEFAULT_DOCTORS.length].image),
         slug: doc.slug,
         targetHref,
         about:
@@ -264,8 +265,8 @@ export default function DoctorCarouselClient({ initialDoctors = [] }) {
               {/* ── LEFT: Doctor Photo ── */}
               <div className="lg:col-span-5 relative aspect-[4/3] lg:aspect-auto min-h-[280px] sm:min-h-[340px] bg-gray-900 group overflow-hidden">
                 <Image
-                  src={activeDoc.image}
-                  alt={activeDoc.name}
+                  src={getValidImageSrc(activeDoc?.image, "/uploads/turkey-doctor.jpg")}
+                  alt={activeDoc?.name || "Doctor"}
                   fill
                   className={`object-cover object-top transition-all duration-500 ease-out ${
                     isFading ? "opacity-40 scale-105 blur-xs" : "opacity-100 scale-100 blur-none"
@@ -434,7 +435,7 @@ export default function DoctorCarouselClient({ initialDoctors = [] }) {
                   }`}
                 >
                   <div className="relative w-8 h-8 rounded-lg overflow-hidden shrink-0">
-                    <Image src={d.image} alt={d.name} fill className="object-cover object-top" unoptimized />
+                    <Image src={getValidImageSrc(d.image, "/uploads/turkey-doctor.jpg")} alt={d.name} fill className="object-cover object-top" unoptimized />
                   </div>
                   <div>
                     <p className={`text-xs font-bold ${isActive ? "text-[#D32F2F]" : "text-gray-800"}`}>
@@ -477,7 +478,7 @@ export default function DoctorCarouselClient({ initialDoctors = [] }) {
                 <div>
                   <div className="flex items-center gap-3.5 mb-3.5">
                     <div className="relative w-14 h-14 rounded-xl overflow-hidden shrink-0 border border-white shadow-xs">
-                      <Image src={d.image} alt={d.name} fill className="object-cover object-top transition-transform duration-500 group-hover:scale-105" unoptimized />
+                      <Image src={getValidImageSrc(d.image, "/uploads/turkey-doctor.jpg")} alt={d.name} fill className="object-cover object-top transition-transform duration-500 group-hover:scale-105" unoptimized />
                     </div>
                     <div>
                       <span className="inline-block text-[9.5px] font-bold uppercase tracking-wider text-[#D32F2F] bg-red-50 px-2 py-0.5 rounded-full mb-1">

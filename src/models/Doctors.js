@@ -123,6 +123,10 @@ const doctorSchema = new mongoose.Schema(
       },
       openGraphImage: { type: imageSchema, default: () => ({}) },
       useGlobalSEO: { type: Boolean, default: false },
+      /* Custom JSON-LD structured data — stored as a raw JSON string.
+         When present, it replaces the auto-generated ProfilePage/Physician schemas.
+         Must be valid JSON; validated before persistence. */
+      customJsonLd: { type: String, trim: true, default: "" },
     },
 
     /* ── 3. Hero Section ── */
@@ -205,6 +209,7 @@ const doctorSchema = new mongoose.Schema(
       sectionLabel: { type: String, trim: true, default: "" },
       heading: { type: String, trim: true, default: "" },
       description: { type: String, trim: true, default: "" },
+      bottomCaption: { type: String, trim: true, default: "" },
       leftCard: { type: comparisonCardSchema, default: () => ({}) },
       rightCard: { type: comparisonCardSchema, default: () => ({}) },
       rows: {
