@@ -6,16 +6,23 @@ export default withAuth(
     const token = req.nextauth.token;
     const { pathname } = req.nextUrl;
 
-    // Redirect already-logged-in users away from the login page
-    if (token && pathname === "/login") {
+    // Redirect already-logged-in admins away from the login page
+    if (token && token.role === "admin" && pathname === "/login") {
       return NextResponse.redirect(new URL("/admin", req.url));
     }
 
-    // Block unauthenticated access to admin pages → redirect to login
-    if (!token && pathname.startsWith("/admin")) {
-      const loginUrl = new URL("/login", req.url);
-      loginUrl.searchParams.set("callbackUrl", pathname);
-      return NextResponse.redirect(loginUrl);
+    // Block unauthenticated or non-admin access to admin pages → redirect to login
+    if (pathname.startsWith("/admin")) {
+      if (!token) {
+        const loginUrl = new URL("/login", req.url);
+        loginUrl.searchParams.set("callbackUrl", pathname);
+        return NextResponse.redirect(loginUrl);
+      }
+      if (token.role !== "admin") {
+        const loginUrl = new URL("/login", req.url);
+        loginUrl.searchParams.set("error", "AccessDenied");
+        return NextResponse.redirect(loginUrl);
+      }
     }
 
     // Public endpoints that accept POST form submissions from visitors:
@@ -30,12 +37,18 @@ export default withAuth(
       pathname.startsWith("/api/prp-form") ||
       pathname.startsWith("/api/ai-interview") ||
       pathname.startsWith("/api/razorpay") ||
-      pathname.startsWith("/api/auth");
+      pathname.startsWith("/api/auth") ||
+      pathname === "/api/tracker/create";
 
-    // Block unauthenticated writes to admin API routes → return 401
+    // Block unauthenticated or non-admin writes to protected API routes
     const isWrite = ["POST", "PUT", "PATCH", "DELETE"].includes(req.method);
-    if (!token && isWrite && !isPublicWriteApi && (pathname.startsWith("/admin") || pathname.startsWith("/api/"))) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (isWrite && !isPublicWriteApi && (pathname.startsWith("/admin") || pathname.startsWith("/api/"))) {
+      if (!token) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+      if (token.role !== "admin") {
+        return NextResponse.json({ error: "Forbidden: Admin role required" }, { status: 403 });
+      }
     }
 
     // ── SURGERY ROUTING ─────────────────────────────────────────────────────

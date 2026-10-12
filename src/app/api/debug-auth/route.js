@@ -1,8 +1,12 @@
 import { getToken } from "next-auth/jwt";
+import { requireAdmin } from "@/lib/requireAdmin";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req) {
+  const authError = await requireAdmin();
+  if (authError) return authError;
+
   const cookieNames = req.cookies.getAll().map((c) => c.name);
 
   let token = null;

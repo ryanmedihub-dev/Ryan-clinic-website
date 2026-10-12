@@ -25,16 +25,27 @@ const ALLOWED_EXTENSIONS = new Set([
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
+function isImageBuffer(buffer) {
+  if (!buffer || buffer.length < 12) return false;
+  // JPEG: FF D8 FF
+  if (buffer[0] === 0xFF && buffer[1] === 0xD8 && buffer[2] === 0xFF) return true;
+  // PNG: 89 50 4E 47
+  if (buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4E && buffer[3] === 0x47) return true;
+  // GIF: 47 49 46 38 ('GIF8')
+  if (buffer[0] === 0x47 && buffer[1] === 0x49 && buffer[2] === 0x46 && buffer[3] === 0x38) return true;
+  // WebP: RIFF ... WEBP
+  if (
+    buffer[0] === 0x52 && buffer[1] === 0x49 && buffer[2] === 0x46 && buffer[3] === 0x46 &&
+    buffer[8] === 0x57 && buffer[9] === 0x45 && buffer[10] === 0x42 && buffer[11] === 0x50
+  ) return true;
+  return false;
+}
+
 export async function POST(req) {
   try {
     // Authenticate Admin session
     const authError = await requireAdmin();
-    if (authError) {
-      return NextResponse.json(
-        { errorMessage: 'Unauthorized. Admin session required.' },
-        { status: 401 }
-      );
-    }
+    if (authError) return authError;
 
     const formData = await req.formData();
     const files = [];
@@ -95,11 +106,20 @@ export async function POST(req) {
           { status: 400 }
         );
       }
+
+      const buffer = Buffer.from(await file.arrayBuffer());
+      if (!isImageBuffer(buffer)) {
+        return NextResponse.json(
+          { errorMessage: `File "${file.name}" content does not match a valid image signature.` },
+          { status: 400 }
+        );
+      }
+      file._buffer = buffer;
     }
 
     // Upload all files to Cloudinary in parallel
     const uploadPromises = files.map(async (file) => {
-      const buffer = Buffer.from(await file.arrayBuffer());
+      const buffer = file._buffer || Buffer.from(await file.arrayBuffer());
       const uploaded = await new Promise((resolve, reject) => {
         cloudinary.uploader.upload_stream(
           { folder: 'blog-content' },

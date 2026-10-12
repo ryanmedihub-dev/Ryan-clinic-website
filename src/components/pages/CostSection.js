@@ -1,10 +1,9 @@
-import { Playfair_Display, DM_Sans } from "next/font/google";
+import { Playfair_Display } from "next/font/google";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
   display: "swap",
 });
-const dmSans = DM_Sans({ subsets: ["latin"], weight: ["300", "400", "500"] });
 
 const PRICING = [
   {
@@ -123,7 +122,7 @@ export default function CostSection({ city = "Delhi", pricing, sectionTitle, sec
   const title = sectionTitle || "Hair Transplant Cost";
   const description = sectionDescription || `Hair transplant cost in ${city} at Ryan Clinic starts from ₹40,000 and typically ranges up to ₹3,50,000, depending on graft count and technique (about ₹40–₹120 per graft for doctor-led Sapphire FUE). Your exact cost is confirmed after a free scalp analysis. 0% EMI is available.`;
   return (
-    <section className={` py-20 lg:py-24 ${dmSans.className}`}>
+    <section className="py-20 lg:py-24">
       <div className="containerFull px-6 md:px-8">
         <div className="max-w-full mx-auto">
           {/* Top strip */}

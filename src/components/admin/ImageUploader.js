@@ -41,29 +41,34 @@ export default function ImageUploader({
     const file = e.target.files[0];
     if (!file) return;
 
+    if (file.size > 10 * 1024 * 1024) {
+      setError('File size exceeds the 10MB limit.');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('upload_preset', 'dashzer-data');
-    formData.append('cloud_name', 'dq1tzl5ir');
+    formData.append('section', 'admin-uploads');
 
     try {
-      const res = await fetch('https://api.cloudinary.com/v1_1/dq1tzl5ir/image/upload', {
+      const res = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
       });
 
       const data = await res.json();
 
-      if (res.ok && data.secure_url) {
-        notifyChange(data.secure_url, data.public_id);
+      if (res.ok && (data.secure_url || data.url)) {
+        const finalUrl = data.secure_url || data.url;
+        notifyChange(finalUrl, data.public_id || data.publicId || null);
       } else {
-        setError(data.error?.message || 'Upload failed. Please try again.');
+        setError(data.error || data.errorMessage || data.message || 'Upload failed. Please try again.');
       }
     } catch (err) {
-      console.error(err);
+      console.error('Image upload error:', err);
       setError('Error uploading image. Please try again.');
     } finally {
       setLoading(false);

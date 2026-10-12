@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
 import { DBConnection } from "@/lib/db.js";
+import { requireAdmin } from "@/lib/requireAdmin";
 import Tracker from "@/models/Tracker.js";
 
 export async function GET() {
+    const authError = await requireAdmin();
+    if (authError) return authError;
+
     try {
         await DBConnection();
 
