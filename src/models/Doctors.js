@@ -223,6 +223,7 @@ const doctorSchema = new mongoose.Schema(
       sectionLabel: { type: String, trim: true, default: "" },
       heading: { type: String, trim: true, default: "" },
       achievementsHeading: { type: String, trim: true, default: "" },
+      philosophyHeading: { type: String, trim: true, default: "Is Hair Transplant Right for You?" },
       about: { type: String, trim: true, default: "" },
       philosophy: { type: String, trim: true, default: "" },
       whyChooseDoctor: {

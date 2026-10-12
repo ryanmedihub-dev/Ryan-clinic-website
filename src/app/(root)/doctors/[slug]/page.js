@@ -79,17 +79,46 @@ function normalizeDoctor(dbDoc) {
         : localizeText(dbDoc.pricing.sectionLabel, docCity),
       heading: localizeText(dbDoc.pricing.heading || "", docCity),
       description: localizeText(dbDoc.pricing.description || "", docCity),
+      packageSectionHeading: localizeText(dbDoc.pricing.packageSectionHeading || "", docCity),
+      packageSectionDescription: localizeText(dbDoc.pricing.packageSectionDescription || "", docCity),
+      packages: Array.isArray(dbDoc.pricing.packages)
+        ? dbDoc.pricing.packages.map((p, i) => ({
+            title: p.title || `Package ${i + 1}`,
+            subtitle: p.subtitle || "",
+            price: p.price || "",
+            priceNote: p.priceNote || "onwards",
+            isFeatured: !!p.isFeatured,
+            features: Array.isArray(p.features)
+              ? p.features.map((f) => (typeof f === "string" ? f : f.title || f.text || f.description || "")).filter(Boolean)
+              : typeof p.features === "string"
+              ? p.features.split("\n").map((s) => s.trim()).filter(Boolean)
+              : [],
+            buttonText: p.buttonText || "Get Free Estimate",
+          }))
+        : [],
+      disclaimer: localizeText(dbDoc.pricing.disclaimer || "", docCity),
     } : null,
     visitClinic: localizeSection(dbDoc.visitClinic, docCity),
     consultation: localizeSection(dbDoc.consultation, docCity),
     faq: localizeSection(dbDoc.faq, docCity),
-    keyFacts: localizeSection(dbDoc.keyFacts, docCity),
+    keyFacts: dbDoc.keyFacts ? {
+      ...localizeSection(dbDoc.keyFacts, docCity),
+      experience: (b.yearsExperience && b.yearsExperience > 0) ? `${b.yearsExperience}+ Years` : (localizeText(dbDoc.keyFacts.experience || "", docCity) || "15+ Years"),
+      procedures: (b.proceduresCount && b.proceduresCount > 0) ? `${b.proceduresCount.toLocaleString()}+ Surgeries` : (localizeText(dbDoc.keyFacts.procedures || "", docCity) || "5,000+ Surgeries"),
+    } : null,
     medicalReviewer: localizeSection(dbDoc.medicalReviewer, docCity),
     whyItMatters: localizeSection(dbDoc.whyItMatters, docCity),
     surgeonProfile: localizeSection(dbDoc.surgeonProfile, docCity),
     seo: localizeSection(dbDoc.seo, docCity),
     hero: localizeSection(dbDoc.hero, docCity),
   };
+
+  const canonicalYearsExp = (typeof b.yearsExperience === "number" && b.yearsExperience > 0)
+    ? b.yearsExperience
+    : (parseInt(b.yearsExperience) || null);
+  const canonicalProcCount = (typeof b.proceduresCount === "number" && b.proceduresCount > 0)
+    ? b.proceduresCount
+    : (parseInt(b.proceduresCount) || null);
 
   return {
     ...localizedDoc,
@@ -98,9 +127,11 @@ function normalizeDoctor(dbDoc) {
     designation: b.designation || "Hair Transplant Surgeon",
     location: docCity,
     city: docCity,
-    experience: b.yearsExperience ? `${b.yearsExperience}+ Yrs` : null,
-    procedures: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : null,
-    proceduresCount: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : null,
+    yearsExperience: canonicalYearsExp || 15,
+    proceduresCountNum: canonicalProcCount || 5000,
+    experience: canonicalYearsExp ? `${canonicalYearsExp}+ Yrs` : "15+ Yrs",
+    procedures: canonicalProcCount ? `${canonicalProcCount.toLocaleString()}+` : "5,000+",
+    proceduresCount: canonicalProcCount ? `${canonicalProcCount.toLocaleString()}+` : "5,000+",
     successRate: b.successRate || null,
     rating: b.rating || 5.0,
     about: localizeText(s.about || "", docCity),
@@ -359,6 +390,8 @@ export default async function DoctorPage({ params }) {
   let whyItMatters = null;
   if (doctor.whyItMatters?.heading) {
     const wim = doctor.whyItMatters;
+    const canYears = doctor.yearsExperience || doctor.basicInfo?.yearsExperience || 15;
+    const canProcs = doctor.proceduresCountNum || doctor.basicInfo?.proceduresCount || 5000;
     whyItMatters = {
       sectionLabel: wim.sectionLabel || "Why It Matters",
       heading: localizeText(wim.heading || "", doctor.city),
@@ -367,7 +400,16 @@ export default async function DoctorPage({ params }) {
       highlightBox: localizeText(wim.highlightBox || "", doctor.city),
       image: getValidImageSrc(wim.image) || "",
       imageAlt: localizeText(wim.image?.alt || "", doctor.city),
-      floatingStats: Array.isArray(wim.floatingStats) ? wim.floatingStats.map(s => ({ value: s.value || "", label: s.label || "" })) : [],
+      floatingStats: Array.isArray(wim.floatingStats) ? wim.floatingStats.map(s => {
+        let val = s.value || "";
+        const lbl = s.label || "";
+        if (canProcs && /procedure|surger|case/i.test(lbl)) {
+          val = `${canProcs.toLocaleString()}+`;
+        } else if (canYears && /exp|year/i.test(lbl)) {
+          val = `${canYears}+ Yrs`;
+        }
+        return { value: val, label: lbl };
+      }) : [],
       primaryCTA: { text: wim.primaryCTA?.text || "", url: wim.primaryCTA?.url || "" },
       secondaryCTA: { text: wim.secondaryCTA?.text || "", url: wim.secondaryCTA?.url || "" },
     };
@@ -379,12 +421,35 @@ export default async function DoctorPage({ params }) {
     sectionLabel: sp.sectionLabel || "YOUR SURGEON",
     heading: sp.heading ? localizeText(sp.heading, doctor.city) : "",
     achievementsHeading: sp.achievementsHeading ? localizeText(sp.achievementsHeading, doctor.city) : "",
+    philosophyHeading: sp.philosophyHeading ? localizeText(sp.philosophyHeading, doctor.city) : "Is Hair Transplant Right for You?",
     about: sp.about ? localizeText(sp.about, doctor.city) : (doctor.about || ""),
     philosophy: sp.philosophy ? localizeText(sp.philosophy, doctor.city) : "",
     achievements: Array.isArray(sp.achievements) ? sp.achievements : [],
     consultationHeading: sp.consultationHeading ? localizeText(sp.consultationHeading, doctor.city) : "",
     consultationIncludes: Array.isArray(sp.consultationIncludes) ? sp.consultationIncludes : [],
   };
+
+  // ── pricing normalization ──
+  let pricingPackages = [];
+  let pricingDisclaimer = "";
+  if (doctor.pricing?.packages?.length) {
+    pricingPackages = doctor.pricing.packages.map((p, i) => ({
+      title: p.title || `Package ${i + 1}`,
+      price: p.price || "",
+      priceNote: p.priceNote || "onwards",
+      subtitle: p.subtitle || "",
+      isFeatured: !!p.isFeatured,
+      features: Array.isArray(p.features)
+        ? p.features.map((f) =>
+            typeof f === "string" ? f : f.title || f.text || f.description || ""
+          ).filter(Boolean)
+        : typeof p.features === "string"
+        ? p.features.split("\n").map((s) => s.trim()).filter(Boolean)
+        : [],
+      buttonText: p.buttonText || "Get Free Estimate",
+    }));
+    pricingDisclaimer = doctor.pricing.disclaimer || "";
+  }
 
 
   const qualSuffix = doctor.keyFacts?.qualifications ? `, ${doctor.keyFacts.qualifications}` : "";
@@ -528,6 +593,10 @@ export default async function DoctorPage({ params }) {
         : cleanDoctor.pricing.sectionLabel,
       heading: cleanDoctor.pricing.heading || "",
       description: cleanDoctor.pricing.description || "",
+      packageSectionHeading: cleanDoctor.pricing.packageSectionHeading || "",
+      packageSectionDescription: cleanDoctor.pricing.packageSectionDescription || "",
+      packages: cleanDoctor.pricing.packages || [],
+      disclaimer: cleanDoctor.pricing.disclaimer || "",
     };
   }
 
@@ -554,6 +623,8 @@ export default async function DoctorPage({ params }) {
           doctor: cleanDoctor,
           whyItMatters,
           surgeonProfile: surgeonProfileData,
+          pricingPackages,
+          pricingDisclaimer,
           proceduresPerformed: localizeSection(doctor.proceduresPerformed, doctor.city) || null,
           doctorStandards: localizeSection(doctor.doctorStandards, doctor.city) || null,
           credentials: localizeSection(doctor.credentials, doctor.city) || null,

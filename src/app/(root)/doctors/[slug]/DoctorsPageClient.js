@@ -458,13 +458,25 @@ export default function DoctorPageClient({ data }) {
     );
     const leftCardImageAlt = compLeftCard.image?.alt || `${doctor.name || "Doctor"} — doctor-led hair transplant surgeon`;
 
+    const canonicalYearsExp = (typeof doctor.basicInfo?.yearsExperience === "number" && doctor.basicInfo.yearsExperience > 0)
+        ? doctor.basicInfo.yearsExperience
+        : (typeof doctor.yearsExperience === "number" && doctor.yearsExperience > 0)
+            ? doctor.yearsExperience
+            : (parseInt(doctor.experience) || 15);
+
+    const canonicalCasesDone = (typeof doctor.basicInfo?.proceduresCount === "number" && doctor.basicInfo.proceduresCount > 0)
+        ? doctor.basicInfo.proceduresCount
+        : (typeof doctor.proceduresCountNum === "number" && doctor.proceduresCountNum > 0)
+            ? doctor.proceduresCountNum
+            : (parseInt(String(doctor.proceduresCount || doctor.procedures || "").replace(/,/g, "")) || 5000);
+
     const leftTrustPills = [
         {
-            v: compLeftCard.experienceValue || (doctor.basicInfo?.yearsExperience ? `${doctor.basicInfo.yearsExperience}+ Yrs` : (doctor.experience ? `${doctor.experience}+ Yrs` : "15+ Yrs")),
+            v: `${canonicalYearsExp}+ Yrs`,
             l: compLeftCard.experienceLabel || "Exp",
         },
         {
-            v: compLeftCard.casesValue || (doctor.basicInfo?.proceduresCount ? `${doctor.basicInfo.proceduresCount.toLocaleString()}+` : (doctor.proceduresCount ? `${doctor.proceduresCount}+` : "5,000+")),
+            v: `${canonicalCasesDone.toLocaleString()}+`,
             l: compLeftCard.casesLabel || "Cases Done",
         },
         {
@@ -541,16 +553,16 @@ export default function DoctorPageClient({ data }) {
                                 )}
                             </p>
 
-                            {/* 4. Surgical Philosophy Card (populated from CMS data when available) */}
+                            {/* 4. Is Hair Transplant Right for You? Card (populated from CMS data when available) */}
                             {surgeonProfile?.philosophy && (
                                 <div className="bg-white rounded-2xl border border-[#E8E4DF] p-5 sm:p-6 mb-6 flex gap-4 items-start shadow-sm hover:shadow-md transition-shadow">
                                     <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-[#D32F2F] shrink-0 mt-0.5">
                                         <Sparkles className="w-5 h-5" />
                                     </div>
                                     <div>
-                                        <p className="text-[11px] font-bold text-[#D32F2F] uppercase tracking-widest mb-1.5">
-                                            Surgical Philosophy
-                                        </p>
+                                        <h3 className="text-[11px] font-bold text-[#D32F2F] uppercase tracking-widest mb-1.5">
+                                            {surgeonProfile?.philosophyHeading || "Is Hair Transplant Right for You?"}
+                                        </h3>
                                         <p className="text-gray-700 text-sm leading-relaxed font-sans">
                                             {surgeonProfile.philosophy}
                                         </p>
@@ -673,8 +685,8 @@ export default function DoctorPageClient({ data }) {
                                     {/* Compact Statistics Panel */}
                                     {(() => {
                                         const statsList = [
-                                            doctor.experience ? { label: "Exp.", value: doctor.experience, color: "text-amber-400" } : null,
-                                            doctor.proceduresCount ? { label: "Surgeries", value: doctor.proceduresCount, color: "text-white" } : null,
+                                            { label: "Exp.", value: `${canonicalYearsExp}+ Yrs`, color: "text-amber-400" },
+                                            { label: "Surgeries", value: `${canonicalCasesDone.toLocaleString()}+`, color: "text-white" },
                                             doctor.successRate ? { label: "Graft Survival", value: doctor.successRate, color: "text-emerald-400" } : null,
                                         ].filter(Boolean);
 
@@ -728,9 +740,9 @@ export default function DoctorPageClient({ data }) {
                             {/* Section header */}
                             <div className="flex items-center gap-2.5 mb-8">
                                 <span className="w-[7px] h-[7px] rounded-full bg-[#C62828] flex-shrink-0" aria-hidden="true" />
-                                <h2 className="text-[13px] font-bold uppercase tracking-[0.15em] text-gray-900 leading-none">
+                                <h3 className="text-[13px] font-bold uppercase tracking-[0.15em] text-gray-900 leading-none">
                                     {keyFacts.heading || "Verified Doctor & Clinic Key Facts"}
-                                </h2>
+                                </h3>
                             </div>
 
                             {/* 3 × 2 grid — 6 cards only (no registration, no memberships) */}
@@ -759,24 +771,28 @@ export default function DoctorPageClient({ data }) {
                                 )}
 
                                 {/* 3 — Surgical Experience */}
-                                {keyFacts.experience && (
+                                {(keyFacts.experience || canonicalYearsExp) && (
                                     <div className="bg-white rounded-[18px] border border-gray-100 shadow-[0_1px_4px_rgba(0,0,0,0.06)] p-5 min-h-[120px] flex flex-col justify-start">
                                         <div className="flex items-center gap-1.5 mb-2.5">
                                             <Award className="w-3.5 h-3.5 text-[#C62828] flex-shrink-0" aria-hidden="true" />
                                             <p className="text-[10.5px] font-bold text-[#7B8FA1] uppercase tracking-[0.12em] leading-none">Surgical Experience</p>
                                         </div>
-                                        <p className="text-[15px] font-bold text-[#0F1E2D] leading-[1.45]">{keyFacts.experience}</p>
+                                        <p className="text-[15px] font-bold text-[#0F1E2D] leading-[1.45]">
+                                            {canonicalYearsExp ? `${canonicalYearsExp}+ Years` : (keyFacts.experience || "15+ Years")}
+                                        </p>
                                     </div>
                                 )}
 
                                 {/* 4 — Case Volume */}
-                                {keyFacts.procedures && (
+                                {(keyFacts.procedures || canonicalCasesDone) && (
                                     <div className="bg-white rounded-[18px] border border-gray-100 shadow-[0_1px_4px_rgba(0,0,0,0.06)] p-5 min-h-[120px] flex flex-col justify-start">
                                         <div className="flex items-center gap-1.5 mb-2.5">
                                             <Users className="w-3.5 h-3.5 text-[#C62828] flex-shrink-0" aria-hidden="true" />
                                             <p className="text-[10.5px] font-bold text-[#7B8FA1] uppercase tracking-[0.12em] leading-none">Case Volume</p>
                                         </div>
-                                        <p className="text-[15px] font-bold text-[#0F1E2D] leading-[1.45]">{keyFacts.procedures}</p>
+                                        <p className="text-[15px] font-bold text-[#0F1E2D] leading-[1.45]">
+                                            {canonicalCasesDone ? `${canonicalCasesDone.toLocaleString()}+ Surgeries` : (keyFacts.procedures || "5,000+ Surgeries")}
+                                        </p>
                                     </div>
                                 )}
 
@@ -1491,24 +1507,31 @@ export default function DoctorPageClient({ data }) {
                     <div className="flex flex-wrap gap-2.5 items-center text-sm text-gray-500 mt-8">
                         <span>Learn more:</span>
                         <a
-                            href={`/hair-transplant-in-${citySlug}`}
+                            href={`/hair-transplant-in-${citySlug || "delhi"}`}
                             className="text-[#D32F2F] hover:text-red-700 font-semibold underline underline-offset-4 decoration-red-200 hover:decoration-[#D32F2F] transition-all"
                         >
-                            hair transplant in {doctorCity}
+                            hair transplant in {doctorCity || "Delhi"}
                         </a>
                         <span className="text-gray-300">·</span>
                         <a
-                            href={`/surgery/hair-transplant-surgery-in-${citySlug}`}
+                            href={`/surgery/hair-transplant-surgery-in-${citySlug || "delhi"}`}
                             className="text-[#D32F2F] hover:text-red-700 font-semibold underline underline-offset-4 decoration-red-200 hover:decoration-[#D32F2F] transition-all"
                         >
-                            hair transplant surgery in {doctorCity}
+                            hair transplant surgery in {doctorCity || "Delhi"}
                         </a>
                         <span className="text-gray-300">·</span>
                         <a
-                            href={`/best-hair-transplant-clinic-in-${citySlug}`}
+                            href={`/surgeon/hair-transplant-surgeon-in-${citySlug || "delhi"}`}
                             className="text-[#D32F2F] hover:text-red-700 font-semibold underline underline-offset-4 decoration-red-200 hover:decoration-[#D32F2F] transition-all"
                         >
-                            best hair transplant clinic in {doctorCity}
+                            best hair transplant surgeon in {doctorCity || "Delhi"}
+                        </a>
+                        <span className="text-gray-300">·</span>
+                        <a
+                            href={`/treatments/hair-fall-loss-treatment-in-${citySlug || "delhi"}`}
+                            className="text-[#D32F2F] hover:text-red-700 font-semibold underline underline-offset-4 decoration-red-200 hover:decoration-[#D32F2F] transition-all"
+                        >
+                            Hair Fall & Hair Loss Treatment in {doctorCity || "Delhi"}
                         </a>
                     </div>
                 </div>
@@ -1582,7 +1605,7 @@ export default function DoctorPageClient({ data }) {
                                         </div>
                                         <div>
                                             <p className="font-bold text-xs uppercase tracking-wider text-gray-400 mb-0.5 font-sans">Consultation Hours</p>
-                                            <p className="text-gray-700 text-xs font-semibold">Monday – Saturday, 9:00 AM – 7:00 PM</p>
+                                            <p className="text-gray-700 text-xs font-semibold">Monday – Sunday, 9:00 AM – 7:00 PM</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1651,9 +1674,6 @@ export default function DoctorPageClient({ data }) {
                 SECTION 13B: Split CTA 3-Card Section (Home Page Style)
                 Replaces the old dark consultation banner with the exact 3-card layout matching Image 1
             ═════════════════════════════════════════════════════════════════ */}
-            {/* ═════════════════════════════════════════════════════════════════
-                SECTION 13B: Split CTA Section (Home Page Style)
-            ═════════════════════════════════════════════════════════════════ */}
             {(() => {
                 const verifiedPatientCase = Array.isArray(doctor.patientResults?.cases)
                     ? doctor.patientResults.cases.find((c) => (c.isPublic || c.isVerified) && (c.afterImage || c.image || c.beforeImage))
@@ -1684,16 +1704,16 @@ export default function DoctorPageClient({ data }) {
                                             </p>
 
                                             {/* Mini Stats (Only show verified metrics) */}
-                                            {(doctor.experience || doctor.rating) && (
+                                            {(canonicalYearsExp || doctor.experience || doctor.rating) && (
                                                 <div className="flex gap-6 mb-8">
-                                                    {doctor.experience && (
+                                                    {(canonicalYearsExp || doctor.experience) && (
                                                         <div>
-                                                             <p className="text-2xl font-black text-[#D32F2F] leading-none">{doctor.experience}</p>
+                                                            <p className="text-2xl font-black text-[#D32F2F] leading-none">{canonicalYearsExp ? `${canonicalYearsExp}+ Yrs` : doctor.experience}</p>
                                                             <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-1">Exp.</p>
                                                         </div>
                                                     )}
                                                     {doctor.rating && (
-                                                        <div className={doctor.experience ? "border-l border-gray-200 pl-6" : ""}>
+                                                        <div className={(canonicalYearsExp || doctor.experience) ? "border-l border-gray-200 pl-6" : ""}>
                                                             <p className="text-2xl font-black text-gray-900 leading-none">{doctor.rating}★</p>
                                                             <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-1">Rating</p>
                                                         </div>

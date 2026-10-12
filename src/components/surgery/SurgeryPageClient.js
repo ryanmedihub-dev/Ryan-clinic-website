@@ -577,8 +577,8 @@ export default function SurgeryPageClient({ data }) {
   const DEFAULT_VISIT_CARDS = [
     {
       title: "CLINIC HOURS",
-      description: "Monday – Saturday: 10:00 AM – 07:00 PM",
-      subtext: "Sunday: Prior Appointment Only",
+      description: "Monday – Sunday: 9:00 AM – 7:00 PM",
+      subtext: "Walk-in & Appointments Welcome",
       icon: <Clock className="w-5 h-5 text-[#e30a17]" />
     },
     {

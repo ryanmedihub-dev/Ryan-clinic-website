@@ -153,6 +153,7 @@ function EditDoctorContent() {
               heading: "",
               about: "",
               philosophy: "",
+              philosophyHeading: "Is Hair Transplant Right for You?",
               achievementsHeading: "",
               consultationHeading: "",
               whyChooseDoctor: [],
@@ -1391,7 +1392,17 @@ function EditDoctorContent() {
             />
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-700">Surgical Philosophy</label>
+            <label className="block text-sm font-semibold text-gray-700">Philosophy / Suitability Card Heading</label>
+            <input
+              type="text"
+              value={formData.surgeonProfile?.philosophyHeading || ""}
+              onChange={(e) => handleNestedChange("surgeonProfile", "philosophyHeading", e.target.value)}
+              className="w-full mt-2 p-2 border rounded-md"
+              placeholder="Is Hair Transplant Right for You?"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700">Surgical Philosophy / Suitability Content</label>
             <textarea
               rows={2}
               value={formData.surgeonProfile?.philosophy || ""}
@@ -1740,6 +1751,173 @@ function EditDoctorContent() {
           </div>
         )}
 
+        {/* 17. PACKAGES & PRICING */}
+        <h3 className="text-2xl font-bold underline mt-10 mb-5">17. Packages &amp; Pricing</h3>
+        <div className="flex gap-4 flex-col md:flex-row mb-4">
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Label</label>
+            <input
+              type="text"
+              value={formData.pricing?.sectionLabel || ""}
+              onChange={(e) => handleNestedChange("pricing", "sectionLabel", e.target.value)}
+              className="w-full mt-2 p-2 border rounded-md"
+              placeholder="e.g. Cost & Consultation or Transparent Pricing"
+            />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-semibold text-gray-700">Section Heading (H2) *</label>
+            <input
+              type="text"
+              value={formData.pricing?.heading || ""}
+              onChange={(e) => handleNestedChange("pricing", "heading", e.target.value)}
+              className="w-full mt-2 p-2 border rounded-md font-semibold"
+              placeholder="e.g. Hair Transplant Cost in Delhi"
+            />
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700">Description</label>
+          <textarea
+            rows={2}
+            value={formData.pricing?.description || ""}
+            onChange={(e) => handleNestedChange("pricing", "description", e.target.value)}
+            className="w-full mt-2 p-2 border rounded-md"
+            placeholder="Consultation at Ryan Clinic includes a free scalp analysis — your doctor assesses your case and provides an exact graft count and transparent cost estimate."
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700">Pricing Disclaimer</label>
+          <textarea
+            rows={2}
+            value={formData.pricing?.disclaimer || ""}
+            onChange={(e) => handleNestedChange("pricing", "disclaimer", e.target.value)}
+            className="w-full mt-2 p-2 border rounded-md"
+            placeholder="Prices are determined per-graft. Your exact cost depends on graft count determined at consultation. All estimates include anaesthesia, OT charges, post-op kit, and follow-up visits."
+          />
+        </div>
+        <button
+          type="button"
+          onClick={() =>
+            addToArray("pricing", "packages", {
+              title: "",
+              subtitle: "",
+              price: "",
+              priceNote: "onwards",
+              features: [],
+              buttonText: "Get Free Cost Estimate",
+              isFeatured: false,
+            })
+          }
+          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 mb-4 cursor-pointer"
+        >
+          + Add Pricing Package
+        </button>
+        {(formData.pricing?.packages || []).length === 0 ? (
+          <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center my-3">
+            <p className="text-gray-500">No pricing packages added yet. The public page will display the transparent cost breakdown and consultation inclusions table.</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {(formData.pricing?.packages || []).map((pkg, i) => (
+              <div key={i} className="border rounded-xl p-5 bg-white shadow-sm space-y-3">
+                <div className="flex justify-between items-center">
+                  <h4 className="text-base font-semibold text-gray-800">Package #{i + 1}</h4>
+                  <button
+                    type="button"
+                    onClick={() => deleteFromArray("pricing", "packages", i)}
+                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer"
+                  >
+                    Delete Package
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700">Package Title</label>
+                    <input
+                      type="text"
+                      value={pkg.title || ""}
+                      onChange={(e) => updateArrayItem("pricing", "packages", i, "title", e.target.value)}
+                      className="w-full mt-1.5 p-2 border rounded-md"
+                      placeholder="e.g. Sapphire FUE"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700">Subtitle / Badge</label>
+                    <input
+                      type="text"
+                      value={pkg.subtitle || ""}
+                      onChange={(e) => updateArrayItem("pricing", "packages", i, "subtitle", e.target.value)}
+                      className="w-full mt-1.5 p-2 border rounded-md"
+                      placeholder="e.g. Most Popular"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700">Price Display</label>
+                    <input
+                      type="text"
+                      value={pkg.price || ""}
+                      onChange={(e) => updateArrayItem("pricing", "packages", i, "price", e.target.value)}
+                      className="w-full mt-1.5 p-2 border rounded-md font-semibold text-[#D32F2F]"
+                      placeholder="e.g. ₹45,000 or Estimate"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700">Price Note</label>
+                    <input
+                      type="text"
+                      value={pkg.priceNote || ""}
+                      onChange={(e) => updateArrayItem("pricing", "packages", i, "priceNote", e.target.value)}
+                      className="w-full mt-1.5 p-2 border rounded-md"
+                      placeholder="e.g. onwards or per graft rate confirmed in consult"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700">Button Text</label>
+                    <input
+                      type="text"
+                      value={pkg.buttonText || ""}
+                      onChange={(e) => updateArrayItem("pricing", "packages", i, "buttonText", e.target.value)}
+                      className="w-full mt-1.5 p-2 border rounded-md"
+                      placeholder="Get Free Cost Estimate"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2 pt-6">
+                    <input
+                      type="checkbox"
+                      id={`pkg-featured-${i}`}
+                      checked={!!pkg.isFeatured}
+                      onChange={(e) => updateArrayItem("pricing", "packages", i, "isFeatured", e.target.checked)}
+                      className="w-4 h-4 text-red-600 rounded"
+                    />
+                    <label htmlFor={`pkg-featured-${i}`} className="text-sm font-semibold text-gray-700 cursor-pointer">
+                      Featured / Most Popular
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700">Features (one per line)</label>
+                  <textarea
+                    rows={3}
+                    value={Array.isArray(pkg.features) ? pkg.features.join("\n") : (pkg.features || "")}
+                    onChange={(e) =>
+                      updateArrayItem(
+                        "pricing",
+                        "packages",
+                        i,
+                        "features",
+                        e.target.value.split("\n").filter((s) => s.trim().length > 0)
+                      )
+                    }
+                    className="w-full mt-1.5 p-2 border rounded-md text-sm font-sans"
+                    placeholder="Doctor performs key surgical steps&#10;Sapphire micro-blade extraction&#10;Custom hairline design"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* 18. VISIT CLINIC */}
         <h3 className="text-2xl font-bold underline mt-10 mb-5">18. Visit Clinic Information</h3>

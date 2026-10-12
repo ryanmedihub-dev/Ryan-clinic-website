@@ -1,11 +1,5 @@
 import mongoose from "mongoose";
 
-const url = process.env.MONGO_URL;
-
-if (!url) {
-  throw new Error("Please provide a valid MongoDB URL!");
-}
-
 let cached = global.mongoose;
 
 if (!cached) {
@@ -17,8 +11,16 @@ export async function DBConnection() {
     return cached.conn;
   }
 
+  const url = process.env.MONGO_URL;
+  if (!url) {
+    throw new Error("Please provide a valid MongoDB URL in process.env.MONGO_URL!");
+  }
+
   if (!cached.promise) {
-    cached.promise = mongoose.connect(url).then((mongooseInstance) => {
+    const opts = {
+      bufferCommands: false,
+    };
+    cached.promise = mongoose.connect(url, opts).then((mongooseInstance) => {
       return mongooseInstance;
     });
   }

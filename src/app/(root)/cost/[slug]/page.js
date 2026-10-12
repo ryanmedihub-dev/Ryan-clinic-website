@@ -26,7 +26,7 @@ const CITY_DEFAULTS = {
   delhi: {
     badge: "Our Delhi Clinic",
     address: "CD 163, Block CD,\nDakshini Pitampura,\nPitampura,\nNew Delhi – 110034",
-    timings: "Monday – Saturday: 10:00 AM – 7:00 PM",
+    timings: "Monday – Sunday: 9:00 AM – 7:00 PM",
     landmark: "Near Pitampura TV Tower",
     nearbyAreas: ["Pitampura", "Rohini", "Shalimar Bagh", "Kohat Enclave", "Shakurpur"],
     phone: "+91-9911111247",
@@ -39,7 +39,7 @@ const CITY_DEFAULTS = {
   mumbai: {
     badge: "Mumbai Clinic Location",
     address: "MHADA 4 Bungalow, 168, Phase D,\nSV Patel Nagar, Andheri West,\nMumbai – 400053",
-    timings: "Monday – Saturday: 10:00 AM – 7:00 PM",
+    timings: "Monday – Sunday: 9:00 AM – 7:00 PM",
     landmark: "Near Four Bungalows Market, Andheri West",
     nearbyAreas: ["Andheri West", "Juhu", "Lokhandwala", "Bandra", "Goregaon", "Versova"],
     phone: "+91-9911111247",
@@ -52,7 +52,7 @@ const CITY_DEFAULTS = {
   hyderabad: {
     badge: "Hyderabad Clinic Location",
     address: "Ryan Hair Clinic,\nAndheri West Road, Banjara Hills,\nHyderabad – 500034",
-    timings: "Monday – Saturday: 10:00 AM – 7:00 PM",
+    timings: "Monday – Sunday: 9:00 AM – 7:00 PM",
     landmark: "Near Banjara Hills Road No. 10",
     nearbyAreas: ["Banjara Hills", "Jubilee Hills", "Somajiguda", "Begumpet", "Ameerpet"],
     phone: "+91-9911111247",
