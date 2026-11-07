@@ -1,39 +1,84 @@
-"use client";
+export const dynamic = "force-dynamic";
 
-import { useState, useCallback } from "react";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { revalidatePath } from "next/cache";
+import { DBConnection } from "@/lib/db";
+import Leads from "@/models/leads";
+import { resendLead } from "@/lib/leads";
 import {
-  Users, ExternalLink, Search, RefreshCw,
-  Phone, Mail, MapPin, Tag, MessageSquare,
+  Users, ExternalLink, Search, Phone, Mail, MapPin, CheckCircle2, AlertTriangle, RefreshCw,
 } from "lucide-react";
 
 const CRM_URL = "https://www.ryanmedihub.com";
+const PER_PAGE = 50;
 
-export default function CustomerPage() {
-  const [query, setQuery] = useState("");
+async function resendAction(formData) {
+  "use server";
+  const session = await getServerSession(authOptions);
+  if (session?.user?.role !== "admin") throw new Error("Unauthorized");
 
-  const stats = [
-    { label: "All leads managed via Ryan CRM", note: "External System" },
-  ];
+  await resendLead(String(formData.get("id")));
+  revalidatePath("/admin/customer");
+}
+
+function fmtDate(d) {
+  try {
+    return new Date(d).toLocaleString("en-IN", {
+      day: "2-digit", month: "short", year: "numeric",
+      hour: "2-digit", minute: "2-digit",
+    });
+  } catch { return "—"; }
+}
+
+export default async function LeadsPage({ searchParams }) {
+  const session = await getServerSession(authOptions);
+  if (session?.user?.role !== "admin") redirect("/login");
+
+  const sp = await searchParams;
+  const q = (sp?.q || "").trim();
+  const status = sp?.status || "";
+  const page = Math.max(1, parseInt(sp?.page) || 1);
+
+  const filter = {};
+  if (q) {
+    const rx = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
+    filter.$or = [{ name: rx }, { phone: rx }, { email: rx }, { location: rx }];
+  }
+  if (status) filter.crmStatus = status;
+
+  await DBConnection();
+  const [leads, total, failedCount] = await Promise.all([
+    Leads.find(filter).sort({ createdAt: -1 }).skip((page - 1) * PER_PAGE).limit(PER_PAGE).lean(),
+    Leads.countDocuments(filter),
+    Leads.countDocuments({ crmStatus: "failed" }),
+  ]);
+
+  const pages = Math.max(1, Math.ceil(total / PER_PAGE));
+  const qs = (over) =>
+    "?" + new URLSearchParams({ q, status, page: String(page), ...over }).toString();
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <div className="bg-white border-b border-gray-100 px-6 py-5">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center">
               <Users className="w-5 h-5 text-purple-600" />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-gray-900">Customers & Leads</h1>
-              <p className="text-xs text-gray-500">Managed via Ryan MediHub CRM</p>
+              <h1 className="text-lg font-bold text-gray-900">Leads</h1>
+              <p className="text-xs text-gray-500">
+                {total} lead{total === 1 ? "" : "s"} stored on this website
+              </p>
             </div>
           </div>
           <a
             href={CRM_URL}
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-2 px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold rounded-xl transition-colors"
+            className="shrink-0 flex items-center gap-2 px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold rounded-xl transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
             Open CRM
@@ -41,77 +86,150 @@ export default function CustomerPage() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto p-6 space-y-6">
+      <div className="max-w-7xl mx-auto p-6 space-y-4">
+        {failedCount > 0 && (
+          <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl px-4 py-3 text-sm">
+            <AlertTriangle className="w-4 h-4 shrink-0" />
+            {failedCount} lead{failedCount === 1 ? "" : "s"} never reached the CRM — the data is safe here.
+          </div>
+        )}
 
-        {/* CRM Info Banner */}
-        <div className="bg-gradient-to-r from-purple-600 to-purple-800 rounded-2xl p-6 text-white">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <h2 className="text-lg font-bold mb-1">Ryan MediHub CRM</h2>
-              <p className="text-purple-200 text-sm max-w-lg">
-                All customer leads, consultations, and patient data are managed through the Ryan MediHub CRM platform. Click below to access the full dashboard.
-              </p>
+        <div className="flex flex-wrap items-center gap-2">
+          <form className="flex items-center gap-2 grow sm:grow-0">
+            <div className="relative">
+              <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="search"
+                name="q"
+                defaultValue={q}
+                placeholder="Name, phone, email, city…"
+                className="pl-9 pr-3 py-2.5 w-full sm:w-72 text-sm rounded-xl border border-gray-200 bg-white focus:outline-none focus:border-purple-300"
+              />
             </div>
-            <a
-              href={CRM_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="shrink-0 flex items-center gap-2 px-5 py-3 bg-white text-purple-700 text-sm font-bold rounded-xl hover:bg-purple-50 transition-colors"
-            >
-              <ExternalLink className="w-4 h-4" />
-              Go to CRM
-            </a>
+            {status && <input type="hidden" name="status" value={status} />}
+            <button className="px-4 py-2.5 text-sm font-semibold rounded-xl border border-gray-200 bg-white hover:bg-gray-50">
+              Search
+            </button>
+          </form>
+          <div className="flex gap-2 ml-auto">
+            {[["", "All"], ["sent", "Sent"], ["failed", "Failed"], ["pending", "Pending"]].map(
+              ([val, label]) => (
+                <a
+                  key={label}
+                  href={qs({ status: val, page: "1" })}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold border transition-colors ${
+                    status === val
+                      ? "bg-purple-600 text-white border-purple-600"
+                      : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
+                  }`}
+                >
+                  {label}
+                </a>
+              )
+            )}
           </div>
         </div>
 
-        {/* Feature Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[
-            { icon: Phone, label: "Call Leads", desc: "View and manage incoming call inquiries from website visitors.", color: "blue" },
-            { icon: Mail, label: "Email Leads", desc: "Track email enquiries from contact and consultation forms.", color: "green" },
-            { icon: MapPin, label: "Location Tracking", desc: "See where your leads are coming from across India.", color: "orange" },
-            { icon: Tag, label: "Lead Tagging", desc: "Categorize leads by source, service type, and priority.", color: "red" },
-            { icon: MessageSquare, label: "Remarks & Notes", desc: "Add follow-up notes and remarks to each customer record.", color: "purple" },
-            { icon: Users, label: "Patient Records", desc: "Manage patient information, history, and consultation status.", color: "indigo" },
-          ].map(({ icon: Icon, label, desc, color }) => (
-            <a
-              key={label}
-              href={CRM_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="group bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-md transition-all"
-            >
-              <div className={`w-10 h-10 rounded-xl bg-${color}-50 flex items-center justify-center mb-3`}>
-                <Icon className={`w-5 h-5 text-${color}-600`} />
-              </div>
-              <h3 className="font-semibold text-gray-900 text-sm mb-1">{label}</h3>
-              <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
-              <div className={`mt-3 text-xs font-semibold text-${color}-600 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity`}>
-                Open in CRM <ExternalLink className="w-3 h-3" />
-              </div>
-            </a>
-          ))}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
+              <tr>
+                {["Received", "Name", "Contact", "Location", "Details", "Source", "CRM"].map((h) => (
+                  <th key={h} className="text-left font-semibold px-4 py-3 whitespace-nowrap">{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {leads.map((l) => (
+                <tr key={String(l._id)} className="hover:bg-gray-50 align-top">
+                  <td className="px-4 py-3 text-gray-500 whitespace-nowrap">{fmtDate(l.createdAt)}</td>
+                  <td className="px-4 py-3 font-semibold text-gray-900">{l.name}</td>
+                  <td className="px-4 py-3 space-y-1">
+                    {l.phone && (
+                      <a href={`tel:${l.phone}`} className="flex items-center gap-1.5 text-gray-700 hover:text-purple-700">
+                        <Phone className="w-3.5 h-3.5 text-gray-400" />{l.phone}
+                      </a>
+                    )}
+                    {l.email && (
+                      <a href={`mailto:${l.email}`} className="flex items-center gap-1.5 text-gray-500 hover:text-purple-700 break-all">
+                        <Mail className="w-3.5 h-3.5 text-gray-400 shrink-0" />{l.email}
+                      </a>
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-gray-600">
+                    {l.location ? (
+                      <span className="flex items-center gap-1.5">
+                        <MapPin className="w-3.5 h-3.5 text-gray-400" />{l.location}
+                      </span>
+                    ) : "—"}
+                  </td>
+                  <td className="px-4 py-3 text-gray-600 max-w-xs">
+                    {l.serviceType && <div className="font-medium text-gray-800">{l.serviceType}</div>}
+                    {(l.visitPlan || l.visitDate) && (
+                      <div className="text-xs text-gray-500">
+                        {[l.visitPlan, l.visitDate].filter(Boolean).join(" · ")}
+                      </div>
+                    )}
+                    {l.remarks && <div className="text-xs text-gray-500">{l.remarks}</div>}
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    <span className="px-2 py-1 rounded-lg bg-gray-100 text-gray-600 text-xs font-semibold">
+                      {l.tag || l.source || "—"}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    {l.crmStatus === "sent" ? (
+                      <span className="flex items-center gap-1 text-green-600 text-xs font-semibold">
+                        <CheckCircle2 className="w-3.5 h-3.5" />Sent
+                      </span>
+                    ) : (
+                      <div className="space-y-1.5">
+                        <span
+                          title={l.crmError || ""}
+                          className={`block text-xs font-semibold ${l.crmStatus === "failed" ? "text-red-600" : "text-amber-600"}`}
+                        >
+                          {l.crmStatus === "failed" ? "Failed" : "Pending"}
+                        </span>
+                        <form action={resendAction}>
+                          <input type="hidden" name="id" value={String(l._id)} />
+                          <button className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold transition-colors">
+                            <RefreshCw className="w-3 h-3" />
+                            Resend
+                          </button>
+                        </form>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))}
+              {leads.length === 0 && (
+                <tr>
+                  <td colSpan={7} className="px-4 py-12 text-center text-gray-400">
+                    No leads {q || status ? "match this filter" : "yet"}.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
 
-        {/* Quick Link Row */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-          <h3 className="font-bold text-gray-900 mb-1 text-sm">Quick Access</h3>
-          <p className="text-xs text-gray-400 mb-4">Direct links to CRM sections</p>
-          <div className="flex flex-wrap gap-2">
-            {["Dashboard", "All Leads", "New Lead", "Reports", "Settings"].map((item) => (
-              <a
-                key={item}
-                href={CRM_URL}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-gray-200 text-xs font-semibold text-gray-600 hover:bg-gray-50 hover:border-purple-200 hover:text-purple-700 transition-colors"
-              >
-                {item}
-                <ExternalLink className="w-3 h-3" />
-              </a>
-            ))}
+        {pages > 1 && (
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-gray-500">Page {page} of {pages}</span>
+            <div className="flex gap-2">
+              {page > 1 && (
+                <a href={qs({ page: String(page - 1) })} className="px-4 py-2 rounded-xl border border-gray-200 bg-white font-semibold hover:bg-gray-50">
+                  Previous
+                </a>
+              )}
+              {page < pages && (
+                <a href={qs({ page: String(page + 1) })} className="px-4 py-2 rounded-xl border border-gray-200 bg-white font-semibold hover:bg-gray-50">
+                  Next
+                </a>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

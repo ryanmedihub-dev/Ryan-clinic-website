@@ -49,7 +49,7 @@ function LayoutWrapper({ children }) {
     } else if (pathname.startsWith("/admin/services")) {
       setActiveTab("Services");
     } else if (pathname.startsWith("/admin/customer")) {
-      setActiveTab("Customer");
+      setActiveTab("Leads");
     } else if (pathname.startsWith("/admin/component")) {
       setActiveTab("Components");
     } else if (pathname.startsWith("/admin/gallery")) {
@@ -82,7 +82,7 @@ function LayoutWrapper({ children }) {
     { name: "Pages", icon: NotebookText, href: "/admin/pages" },
     { name: "Doctors", icon: Users, href: "/admin/doctors" },
     { name: "Services", icon: ShieldPlus, href: "/admin/services" },
-    { name: "Customer", icon: Users, href: "/admin/customer" },
+    { name: "Leads", icon: Users, href: "/admin/customer" },
     { name: "Components", icon: Component, href: "/admin/component" },
     {
       name: "Blogs",
