@@ -18,7 +18,10 @@ export async function POST(req) {
     const response = await fetch("https://www.ryanmedihub.com/api/leads/create", {
       method: "POST",
       body: JSON.stringify(crmPayload),
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.LEADS_API_KEY || "",
+      },
     });
 
     const data = await response.json();
