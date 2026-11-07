@@ -1,8 +1,6 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import useTrackCTA from "@/lib/useTrackCTA";
+import TrackedWhatsAppLink from "@/components/common/TrackedWhatsAppLink";
 
 const highlights = [
   "Original Turkey Choi Pen — exclusively in India",
@@ -19,7 +17,6 @@ const stats = [
 ];
 
 export default function TurkeySpecialists() {
-  const trackCTA = useTrackCTA();
   return (
     <section
       className="py-16 md:py-24"
@@ -78,13 +75,14 @@ export default function TurkeySpecialists() {
 
             {/* Floating secondary image */}
             <div
-              className="hidden md:block absolute -bottom-6 -right-6 w-52 h-44 rounded-2xl overflow-hidden shadow-2xl border-4 border-white"
+              className="hidden md:block absolute -bottom-6 right-3 lg:-right-6 w-52 h-44 rounded-2xl overflow-hidden shadow-2xl border-4 border-white"
             >
               <Image
                 src="/uploads/turkey-2.jpeg"
                 alt="Ryan Clinic Procedure"
                 fill
                 className="object-cover"
+                sizes="(max-width: 768px) 0vw, 208px"
               />
             </div>
 
@@ -191,15 +189,15 @@ export default function TurkeySpecialists() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                 </svg>
               </Link>
-              <a
+              <TrackedWhatsAppLink
                 href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20to%20consult%20with%20a%20hair%20transplant%20doctor%20in%20Delhi."
-                target="_blank"
-                rel="noreferrer"
+                type="whatsapp"
+                ctaName="Turkey Specialists WhatsApp"
+                buttonLocation="Turkey Specialists Section"
                 className="inline-flex items-center gap-2.5 font-semibold text-sm py-4 px-7 rounded-xl border border-gray-200 text-gray-600 hover:border-[#D32F2F] hover:text-[#D32F2F] transition-all bg-white"
-                onClick={() => trackCTA({ type: "whatsapp", ctaName: "Turkey Specialists WhatsApp", buttonLocation: "Turkey Specialists Section" })}
               >
                 Book Consultation
-              </a>
+              </TrackedWhatsAppLink>
             </div>
             <p
               className="text-[11px] mt-3"

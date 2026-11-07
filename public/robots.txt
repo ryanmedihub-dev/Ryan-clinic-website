@@ -3,7 +3,10 @@
 User-agent: *
 Allow: /
 
-# Block private/admin/form-only paths
+# Block private/admin/internal paths only
+# NOTE: /book-appointment is a public lead-generation page — allowed to crawl.
+# NOTE: /interview-form has its own noindex meta directive — allow crawling
+#       so Googlebot can discover and honour it.
 Disallow: /api/
 Disallow: /admin/
 Disallow: /private/
@@ -11,10 +14,9 @@ Disallow: /patient-data
 Disallow: /login
 Disallow: /register
 Disallow: /dummy
-Disallow: /book-appointment
 Disallow: /book-consult
 Disallow: /feedback
-Disallow: /interview-form
+Disallow: /prp-form
 
 # Block duplicate/parameter URLs
 Disallow: /*?*utm_source=

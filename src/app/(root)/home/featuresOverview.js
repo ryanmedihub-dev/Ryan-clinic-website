@@ -118,11 +118,13 @@ export default function FeaturesOverview() {
         </div>
 
         {/* Feature cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-red-200 border border-red-200 rounded-2xl overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-red-200 border border-red-200 rounded-2xl overflow-hidden">
           {features.map((f, i) => (
             <div
               key={i}
-              className="group bg-white hover:bg-[#D32F2F] transition-all duration-400 p-8 flex flex-col gap-5"
+              className={`group bg-white hover:bg-[#D32F2F] transition-all duration-400 p-6 md:p-8 flex flex-col gap-5 ${
+                i === 8 ? "md:col-span-2 lg:col-span-1" : ""
+              }`}
             >
               {/* Number + icon row */}
               <div className="flex items-center justify-between">

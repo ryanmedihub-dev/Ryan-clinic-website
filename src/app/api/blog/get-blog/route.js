@@ -3,11 +3,17 @@ import { withDB } from "@/lib/withDB";
 import Blog from "@/models/blog";
 
 const handler = async (req) => {
-  
+  const fulldata = await Blog.aggregate([
+    {
+      $addFields: {
+        effectiveSortDate: { $ifNull: ["$publishedAt", "$createdAt"] },
+      },
+    },
+    { $sort: { effectiveSortDate: -1 } },
+    { $project: { effectiveSortDate: 0 } },
+  ]);
 
-    const fulldata = await Blog.find({})
-
-    if(!fulldata){
+  if (!fulldata) {
         return NextResponse.json(
             { success: false, message: "No data found" },
             { status: 400 }

@@ -39,3 +39,38 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+# local scratch, test harness, and temporary diffs
+/scratch/
+/doctor-fix-diff.txt
+/scripts/perf-test/
+
+# credential-bearing development-only DB scripts (Option B — individual exclusions)
+# Clean scripts NOT listed here: fetch-pranendra-assigned.mjs, fetch-pranendra-full.mjs, fix-pranendra-cms-data.mjs
+# Planned future npm scripts NOT listed here: export-branches.mjs, seed-page-sections.mjs, seed-branch-cities.mjs
+/scripts/apply_pranendra_cms_fix.mjs
+/scripts/audit_all_branches.mjs
+/scripts/audit_branches_deep.mjs
+/scripts/audit_demo_exposure.mjs
+/scripts/audit_mumbai_assignment.mjs
+/scripts/audit_mumbai_full.mjs
+/scripts/audit_pranendra_records.mjs
+/scripts/check_branch_mys.mjs
+/scripts/configure_branches_meet_your_surgeon.mjs
+/scripts/create_demo_doctors_and_assign.mjs
+/scripts/dump_services.mjs
+/scripts/find_all_doctor_images.mjs
+/scripts/find_mumbai_collection.mjs
+/scripts/fix_mumbai_assignment.mjs
+/scripts/inspect_all_doctors_detail.mjs
+/scripts/inspect_db_collections.mjs
+/scripts/inspect_delhi_service.mjs
+/scripts/inspect_doctors_cms_full.mjs
+/scripts/inspect_pranendra_db.mjs
+/scripts/list_all_services.mjs
+/scripts/set_demo_seo_noindex.mjs
+/scripts/test_demo_doctors_and_regression.mjs
+/scripts/test_demo_isolation_full.mjs
+/scripts/test_mumbai_regression.mjs
+/scripts/verify_branch_isolation_and_public.mjs

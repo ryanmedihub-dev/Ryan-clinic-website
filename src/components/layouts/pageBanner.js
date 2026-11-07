@@ -5,6 +5,25 @@ import { Fragment } from "react";
 import useTrackCTA from "@/lib/useTrackCTA";
 import { getValidImageSrc } from "@/lib/utils";
 
+const NEXT_OPTIMIZED_REMOTE_HOSTS = new Set([
+  "res.cloudinary.com",
+  "lh3.googleusercontent.com",
+  "lh7-rt.googleusercontent.com",
+]);
+
+function canUseNextImageOptimization(src) {
+  const value = typeof src === "object" && src !== null ? src.src : src;
+  if (typeof value !== "string" || !value) return false;
+  if (value.startsWith("/") && !value.startsWith("//")) return true;
+
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && NEXT_OPTIMIZED_REMOTE_HOSTS.has(url.hostname);
+  } catch {
+    return false;
+  }
+}
+
 function getBreadcrumbHref(part, isLast) {
   if (isLast) return null;
   const upper = part.toUpperCase();
@@ -83,6 +102,7 @@ export default function PageBanner({
   city = "",
   pageType = "hair-transplant",
   whatsappUrl = "",
+  priority = true,
 }) {
   const trackCTA = useTrackCTA();
   const breadcrumbItems = formatBreadcrumbItems(breadcrumb, title);
@@ -117,23 +137,24 @@ export default function PageBanner({
     (title ? `${title} — Ryan Clinic Hair Restoration` : "Ryan Clinic Turkey Sapphire FUE Hair Restoration Procedure");
 
   const bannerImgSrc = getValidImageSrc(bgImage, "/uploads/banner.jpg");
+  const isOptimizableImage = canUseNextImageOptimization(bannerImgSrc);
 
   return (
     <header className="relative w-full overflow-hidden">
-      <div className="hidden md:block">
-        <div className="relative w-full h-145 overflow-hidden flex items-center">
-          {/* RIGHT SIDE IMAGE (49%) */}
-          <div className="absolute right-0 top-0 h-full w-[49%]">
-            <Image
-              src={bannerImgSrc}
-              alt={computedAlt}
-              fill
-              className="object-cover object-center"
-              unoptimized
-              priority
-            />
-          </div>
+      <div className="pointer-events-none absolute inset-0 z-0 md:left-[51%]">
+        <Image
+          src={bannerImgSrc}
+          alt={computedAlt}
+          fill
+          className="object-cover object-center"
+          sizes="(max-width: 767px) 100vw, 49vw"
+          unoptimized={!isOptimizableImage}
+          {...(priority ? { preload: true } : { loading: "lazy" })}
+        />
+      </div>
 
+      <div className="relative z-10 hidden md:block">
+        <div className="relative w-full h-145 overflow-hidden flex items-center">
           {/* LEFT RED PANEL WITH DIAGONAL CUT */}
           <div className="absolute inset-0 flex">
             <div
@@ -226,20 +247,7 @@ export default function PageBanner({
         </div>
       </div>
 
-      <div className="md:hidden relative min-h-120 h-[80vh] max-h-155">
-        {/* Full-bleed background image */}
-        <div className="absolute inset-0">
-          <Image
-            src={bannerImgSrc}
-            alt=""
-            aria-hidden="true"
-            fill
-            className="object-cover object-center"
-            unoptimized
-            priority
-          />
-        </div>
-
+      <div className="md:hidden relative z-10 min-h-120 h-[80vh] max-h-155">
         {/* Dark red gradient overlay */}
         <div
           className="absolute inset-0"

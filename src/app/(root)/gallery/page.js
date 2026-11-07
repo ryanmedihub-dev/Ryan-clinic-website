@@ -20,8 +20,7 @@ const defaultMetadata = {
     "real hair transplant results",
   ],
   alternates: {
-    canonical:
-      "https://www.clinicryan.com/gallery/",
+    canonical: "https://www.clinicryan.com/gallery",
   },
 };
 

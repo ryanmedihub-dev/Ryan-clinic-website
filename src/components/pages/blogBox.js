@@ -199,6 +199,7 @@ const BlogCarousel = ({ blogsdata }) => {
                         alt={blog.blogTitle || "Blog"}
                         fill
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        sizes="(max-width: 1024px) 100vw, 50vw"
                       />
                       {/* Gradient overlay */}
                       <div
@@ -228,7 +229,7 @@ const BlogCarousel = ({ blogsdata }) => {
                           className="text-xs mb-2 font-medium"
                           style={{ color: "var(--accent-gold-light)" }}
                         >
-                          {formatDate(blog.createdAt)}
+                          {formatDate(blog.publishedAt || blog.createdAt)}
                         </div>
                         <h3 className="text-white text-lg md:text-xl font-bold mb-2 leading-snug line-clamp-2">
                           {blog.blogTitle}
@@ -283,6 +284,7 @@ const BlogCarousel = ({ blogsdata }) => {
                                 alt={sideBlog.blogTitle || "Blog"}
                                 fill
                                 className="object-cover"
+                                sizes="80px"
                               />
                             </div>
 
@@ -292,7 +294,7 @@ const BlogCarousel = ({ blogsdata }) => {
                                 className="text-[11px] font-semibold uppercase tracking-wider mb-1"
                                 style={{ color: "var(--primary-red)" }}
                               >
-                                {formatDate(sideBlog.createdAt)}
+                                {formatDate(sideBlog.publishedAt || sideBlog.createdAt)}
                               </p>
                               <h4
                                 className="text-sm font-semibold leading-snug line-clamp-2 transition-colors group-hover/card:underline"

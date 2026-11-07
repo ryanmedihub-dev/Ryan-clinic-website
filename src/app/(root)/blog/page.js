@@ -46,7 +46,7 @@ function readingTime(content = "") {
 function FeaturedCard({ blog }) {
   return (
     <Link
-      href={`/blog/${blog.pageUrl}`}
+      href={`/blog/${(blog.pageUrl || "").replace(/^\/+/, "").replace(/\/+$/, "")}`}
       className="group relative flex flex-col lg:flex-row rounded-2xl overflow-hidden"
       style={{
         background: "var(--bg-main)",
@@ -96,7 +96,7 @@ function FeaturedCard({ blog }) {
             </span>
             <span style={{ color: "var(--border-light)" }}>·</span>
             <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>
-              {formatDate(blog.createdAt)}
+              {formatDate(blog.publishedAt || blog.createdAt)}
             </span>
             <span style={{ color: "var(--border-light)" }}>·</span>
             <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>
@@ -147,7 +147,7 @@ function FeaturedCard({ blog }) {
 function BlogCard({ blog }) {
   return (
     <Link
-      href={`/blog/${blog.pageUrl}`}
+      href={`/blog/${(blog.pageUrl || "").replace(/^\/+/, "").replace(/\/+$/, "")}`}
       className="group flex flex-col rounded-2xl overflow-hidden h-full transition-all duration-300 hover:-translate-y-1"
       style={{
         background: "var(--bg-main)",
@@ -183,7 +183,7 @@ function BlogCard({ blog }) {
           </span>
           <span style={{ color: "var(--border-light)", fontSize: "10px" }}>·</span>
           <span className="text-[10px]" style={{ color: "var(--text-muted)" }}>
-            {formatDate(blog.createdAt)}
+            {formatDate(blog.publishedAt || blog.createdAt)}
           </span>
           <span style={{ color: "var(--border-light)", fontSize: "10px" }}>·</span>
           <span className="text-[10px]" style={{ color: "var(--text-muted)" }}>

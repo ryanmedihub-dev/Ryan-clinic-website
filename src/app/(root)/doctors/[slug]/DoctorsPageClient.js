@@ -183,61 +183,19 @@ function CTAButtons({ primary = "Book Free Consultation", center = false, doctor
     );
 }
 
-const FALLBACK_CRED_TABS = [
-    {
-        title: "Medical Degree & Specialisation",
-        hint: "MBBS + MS / Dermatology",
-        desc: "Recognised MBBS and postgraduate training in surgery, dermatology, or dedicated hair-transplant specialisation.",
-        icon: "GraduationCap",
-        image: "/uploads/turkey-doctor.jpg",
-        ctaText: "Verify doctor credentials",
-        ctaLink: "#credentials",
-    },
-    {
-        title: "Medical Board Registration",
-        hint: "Verifiable via State Medical Council / NMC",
-        desc: "Active and verifiable registration with the state or national medical council with an official registration number.",
-        icon: "ShieldCheck",
-        image: "/uploads/about-one.jpg",
-        ctaText: "Verify doctor credentials",
-        ctaLink: "#credentials",
-    },
-    {
-        title: "Technique Certification",
-        hint: "Sapphire FUE & Turkish Technique Choi Pen",
-        desc: "Specific advanced certification in Sapphire FUE and Turkish Technique techniques personally performed by the doctor.",
-        icon: "Award",
-        image: "/uploads/service-two.jpg",
-        ctaText: "Verify doctor credentials",
-        ctaLink: "#credentials",
-    },
-    {
-        title: "Surgical Case Volume",
-        hint: "1,000+ documented procedures",
-        desc: "Years of active surgical practice with a high count of personally completed hair restoration procedures.",
-        icon: "Users",
-        image: "/uploads/service-three.jpg",
-        ctaText: "Verify doctor credentials",
-        ctaLink: "#credentials",
-    },
-    {
-        title: "Professional Memberships",
-        hint: "ISHRS / ABHRS Accredited",
-        desc: "Memberships in globally respected bodies like ISHRS — guaranteeing ongoing surgical education and ethics.",
-        icon: "Globe",
-        image: "/uploads/gallery.jpg",
-        ctaText: "Verify doctor credentials",
-        ctaLink: "#credentials",
-    },
-];
-
-const FALLBACK_CHECKLIST = [
-    "Requested doctor's full name & medical council registration number",
-    "Verify active registration through the relevant State Medical Council / NMC portal",
-    "Confirmed doctor personally performs extraction & implantation",
-    "Reviewed before/after portfolio of doctor's own real patients",
-    "Checked verified reviews on Google or independent platforms",
-];
+function parseDoctorStatNumber(val) {
+    if (typeof val === "number") {
+        return Number.isFinite(val) && val > 0 ? val : 0;
+    }
+    if (typeof val === "string") {
+        const clean = val.replace(/,/g, "").match(/\d+/);
+        if (clean) {
+            const num = parseInt(clean[0], 10);
+            return Number.isFinite(num) && num > 0 ? num : 0;
+        }
+    }
+    return 0;
+}
 
 const FALLBACK_RED_FLAGS = [
     {
@@ -280,23 +238,7 @@ const FALLBACK_SURGICAL_STEPS = [
     { num: "05", title: "18-Month Growth & Follow-Up", body: "Free structured follow-up check-ups at months 1, 3, 6, 12, and 18 ensure your hair growth progress is fully tracked." },
 ];
 
-function getCredIconElement(name, idx) {
-    const defaultIcons = [
-        <GraduationCap key="0" className="w-4 h-4 text-[#D32F2F]" />,
-        <ShieldCheck key="1" className="w-4 h-4 text-[#D32F2F]" />,
-        <Award key="2" className="w-4 h-4 text-[#D32F2F]" />,
-        <Users key="3" className="w-4 h-4 text-[#D32F2F]" />,
-        <Globe key="4" className="w-4 h-4 text-[#D32F2F]" />,
-    ];
-    if (!name) return defaultIcons[idx % defaultIcons.length];
-    const lower = String(name).toLowerCase();
-    if (lower.includes("grad") || lower.includes("degree")) return <GraduationCap className="w-4 h-4 text-[#D32F2F]" />;
-    if (lower.includes("shield") || lower.includes("board")) return <ShieldCheck className="w-4 h-4 text-[#D32F2F]" />;
-    if (lower.includes("award") || lower.includes("cert")) return <Award className="w-4 h-4 text-[#D32F2F]" />;
-    if (lower.includes("user") || lower.includes("case") || lower.includes("vol")) return <Users className="w-4 h-4 text-[#D32F2F]" />;
-    if (lower.includes("globe") || lower.includes("member")) return <Globe className="w-4 h-4 text-[#D32F2F]" />;
-    return defaultIcons[idx % defaultIcons.length];
-}
+
 
 function getRedFlagIconElement(name, idx) {
     const defaultIcons = [
@@ -321,7 +263,6 @@ function getRedFlagIconElement(name, idx) {
 export default function DoctorPageClient({ data }) {
     const trackCTA = useTrackCTA();
     const [openFaq, setOpenFaq] = useState(null);
-    const [activeCred, setActiveCred] = useState(0);
     const [activeStep, setActiveStep] = useState(0);
 
     const {
@@ -350,31 +291,7 @@ export default function DoctorPageClient({ data }) {
         faqSection,
         keyFacts,
         medicalReviewer,
-    } = data;
-
-    const checklistItems = (verification?.checklist && verification.checklist.length > 0 && verification.checklist.some(c => (typeof c === "string" ? c.trim() : c.title?.trim())))
-        ? verification.checklist.map(c => (typeof c === "string" ? c : c.title || "")).filter(Boolean)
-        : FALLBACK_CHECKLIST;
-
-    const [checkedSteps, setCheckedSteps] = useState(() => checklistItems.map(() => false));
-    const progressPercent = checklistItems.length > 0
-        ? Math.round((checkedSteps.filter(Boolean).length / checklistItems.length) * 100)
-        : 0;
-
-    const resolvedCredTabs = (credentials?.tabs && credentials.tabs.length > 0 && credentials.tabs.some(t => t.title?.trim()))
-        ? credentials.tabs.map((tab, idx) => ({
-            title: tab.title || `Credential 0${idx + 1}`,
-            hint: tab.hint || "",
-            desc: tab.description || tab.desc || "",
-            icon: getCredIconElement(tab.icon, idx),
-            image: tab.image?.image || tab.image || "/uploads/turkey-doctor.jpg",
-            ctaText: tab.ctaText || "Verify doctor credentials",
-            ctaLink: tab.ctaLink || "#credentials",
-        }))
-        : FALLBACK_CRED_TABS.map((tab, idx) => ({
-            ...tab,
-            icon: getCredIconElement(tab.icon, idx),
-        }));
+    } = data || {};
 
     const resolvedRedFlags = (warningSigns?.cards && warningSigns.cards.length > 0 && warningSigns.cards.some(c => c.title?.trim()))
         ? warningSigns.cards.map((c, i) => ({
@@ -458,32 +375,30 @@ export default function DoctorPageClient({ data }) {
     );
     const leftCardImageAlt = compLeftCard.image?.alt || `${doctor.name || "Doctor"} — doctor-led hair transplant surgeon`;
 
-    const canonicalYearsExp = (typeof doctor.basicInfo?.yearsExperience === "number" && doctor.basicInfo.yearsExperience > 0)
-        ? doctor.basicInfo.yearsExperience
-        : (typeof doctor.yearsExperience === "number" && doctor.yearsExperience > 0)
+    const canonicalYearsExp =
+        (typeof doctor.yearsExperience === "number" && doctor.yearsExperience > 0)
             ? doctor.yearsExperience
-            : (parseInt(doctor.experience) || 15);
+            : (typeof doctor.basicInfo?.yearsExperience === "number" && doctor.basicInfo.yearsExperience > 0)
+                ? doctor.basicInfo.yearsExperience
+                : parseDoctorStatNumber(doctor.basicInfo?.yearsExperience || doctor.yearsExperience || doctor.experience || keyFacts?.experience);
 
-    const canonicalCasesDone = (typeof doctor.basicInfo?.proceduresCount === "number" && doctor.basicInfo.proceduresCount > 0)
-        ? doctor.basicInfo.proceduresCount
-        : (typeof doctor.proceduresCountNum === "number" && doctor.proceduresCountNum > 0)
+    const canonicalCasesDone =
+        (typeof doctor.proceduresCountNum === "number" && doctor.proceduresCountNum > 0)
             ? doctor.proceduresCountNum
-            : (parseInt(String(doctor.proceduresCount || doctor.procedures || "").replace(/,/g, "")) || 5000);
+            : (typeof doctor.basicInfo?.proceduresCount === "number" && doctor.basicInfo.proceduresCount > 0)
+                ? doctor.basicInfo.proceduresCount
+                : parseDoctorStatNumber(doctor.basicInfo?.proceduresCount || doctor.proceduresCountNum || doctor.proceduresCount || doctor.procedures || keyFacts?.procedures);
 
     const leftTrustPills = [
-        {
+        canonicalYearsExp > 0 ? {
             v: `${canonicalYearsExp}+ Yrs`,
             l: compLeftCard.experienceLabel || "Exp",
-        },
-        {
+        } : null,
+        canonicalCasesDone > 0 ? {
             v: `${canonicalCasesDone.toLocaleString()}+`,
             l: compLeftCard.casesLabel || "Cases Done",
-        },
-        {
-            v: compLeftCard.councilValue || "Medical Council",
-            l: compLeftCard.councilLabel || "Registered",
-        },
-    ];
+        } : null,
+    ].filter(Boolean);
 
     const rightChecklistPills = [
         {
@@ -493,10 +408,6 @@ export default function DoctorPageClient({ data }) {
         {
             v: compRightCard.checklistPill2Value || "Ask",
             l: compRightCard.checklistPill2Label || "Surgical Role",
-        },
-        {
-            v: compRightCard.checklistPill3Value || "Verify",
-            l: compRightCard.checklistPill3Label || "Registration",
         },
     ];
 
@@ -528,9 +439,9 @@ export default function DoctorPageClient({ data }) {
                             <SectionLabel text={surgeonProfile?.sectionLabel || "YOUR SURGEON"} />
 
                             {/* 2. Dynamic heading using doctor's name and relevant designation/location */}
-                            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-[1.18] tracking-tight mt-1 mb-5">
+                            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-[1.18] tracking-tight mt-1 mb-5">
                                 {surgeonProfile?.heading || `Meet ${doctor.name} — Hair Restoration Specialist${doctorCity ? ` in ${doctorCity}` : ""}`}
-                            </h2>
+                            </h1>
 
                             {/* Medical Reviewer Byline (Only if explicitly verified in CMS) */}
                             {medicalReviewer?.isVerified && medicalReviewer?.reviewerName && (
@@ -685,8 +596,8 @@ export default function DoctorPageClient({ data }) {
                                     {/* Compact Statistics Panel */}
                                     {(() => {
                                         const statsList = [
-                                            { label: "Exp.", value: `${canonicalYearsExp}+ Yrs`, color: "text-amber-400" },
-                                            { label: "Surgeries", value: `${canonicalCasesDone.toLocaleString()}+`, color: "text-white" },
+                                            canonicalYearsExp > 0 ? { label: "Exp.", value: `${canonicalYearsExp}+ Yrs`, color: "text-amber-400" } : null,
+                                            canonicalCasesDone > 0 ? { label: "Surgeries", value: `${canonicalCasesDone.toLocaleString()}+`, color: "text-white" } : null,
                                             doctor.successRate ? { label: "Graft Survival", value: doctor.successRate, color: "text-emerald-400" } : null,
                                         ].filter(Boolean);
 
@@ -731,7 +642,7 @@ export default function DoctorPageClient({ data }) {
                 Medical Registration & Council/Memberships removed from PUBLIC display.
                 CMS fields (keyFacts.registration, keyFacts.memberships) are preserved in DB.
             ═════════════════════════════════════════════════════════════════ */}
-            {keyFacts && (keyFacts.qualifications || keyFacts.specialisation || keyFacts.experience || keyFacts.procedures || keyFacts.location || keyFacts.consultation) && (
+            {keyFacts && (keyFacts.qualifications || keyFacts.specialisation || canonicalYearsExp > 0 || canonicalCasesDone > 0 || keyFacts.location || keyFacts.consultation) && (
                 <section className="bg-white py-14 border-b border-gray-100">
                     <div className="max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8">
                         {/* Outer container — warm off-white, soft border, generous padding */}
@@ -771,27 +682,27 @@ export default function DoctorPageClient({ data }) {
                                 )}
 
                                 {/* 3 — Surgical Experience */}
-                                {(keyFacts.experience || canonicalYearsExp) && (
+                                {canonicalYearsExp > 0 && (
                                     <div className="bg-white rounded-[18px] border border-gray-100 shadow-[0_1px_4px_rgba(0,0,0,0.06)] p-5 min-h-[120px] flex flex-col justify-start">
                                         <div className="flex items-center gap-1.5 mb-2.5">
                                             <Award className="w-3.5 h-3.5 text-[#C62828] flex-shrink-0" aria-hidden="true" />
                                             <p className="text-[10.5px] font-bold text-[#7B8FA1] uppercase tracking-[0.12em] leading-none">Surgical Experience</p>
                                         </div>
                                         <p className="text-[15px] font-bold text-[#0F1E2D] leading-[1.45]">
-                                            {canonicalYearsExp ? `${canonicalYearsExp}+ Years` : (keyFacts.experience || "15+ Years")}
+                                            {canonicalYearsExp}+ Years
                                         </p>
                                     </div>
                                 )}
 
                                 {/* 4 — Case Volume */}
-                                {(keyFacts.procedures || canonicalCasesDone) && (
+                                {canonicalCasesDone > 0 && (
                                     <div className="bg-white rounded-[18px] border border-gray-100 shadow-[0_1px_4px_rgba(0,0,0,0.06)] p-5 min-h-[120px] flex flex-col justify-start">
                                         <div className="flex items-center gap-1.5 mb-2.5">
                                             <Users className="w-3.5 h-3.5 text-[#C62828] flex-shrink-0" aria-hidden="true" />
                                             <p className="text-[10.5px] font-bold text-[#7B8FA1] uppercase tracking-[0.12em] leading-none">Case Volume</p>
                                         </div>
                                         <p className="text-[15px] font-bold text-[#0F1E2D] leading-[1.45]">
-                                            {canonicalCasesDone ? `${canonicalCasesDone.toLocaleString()}+ Surgeries` : (keyFacts.procedures || "5,000+ Surgeries")}
+                                            {canonicalCasesDone.toLocaleString()}+ Surgeries
                                         </p>
                                     </div>
                                 )}
@@ -1317,13 +1228,13 @@ export default function DoctorPageClient({ data }) {
                             { title: "Turkish Technique (THI) Direct Implantation", description: "Direct Choi implanter pen insertion with zero channel pre-cutting.", url: citySlug ? `/surgery/hair-transplant-surgery-in-${citySlug}` : "/surgery" },
                             { title: "Hairline Design & Micro-Dense Packing", description: "Artistic single-hair front rank feathering tailored to facial symmetry.", url: citySlug ? `/surgery/hair-transplant-surgery-in-${citySlug}` : "/surgery" },
                             { title: "Beard & Moustache Transplant", description: "Precision facial hair extraction and high-angle density restoration.", url: "/beard-transplant" },
-                            { title: "PRP Hair Loss Therapy", description: "Doctor-administered platelet-rich plasma growth factor injections.", url: citySlug ? `/prp-hair-loss-treatment-in-${citySlug}` : "/prp-treatment" },
+                            { title: "PRP Hair Loss Therapy", description: "Doctor-administered platelet-rich plasma growth factor injections.", url: citySlug === "delhi" ? "/prp-hair-loss-treatment-in-delhi" : "/prp-treatment" },
                             { title: "Revision Hair Transplant Repair", description: "Correcting pluggy hairlines, misdirected grafts, and depleted donor zones.", url: citySlug ? `/surgery/hair-transplant-surgery-in-${citySlug}` : "/surgery" },
                         ]).map((p, i) => {
                             const getProcedureUrl = (title) => {
                                 const t = (title || "").toLowerCase();
                                 if (t.includes("beard")) return "/beard-transplant";
-                                if (t.includes("prp")) return citySlug ? `/prp-hair-loss-treatment-in-${citySlug}` : "/prp-treatment";
+                                if (t.includes("prp")) return citySlug === "delhi" ? "/prp-hair-loss-treatment-in-delhi" : "/prp-treatment";
                                 return citySlug ? `/surgery/hair-transplant-surgery-in-${citySlug}` : "/surgery";
                             };
                             const href = p.url || getProcedureUrl(p.title);
@@ -1521,17 +1432,17 @@ export default function DoctorPageClient({ data }) {
                         </a>
                         <span className="text-gray-300">·</span>
                         <a
-                            href={`/surgeon/hair-transplant-surgeon-in-${citySlug || "delhi"}`}
+                            href={`/surgeon/hair-transplant-surgeon-in-${citySlug === "bangalore" ? "banglore" : (citySlug || "delhi")}`}
                             className="text-[#D32F2F] hover:text-red-700 font-semibold underline underline-offset-4 decoration-red-200 hover:decoration-[#D32F2F] transition-all"
                         >
                             best hair transplant surgeon in {doctorCity || "Delhi"}
                         </a>
                         <span className="text-gray-300">·</span>
                         <a
-                            href={`/treatments/hair-fall-loss-treatment-in-${citySlug || "delhi"}`}
+                            href={citySlug === "delhi" ? "/treatments/hair-fall-loss-treatment-in-delhi" : "/alopecia-treatments"}
                             className="text-[#D32F2F] hover:text-red-700 font-semibold underline underline-offset-4 decoration-red-200 hover:decoration-[#D32F2F] transition-all"
                         >
-                            Hair Fall & Hair Loss Treatment in {doctorCity || "Delhi"}
+                            {citySlug === "delhi" ? "Hair Fall & Hair Loss Treatment in Delhi" : "Hair Fall & Alopecia Treatment"}
                         </a>
                     </div>
                 </div>
@@ -1704,16 +1615,16 @@ export default function DoctorPageClient({ data }) {
                                             </p>
 
                                             {/* Mini Stats (Only show verified metrics) */}
-                                            {(canonicalYearsExp || doctor.experience || doctor.rating) && (
+                                            {(canonicalYearsExp > 0 || doctor.rating) && (
                                                 <div className="flex gap-6 mb-8">
-                                                    {(canonicalYearsExp || doctor.experience) && (
+                                                    {canonicalYearsExp > 0 && (
                                                         <div>
-                                                            <p className="text-2xl font-black text-[#D32F2F] leading-none">{canonicalYearsExp ? `${canonicalYearsExp}+ Yrs` : doctor.experience}</p>
+                                                            <p className="text-2xl font-black text-[#D32F2F] leading-none">{canonicalYearsExp}+ Yrs</p>
                                                             <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-1">Exp.</p>
                                                         </div>
                                                     )}
                                                     {doctor.rating && (
-                                                        <div className={(canonicalYearsExp || doctor.experience) ? "border-l border-gray-200 pl-6" : ""}>
+                                                        <div className={canonicalYearsExp > 0 ? "border-l border-gray-200 pl-6" : ""}>
                                                             <p className="text-2xl font-black text-gray-900 leading-none">{doctor.rating}★</p>
                                                             <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-1">Rating</p>
                                                         </div>

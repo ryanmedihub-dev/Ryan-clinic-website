@@ -58,11 +58,43 @@ function localizeSection(obj, city) {
   return obj;
 }
 
+function parseDoctorStatNumber(val) {
+  if (typeof val === "number") {
+    return Number.isFinite(val) && val > 0 ? val : 0;
+  }
+  if (typeof val === "string") {
+    const clean = val.replace(/,/g, "").match(/\d+/);
+    if (clean) {
+      const num = parseInt(clean[0], 10);
+      return Number.isFinite(num) && num > 0 ? num : 0;
+    }
+  }
+  return 0;
+}
+
 function normalizeDoctor(dbDoc) {
   if (!dbDoc) return null;
   const b = dbDoc.basicInfo || {};
   const s = dbDoc.surgeonProfile || {};
+  const kf = dbDoc.keyFacts || {};
   const docCity = b.city?.trim() || "";
+
+  // Canonical experience & procedure stats:
+  // Primary source of truth is admin CMS basicInfo, with safe parsing of legacy values if needed.
+  const canonicalYearsExp =
+    parseDoctorStatNumber(b.yearsExperience) ||
+    parseDoctorStatNumber(dbDoc.yearsExperience) ||
+    parseDoctorStatNumber(kf.experience) ||
+    parseDoctorStatNumber(dbDoc.experience) ||
+    0;
+
+  const canonicalProcCount =
+    parseDoctorStatNumber(b.proceduresCount) ||
+    parseDoctorStatNumber(dbDoc.proceduresCountNum) ||
+    parseDoctorStatNumber(dbDoc.proceduresCount) ||
+    parseDoctorStatNumber(kf.procedures) ||
+    parseDoctorStatNumber(dbDoc.procedures) ||
+    0;
 
   const localizedDoc = {
     ...dbDoc,
@@ -103,8 +135,8 @@ function normalizeDoctor(dbDoc) {
     faq: localizeSection(dbDoc.faq, docCity),
     keyFacts: dbDoc.keyFacts ? {
       ...localizeSection(dbDoc.keyFacts, docCity),
-      experience: (b.yearsExperience && b.yearsExperience > 0) ? `${b.yearsExperience}+ Years` : (localizeText(dbDoc.keyFacts.experience || "", docCity) || "15+ Years"),
-      procedures: (b.proceduresCount && b.proceduresCount > 0) ? `${b.proceduresCount.toLocaleString()}+ Surgeries` : (localizeText(dbDoc.keyFacts.procedures || "", docCity) || "5,000+ Surgeries"),
+      experience: canonicalYearsExp > 0 ? `${canonicalYearsExp}+ Years` : "",
+      procedures: canonicalProcCount > 0 ? `${canonicalProcCount.toLocaleString()}+ Surgeries` : "",
     } : null,
     medicalReviewer: localizeSection(dbDoc.medicalReviewer, docCity),
     whyItMatters: localizeSection(dbDoc.whyItMatters, docCity),
@@ -113,13 +145,6 @@ function normalizeDoctor(dbDoc) {
     hero: localizeSection(dbDoc.hero, docCity),
   };
 
-  const canonicalYearsExp = (typeof b.yearsExperience === "number" && b.yearsExperience > 0)
-    ? b.yearsExperience
-    : (parseInt(b.yearsExperience) || null);
-  const canonicalProcCount = (typeof b.proceduresCount === "number" && b.proceduresCount > 0)
-    ? b.proceduresCount
-    : (parseInt(b.proceduresCount) || null);
-
   return {
     ...localizedDoc,
     name: b.doctorName || dbDoc.pageName || "Dr. Specialist",
@@ -127,11 +152,11 @@ function normalizeDoctor(dbDoc) {
     designation: b.designation || "Hair Transplant Surgeon",
     location: docCity,
     city: docCity,
-    yearsExperience: canonicalYearsExp || 15,
-    proceduresCountNum: canonicalProcCount || 5000,
-    experience: canonicalYearsExp ? `${canonicalYearsExp}+ Yrs` : "15+ Yrs",
-    procedures: canonicalProcCount ? `${canonicalProcCount.toLocaleString()}+` : "5,000+",
-    proceduresCount: canonicalProcCount ? `${canonicalProcCount.toLocaleString()}+` : "5,000+",
+    yearsExperience: canonicalYearsExp,
+    proceduresCountNum: canonicalProcCount,
+    experience: canonicalYearsExp > 0 ? `${canonicalYearsExp}+ Yrs` : "",
+    procedures: canonicalProcCount > 0 ? `${canonicalProcCount.toLocaleString()}+` : "",
+    proceduresCount: canonicalProcCount > 0 ? `${canonicalProcCount.toLocaleString()}+` : "",
     successRate: b.successRate || null,
     rating: b.rating || 5.0,
     about: localizeText(s.about || "", docCity),
@@ -386,12 +411,12 @@ export default async function DoctorPage({ params }) {
     }));
   }
 
-  // ── NEW: whyItMatters normalization ──
+  // ── whyItMatters normalization ──
   let whyItMatters = null;
   if (doctor.whyItMatters?.heading) {
     const wim = doctor.whyItMatters;
-    const canYears = doctor.yearsExperience || doctor.basicInfo?.yearsExperience || 15;
-    const canProcs = doctor.proceduresCountNum || doctor.basicInfo?.proceduresCount || 5000;
+    const canYears = doctor.yearsExperience || 0;
+    const canProcs = doctor.proceduresCountNum || 0;
     whyItMatters = {
       sectionLabel: wim.sectionLabel || "Why It Matters",
       heading: localizeText(wim.heading || "", doctor.city),
@@ -403,10 +428,10 @@ export default async function DoctorPage({ params }) {
       floatingStats: Array.isArray(wim.floatingStats) ? wim.floatingStats.map(s => {
         let val = s.value || "";
         const lbl = s.label || "";
-        if (canProcs && /procedure|surger|case/i.test(lbl)) {
-          val = `${canProcs.toLocaleString()}+`;
-        } else if (canYears && /exp|year/i.test(lbl)) {
-          val = `${canYears}+ Yrs`;
+        if (/procedure|surger|case/i.test(lbl)) {
+          val = canProcs > 0 ? `${canProcs.toLocaleString()}+` : val;
+        } else if (/exp|year/i.test(lbl)) {
+          val = canYears > 0 ? `${canYears}+ Yrs` : val;
         }
         return { value: val, label: lbl };
       }) : [],

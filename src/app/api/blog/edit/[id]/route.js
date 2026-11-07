@@ -28,21 +28,27 @@ export const PUT = withDB(async (req, { params }) => {
       pageImageAlt,
       blogTitle,
       blogContent,
+      publishedAt,
     } = body;
+
+    const updateFields = {
+      metaTitle,
+      metaDiscription,
+      pageUrl,
+      pageTitle,
+      pageDiscription,
+      pageImageUrl,
+      pageImageAlt,
+      blogTitle,
+      blogContent,
+    };
+    if (publishedAt !== undefined) {
+      updateFields.publishedAt = publishedAt ? new Date(publishedAt) : null;
+    }
 
     const updatedBlog = await Blog.findByIdAndUpdate(
       id,
-      {
-        metaTitle,
-        metaDiscription,
-        pageUrl,
-        pageTitle,
-        pageDiscription,
-        pageImageUrl,
-        pageImageAlt,
-        blogTitle,
-        blogContent,
-      },
+      updateFields,
       { new: true }
     );
 

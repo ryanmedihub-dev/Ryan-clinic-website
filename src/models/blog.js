@@ -38,6 +38,13 @@ const blogSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  publishedAt: {
+    type: Date,
+  },
 }, { timestamps: true });
+
+if (mongoose.models.Blog && !mongoose.models.Blog.schema.paths.publishedAt) {
+  delete mongoose.models.Blog;
+}
 
 export default mongoose.models.Blog || mongoose.model("Blog", blogSchema);

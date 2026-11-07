@@ -1,16 +1,16 @@
 export const revalidate = 3600; // ISR: serve from cache, rebuild every hour in background
 
 export const metadata = {
-  title: "Ryan Clinic - Hair Transplant in Delhi | Hair Transplant Cost in Delhi",
+  title: "Hair Transplant in Delhi | Cost & FUE | Ryan Clinic",
   description:
-    "Get advanced hair transplant in Delhi at Ryan Clinic with doctor-led care and modern FUE techniques. Explore hair transplant cost, procedure, recovery and results.",
+    "Explore hair transplant in Delhi at Ryan Clinic, including FUE, treatment planning, costs and recovery. Book a consultation.",
   alternates: {
     canonical: "https://www.clinicryan.com/",
   },
   openGraph: {
-    title: "Ryan Clinic - Hair Transplant in Delhi | Hair Transplant Cost in Delhi",
+    title: "Hair Transplant in Delhi | Cost & FUE | Ryan Clinic",
     description:
-      "Get advanced hair transplant in Delhi at Ryan Clinic with doctor-led care and modern FUE techniques. Explore hair transplant cost, procedure, recovery and results.",
+      "Explore hair transplant in Delhi at Ryan Clinic, including FUE, treatment planning, costs and recovery. Book a consultation.",
     url: "https://www.clinicryan.com/",
     siteName: "Ryan Clinic",
     locale: "en_IN",
@@ -24,10 +24,17 @@ export const metadata = {
       },
     ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hair Transplant in Delhi | Cost & FUE | Ryan Clinic",
+    description:
+      "Explore hair transplant in Delhi at Ryan Clinic, including FUE, treatment planning, costs and recovery. Book a consultation.",
+    images: ["https://www.clinicryan.com/uploads/1757745417011-1752733322451-Hair%20Transplant%204.jpg"],
+  },
 };
 
 import { Suspense } from "react";
-import Image from "next/image";
+import { getImageProps } from "next/image";
 import HeroIntro from "./home/heroIntro";
 import HairTransplantPage from "./home/homeServices";
 import TurkeySpecialists from "./home/turkeySpecialists";
@@ -49,42 +56,62 @@ import HomepageSchema from "@/components/home/HomepageSchema";
 import Banner from "../../../public/uploads/banner.jpg";
 import Banner2 from "../../../public/uploads/banner2.jpg";
 
+const heroAlt = "Ryan Clinic — Hair Transplant Delhi";
+const heroImageOptions = {
+  alt: heroAlt,
+  sizes: "100vw",
+  quality: 75,
+  placeholder: "blur",
+  loading: "eager",
+  fetchPriority: "high",
+};
+
+const desktopHeroImage = getImageProps({ src: Banner, ...heroImageOptions }).props;
+const mobileHeroImage = getImageProps({ src: Banner2, ...heroImageOptions }).props;
+
 export default function Home() {
   return (
     <>
       <HomepageSchema />
 
+      {/* Responsive hero preloads — hoisted to <head> by React 19 */}
+      <link
+        rel="preload"
+        as="image"
+        href={mobileHeroImage.src}
+        imageSrcSet={mobileHeroImage.srcSet}
+        imageSizes={mobileHeroImage.sizes}
+        media="(max-width: 767px)"
+        fetchPriority="high"
+      />
+      <link
+        rel="preload"
+        as="image"
+        href={desktopHeroImage.src}
+        imageSrcSet={desktopHeroImage.srcSet}
+        imageSizes={desktopHeroImage.sizes}
+        media="(min-width: 768px)"
+        fetchPriority="high"
+      />
+
       {/* Hero Section */}
       <div className="w-full relative">
-        {/* Desktop Banner — hidden on mobile, sizes tells browser to skip it there */}
-        <div className="hidden md:block">
-          <Image
-            src={Banner}
-            alt="Ryan Clinic — Hair Transplant Delhi"
-            placeholder="blur"
-            priority
-            fetchPriority="high"
-            sizes="(max-width: 767px) 1px, 100vw"
-            className="w-full h-auto object-cover aspect-video md:aspect-21/9 rounded-lg"
+        <picture className="block w-full">
+          <source
+            media="(max-width: 767px)"
+            srcSet={mobileHeroImage.srcSet}
+            sizes={mobileHeroImage.sizes}
           />
-        </div>
-
-        {/* Mobile Banner — hidden on desktop, sizes tells browser to skip it there */}
-        <div className="block md:hidden">
-          <Image
-            src={Banner2}
-            alt="Ryan Clinic — Hair Transplant Delhi"
-            placeholder="blur"
-            priority
-            fetchPriority="high"
-            sizes="(min-width: 768px) 1px, 100vw"
-            className="w-full h-auto object-cover aspect-3/4 rounded-lg"
+          <img
+            {...desktopHeroImage}
+            alt={heroAlt}
+            className="w-full h-auto object-cover aspect-3/4 md:aspect-21/9 rounded-lg"
           />
-        </div>
+        </picture>
 
         {/* SEO H1 — visually hidden, placed over banner for crawlers */}
         <h1 className="sr-only">
-          Hair Transplant in Delhi | Best Hair Transplant Clinic in Delhi
+          Best Hair Transplant Clinic in Delhi — Ryan Clinic
         </h1>
       </div>
 

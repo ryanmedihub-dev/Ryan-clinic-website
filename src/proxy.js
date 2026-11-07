@@ -29,7 +29,7 @@ export default withAuth(
     const isPublicWriteApi =
       pathname.startsWith("/api/book-consult") ||
       pathname.startsWith("/api/leads") ||
-      pathname.startsWith("/api/apply") ||
+      (pathname === "/api/apply" && req.method === "POST") ||
       pathname.startsWith("/api/feedback") ||
       pathname.startsWith("/api/send-international") ||
       pathname.startsWith("/api/send-to-sheet") ||

@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 
 import ImageOne from '../../../../public/uploads/images/image1.jpg';
-import GalleryBanner from "../../../../public/uploads/gallery.jpg";
+
 
 
 
@@ -353,10 +353,11 @@ export default function GalleryPageClient() {
       <PageBanner
         title={gallery.banner?.title || "Our Gallery"}
         description={gallery.banner?.description || ""}
-        bgImage={gallery.banner?.bannerImage || GalleryBanner}
+        bgImage={gallery.banner?.bannerImage || "/uploads/gallery.jpg"}
         bgImageAlt={gallery.banner?.bannerAltImage || "Gallery banner"}
         hideBadge={true}
         breadcrumb="Gallery"
+        priority={false}
       />
 
       {/* Trust & Methodology Strip */}
@@ -651,7 +652,7 @@ export default function GalleryPageClient() {
             </p>
             <p className="text-[11px] text-white/50 mt-2">
               Link: see our{" "}
-              <Link href="/hair-transplant-growth-timeline" className="text-white underline font-semibold">
+              <Link href="/blog/first-ten-days-after-hair-transplant" className="text-white underline font-semibold">
                 full hair transplant recovery timeline
               </Link>{" "}
               when live.

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const MONGO_URL = "mongodb://sachin8287037611:user123@ac-z1wnd8e-shard-00-00.a7hm4rv.mongodb.net:27017,ac-z1wnd8e-shard-00-01.a7hm4rv.mongodb.net:27017,ac-z1wnd8e-shard-00-02.a7hm4rv.mongodb.net:27017/?ssl=true&replicaSet=atlas-qjr3jz-shard-0&authSource=admin&appName=services";
+const MONGO_URL = process.env.SEED_MONGO_URL;
 
 const drHimanshuJawla = {
   pageName: "Dr. Himanshu Jawla - Senior Hair Transplant & Cosmetic Surgeon",
@@ -237,8 +237,14 @@ const drHimanshuJawla = {
 };
 
 async function seed() {
+  if (!MONGO_URL) {
+    console.error("Missing SEED_MONGO_URL; refusing to select a database target.");
+    process.exitCode = 1;
+    return;
+  }
+
   try {
-    console.log("Connecting to MongoDB Atlas...");
+    console.log("Connecting to the explicitly configured seed database...");
     await mongoose.connect(MONGO_URL);
     const db = mongoose.connection.db;
     const doctorsCol = db.collection("doctors");
@@ -249,11 +255,12 @@ async function seed() {
       { upsert: true }
     );
 
-    console.log("SUCCESSFULLY_SEEDED_HIMANSHU_JAWLA: Dr. Himanshu Jawla saved into MongoDB Atlas!");
-  } catch (err) {
-    console.error("Seed error:", err);
+    console.log("Doctor seed completed successfully.");
+  } catch {
+    console.error("Seed failed; check the configured target and database access.");
+    process.exitCode = 1;
   } finally {
-    await mongoose.disconnect();
+    if (mongoose.connection.readyState !== 0) await mongoose.disconnect();
   }
 }
 

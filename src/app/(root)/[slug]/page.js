@@ -313,12 +313,15 @@ export default async function ServicesPage({ params }) {
     if (service?.metadata?.branchName) return service.metadata.branchName;
     const match = slug.match(/^hair-transplant-in-(.+)$/);
     if (match) {
-      return match[1]
+      const raw = match[1]
         .split("-")
         .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
         .join(" ");
+      if (raw.toLowerCase() === "rachi") return "Ranchi";
+      if (raw.toLowerCase() === "gurugram") return "Gurgaon";
+      return raw;
     }
-    return "Delhi";
+    return service?.metadata?.pageName || "";
   })();
 
   let rawSections = (

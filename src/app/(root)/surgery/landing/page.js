@@ -27,7 +27,7 @@ const SURGERY_TYPES = [
     icon: Scissors,
     img: "/uploads/surgery-fue.jpg",
     desc: "Micro‑blade extraction (0.7‑0.9 mm) with minimal scarring and rapid recovery.",
-    href: "/surgery/fue",
+    href: "/fue-hair-transplant",
   },
   {
     id: "dhi",
@@ -35,7 +35,7 @@ const SURGERY_TYPES = [
     icon: Stethoscope,
     img: "/uploads/surgery-dhi.jpg",
     desc: "Implantation without pre‑made slits – maximum density, zero graft drying.",
-    href: "/surgery/dhi",
+    href: "/hairline-transplant",
   },
   {
     id: "beard",
@@ -43,7 +43,7 @@ const SURGERY_TYPES = [
     icon: HeartPulse,
     img: "/uploads/surgery-beard.jpg",
     desc: "Full‑face restoration using the same doctor‑led technique as scalp FUE.",
-    href: "/surgery/beard",
+    href: "/beard-transplant",
   },
   {
     id: "crown",
@@ -51,7 +51,7 @@ const SURGERY_TYPES = [
     icon: IndianRupee,
     img: "/uploads/surgery-crown.jpg",
     desc: "Specialised approach for dense crown coverage with natural direction.",
-    href: "/surgery/crown",
+    href: "/surgery/hair-transplant-surgery-in-delhi",
   },
   {
     id: "women",
@@ -59,7 +59,7 @@ const SURGERY_TYPES = [
     icon: Camera,
     img: "/uploads/surgery-women.jpg",
     desc: "Gentle FUE tailored for female pattern hair loss and finer grafts.",
-    href: "/surgery/women",
+    href: "/female-hair-transplant",
   },
   {
     id: "faq",
@@ -67,7 +67,7 @@ const SURGERY_TYPES = [
     icon: HelpCircle,
     img: "/uploads/surgery-faq.jpg",
     desc: "All common questions about procedures, recovery and costs answered.",
-    href: "/surgery/faq",
+    href: "/surgery#faq",
   },
 ];
 

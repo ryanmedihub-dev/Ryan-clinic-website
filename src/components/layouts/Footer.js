@@ -1,5 +1,3 @@
-"use client";
-
 import {
   FaFacebookF,
   FaInstagram,
@@ -10,10 +8,10 @@ import Image from "next/image";
 import Link from "next/link";
 import Logo from "../../../public/uploads/logo-2.png";
 import FooterCallbackForm from "@/components/pages/FooterCallbackForm";
-import useTrackCTA from "@/lib/useTrackCTA";
+import TrackedWhatsAppLink from "@/components/common/TrackedWhatsAppLink";
 
 const services = [
-  { label: "Turkey Sapphire FUE", href: "/hairline-transplant" },
+  { label: "Turkey Sapphire FUE", href: "/fue-hair-transplant" },
   { label: "Beard Transplant", href: "/beard-transplant" },
   { label: "FUE Hair Transplant", href: "/fue-hair-transplant" },
   { label: "Hairline Transplant", href: "/hairline-transplant" },
@@ -25,14 +23,14 @@ const services = [
 ];
 
 const locations = [
-  { label: "Bangalore", href: "hair-transplant-in-bangalore" },
-  { label: "Chennai", href: "hair-transplant-in-chennai" },
-  { label: "Kolkata", href: "hair-transplant-in-kolkata" },
-  { label: "Pune", href: "hair-transplant-in-pune" },
-  { label: "Ahmedabad", href: "hair-transplant-in-ahmedabad" },
-  { label: "Lucknow", href: "hair-transplant-in-lucknow" },
-  { label: "Jammu", href: "hair-transplant-in-jammu" },
-  { label: "Patna", href: "hair-transplant-in-patna" },
+  { label: "Bangalore", href: "/hair-transplant-in-bangalore" },
+  { label: "Chennai", href: "/hair-transplant-in-chennai" },
+  { label: "Kolkata", href: "/hair-transplant-in-kolkata" },
+  { label: "Pune", href: "/hair-transplant-in-pune" },
+  { label: "Ahmedabad", href: "/hair-transplant-in-ahmedabad" },
+  { label: "Lucknow", href: "/hair-transplant-in-lucknow" },
+  { label: "Jammu", href: "/hair-transplant-in-jammu" },
+  { label: "Patna", href: "/hair-transplant-in-patna" },
 ];
 
 const quickLinks = [
@@ -69,7 +67,6 @@ const branches = [
 ];
 
 export default function Footer() {
-  const trackCTA = useTrackCTA();
   return (
     <footer style={{ background: "#0d0d0d", color: "#e5e5e5" }}>
       {/* ── Trust bar ── */}
@@ -114,16 +111,18 @@ export default function Footer() {
             >
               <FaFacebookF size={18} />
             </a>
-            <a
+            <TrackedWhatsAppLink
               href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi, I want a free hair transplant consultation"
               target="_blank"
               rel="noreferrer"
+              type="whatsapp"
+              ctaName="Footer Social WhatsApp"
+              buttonLocation="Footer"
               className="text-white hover:text-green-200 transition"
               aria-label="WhatsApp"
-              onClick={() => trackCTA({ type: "whatsapp", ctaName: "Footer Social WhatsApp", buttonLocation: "Footer" })}
             >
               <FaWhatsapp size={18} />
-            </a>
+            </TrackedWhatsAppLink>
           </div>
         </div>
       </div>
@@ -136,13 +135,14 @@ export default function Footer() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
           {/* Left — Brand block */}
           <div>
-            <div className="flex justify-start mb-6">
+            <div className="flex justify-start mb-6 w-52">
               <Image
                 src={Logo}
                 alt="Ryan Clinic"
-                width={220}
-                height={80}
-                className="h-auto object-contain"
+                width={434}
+                height={188}
+                className="w-full h-auto object-contain"
+                style={{ width: "auto", height: "auto" }}
                 unoptimized
               />
             </div>
@@ -257,9 +257,9 @@ export default function Footer() {
                 className="block w-1 h-5 rounded-full"
                 style={{ background: "var(--primary-red)" }}
               />
-              <h5 className="font-bold text-white text-base uppercase tracking-wider">
+              <p className="font-bold text-white text-base uppercase tracking-wider">
                 Quick Links
-              </h5>
+              </p>
             </div>
             <ul className="space-y-2.5">
               {quickLinks.map((l) => (
@@ -289,9 +289,9 @@ export default function Footer() {
                 className="block w-1 h-5 rounded-full"
                 style={{ background: "var(--primary-red)" }}
               />
-              <h5 className="font-bold text-white text-base uppercase tracking-wider">
+              <p className="font-bold text-white text-base uppercase tracking-wider">
                 Our Services
-              </h5>
+              </p>
             </div>
             <ul className="space-y-2.5">
               {services.map((s) => (
@@ -321,9 +321,9 @@ export default function Footer() {
                 className="block w-1 h-5 rounded-full"
                 style={{ background: "var(--primary-red)" }}
               />
-              <h5 className="font-bold text-white text-base uppercase tracking-wider">
+              <p className="font-bold text-white text-base uppercase tracking-wider">
                 Our Branches
-              </h5>
+              </p>
             </div>
             <ul className="space-y-2.5">
               {locations.map((s) => (
@@ -353,9 +353,9 @@ export default function Footer() {
                 className="block w-1 h-5 rounded-full"
                 style={{ background: "var(--primary-red)" }}
               />
-              <h5 className="font-bold text-white text-base uppercase tracking-wider">
+              <p className="font-bold text-white text-base uppercase tracking-wider">
                 Contact Us
-              </h5>
+              </p>
             </div>
             <ul className="space-y-4">
               <li>
@@ -365,14 +365,17 @@ export default function Footer() {
                 >
                   Phone
                 </p>
-                <a
+                <TrackedWhatsAppLink
                   href="tel:+919911111247"
+                  target="_self"
+                  type="call"
+                  ctaName="Footer Call"
+                  buttonLocation="Footer"
                   className="text-sm font-medium text-white hover:underline"
                   style={{ color: "var(--accent-gold)" }}
-                  onClick={() => trackCTA({ type: "call", ctaName: "Footer Call", buttonLocation: "Footer" })}
                 >
                   +91-9911111247
-                </a>
+                </TrackedWhatsAppLink>
               </li>
               <li>
                 <p
@@ -401,17 +404,19 @@ export default function Footer() {
                 </p>
               </li>
               <li className="pt-2">
-                <a
+                <TrackedWhatsAppLink
                   href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi, I want a free hair transplant consultation"
                   target="_blank"
                   rel="noreferrer"
+                  type="whatsapp"
+                  ctaName="Footer Book Appointment"
+                  buttonLocation="Footer"
                   className="inline-flex items-center gap-2 text-sm font-semibold py-2.5 px-5 rounded-xl text-white transition-colors"
                   style={{ background: "#16a34a" }}
-                  onClick={() => trackCTA({ type: "whatsapp", ctaName: "Footer Book Appointment", buttonLocation: "Footer" })}
                 >
                   <FaWhatsapp size={15} />
                   WhatsApp Us
-                </a>
+                </TrackedWhatsAppLink>
               </li>
             </ul>
           </div>
@@ -428,9 +433,9 @@ export default function Footer() {
             className="block w-1 h-5 rounded-full"
             style={{ background: "var(--primary-red)" }}
           />
-          <h5 className="font-bold text-white text-base uppercase tracking-wider">
+          <p className="font-bold text-white text-base uppercase tracking-wider">
             Our Address
-          </h5>
+          </p>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -465,7 +470,7 @@ export default function Footer() {
                     d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
                   />
                 </svg>
-                <h6 className="font-bold text-white text-sm">{b.city}</h6>
+                <p className="font-bold text-white text-sm">{b.city}</p>
               </div>
               <p
                 className="text-xs leading-relaxed mb-3"

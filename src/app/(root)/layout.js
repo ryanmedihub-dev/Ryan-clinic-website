@@ -3,26 +3,11 @@ import Header from "@/components/layouts/Header";
 import Footer from "@/components/layouts/Footer";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import FloatingCTA from "@/components/layouts/FloatingCTA";
-import PopupForm from "@/components/common/PopupForm";
+import dynamic from "next/dynamic";
+const PopupForm = dynamic(() => import("@/components/common/PopupForm"), {
+  loading: () => null,
+});
 import Script from "next/script";
-
-import { Outfit, DM_Sans } from "next/font/google";
-
-const outfit = Outfit({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  display: "swap",
-  variable: "--font-outfit",
-  preload: true,
-});
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  display: "swap",
-  variable: "--font-dm-sans",
-  preload: true,
-});
 
 export const metadata = {
   metadataBase: new URL("https://www.clinicryan.com"),
@@ -54,7 +39,7 @@ export const metadata = {
   },
   authors: [{ name: "Dr. Pranendra Singh, Ryan Clinic" }],
   openGraph: {
-    type: "article",
+    type: "website",
     locale: "en_IN",
     url: "https://www.clinicryan.com/hair-transplant-in-delhi",
     siteName: "Ryan Clinic",
@@ -79,14 +64,7 @@ export const metadata = {
     title: "Best Hair Transplant in Delhi - Sapphire FUE | Ryan Clinic",
     description:
       "Advanced Turkey Sapphire FUE hair transplant in Delhi. Certified surgeons & best cost. Call +91-9911111247.",
-    images: ["https://www.clinicryan.com/hair-transplant-in-delhi"],
-  },
-  verification: {
-    google: "PGMWuu_5SSC0Rkyao2LrsHlWiN7bPeQnNaSdY1fgURM",
-    yandex: "2a66899c829e502a",
-    other: {
-      "msvalidate.01": "DD718F54C1640669F3FF6B86F0C3BBDF",
-    },
+    images: ["https://www.clinicryan.com/uploads/1757745417011-1752733322451-Hair%20Transplant%204.jpg"],
   },
   icons: {
     icon: [
@@ -120,35 +98,79 @@ export default function PublicLayout({ children }) {
     <>
       {/* Structured data — in body for performance (keeps <head> small so LCP preload is discovered faster) */}
       <SchemaMarkup />
-      {/* Google Analytics */}
-      <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-CK1LZXBKPX"
-        strategy="afterInteractive"
-      />
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-CK1LZXBKPX');
-        `}
-      </Script>
+      {/* Deferred Google Analytics (GA4) & Meta Pixel */}
+      <script
+        id="deferred-analytics-scheduler"
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              // Define stubs immediately so early tracking calls buffer safely
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              if (!window.gtag) window.gtag = gtag;
 
-      {/* Meta Pixel */}
-      <Script id="meta-pixel" strategy="afterInteractive">
-        {`
-          !function(f,b,e,v,n,t,s)
-          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-          n.queue=[];t=b.createElement(e);t.async=!0;
-          t.src=v;s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)}(window, document,'script',
-          'https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', '1781962566312448');
-          fbq('track', 'PageView');
-        `}
-      </Script>
+              if (!window.fbq) {
+                var n = function(){n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);};
+                n.push = n; n.loaded = false; n.version = '2.0'; n.queue = [];
+                window.fbq = n;
+                if (!window._fbq) window._fbq = n;
+              }
+
+              var loaded = false;
+              function loadAnalytics() {
+                if (loaded) return;
+                loaded = true;
+
+                // Clean up interaction triggers
+                window.removeEventListener('scroll', loadAnalytics, { passive: true });
+                window.removeEventListener('touchstart', loadAnalytics, { passive: true });
+                window.removeEventListener('click', loadAnalytics, { passive: true });
+
+                // 1. Google Analytics (GA4)
+                gtag('js', new Date());
+                gtag('config', 'G-CK1LZXBKPX');
+
+                var ga = document.createElement('script');
+                ga.async = true;
+                ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-CK1LZXBKPX';
+                document.head.appendChild(ga);
+
+                // 2. Meta Pixel
+                !function(f,b,e,v,n,t,s)
+                {if(f.fbq && f.fbq.loaded)return;
+                t=b.createElement(e);t.async=!0;
+                t.src=v;s=b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t,s)}(window, document,'script',
+                'https://connect.facebook.net/en_US/fbevents.js');
+                fbq('init', '1781962566312448');
+                fbq('track', 'PageView');
+              }
+
+              // User interaction triggers (load immediately if user begins interacting)
+              window.addEventListener('scroll', loadAnalytics, { once: true, passive: true });
+              window.addEventListener('touchstart', loadAnalytics, { once: true, passive: true });
+              window.addEventListener('click', loadAnalytics, { once: true, passive: true });
+
+              // Post-LCP / Idle scheduling: defer until after hero paint window
+              function scheduleDeferred() {
+                if ('requestIdleCallback' in window) {
+                  setTimeout(function() {
+                    requestIdleCallback(loadAnalytics, { timeout: 2000 });
+                  }, 2500);
+                } else {
+                  setTimeout(loadAnalytics, 3500);
+                }
+              }
+
+              if (document.readyState === 'complete') {
+                scheduleDeferred();
+              } else {
+                window.addEventListener('load', scheduleDeferred, { once: true });
+              }
+            })();
+          `,
+        }}
+      />
       <noscript>
         <img
           height="1"

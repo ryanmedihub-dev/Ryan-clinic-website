@@ -11,8 +11,16 @@ const getSurgeonPageData = cache(async (slug) => {
   await DBConnection();
   const cleanSlug = decodeURIComponent(slug).toLowerCase().trim();
   const escaped = cleanSlug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const slugQueries = [{ slug: { $regex: new RegExp(`^${escaped}$`, "i") } }];
+  if (cleanSlug.includes("bangalore")) {
+    const bangloreEscaped = escaped.replace("bangalore", "banglore");
+    slugQueries.push({ slug: { $regex: new RegExp(`^${bangloreEscaped}$`, "i") } });
+  } else if (cleanSlug.includes("banglore")) {
+    const bangaloreEscaped = escaped.replace("banglore", "bangalore");
+    slugQueries.push({ slug: { $regex: new RegExp(`^${bangaloreEscaped}$`, "i") } });
+  }
   const page = await SurgeonPage.findOne({
-    slug: { $regex: new RegExp(`^${escaped}$`, "i") },
+    $or: slugQueries,
     "settings.isDeleted": { $ne: true },
     "settings.status": "published",
   }).lean();
@@ -51,7 +59,9 @@ export async function generateMetadata({ params }) {
     keywords: seo.keywords || [],
     alternates: {
       canonical:
-        seo.canonical || `https://www.clinicryan.com/surgeon/${slug}`,
+        (seo.canonical && seo.canonical.includes(`/surgeon/${slug}`))
+          ? seo.canonical
+          : `https://www.clinicryan.com/surgeon/${slug}`,
     },
     robots: seo.robots || "index, follow",
     openGraph: {
@@ -64,7 +74,9 @@ export async function generateMetadata({ params }) {
         page?.general?.shortDescription ||
         "",
       url:
-        seo.canonical || `https://www.clinicryan.com/surgeon/${slug}`,
+        (seo.canonical && seo.canonical.includes(`/surgeon/${slug}`))
+          ? seo.canonical
+          : `https://www.clinicryan.com/surgeon/${slug}`,
       siteName: "Ryan Clinic",
       locale: "en_IN",
       type: "website",

@@ -377,7 +377,7 @@ export default function IntentDatingForm() {
     setTimeout(() => { setSection(next); setVisible(true); }, 280);
   };
 
-  const submitForm = async (paymentId, orderId) => {
+  const submitForm = async (paymentId, subscriptionId, signature) => {
     setSubmitting(true); setSubmitError("");
     try {
       const fd = new FormData();
@@ -386,8 +386,8 @@ export default function IntentDatingForm() {
         else if (v !== undefined && v !== null) fd.append(k, v);
       }
       fd.append("razorpayPaymentId", paymentId);
-      fd.append("razorpaySubscriptionId", orderId);
-      fd.append("paymentStatus", "paid");
+      fd.append("razorpaySubscriptionId", subscriptionId);
+      fd.append("razorpaySignature", signature);
       const res = await fetch("/api/apply", { method: "POST", body: fd });
       const json = await res.json();
       if (!json.success) throw new Error(json.message || "Submission failed");
@@ -426,7 +426,7 @@ export default function IntentDatingForm() {
               });
               const vj = await vr.json();
               if (!vj.success) throw new Error("Payment verification failed");
-              await submitForm(r.razorpay_payment_id, r.razorpay_subscription_id);
+              await submitForm(r.razorpay_payment_id, r.razorpay_subscription_id, r.razorpay_signature);
               res();
             } catch (e) { rej(e); }
           },

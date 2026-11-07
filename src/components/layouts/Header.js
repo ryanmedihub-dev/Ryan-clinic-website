@@ -5,8 +5,21 @@ import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown, Phone, Calendar, Menu, X, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import ContactForm from "../pages/contactForm";
+import dynamic from "next/dynamic";
+
+const ContactForm = dynamic(() => import("../pages/contactForm"), {
+  loading: () => (
+    <div className="bg-white rounded-2xl p-8 min-h-[420px] flex items-center justify-center">
+      <div className="flex flex-col items-center gap-3">
+        <div className="w-8 h-8 border-3 border-red-600 border-t-transparent rounded-full animate-spin" />
+        <p className="text-sm font-medium text-gray-500">Loading appointment form...</p>
+      </div>
+    </div>
+  ),
+  ssr: false,
+});
 import useTrackCTA from "@/lib/useTrackCTA";
+import { groupHeaderNavigation } from "@/lib/serviceNavigation.mjs";
 
 const Logo = "/uploads/logo-2.png";
 
@@ -22,7 +35,7 @@ const Header = () => {
   const trackCTA = useTrackCTA();
 
   useEffect(() => {
-    fetch("/api/service/get-service", {
+    fetch("/api/service/navigation", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
@@ -35,14 +48,10 @@ const Header = () => {
       })
       .then((result) => {
         const services = Array.isArray(result?.data) ? result.data : [];
-        const toNav = (s) => ({
-          name: s.metadata?.pageName || s.bannerData?.title || "",
-          href: `/${s.metadata?.pageurl || ""}`,
-          description: s.metadata?.description || s.bannerData?.description || "",
-        });
-        setTransplantPages(services.filter((s) => s.metadata?.pageType === "transplant").map(toNav));
-        setTreatmentPages(services.filter((s) => s.metadata?.pageType === "treatment").map(toNav));
-        setBranchPages(services.filter((s) => s.metadata?.pageType === "branch").map(toNav));
+        const navigation = groupHeaderNavigation(services);
+        setTransplantPages(navigation.transplantPages);
+        setTreatmentPages(navigation.treatmentPages);
+        setBranchPages(navigation.branchPages);
       })
       .catch((err) => console.warn("Header services fetch error:", err));
   }, []);
@@ -133,7 +142,7 @@ const Header = () => {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
-              src={Logo}  
+              src={Logo}
               alt="Ryan Clinic — Turkey Sapphire FUE Hair Transplant"
               width={160}
               height={40}

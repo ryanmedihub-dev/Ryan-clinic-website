@@ -35,7 +35,7 @@ const DEFAULT_DOCTORS = [
     survivalRate: "98.4%",
     image: "/uploads/turkey-doctor.jpg",
     slug: "hair-transplant-surgeon-in-delhi",
-    targetHref: "/hair-transplant-surgeon-in-delhi",
+    targetHref: "/surgeon/hair-transplant-surgeon-in-delhi",
     about: "Dr. Aman Singh Gosain is a renowned Plastic & Reconstructive Surgeon with over 15 years of dedicated hair restoration experience. Trained in Turkey's advanced Sapphire FUE & Turkish Technique.",
     specializations: ["Sapphire FUE", "Turkish Technique", "Beard & Eyebrow Transplant"],
     highlights: [

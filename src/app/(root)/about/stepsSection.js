@@ -165,6 +165,8 @@ const StepsSection = () => {
                       <img
                         src={image}
                         alt={subtitle}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                       {/* Dark overlay gradient */}

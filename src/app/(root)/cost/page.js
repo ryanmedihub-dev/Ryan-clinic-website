@@ -270,9 +270,9 @@ export default async function CostIndexPage() {
           <div className="w-full bg-[#FFFBF0] border border-amber-300/60 rounded-2xl p-4 sm:p-5 flex items-start gap-3.5 shadow-sm mb-10">
             <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
             <div>
-              <h4 className="font-bold text-amber-950 text-sm sm:text-base">
+              <p className="font-bold text-amber-950 text-sm sm:text-base">
                 Beware of extremely cheap quotes
-              </h4>
+              </p>
               <p className="text-xs sm:text-sm text-amber-900/80 leading-relaxed mt-0.5 font-sans">
                 ₹15–25 per graft usually signals technician-led surgery. A hair transplant is permanent — and a poor one is very hard to fix. Always confirm a qualified doctor performs your surgery before booking on price alone.
               </p>

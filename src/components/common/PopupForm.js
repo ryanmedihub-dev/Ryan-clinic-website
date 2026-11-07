@@ -10,7 +10,7 @@ const PopupBanner = memo(function PopupBanner() {
   const [imgSrc, setImgSrc] = useState("/uploads/turkey-doctor.jpg");
 
   return (
-    <div className="relative md:col-span-5 min-h-[220px] md:min-h-[520px] flex flex-col justify-between p-6 text-white overflow-hidden bg-gradient-to-br from-[#8B0000] to-[#e30a17]">
+    <div className="relative md:col-span-5 min-w-0 max-w-full min-h-[190px] sm:min-h-[220px] md:min-h-[520px] flex flex-col justify-between p-4 sm:p-6 text-white overflow-hidden bg-gradient-to-br from-[#8B0000] to-[#e30a17]">
       {/* Background Surgeon Image */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -32,38 +32,38 @@ const PopupBanner = memo(function PopupBanner() {
 
       {/* Top Badge */}
       <div className="relative z-10">
-        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#FFD700] text-black font-extrabold text-[11px] tracking-wider uppercase shadow-lg">
+        <span className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 rounded-full bg-[#FFD700] text-black font-extrabold text-[10px] sm:text-[11px] tracking-wider uppercase shadow-lg">
           ⚡ SPECIAL OFFER
         </span>
       </div>
 
       {/* Bottom Content Overlay */}
-      <div className="relative z-10 mt-auto pt-8">
-        <h4 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight font-outfit drop-shadow-md">
+      <div className="relative z-10 mt-auto pt-4 sm:pt-8">
+        <h4 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white leading-tight font-outfit drop-shadow-md">
           Welcome Gift!
         </h4>
-        <p className="text-xs sm:text-sm text-white/95 mt-1.5 font-medium leading-relaxed drop-shadow">
+        <p className="text-xs sm:text-sm text-white/95 mt-1 sm:mt-1.5 font-medium leading-relaxed drop-shadow">
           FREE Hair Analysis Worth ₹5,000 for First-Time Visitors
         </p>
 
-        <hr className="border-t border-dashed border-white/40 my-3.5" />
+        <hr className="border-t border-dashed border-white/40 my-2.5 sm:my-3.5" />
 
         {/* Checkmark Bullets */}
-        <ul className="space-y-2 text-xs sm:text-sm font-medium">
-          <li className="flex items-center gap-2.5">
-            <span className="w-5 h-5 rounded-full bg-white text-[#e30a17] flex items-center justify-center shrink-0 shadow-sm">
-              <Check className="w-3.5 h-3.5 stroke-[3]" />
+        <ul className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm font-medium">
+          <li className="flex items-center gap-2 sm:gap-2.5">
+            <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white text-[#e30a17] flex items-center justify-center shrink-0 shadow-sm">
+              <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 stroke-[3]" />
             </span>
             <span>100% Free Consultation</span>
           </li>
-          <li className="flex items-center gap-2.5">
-            <span className="w-5 h-5 rounded-full bg-white text-[#e30a17] flex items-center justify-center shrink-0 shadow-sm">
+          <li className="flex items-center gap-2 sm:gap-2.5">
+            <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white text-[#e30a17] flex items-center justify-center shrink-0 shadow-sm">
               <Check className="w-3.5 h-3.5 stroke-[3]" />
             </span>
             <span>Expert Turkish Specialists</span>
           </li>
-          <li className="flex items-center gap-2.5">
-            <span className="w-5 h-5 rounded-full bg-white text-[#e30a17] flex items-center justify-center shrink-0 shadow-sm">
+          <li className="hidden sm:flex items-center gap-2 sm:gap-2.5">
+            <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white text-[#e30a17] flex items-center justify-center shrink-0 shadow-sm">
               <Check className="w-3.5 h-3.5 stroke-[3]" />
             </span>
             <span>No Obligation Required</span>
@@ -192,32 +192,32 @@ export default function PopupForm() {
     >
       {/* Modal Container */}
       <div
-        className="relative w-full max-w-[860px] bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12 transition-transform duration-300 scale-100 my-auto"
+        className="relative w-full max-w-[860px] bg-white rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12 transition-transform duration-300 scale-100 my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           onClick={handleClose}
-          className="absolute top-3.5 right-3.5 z-30 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full w-9 h-9 flex items-center justify-center transition-all shadow-sm focus:outline-none"
+          className="absolute top-2.5 right-2.5 sm:top-3.5 sm:right-3.5 z-30 bg-white/90 hover:bg-white text-gray-700 rounded-full w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center transition-all shadow-md focus:outline-none"
           aria-label="Close modal"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
         {/* LEFT COLUMN: Visual Banner */}
         <PopupBanner />
 
         {/* RIGHT COLUMN: Form Features (Second Image Fields) */}
-        <div className="md:col-span-7 p-6 sm:p-7 flex flex-col justify-center bg-white">
+        <div className="md:col-span-7 min-w-0 max-w-full p-5 sm:p-7 flex flex-col justify-center bg-white">
           {/* Tick Icon Header */}
-          <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-rose-50 border border-rose-100 text-[#e30a17] flex items-center justify-center mx-auto mb-2 shadow-xs">
-            <Check className="w-7 h-7 stroke-[3]" />
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-rose-50 border border-rose-100 text-[#e30a17] flex items-center justify-center mx-auto mb-2 shadow-xs">
+            <Check className="w-6 h-6 sm:w-7 sm:h-7 stroke-[3]" />
           </div>
 
-          <h3 className="text-xl sm:text-2xl font-bold text-center text-[#302658] font-outfit">
+          <h3 className="text-lg sm:text-2xl font-bold text-center text-[#302658] font-outfit">
             Book Your Free Consult Now!
           </h3>
-          <p className="text-center text-xs text-gray-500 mt-0.5 mb-4">
+          <p className="text-center text-xs text-gray-500 mt-0.5 mb-3 sm:mb-4">
             Limited time offer - Don't miss out
           </p>
 

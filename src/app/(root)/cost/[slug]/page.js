@@ -51,7 +51,7 @@ const CITY_DEFAULTS = {
   },
   hyderabad: {
     badge: "Hyderabad Clinic Location",
-    address: "Ryan Hair Clinic,\nAndheri West Road, Banjara Hills,\nHyderabad – 500034",
+    address: "2nd Floor, 8-2, 316/A/6/A,\nRoad No. 14, Banjara Hills,\nHyderabad – 500034",
     timings: "Monday – Sunday: 9:00 AM – 7:00 PM",
     landmark: "Near Banjara Hills Road No. 10",
     nearbyAreas: ["Banjara Hills", "Jubilee Hills", "Somajiguda", "Begumpet", "Ameerpet"],
@@ -62,10 +62,24 @@ const CITY_DEFAULTS = {
     mapEmbedUrl:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.9248702305536!2d78.44583867473484!3d17.41258498342!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb971c85b2a681%3A0x7a09f81ea61a6c4!2sBanjara%20Hills%2C%20Hyderabad%2C%20Telangana!5e0!3m2!1sen!2sin!4v1691234567892!5m2!1sen!2sin",
   },
+  gurgaon: {
+    badge: "Our Gurgaon Clinic",
+    address: "HOUSE NO- 53, MAIN, Market Rd,\nResidency Green, Jal Vihar Colony,\nSector 46, Gurugram,\nHaryana – 122001",
+    timings: "Monday – Saturday: 10:00 AM – 7:00 PM",
+    landmark: "Near Jal Vihar Colony / Huda City Centre",
+    nearbyAreas: ["Sector 46", "DLF Phase 1-5", "Cyber City", "Golf Course Road", "Sohna Road"],
+    phone: "+91-9911111247",
+    whatsapp: "+919217958539",
+    buttonText: "Get Directions to Gurgaon Clinic",
+    buttonLink: "https://www.google.com/maps/place/Ryan+Clinic+%E2%80%93+Turkey+Hair+Transplant+Experts+Gurgaon/",
+    mapEmbedUrl:
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3509.324!2d77.065!3d28.435!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x8eb67acb58dcca35!2sRyan+Clinic!5e0!3m2!1sen!2sin!4v1691234567893!5m2!1sen!2sin",
+  },
 };
 
 function getCityDefaults(cityName) {
   const key = (cityName || "").toLowerCase().trim();
+  if (key.includes("gurgaon") || key.includes("gurugram")) return CITY_DEFAULTS.gurgaon;
   if (key.includes("mumbai")) return CITY_DEFAULTS.mumbai;
   if (key.includes("hyderabad")) return CITY_DEFAULTS.hyderabad;
   return CITY_DEFAULTS.delhi; // default fallback
@@ -136,14 +150,19 @@ export async function generateMetadata({ params }) {
   const isPrpMeta = page.pageType === "prp" || (page.title && page.title.toLowerCase().includes("prp"));
   const ogImgUrl = seo.ogImage || (isPrpMeta ? "/uploads/1752746168716-PRP 1.jpg" : "/uploads/1752667815707-fue-banner_ro9ae6.webp");
 
+  const cleanSlug = page.slug ? page.slug.replace(/^\/+/, "").replace(/^cost\//, "") : slug;
+  const canonicalUrl = (seo.canonical && !seo.canonical.includes("-copy") && seo.canonical.includes(cleanSlug))
+    ? seo.canonical
+    : `https://www.clinicryan.com/cost/${cleanSlug}`;
+
   return {
     title: seo.metaTitle || page.title || "Hair Treatment Cost - Ryan Clinic",
     description: seo.metaDescription || page.hero?.pricingLine || "",
-    alternates: { canonical: seo.canonical || `https://www.clinicryan.com/cost/${page.slug}` },
+    alternates: { canonical: canonicalUrl },
     openGraph: {
       title: seo.metaTitle || page.title,
       description: seo.metaDescription || page.hero?.pricingLine || "",
-      url: seo.canonical || `https://www.clinicryan.com/cost/${page.slug}`,
+      url: canonicalUrl,
       siteName: "Ryan Clinic",
       locale: "en_IN",
       type: "website",
@@ -249,7 +268,7 @@ function GenericCostSection({ sec }) {
                   {resolveIcon(item.icon)}
                 </div>
                 <div>
-                  <h4 className="font-bold text-sm text-gray-900 mb-1.5 leading-snug">{item.title}</h4>
+                  <h3 className="font-bold text-sm text-gray-900 mb-1.5 leading-snug">{item.title}</h3>
                   {item.description && (
                     <p className="text-xs text-gray-500 leading-relaxed font-sans">{item.description}</p>
                   )}
@@ -569,7 +588,7 @@ function GenericCostSection({ sec }) {
                 <span className="inline-block bg-[#e30a17] text-white text-[9px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full mb-2 shadow-xs">
                   Doctor Evaluation
                 </span>
-                <h4 className="text-lg font-bold text-white">Customized Scalp Assessment &amp; Pricing</h4>
+                <p className="text-lg font-bold text-white">Customized Scalp Assessment &amp; Pricing</p>
                 <p className="text-xs text-gray-300 mt-1 max-w-xl font-sans leading-relaxed">
                   Exact treatment plans, session counts, and package discounts are finalized after a personalized trichoscopy examination with our specialist doctor.
                 </p>

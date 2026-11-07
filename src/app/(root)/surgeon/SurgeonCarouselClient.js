@@ -140,7 +140,7 @@ export default function SurgeonCarouselClient({ dbPages = [] }) {
       const docCard = hero.doctorCard || {};
       const lead = page.leadSurgeon || {};
       const rawSlug = (page.slug || "").replace(/^\/+/, "").replace(/^surgeon\//, "");
-      const targetHref = rawSlug === "hair-transplant-surgeon-in-delhi" ? `/${rawSlug}` : `/surgeon/${rawSlug}`;
+      const targetHref = `/surgeon/${rawSlug}`;
 
       return {
         id: page._id || page.slug || idx,

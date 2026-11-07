@@ -86,5 +86,15 @@ const ApplyFormSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Keep Razorpay payment retries idempotent while allowing unpaid applications
+// to retain the schema's empty-string default.
+ApplyFormSchema.index(
+  { razorpayPaymentId: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { razorpayPaymentId: { $type: "string", $gt: "" } },
+  }
+);
+
 export default mongoose.models.ApplyForm ||
   mongoose.model("ApplyForm", ApplyFormSchema);

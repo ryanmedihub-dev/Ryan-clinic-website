@@ -1,9 +1,4 @@
-import Razorpay from "razorpay";
-
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID || "rzp_test_placeholder",
-  key_secret: process.env.RAZORPAY_KEY_SECRET || "placeholder_secret",
-});
+import { razorpay } from "@/lib/razorpayClient";
 
 export async function POST(request) {
   try {
@@ -22,9 +17,8 @@ export async function POST(request) {
 
     return Response.json({ success: true, subscriptionId: subscription.id }, { status: 200 });
   } catch (error) {
-    console.error("Razorpay create-subscription error:", error);
     return Response.json(
-      { success: false, message: error.error?.description || "Failed to create subscription" },
+      { success: false, message: "Failed to create subscription" },
       { status: 500 }
     );
   }

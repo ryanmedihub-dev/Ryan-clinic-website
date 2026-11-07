@@ -1491,8 +1491,8 @@ export default function SurgeonPageClient({ pageData, slug }) {
                                         ? pageData.relatedLinks
                                         : [
                                             { label: `Hair Transplant Surgery in ${cityName}`, href: `/surgery/hair-transplant-surgery-in-${(rawCityName || "delhi").toLowerCase().replace(/\s+/g, "-")}` },
-                                            { label: `Hair Transplant Cost in ${cityName}`, href: `/cost/hair-transplant-cost-in-${(rawCityName || "delhi").toLowerCase().replace(/\s+/g, "-")}` },
-                                            { label: `PRP Treatment in ${cityName}`, href: `/prp-hair-loss-treatment-in-${(rawCityName || "delhi").toLowerCase().replace(/\s+/g, "-")}` },
+                                            { label: `Hair Transplant Cost in ${cityName}`, href: `/cost/fue-hair-transplant-cost-in-${(rawCityName || "delhi").toLowerCase().replace(/\s+/g, "-")}` },
+                                            { label: `PRP Treatment in ${cityName}`, href: (rawCityName || "delhi").toLowerCase().replace(/\s+/g, "-") === "delhi" ? "/prp-hair-loss-treatment-in-delhi" : "/prp-treatment" },
                                         ]
                                 ).map((link, li) => (
                                     <span key={li} className="inline-flex items-center gap-1.5">

@@ -1,11 +1,19 @@
 // lib/blogData.js
-import { DBConnection } from "./db";
-import Blog from "@/models/blog";
+import { DBConnection } from "./db.js";
+import Blog from "@/models/blog.js";
 
 export const getAllBlogs = async () => {
   try {
     await DBConnection();
-    const blogs = await Blog.find({}).lean();
+    const blogs = await Blog.aggregate([
+      {
+        $addFields: {
+          effectiveSortDate: { $ifNull: ["$publishedAt", "$createdAt"] },
+        },
+      },
+      { $sort: { effectiveSortDate: -1 } },
+      { $project: { effectiveSortDate: 0 } },
+    ]);
     return JSON.parse(JSON.stringify(blogs || []));
   } catch (error) {
     console.error("getAllBlogs error:", error.message);
@@ -17,11 +25,26 @@ export const getAllBlogs = async () => {
 export const getHomepageBlogs = async () => {
   try {
     await DBConnection();
-    const blogs = await Blog.find({})
-      .select("pageUrl blogTitle pageTitle pageImageUrl pageImageAlt createdAt")
-      .sort({ createdAt: -1 })
-      .limit(6)
-      .lean();
+    const blogs = await Blog.aggregate([
+      {
+        $addFields: {
+          effectiveSortDate: { $ifNull: ["$publishedAt", "$createdAt"] },
+        },
+      },
+      { $sort: { effectiveSortDate: -1 } },
+      { $limit: 6 },
+      {
+        $project: {
+          pageUrl: 1,
+          blogTitle: 1,
+          pageTitle: 1,
+          pageImageUrl: 1,
+          pageImageAlt: 1,
+          createdAt: 1,
+          publishedAt: 1,
+        },
+      },
+    ]);
     return JSON.parse(JSON.stringify(blogs || []));
   } catch (error) {
     console.error("getHomepageBlogs error:", error.message);
@@ -33,11 +56,20 @@ export const getBlogBySlug = async (slug) => {
   try {
     await DBConnection();
     const cleanSlug = decodeURIComponent(slug).trim();
-    let blog = await Blog.findOne({ pageUrl: cleanSlug }).lean();
+    const stripped = cleanSlug.replace(/^\/+/, "").replace(/\/+$/, "");
+
+    let blog = await Blog.findOne({
+      $or: [
+        { pageUrl: cleanSlug },
+        { pageUrl: stripped },
+        { pageUrl: `/${stripped}` },
+      ],
+    }).lean();
+
     if (!blog) {
-      const escaped = cleanSlug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const escaped = stripped.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       blog = await Blog.findOne({
-        pageUrl: { $regex: new RegExp(`^${escaped}$`, "i") },
+        pageUrl: { $regex: new RegExp(`^/?${escaped}/?$`, "i") },
       }).lean();
     }
     return blog ? JSON.parse(JSON.stringify(blog)) : null;

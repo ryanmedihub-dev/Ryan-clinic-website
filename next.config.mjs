@@ -71,7 +71,7 @@ const nextConfig = {
               "img-src 'self' data: https: blob:",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' data: https://fonts.gstatic.com",
-              "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://www.google.com https://api.cloudinary.com",
+              "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://www.google.com https://api.cloudinary.com https://connect.facebook.net https://www.facebook.com",
               "frame-src 'self' https://www.google.com https://maps.google.com",
             ].join("; "),
           },
@@ -379,15 +379,9 @@ const nextConfig = {
         destination: "/surgery/hair-transplant-surgery-in-mumbai",
         permanent: true,
       },
-      // Non-existent city surgery pages → /surgery listing
-      {
-        source: "/surgery/hair-transplant-surgery-in-hyderabad",
-        destination: "/surgery",
-        permanent: true,
-      },
       {
         source: "/hair-transplant-surgery-in-hyderabad",
-        destination: "/surgery",
+        destination: "/surgery/hair-transplant-surgery-in-hyderabad",
         permanent: true,
       },
       {
@@ -550,6 +544,155 @@ const nextConfig = {
       {
         source: "/best-hair-transplant-clinic-in-hyderabad",
         destination: "/hair-transplant-in-hyderabad",
+        permanent: true,
+      },
+
+      // ── 11. REPAIRED INTERNAL SHORTCUTS & LEGACY SUBPAGES ─────────────
+      {
+        source: "/surgery/fue",
+        destination: "/fue-hair-transplant",
+        permanent: true,
+      },
+      {
+        source: "/surgery/dhi",
+        destination: "/hairline-transplant",
+        permanent: true,
+      },
+      {
+        source: "/surgery/beard",
+        destination: "/beard-transplant",
+        permanent: true,
+      },
+      {
+        source: "/surgery/crown",
+        destination: "/surgery/hair-transplant-surgery-in-delhi",
+        permanent: true,
+      },
+      {
+        source: "/surgery/women",
+        destination: "/female-hair-transplant",
+        permanent: true,
+      },
+      {
+        source: "/surgery/faq",
+        destination: "/surgery",
+        permanent: true,
+      },
+      {
+        source: "/surgeon/hair-transplant-surgeon-in-bangalore",
+        destination: "/surgeon/hair-transplant-surgeon-in-banglore",
+        permanent: true,
+      },
+      {
+        source: "/hair-transplant-growth-timeline",
+        destination: "/blog/first-ten-days-after-hair-transplant",
+        permanent: true,
+      },
+      {
+        source: "/blog/hair-transplant-recovery-timeline",
+        destination: "/blog/first-ten-days-after-hair-transplant",
+        permanent: true,
+      },
+      // Non-existent city PRP pages → /prp-treatment
+      {
+        source: "/prp-hair-loss-treatment-in-ahmedabad",
+        destination: "/prp-treatment",
+        permanent: true,
+      },
+      {
+        source: "/prp-hair-loss-treatment-in-bangalore",
+        destination: "/prp-treatment",
+        permanent: true,
+      },
+      {
+        source: "/prp-hair-loss-treatment-in-chennai",
+        destination: "/prp-treatment",
+        permanent: true,
+      },
+      {
+        source: "/prp-hair-loss-treatment-in-gurgaon",
+        destination: "/prp-treatment",
+        permanent: true,
+      },
+      {
+        source: "/prp-hair-loss-treatment-in-hyderabad",
+        destination: "/prp-treatment",
+        permanent: true,
+      },
+      {
+        source: "/prp-hair-loss-treatment-in-jammu",
+        destination: "/prp-treatment",
+        permanent: true,
+      },
+      {
+        source: "/prp-hair-loss-treatment-in-kolkata",
+        destination: "/prp-treatment",
+        permanent: true,
+      },
+      {
+        source: "/prp-hair-loss-treatment-in-lucknow",
+        destination: "/prp-treatment",
+        permanent: true,
+      },
+      {
+        source: "/prp-hair-loss-treatment-in-patna",
+        destination: "/prp-treatment",
+        permanent: true,
+      },
+      {
+        source: "/prp-hair-loss-treatment-in-pune",
+        destination: "/prp-treatment",
+        permanent: true,
+      },
+      // Non-existent city hair loss treatment pages → /alopecia-treatments
+      {
+        source: "/treatments/hair-fall-loss-treatment-in-ahmedabad",
+        destination: "/alopecia-treatments",
+        permanent: true,
+      },
+      {
+        source: "/treatments/hair-fall-loss-treatment-in-bangalore",
+        destination: "/alopecia-treatments",
+        permanent: true,
+      },
+      {
+        source: "/treatments/hair-fall-loss-treatment-in-chennai",
+        destination: "/alopecia-treatments",
+        permanent: true,
+      },
+      {
+        source: "/treatments/hair-fall-loss-treatment-in-gurgaon",
+        destination: "/alopecia-treatments",
+        permanent: true,
+      },
+      {
+        source: "/treatments/hair-fall-loss-treatment-in-hyderabad",
+        destination: "/alopecia-treatments",
+        permanent: true,
+      },
+      {
+        source: "/treatments/hair-fall-loss-treatment-in-jammu",
+        destination: "/alopecia-treatments",
+        permanent: true,
+      },
+      {
+        source: "/treatments/hair-fall-loss-treatment-in-kolkata",
+        destination: "/alopecia-treatments",
+        permanent: true,
+      },
+      {
+        source: "/treatments/hair-fall-loss-treatment-in-lucknow",
+        destination: "/alopecia-treatments",
+        permanent: true,
+      },
+      {
+        source: "/treatments/hair-fall-loss-treatment-in-patna",
+        destination: "/alopecia-treatments",
+        permanent: true,
+      },
+      {
+        source: "/treatments/hair-fall-loss-treatment-in-pune",
+        destination: "/alopecia-treatments",
         permanent: true,
       },
     ];

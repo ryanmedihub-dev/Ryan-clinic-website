@@ -1,27 +1,24 @@
-import crypto from "crypto";
+import { verifyRazorpayPayment } from "@/lib/razorpayClient";
 
 export async function POST(request) {
+  let body;
   try {
-    const { razorpay_payment_id, razorpay_subscription_id, razorpay_signature } =
-      await request.json();
-
-    if (!razorpay_payment_id || !razorpay_subscription_id || !razorpay_signature) {
-      return Response.json({ success: false, message: "Missing payment details" }, { status: 400 });
-    }
-
-    const body = razorpay_payment_id + "|" + razorpay_subscription_id;
-    const expectedSignature = crypto
-      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
-      .update(body)
-      .digest("hex");
-
-    if (expectedSignature !== razorpay_signature) {
-      return Response.json({ success: false, message: "Payment verification failed" }, { status: 400 });
-    }
-
-    return Response.json({ success: true, message: "Payment verified" }, { status: 200 });
-  } catch (error) {
-    console.error("Razorpay verify-payment error:", error);
-    return Response.json({ success: false, message: "Verification error" }, { status: 500 });
+    body = await request.json();
+  } catch {
+    return Response.json({ success: false, message: "Invalid payment details" }, { status: 400 });
   }
+
+  const { razorpay_payment_id: paymentId, razorpay_subscription_id: subscriptionId, razorpay_signature: signature } = body ?? {};
+  if (!paymentId || !subscriptionId || !signature) {
+    return Response.json({ success: false, message: "Missing payment details" }, { status: 400 });
+  }
+
+  const verified = await verifyRazorpayPayment({ paymentId, subscriptionId, signature });
+  if (!verified) {
+    return Response.json({ success: false, message: "Payment verification failed" }, { status: 400 });
+  }
+
+  // This endpoint confirms a payment only. The public application endpoint
+  // repeats verification before creating/marking its associated record paid.
+  return Response.json({ success: true, message: "Payment verified" }, { status: 200 });
 }

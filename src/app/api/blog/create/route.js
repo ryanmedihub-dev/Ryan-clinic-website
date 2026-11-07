@@ -19,6 +19,7 @@ const handler = async (req) => {
     pageImageAlt,
     blogTitle,
     blogContent,
+    publishedAt,
   } = body;
 
   // ===== VALIDATION =====
@@ -81,6 +82,7 @@ const handler = async (req) => {
     pageImageAlt,
     blogTitle,
     blogContent,
+    publishedAt: publishedAt ? new Date(publishedAt) : undefined,
   });
 
   await newBlog.save();

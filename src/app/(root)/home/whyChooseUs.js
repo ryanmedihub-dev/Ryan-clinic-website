@@ -108,6 +108,8 @@ export default function WhyChooseUs({ city = "Delhi" }) {
               <img
                 src="/uploads/gallery.jpg"
                 alt={`Ryan Clinic Hair Transplant ${city}`}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover object-top"
               />
 

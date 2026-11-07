@@ -236,7 +236,7 @@ export default function RecoveryTimeline({ phases }) {
             </svg>
           </a>
           <a
-            href="/blog/hair-transplant-recovery-timeline/"
+            href="/blog/first-ten-days-after-hair-transplant"
             className="inline-flex items-center gap-2 border border-gray-200 hover:border-[#D32F2F] text-gray-600 hover:text-[#D32F2F] font-semibold py-4 px-7 text-sm tracking-wide transition-all rounded-xl"
           >
             Full Recovery Guide →
