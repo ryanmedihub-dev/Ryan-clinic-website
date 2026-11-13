@@ -75,7 +75,7 @@ const doctorSchema = new mongoose.Schema(
       city: { type: String, trim: true, default: "" },
       yearsExperience: { type: Number, min: 0, default: 0 },
       proceduresCount: { type: Number, min: 0, default: 0 },
-      successRate: { type: String, trim: true, default: "95%+" },
+      successRate: { type: String, trim: true, default: "97%" },
       rating: { type: Number, min: 0, max: 5, default: 5.0 },
       phoneNumber: {
         type: String,

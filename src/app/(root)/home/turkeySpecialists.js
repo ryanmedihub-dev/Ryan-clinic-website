@@ -5,14 +5,14 @@ import TrackedWhatsAppLink from "@/components/common/TrackedWhatsAppLink";
 const highlights = [
   "Original Turkey Choi Pen — exclusively in India",
   "Certified doctors perform every surgical step",
-  "95%+ graft survival rate, far above industry average",
+  "97% graft survival rate, far above industry average",
   "Serving Delhi, Mumbai & Hyderabad since 2012",
 ];
 
 const stats = [
   { num: "12+", label: "Years of Excellence" },
   { num: "10K+", label: "Successful Procedures" },
-  { num: "95%+", label: "Graft Survival Rate" },
+  { num: "97%", label: "Graft Survival Rate" },
   { num: "4.9★", label: "Google Rating" },
 ];
 

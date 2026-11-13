@@ -12,7 +12,7 @@ import { doctors as staticDoctors } from "@/lib/doctorsData";
 
 const trustStats = [
   { value: "10,000+", label: "Successful Procedures" },
-  { value: "95%+", label: "Graft Survival Rate" },
+  { value: "97%", label: "Graft Survival Rate" },
   { value: "4.9 ★", label: "Google Rating" },
   { value: "12+", label: "Years of Excellence" },
 ];
@@ -387,7 +387,7 @@ function normalizeDbDoctor(doc) {
       : ["Turkey Sapphire FUE Fellowship Certified", "ISHRS International Member"],
     achievements: prof.achievements?.length
       ? prof.achievements
-      : ["5,000+ Successful Hair Restoration Procedures", "98.4% Follicle Survival Rate"],
+      : ["5,000+ Successful Hair Restoration Procedures", "97% Follicle Survival Rate"],
   };
 }
 

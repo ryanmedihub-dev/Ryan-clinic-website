@@ -6,6 +6,19 @@ import SurgeryPageClient from "@/components/surgery/SurgeryPageClient";
 
 // ─── Data Fetching ────────────────────────────────────────────────────────────
 
+// Ensure canonical URL always uses the /surgery/${slug} architecture and prevents draft/copy URLs
+function getSurgeryCanonicalUrl(rawCanonical, slug) {
+  if (
+    rawCanonical &&
+    typeof rawCanonical === "string" &&
+    rawCanonical.includes("/surgery/") &&
+    !/-copy(-\d+)?(\/|$)/i.test(rawCanonical)
+  ) {
+    return rawCanonical.trim();
+  }
+  return `https://www.clinicryan.com/surgery/${slug}`;
+}
+
 const getSurgeryPage = cache(async (slug) => {
   await DBConnection();
   const cleanSlug = decodeURIComponent(slug).toLowerCase().trim();
@@ -33,11 +46,8 @@ export async function generateMetadata({ params }) {
   const heroImage = page.hero?.heroImage?.image ?? "";
   const ogImage = seo.openGraphImage?.image || heroImage;
 
-  // Ensure canonical URL always uses the /surgery/${slug} architecture
-  const canonicalUrl =
-    seo.canonicalUrl && seo.canonicalUrl.includes("/surgery/")
-      ? seo.canonicalUrl
-      : `https://www.clinicryan.com/surgery/${slug}`;
+  // Ensure canonical URL always uses the /surgery/${slug} architecture and prevents draft/copy URLs
+  const canonicalUrl = getSurgeryCanonicalUrl(seo.canonicalUrl, slug);
 
   // keywords is stored as a comma-separated string in the schema
   const keywords = seo.keywords
@@ -89,10 +99,7 @@ export default async function SurgeryPage({ params }) {
     notFound();
   }
 
-  const canonicalUrl =
-    page.seo?.canonicalUrl && page.seo.canonicalUrl.includes("/surgery/")
-      ? page.seo.canonicalUrl
-      : `https://www.clinicryan.com/surgery/${slug}`;
+  const canonicalUrl = getSurgeryCanonicalUrl(page.seo?.canonicalUrl, slug);
 
   const cityName = page.city || (page.pageName?.includes("Mumbai") ? "Mumbai" : "Delhi");
 

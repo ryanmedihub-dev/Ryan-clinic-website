@@ -7,7 +7,7 @@ const features = [
     ),
     number: "01",
     title: "India's Only Turkey Sapphire FUE Clinic",
-    text: "The only clinic in India using Turkey's authentic Sapphire FUE with the original Choi Pen. Sharper sapphire blades, less scalp trauma, 90%+ graft survival — results no other Indian clinic can match.",
+    text: "The only clinic in India using Turkey's authentic Sapphire FUE with the original Choi Pen. Sharper sapphire blades, less scalp trauma, 97% graft survival — results no other Indian clinic can match.",
   },
   {
     icon: (
@@ -36,8 +36,8 @@ const features = [
       </svg>
     ),
     number: "04",
-    title: "90%+ Graft Survival Rate",
-    text: "The original Choi Pen minimizes the time grafts spend outside the body during implantation. Combined with our proprietary graft preservation protocol, Ryan Clinic consistently achieves 90%+ graft survival — far above the Indian industry average of 60–70%.",
+    title: "97% Graft Survival Rate",
+    text: "The original Choi Pen minimizes the time grafts spend outside the body during implantation. Combined with our proprietary graft preservation protocol, Ryan Clinic consistently achieves 97% graft survival — far above the Indian industry average of 60–70%.",
   },
   {
     icon: (

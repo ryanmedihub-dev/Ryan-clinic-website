@@ -154,14 +154,14 @@ export default function Footer() {
               Ryan Clinic is India's premier hair transplant centre, exclusively
               specialising in Turkey Sapphire FUE — the same technique that made
               Turkey the world's hair transplant capital. Certified doctors,
-              95%+ graft survival, and transparent pricing across Delhi, Mumbai
+              97% graft survival, and transparent pricing across Delhi, Mumbai
               &amp; Hyderabad.
             </p>
 
             {/* Trust badges */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
               {[
-                { num: "95%+", label: "Graft Survival" },
+                { num: "97%", label: "Graft Survival" },
                 { num: "10K+", label: "Patients" },
                 { num: "12+", label: "Years" },
                 { num: "4.9★", label: "Google Rating" },

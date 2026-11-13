@@ -69,7 +69,7 @@ function EditDoctorContent() {
               city: "Delhi",
               yearsExperience: 0,
               proceduresCount: 0,
-              successRate: "95%+",
+              successRate: "97%",
               rating: 5.0,
               phoneNumber: "+91-9911111247",
               whatsappNumber: "+91-9911111247",
@@ -575,10 +575,10 @@ function EditDoctorContent() {
             <label className="block text-sm font-semibold text-gray-700">Graft Success Rate</label>
             <input
               type="text"
-              value={formData.basicInfo?.successRate || "95%+"}
+              value={formData.basicInfo?.successRate || "97%"}
               onChange={(e) => handleNestedChange("basicInfo", "successRate", e.target.value)}
               className="w-full mt-2 p-2 border rounded-md"
-              placeholder="e.g. 95%+"
+              placeholder="e.g. 97%"
             />
           </div>
           <div className="w-full">

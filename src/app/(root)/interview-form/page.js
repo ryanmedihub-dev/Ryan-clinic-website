@@ -1,14 +1,15 @@
 "use client";
 import { useState, useEffect, useRef, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { AUTHORITATIVE_ACTIVE_HR_LIST } from "@/lib/hrEmployees";
 
 function InterviewFormContent() {
   const searchParams = useSearchParams();
   const rawSource = (searchParams.get("source") || "direct").trim();
   const isQr = rawSource.toLowerCase() === "qr";
 
-  const [hrList, setHrList] = useState([]);
-  const [loadingHr, setLoadingHr] = useState(true);
+  const [hrList, setHrList] = useState(AUTHORITATIVE_ACTIVE_HR_LIST);
+  const [loadingHr, setLoadingHr] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",

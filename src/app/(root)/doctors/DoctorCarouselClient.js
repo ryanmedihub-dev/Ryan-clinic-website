@@ -32,7 +32,7 @@ const DEFAULT_DOCTORS = [
     experience: "15+ Yrs",
     procedures: "7,500+",
     rating: "4.9 ★",
-    survivalRate: "98.4%",
+    survivalRate: "97%",
     image: "/uploads/turkey-doctor.jpg",
     slug: "hair-transplant-surgeon-in-delhi",
     targetHref: "/surgeon/hair-transplant-surgeon-in-delhi",
@@ -56,7 +56,7 @@ const DEFAULT_DOCTORS = [
     experience: "12+ Yrs",
     procedures: "5,000+",
     rating: "4.9 ★",
-    survivalRate: "97.8%",
+    survivalRate: "97%",
     image: "/uploads/about-one.jpg",
     slug: "dr-pranendra-singh",
     targetHref: "/doctors/dr-pranendra-singh",
@@ -80,7 +80,7 @@ const DEFAULT_DOCTORS = [
     experience: "14+ Yrs",
     procedures: "6,200+",
     rating: "4.8 ★",
-    survivalRate: "98.1%",
+    survivalRate: "97%",
     image: "/uploads/service-two.jpg",
     slug: "dr-rk-sharma",
     targetHref: "/doctors/dr-rk-sharma",
@@ -353,7 +353,7 @@ export default function DoctorCarouselClient({ initialDoctors = [] }) {
 
                     <div className="bg-[#FAF6F3] p-2.5 rounded-xl border border-[#F0E6DE] text-center overflow-hidden flex flex-col justify-center items-center">
                       <span className="text-base sm:text-lg font-black text-emerald-700 block leading-tight truncate max-w-full font-sans">
-                        {activeDoc.survivalRate || "98.4%"}
+                        {activeDoc.survivalRate || "97%"}
                       </span>
                       <span className="text-[9.5px] font-bold text-gray-500 uppercase tracking-wider block mt-1 leading-none truncate max-w-full font-sans">
                         Graft Survival

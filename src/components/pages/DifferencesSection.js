@@ -11,7 +11,7 @@ const DEFAULT_FEATURES = [
   { label: "Graft Density", fut: { value: "High (one session)" }, fue: { value: "High" }, sapphire: { value: "High with less trauma" } },
   { label: "Recovery Time", fut: { value: "10–14 days", bad: true }, fue: { value: "7–10 days" }, sapphire: { value: "5–7 days" } },
   { label: "Pain Level", fut: { value: "Moderate (sutures)", bad: true }, fue: { value: "Low" }, sapphire: { value: "Lowest" } },
-  { label: "Graft Survival", fut: { value: "~70–80%" }, fue: { value: "~75–85%" }, sapphire: { value: "90%+ (Ryan Clinic)" } },
+  { label: "Graft Survival", fut: { value: "~70–80%" }, fue: { value: "~75–85%" }, sapphire: { value: "97% (Ryan Clinic)" } },
   { label: "Best For", fut: { value: "Very large / budget cases" }, fue: { value: "Most patients" }, sapphire: { value: "Best result + fast recovery" } },
 ];
 

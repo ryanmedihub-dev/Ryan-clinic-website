@@ -25,8 +25,8 @@ const credentials = [
         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
       </svg>
     ),
-    title: "95%+ Graft Survival Rate",
-    body: "Using the original Choi Pen and our proprietary preservation protocol, Ryan Clinic achieves 95%+ graft survival — far above the industry average of 60–70%.",
+    title: "97% Graft Survival Rate",
+    body: "Using the original Choi Pen and our proprietary preservation protocol, Ryan Clinic achieves 97% graft survival — far above the industry average of 60–70%.",
   },
   {
     icon: (
@@ -59,7 +59,7 @@ const credentials = [
 
 const stats = [
   { num: "10,000+", label: "Procedures Completed" },
-  { num: "95%+", label: "Graft Survival Rate" },
+  { num: "97%", label: "Graft Survival Rate" },
   { num: "4.9 ★", label: "Average Google Rating" },
   { num: "12+", label: "Years of Excellence" },
 ];

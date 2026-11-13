@@ -106,7 +106,7 @@ const defaultSurgicalJourney = [
 function buildWhyItems(surgeonName) {
     return [
         { title: "100% Doctor-Led Surgery — Never Technicians", body: `This is the most important thing to verify at any Ryan Clinic. Every surgical step — extraction, channel creation, and implantation — is performed personally by a certified hair transplant surgeon. We never hand any part of your surgery to a technician.` },
-        { title: "95%+ Graft Survival Rate", body: "Using the original Choi Pen and a careful graft-preservation protocol, our grafts spend minimal time outside the body. The result is a graft survival rate of 95%+ — well above the Indian industry average of roughly 60–70%." },
+        { title: "97% Graft Survival Rate", body: "Using the original Choi Pen and a careful graft-preservation protocol, our grafts spend minimal time outside the body. The result is a graft survival rate of 97% — well above the Indian industry average of roughly 60–70%." },
         { title: "Sterile, Surgical-Grade Operating Theatre", body: "Every procedure is performed in a sterile operating theatre with single-use, surgical-grade instruments while following recognised safety standards. Patient safety, hygiene, and precision remain at the heart of every procedure." },
         { title: "Transparent Pricing & 0% EMI", body: "Your complete cost — based on your exact graft count after a free scalp analysis — is confirmed before you commit. No hidden charges. Hair transplant surgery starts from ₹40,000, with 0% EMI available on 6 and 12-month plans." },
         { title: "18-Month Follow-Up Support", body: "Ryan Clinic provides free follow-up consultations for 18 months after your procedure. Our WhatsApp support team is available 7 days a week to answer your questions and monitor progress." },
@@ -153,7 +153,7 @@ const surgeonFeatures = [
     { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>, number: "01", title: "Hands-On Mastery", text: "Performs extraction, recipient-site creation, and implantation personally — never delegating surgical steps to technicians at any stage." },
     { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>, number: "02", title: "Aesthetic Judgement", text: "Designs hairlines tailored to your facial structure, age progression, and long-term hair loss pattern for a result that looks natural for life." },
     { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75" /></svg>, number: "03", title: "Transparent Pricing & 0% EMI", text: "Surgery starts from ₹40,000. Your complete cost is confirmed after free scalp analysis — before you commit. No hidden charges. 0% EMI via HDFC, ICICI & Axis Bank." },
-    { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, number: "04", title: "95%+ Graft Survival Rate", text: "The original Choi Pen minimises graft time outside the body. Combined with our preservation protocol, Ryan Clinic consistently achieves 95%+ graft survival — far above the 60–70% industry average." },
+    { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, number: "04", title: "97% Graft Survival Rate", text: "The original Choi Pen minimises graft time outside the body. Combined with our preservation protocol, Ryan Clinic consistently achieves 97% graft survival — far above the 60–70% industry average." },
     { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" /></svg>, number: "05", title: "Completely Pain-Free Procedure", text: "Sapphire FUE uses micro-instruments of 0.7–0.9mm under premium local anaesthesia. Most patients watch movies or nap during the 6–8 hour surgery. No general anaesthesia. No hospital admission." },
     { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>, number: "06", title: "Back to Work in 5–7 Days", text: "Sapphire blades create smaller, more precise recipient channels — less tissue trauma, less swelling, faster healing. Most patients return to desk work within 5–7 days." },
     { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>, number: "07", title: "Natural-Looking, Undetectable Results", text: "Every graft is placed with precise control over angle, depth, and direction — mimicking your natural hair growth pattern exactly. After a Ryan Clinic transplant, even your barber won't know." },
@@ -507,7 +507,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
                             <div className="grid grid-cols-2 gap-2.5 mb-6">
                                 {[
                                     { num: "5,000+", label: "Patients Treated" },
-                                    { num: "95%+", label: "Graft Survival Rate" },
+                                    { num: "97%", label: "Graft Survival Rate" },
                                     { num: "₹40,000", label: "Starting Price" },
                                     { num: "18 Months", label: "Follow-Up Support" },
                                 ].map((s) => (
@@ -1256,7 +1256,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
                     {/* Procedures grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-red-200 border border-red-200 rounded-2xl overflow-hidden mb-10">
                         {[
-                            { icon: <Scissors className="w-5 h-5" />, num: "01", title: "Sapphire FUE Hair Transplant", text: "Turkey's authentic Sapphire FUE with original Choi Pen. Sharper blades, less trauma, 95%+ graft survival." },
+                            { icon: <Scissors className="w-5 h-5" />, num: "01", title: "Sapphire FUE Hair Transplant", text: "Turkey's authentic Sapphire FUE with original Choi Pen. Sharper blades, less trauma, 97% graft survival." },
                             { icon: <Sparkles className="w-5 h-5" />, num: "02", title: "Turkish Technique Choi Pen Implantation", text: "Direct hair implantation using Choi Pen — no channel pre-opening, maximum density with minimal trauma." },
                             { icon: <Compass className="w-5 h-5" />, num: "03", title: "Natural Hairline Design", text: "Soft, micro-irregular hairline design tailored to facial structure, age, and long-term loss patterns." },
                             { icon: <ShieldCheck className="w-5 h-5" />, num: "04", title: "Beard & Moustache Restoration", text: "Precise beard and moustache transplant using FUE — natural angle, direction, and density." },
@@ -1623,7 +1623,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
                                 <ul className="space-y-2.5 mb-7">
                                     {[
                                         "Original Turkey Choi Pen",
-                                        "95%+ graft survival rate",
+                                        "97% graft survival rate",
                                         "Zero visible scarring",
                                         "Permanent for life",
                                     ].map((item) => (
@@ -1682,7 +1682,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
                             <div className="rounded-2xl p-6 mb-6 bg-white border border-gray-100">
                                 <div className="grid grid-cols-2 gap-5">
                                     {[
-                                        { num: "95%+", label: "Graft Survival Rate" },
+                                        { num: "97%", label: "Graft Survival Rate" },
                                         { num: "4.9★", label: "Google Rating" },
                                         { num: "5K+", label: "Happy Patients" },
                                         { num: "0%", label: "EMI Available" },

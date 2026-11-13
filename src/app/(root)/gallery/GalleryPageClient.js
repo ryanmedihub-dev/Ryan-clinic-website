@@ -419,7 +419,7 @@ export default function GalleryPageClient() {
 
               {/* Badges list */}
               <div className="flex flex-wrap gap-2 mb-6 md:mb-8">
-                {["Doctor-led", "90%+ Graft Survival", "Natural Hairlines", "Real Consented Results"].map((badge) => (
+                {["Doctor-led", "97% Graft Survival", "Natural Hairlines", "Real Consented Results"].map((badge) => (
                   <span key={badge} className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-100 rounded-full px-3 py-1 md:px-4 md:py-1.5 text-xs font-semibold">
                     <span className="w-1.5 h-1.5 rounded-full bg-red-600" />
                     {badge}

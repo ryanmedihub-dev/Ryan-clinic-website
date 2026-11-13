@@ -219,7 +219,9 @@ export async function generateMetadata({ params }) {
   const locationText = doctor.location ? ` in ${doctor.location}` : "";
   const metaTitle = seo.metaTitle || `${doctor.name} — Hair Transplant Doctor${locationText} | Ryan Clinic`;
   const metaDesc = seo.metaDescription || `${doctor.name} is a hair transplant surgeon${locationText} at Ryan Clinic. Book a free consultation.`;
-  const canonicalUrl = seo.canonicalUrl || `https://www.clinicryan.com/doctors/${slug}`;
+  // Doctor landing pages are unique canonical routes matching /doctors/${slug}.
+  // Ignore any outdated/invalid name-based canonicalUrl from MongoDB.
+  const canonicalUrl = `https://www.clinicryan.com/doctors/${slug}`;
   const ogImageUrl = getValidImageSrc(seo.openGraphImage, getValidImageSrc(doctor.image, "/uploads/turkey-doctor.jpg"));
   const fullOgImage = ogImageUrl.startsWith("http") ? ogImageUrl : `https://www.clinicryan.com${ogImageUrl}`;
 
@@ -485,7 +487,8 @@ export default async function DoctorPage({ params }) {
   const bannerImage = getValidImageSrc(doctor.hero?.heroImage, "/uploads/1752667815707-fue-banner_ro9ae6.webp");
   const bannerAlt = doctor.hero?.heroImage?.alt || `${doctor.name} — Ryan Clinic`;
 
-  const canonicalUrl = doctor.seo?.canonicalUrl || `https://www.clinicryan.com/doctors/${slug}`;
+  // Doctor landing pages are unique canonical routes matching /doctors/${slug}.
+  const canonicalUrl = `https://www.clinicryan.com/doctors/${slug}`;
   const clinicCity = doctor.visitClinic?.address?.addressLocality || doctor.location || doctor.city || "";
   const clinicAddressLine = doctor.visitClinic?.address?.streetAddress || doctor.basicInfo?.clinicAddress || "";
   const clinicPhone = doctor.basicInfo?.phoneNumber || doctor.visitClinic?.contact?.phone || "+91-9911111247";

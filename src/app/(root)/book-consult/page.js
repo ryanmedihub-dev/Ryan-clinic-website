@@ -266,7 +266,7 @@ export default function BookConsult() {
           <div className="relative z-10">
             <div className="h-px bg-white/20 mb-5" />
             <div className="grid grid-cols-3 gap-3 text-center">
-              {[["2,000+", "Happy Patients"], ["95%+", "Graft Survival"], ["10+", "Years of Trust"]].map(([num, lbl]) => (
+              {[["2,000+", "Happy Patients"], ["97%", "Graft Survival"], ["10+", "Years of Trust"]].map(([num, lbl]) => (
                 <div key={lbl}>
                   <p className="text-xl xl:text-2xl font-extrabold font-outfit" style={{ color: "#FFD700" }}>{num}</p>
                   <p className="text-[10px] text-white/70 mt-0.5 leading-tight">{lbl}</p>

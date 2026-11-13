@@ -947,7 +947,7 @@ export default function DoctorPageClient({ data }) {
 
                                 {/* Floating stat */}
                                 <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-md rounded-xl px-3.5 py-2 shadow-lg border border-white">
-                                    <p className="text-xl font-black text-emerald-600 leading-none">{compLeftCard.statValue || doctor.successRate || "95%+"}</p>
+                                    <p className="text-xl font-black text-emerald-600 leading-none">{compLeftCard.statValue || doctor.successRate || "97%"}</p>
                                     <p className="text-[9px] text-gray-500 font-bold uppercase tracking-wider mt-0.5">{compLeftCard.statLabel || "Graft Survival"}</p>
                                 </div>
                             </div>

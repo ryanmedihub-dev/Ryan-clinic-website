@@ -15,9 +15,9 @@ const cards = [
     image: Service1,
   },
   {
-    title: "90% Graft Survival",
+    title: "97% Graft Survival",
     description:
-      "Our graft survival rate exceeds 90% — nearly double the industry average — ensuring every follicle grows into permanent, healthy hair.",
+      "Our graft survival rate reaches 97% — nearly double the industry average — ensuring every follicle grows into permanent, healthy hair.",
     image: Service2,
   },
   {

@@ -24,6 +24,10 @@
  *   • Doctor pages (doctors collection)    — status === "published",
  *                                            deletedAt === null,
  *                                            excluding demo-doctor-* slugs.
+ *   • Hair fall pages (hairfallpages)      — status === "published",
+ *                                            excluding -copy slugs.
+ *                                            Format matches canonical:
+ *                                            /treatments/${slug}/
  *
  * Adding a new page through the admin panel automatically adds it to the
  * sitemap on the next ISR revalidation (every hour by default).
@@ -53,26 +57,27 @@ function isExcluded(url) {
 }
 
 // ─── Static pages that never come from the DB ────────────────────────────────
-// Keep this list minimal — only pages that have no DB record and are not
-// covered by any dynamic fetcher below.
+// Keep this list minimal — only pages that have no DB record or serve as
+// section hubs. Fixed content revision dates represent actual page release /
+// edit dates; dynamic listing hubs resolve to the latest content update date.
 const STATIC_PAGES = [
-  { url: "/",                               priority: 1.0, changeFrequency: "weekly"  },
-  { url: "/about",                          priority: 0.8, changeFrequency: "monthly" },
-  { url: "/contact",                        priority: 0.8, changeFrequency: "monthly" },
-  { url: "/gallery",                        priority: 0.8, changeFrequency: "weekly"  },
-  { url: "/blog",                           priority: 0.9, changeFrequency: "daily"   },
-  { url: "/doctors",                        priority: 0.8, changeFrequency: "weekly"  },
-  { url: "/surgeon",                        priority: 0.8, changeFrequency: "weekly"  },
-  { url: "/surgery",                        priority: 0.8, changeFrequency: "weekly"  },
-  { url: "/cost",                           priority: 0.8, changeFrequency: "weekly"  },
+  { url: "/",                               priority: 1.0, changeFrequency: "weekly",  lastModifiedType: "latest-content" },
+  { url: "/about",                          priority: 0.8, changeFrequency: "monthly", lastModified: "2026-07-10T05:11:52.000Z" },
+  { url: "/contact",                        priority: 0.8, changeFrequency: "monthly", lastModified: "2026-07-10T05:11:52.000Z" },
+  { url: "/gallery",                        priority: 0.8, changeFrequency: "weekly",  lastModified: "2026-07-11T10:57:54.000Z" },
+  { url: "/blog",                           priority: 0.9, changeFrequency: "daily",   lastModifiedType: "latest-blog" },
+  { url: "/doctors",                        priority: 0.8, changeFrequency: "weekly",  lastModifiedType: "latest-doctor" },
+  { url: "/surgeon",                        priority: 0.8, changeFrequency: "weekly",  lastModifiedType: "latest-surgeon" },
+  { url: "/surgery",                        priority: 0.8, changeFrequency: "weekly",  lastModifiedType: "latest-surgery" },
+  { url: "/cost",                           priority: 0.8, changeFrequency: "weekly",  lastModifiedType: "latest-cost" },
   // Legal / policy pages
-  { url: "/privacy-policy",                 priority: 0.3, changeFrequency: "yearly"  },
-  { url: "/terms-and-conditions",           priority: 0.3, changeFrequency: "yearly"  },
-  { url: "/refund-policy",                  priority: 0.3, changeFrequency: "yearly"  },
+  { url: "/privacy-policy",                 priority: 0.3, changeFrequency: "yearly",  lastModified: "2026-07-27T08:30:56.000Z" },
+  { url: "/terms-and-conditions",           priority: 0.3, changeFrequency: "yearly",  lastModified: "2026-07-10T05:11:52.000Z" },
+  { url: "/refund-policy",                  priority: 0.3, changeFrequency: "yearly",  lastModified: "2026-07-10T05:11:52.000Z" },
   // Standalone treatment pages not stored as CMS services
-  { url: "/prp-hair-loss-treatment-in-delhi", priority: 0.8, changeFrequency: "monthly" },
-  // Public lead-generation page (must be indexed — high conversion page)
-  { url: "/book-appointment",               priority: 0.9, changeFrequency: "monthly" },
+  { url: "/prp-hair-loss-treatment-in-delhi", priority: 0.8, changeFrequency: "monthly", lastModified: "2026-07-29T05:03:37.000Z" },
+  // Public lead-generation page (unlocked for indexing Nov 6, 2026)
+  { url: "/book-appointment",               priority: 0.9, changeFrequency: "monthly", lastModified: "2026-11-06T11:00:00.000Z" },
 ];
 
 // ─── Helper ───────────────────────────────────────────────────────────────────
@@ -284,6 +289,47 @@ async function fetchDoctorPageSlugs() {
   }
 }
 
+/**
+ * Hair fall pages — published and indexable treatment pages.
+ * Stored in hairfallpages collection (model HairFallPage).
+ * Format matches canonical URL: /treatments/${slug}/ (with trailing slash).
+ */
+async function fetchHairFallPageSlugs() {
+  try {
+    const HairFallPage = (await import("@/models/hairFallPage")).default;
+    const rows = await HairFallPage.find({
+      status: "published",
+      "seo.robots": { $not: /noindex/i },
+    })
+      .select("slug updatedAt")
+      .lean();
+    return rows
+      .filter((r) => r?.slug && !/-copy(-\d+)?$/.test(r.slug))
+      .map((r) => {
+        const slug = cleanSlugPath(r.slug, "treatments/");
+        return {
+          url: `/treatments/${slug}/`,
+          lastModified: toDate(r.updatedAt),
+          priority: 0.8,
+          changeFrequency: "weekly",
+        };
+      });
+  } catch (err) {
+    console.error("[sitemap] hair fall pages fetch failed:", err.message);
+    return [];
+  }
+}
+
+// Helper to determine the latest content modification date for dynamic listing hubs
+function getLatestTimestamp(entries, fallbackIso) {
+  const fallback = toDate(fallbackIso);
+  if (!Array.isArray(entries) || !entries.length) return fallback;
+  const times = entries
+    .map((e) => (e && e.lastModified ? new Date(e.lastModified).getTime() : NaN))
+    .filter((t) => !isNaN(t) && t > 0);
+  return times.length ? new Date(Math.max(...times)) : fallback;
+}
+
 // ─── Main export ──────────────────────────────────────────────────────────────
 
 export const revalidate = 3600; // ISR: regenerate at most once per hour
@@ -297,7 +343,7 @@ export default async function sitemap() {
   }
 
   // Fetch all dynamic content in parallel for performance
-  const [services, blogs, costPages, surgeonPages, surgeryPages, doctorPages] =
+  const [services, blogs, costPages, surgeonPages, surgeryPages, doctorPages, hairFallPages] =
     await Promise.all([
       fetchServiceSlugs(),
       fetchBlogSlugs(),
@@ -305,16 +351,36 @@ export default async function sitemap() {
       fetchSurgeonPageSlugs(),
       fetchSurgeryPageSlugs(),
       fetchDoctorPageSlugs(),
+      fetchHairFallPageSlugs(),
     ]);
 
-  // Build static entries.
-  // lastModified uses current date for static pages (no DB timestamp available).
-  const staticEntries = STATIC_PAGES.map(({ url, priority, changeFrequency }) => ({
-    url: `${BASE}${url}`,
-    lastModified: new Date(),
-    priority,
-    changeFrequency,
-  }));
+  // Dynamic listing hubs reflect the latest content modification in their respective collections
+  const dynamicListingDates = {
+    "latest-content": getLatestTimestamp([...services, ...blogs], "2026-11-06T10:13:37.858Z"),
+    "latest-blog": getLatestTimestamp(blogs, "2026-11-06T10:13:37.858Z"),
+    "latest-doctor": getLatestTimestamp(doctorPages, "2026-10-11T07:21:13.600Z"),
+    "latest-surgeon": getLatestTimestamp(surgeonPages, "2026-09-27T05:01:08.308Z"),
+    "latest-surgery": getLatestTimestamp(surgeryPages, "2026-10-12T09:54:17.121Z"),
+    "latest-cost": getLatestTimestamp(costPages, "2026-09-11T05:53:42.418Z"),
+  };
+
+  // Build static entries using verified content revision timestamps
+  const staticEntries = STATIC_PAGES.map(({ url, priority, changeFrequency, lastModified, lastModifiedType }) => {
+    let resolvedDate;
+    if (lastModifiedType && dynamicListingDates[lastModifiedType]) {
+      resolvedDate = dynamicListingDates[lastModifiedType];
+    } else if (lastModified) {
+      resolvedDate = toDate(lastModified);
+    } else {
+      resolvedDate = new Date("2026-11-06T11:00:00.000Z");
+    }
+    return {
+      url: `${BASE}${url}`,
+      lastModified: resolvedDate,
+      priority,
+      changeFrequency,
+    };
+  });
 
   // Collect the set of static URLs for deduplication below
   const staticUrls = new Set(STATIC_PAGES.map((p) => `${BASE}${p.url}`));
@@ -327,6 +393,7 @@ export default async function sitemap() {
     ...surgeonPages,
     ...surgeryPages,
     ...doctorPages,
+    ...hairFallPages,
   ];
 
   const seen = new Set(staticUrls); // pre-seed with static URLs
@@ -344,7 +411,7 @@ export default async function sitemap() {
     seen.add(full);
     deduped.push({
       url: full,
-      lastModified: entry.lastModified ?? new Date(),
+      lastModified: entry.lastModified ?? new Date("2026-11-06T11:00:00.000Z"),
       priority: entry.priority ?? 0.6,
       changeFrequency: entry.changeFrequency ?? "monthly",
     });

@@ -429,7 +429,7 @@ export default function SurgeryPageClient({ data }) {
                       <p className="text-gray-400 text-xs mt-0.5 font-medium">Doctor Led</p>
                     </div>
                     <div>
-                      <p className="text-lg md:text-xl font-black text-gray-900">95%+</p>
+                      <p className="text-lg md:text-xl font-black text-gray-900">97%</p>
                       <p className="text-gray-400 text-xs mt-0.5 font-medium">Graft Survival</p>
                     </div>
                     <div>
@@ -1336,7 +1336,7 @@ export default function SurgeryPageClient({ data }) {
                     </div>
                   ))
                 ) : (
-                  [["12+", "Years Care"], ["10K+", "Procedures"], ["95%+", "Graft Rate"], ["4.9 ★", "Reviews"]].map(([n, l]) => (
+                  [["12+", "Years Care"], ["10K+", "Procedures"], ["97%", "Graft Rate"], ["4.9 ★", "Reviews"]].map(([n, l]) => (
                     <div key={l} className="bg-white/5 border border-white/10 rounded-2xl p-3 text-center">
                       <p className="text-lg font-black text-[#e30a17]">{n}</p>
                       <p className="text-[9px] font-bold text-white/40 mt-0.5 uppercase tracking-wider">{l}</p>

@@ -23,7 +23,7 @@ export const revalidate = 0;
 export const metadata = {
   title: "Hair Transplant Surgery – Advanced FUE & Turkish Technique Procedures | Ryan Clinic",
   description:
-    "Explore hair transplant surgery guides across Delhi & branch clinics. Doctor-led Sapphire FUE & Turkish Technique, 98.4% graft survival, sterile operating theatres, 0% EMI.",
+    "Explore hair transplant surgery guides across Delhi & branch clinics. Doctor-led Sapphire FUE & Turkish Technique, 97% graft survival, sterile operating theatres, 0% EMI.",
   keywords: [
     "hair transplant surgery",
     "hair transplant surgery in delhi",
@@ -37,7 +37,7 @@ export const metadata = {
   openGraph: {
     title: "Hair Transplant Surgery – Advanced FUE & Turkish Technique Procedures | Ryan Clinic",
     description:
-      "Doctor-led hair transplant procedures with microscopic precision and 98.4% graft survival rate.",
+      "Doctor-led hair transplant procedures with microscopic precision and 97% graft survival rate.",
     url: "https://www.clinicryan.com/surgery",
     siteName: "Ryan Clinic",
     locale: "en_IN",
@@ -94,7 +94,7 @@ export default async function SurgeryIndexPage() {
       <PageBanner
         breadcrumb="Surgery Pages"
         title="Hair Transplant Surgery & Treatment Guides"
-        description="Doctor-Led Sapphire FUE & Turkish Technique · Microscopic Channel Creation · 98.4% Graft Survival · Sterile OT Facilities"
+        description="Doctor-Led Sapphire FUE & Turkish Technique · Microscopic Channel Creation · 97% Graft Survival · Sterile OT Facilities"
         bgImage="/uploads/1752734248947-Hair Transplant 1.jpg"
         alt="Ryan Clinic Hair Transplant Surgery"
       />
@@ -179,7 +179,7 @@ export default async function SurgeryIndexPage() {
                 {[
                   { n: "10,000+", l: "Surgeries Conducted" },
                   { n: "0%", l: "Surgical Infection Rate" },
-                  { n: "98.4%", l: "Graft Survival Rate" },
+                  { n: "97%", l: "Graft Survival Rate" },
                   { n: "4.9 ★", l: "Patient Satisfaction" },
                 ].map((s) => (
                   <div key={s.n} className="bg-white rounded-2xl border border-[#F0E6DE] p-4 text-center">

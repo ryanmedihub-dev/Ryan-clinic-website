@@ -62,7 +62,7 @@ export default function FAQSection({
                         >
                             <div className="grid grid-cols-2 gap-5">
                                 {[
-                                    { num: "95%+", label: "Graft Survival Rate" },
+                                    { num: "97%", label: "Graft Survival Rate" },
                                     { num: "4.9★", label: "Google Rating" },
                                     { num: "10K+", label: "Happy Patients" },
                                     { num: "0%", label: "EMI Available" },

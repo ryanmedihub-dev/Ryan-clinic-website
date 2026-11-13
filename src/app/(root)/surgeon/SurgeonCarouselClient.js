@@ -46,7 +46,7 @@ const DEFAULT_SURGEONS = [
     experience: "15+ Yrs",
     surgeries: "7,500+",
     rating: "4.9 ★",
-    survivalRate: "98.4%",
+    survivalRate: "97%",
     image: "/uploads/turkey-doctor.jpg",
     bio: "Dr. Aman Singh Gosain is a renowned Plastic & Reconstructive Surgeon with over 15 years of dedicated hair restoration experience. Trained in Turkey's advanced Sapphire FUE & Turkish Technique.",
     highlights: [
@@ -68,7 +68,7 @@ const DEFAULT_SURGEONS = [
     experience: "12+ Yrs",
     surgeries: "5,000+",
     rating: "4.9 ★",
-    survivalRate: "97.8%",
+    survivalRate: "97%",
     image: "/uploads/about-one.jpg",
     bio: "Specializing in dense-packing Bio-FUE and facial hair transplantation. Dr. Pranendra Singh has performed over 5,000 surgeries with extreme precision and natural hairlines.",
     highlights: [
@@ -90,7 +90,7 @@ const DEFAULT_SURGEONS = [
     experience: "14+ Yrs",
     surgeries: "6,200+",
     rating: "4.8 ★",
-    survivalRate: "98.1%",
+    survivalRate: "97%",
     image: "/uploads/service-two.jpg",
     bio: "Member of International Society of Hair Restoration Surgery (ISHRS). Known for natural graft angulation and donor area preservation strategies.",
     highlights: [
@@ -154,7 +154,7 @@ export default function SurgeonCarouselClient({ dbPages = [] }) {
         experience: cleanExperienceString(docCard.experience),
         surgeries: "5,000+",
         rating: "4.9 ★",
-        survivalRate: "98.4%",
+        survivalRate: "97%",
         image: docCard.image?.url || lead.doctorImage?.url || DEFAULT_SURGEONS[idx % DEFAULT_SURGEONS.length].image,
         bio: page.general?.shortDescription || page.seo?.metaDescription || hero.description || DEFAULT_SURGEONS[0].bio,
         highlights: [

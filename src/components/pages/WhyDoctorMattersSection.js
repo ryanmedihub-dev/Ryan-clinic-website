@@ -19,7 +19,7 @@ const WARN_ICON = (
 const DEFAULT_RISKS = [
   { number: "01", title: "Confirm who operates", body: "Always verify that a qualified, registered plastic surgeon performs your surgery — not a technician. At Ryan Clinic, extraction, site creation, and implantation are done exclusively by a certified doctor.", type: "check", icon: CHECK_ICON },
   { number: "02", title: "Verify single-use sterile instruments", body: "Confirm single-use, surgical-grade instruments and a properly maintained operating theatre. Ryan Clinic operates in a sterile, NABH-standard minor OT — always.", type: "check", icon: CHECK_ICON },
-  { number: "03", title: "Expect realistic survival figures", body: "Be wary of any clinic claiming '100% guaranteed' graft survival. Ryan Clinic achieves 90%+ graft survival with careful handling, but we never mislead you with impossible claims.", type: "warn", icon: WARN_ICON },
+  { number: "03", title: "Expect realistic survival figures", body: "Be wary of any clinic claiming '100% guaranteed' graft survival. Ryan Clinic achieves 97% graft survival with careful handling, but we never mislead you with impossible claims.", type: "warn", icon: WARN_ICON },
   { number: "04", title: "Inspect genuine before/after cases", body: "Ask for real, consented patient cases — not stock photos. Documented procedures and patient reviews are available for you to inspect before booking.", type: "check", icon: CHECK_ICON },
 ];
 

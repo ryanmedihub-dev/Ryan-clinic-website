@@ -100,7 +100,7 @@ export default function OurBranches() {
               {[
                 { num: "20", label: "Cities" },
                 { num: "10K+", label: "Patients" },
-                { num: "95%+", label: "Graft Survival" },
+                { num: "97%", label: "Graft Survival" },
               ].map((s) => (
                 <div key={s.label}>
                   <p

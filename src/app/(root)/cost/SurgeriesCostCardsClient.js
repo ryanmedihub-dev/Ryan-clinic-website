@@ -17,7 +17,7 @@ const SURGERIES_DATA = [
     features: [
       "Certified doctor performs procedure",
       "Sapphire micro-blades for precision",
-      "95%+ graft survival rate guaranteed",
+      "97% graft survival rate guaranteed",
     ],
     whatsappText: "Hi,%20I%20want%20to%20know%20more%20about%20Sapphire%20FUE%20cost%20at%20Ryan%20Clinic",
   },

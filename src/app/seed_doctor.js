@@ -44,7 +44,7 @@ const drHimanshuJawla = {
     stats: [
       { value: "14+", suffix: "Years", label: "Clinical Experience" },
       { value: "4800+", suffix: "Cases", label: "Successful Surgeries" },
-      { value: "99.1%", suffix: "Graft", label: "Survival Rate" },
+      { value: "97%", suffix: "Graft", label: "Survival Rate" },
     ],
     whatsappCTA: { text: "WhatsApp Dr. Jawla's Team", url: "https://wa.me/919911111247" },
     callCTA: { text: "Book Free Consultation", url: "tel:+919911111247" },

@@ -147,7 +147,7 @@ export default async function DoctorsPage() {
                   Maximum Follicle Survival
                 </h3>
                 <p className="text-gray-600 text-xs sm:text-sm leading-relaxed font-sans">
-                  Harvested grafts are stored in chilled HypoThermosol solution to maintain 98.4% viability before micro-implantation with Choi pens.
+                  Harvested grafts are stored in chilled HypoThermosol solution to maintain 97% viability before micro-implantation with Choi pens.
                 </p>
               </div>
             </div>
@@ -173,7 +173,7 @@ export default async function DoctorsPage() {
                 {[
                   { n: "15+", l: "Years Doctor Care" },
                   { n: "10,000+", l: "Surgeries Conducted" },
-                  { n: "98.4%", l: "Graft Survival Rate" },
+                  { n: "97%", l: "Graft Survival Rate" },
                   { n: "4.9 ★", l: "Patient Satisfaction" },
                 ].map((s) => (
                   <div key={s.n} className="bg-white rounded-2xl border border-[#F0E6DE] p-4 text-center shadow-xs">

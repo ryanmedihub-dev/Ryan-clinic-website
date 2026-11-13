@@ -14,8 +14,8 @@ function getWhyItems(city) {
       body: `This is the most important thing to verify at any ${city} clinic. At Ryan Clinic, every surgical step — extraction, channel creation, and implantation — is performed by a certified hair transplant doctor in ${city}. We never hand any part of your surgery to a technician. Technician-led surgery is a leading cause of poor survival and unnatural hairlines across India — and it's exactly what we refuse to do.`,
     },
     {
-      title: "95%+ Graft Survival Rate",
-      body: "Using the original Choi Pen and a careful graft-preservation protocol, our grafts spend minimal time outside the body. The result is a graft survival rate of 95%+ — well above the Indian industry average of roughly 60–70%. Higher graft survival means denser, fuller, and more natural-looking hair.",
+      title: "97% Graft Survival Rate",
+      body: "Using the original Choi Pen and a careful graft-preservation protocol, our grafts spend minimal time outside the body. The result is a graft survival rate of 97% — well above the Indian industry average of roughly 60–70%. Higher graft survival means denser, fuller, and more natural-looking hair.",
     },
     {
       title: "Sterile, Surgical-Grade Operating Theatre",
@@ -85,7 +85,7 @@ export default function WhyChooseUs({ city = "Delhi" }) {
             <div className="grid grid-cols-2 gap-3 mb-8">
               {[
                 { num: "10,000+", label: "Patients Treated" },
-                { num: "95%+", label: "Graft Survival Rate" },
+                { num: "97%", label: "Graft Survival Rate" },
                 { num: "₹40,000", label: "Starting Price" },
                 { num: "18 Months", label: "Follow-Up Support" },
               ].map((s) => (

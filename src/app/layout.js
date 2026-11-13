@@ -21,7 +21,7 @@ export const metadata = {
   metadataBase: new URL("https://www.clinicryan.com"),
   title: "Hair Transplant in Delhi | Best Sapphire FUE Cost | Ryan Clinic",
   description:
-    "Ryan Clinic — India's only Turkey Sapphire FUE hair transplant clinic. Certified surgeons, 95%+ graft survival. Clinics in Delhi, Mumbai & Hyderabad.",
+    "Ryan Clinic — India's only Turkey Sapphire FUE hair transplant clinic. Certified surgeons, 97% graft survival. Clinics in Delhi, Mumbai & Hyderabad.",
   verification: {
     google: "PGMWuu_5SSC0Rkyao2LrsHlWiN7bPeQnNaSdY1fgURM",
     yandex: "2a66899c829e502a",
