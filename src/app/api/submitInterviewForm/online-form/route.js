@@ -1,6 +1,6 @@
 // app/api/submitInterviewForm/online-form/route.js
 
-export async function POST(req) {
+export async function handleSubmitInterviewForm(req, { fetchFn = fetch } = {}) {
   try {
     const body = await req.json();
 
@@ -34,22 +34,22 @@ export async function POST(req) {
 
     // ── 3. Fire both requests in parallel ─────────────────────────────────────
     const [sheetRes, candidateRes] = await Promise.allSettled([
-      fetch(sheetUrl, {
+      fetchFn(sheetUrl, {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
         body:    JSON.stringify(body),
       }),
-      fetch("https://www.ryanmedihub.com/api/hr/candidates", {
+      fetchFn("https://www.ryanmedihub.com/api/hr/candidates", {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
         body:    JSON.stringify(candidatePayload),
       }),
     ]);
 
-    // ── 4. Evaluate Google Sheet result ───────────────────────────────────────
+    // ── 4. Evaluate Google Sheet result (Secondary destination) ───────────────
     let sheetOk = false;
     if (sheetRes.status === "fulfilled") {
-      const text = await sheetRes.value.text();
+      const text = await sheetRes.value.text().catch(() => "");
       try {
         const data = JSON.parse(text);
         sheetOk = !!data.ok;
@@ -58,33 +58,48 @@ export async function POST(req) {
       }
     }
 
-    // ── 5. Evaluate Candidates API result ─────────────────────────────────────
+    // ── 5. Evaluate Candidates API result (Primary destination) ───────────────
     let candidateOk = false;
     let candidateError = "Request failed";
+    let candidateStatus = 502;
+
     if (candidateRes.status === "fulfilled") {
-      const data = await candidateRes.value.json().catch(() => ({}));
-      candidateOk = candidateRes.value.ok && data.success;
-      if (!candidateOk) candidateError = data.message || "Candidate save failed";
+      const resVal = candidateRes.value;
+      const data = await resVal.json().catch(() => ({}));
+      candidateOk = resVal.ok && data.success;
+      if (!candidateOk) {
+        candidateError = data.message || "Candidate save failed in CRM";
+        candidateStatus = (resVal.status >= 400 && resVal.status < 600) ? resVal.status : 502;
+      }
     } else {
-      candidateError = candidateRes.reason?.message || "Network error";
+      candidateError = candidateRes.reason?.message || "CRM network error";
+      candidateStatus = 502;
     }
 
-    // ── 6. Both failed → hard error ───────────────────────────────────────────
-    if (!sheetOk && !candidateOk) {
+    // ── 6. RyanCRM is the primary destination: Fail-closed if CRM fails ───────
+    // If RyanCRM fails, reject with non-2xx HTTP status regardless of Google Sheets status.
+    if (!candidateOk) {
       return Response.json(
-        { message: `Sheet failed & Candidate API failed: ${candidateError}` },
-        { status: 500 }
+        {
+          ok: false,
+          message: `Application submission failed: ${candidateError}. Please check your details and try again or contact the clinic.`,
+          ...(sheetOk && { sheetSaved: true, sheetNote: "Application was recorded in backup sheet but failed CRM registration" }),
+        },
+        { status: candidateStatus }
       );
     }
 
-    // ── 7. Partial success → still 200 but include warnings ───────────────────
+    // ── 7. RyanCRM succeeded ──────────────────────────────────────────────────
     return Response.json({
       ok: true,
-      ...(! sheetOk     && { sheetWarning:     "Google Sheet write failed — data saved to CRM only" }),
-      ...(!candidateOk  && { candidateWarning: `CRM save failed — data saved to Sheet only: ${candidateError}` }),
+      ...(!sheetOk && { sheetWarning: "Google Sheet write failed — data saved to CRM only" }),
     });
 
   } catch (err) {
-    return Response.json({ message: err.message }, { status: 500 });
+    return Response.json({ ok: false, message: err.message }, { status: 500 });
   }
+}
+
+export async function POST(req) {
+  return handleSubmitInterviewForm(req);
 }
