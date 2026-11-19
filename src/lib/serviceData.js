@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { DBConnection } from "./db.js";
 import Services from "@/models/services";
 import Doctor from "@/models/Doctors";
+import { servicePageFixtures } from "@/lib/fixtures/marketingPageFixtures";
 
 export const getAllServices = async () => {
   try {
@@ -43,9 +44,12 @@ export const getAssignedDoctor = async (doctorId) => {
 };
 
 export const getServiceBySlug = async (id) => {
+  const cleanId = decodeURIComponent(id).trim();
+  if (servicePageFixtures && servicePageFixtures[cleanId]) {
+    return JSON.parse(JSON.stringify(servicePageFixtures[cleanId]));
+  }
   try {
     await DBConnection();
-    const cleanId = decodeURIComponent(id).trim();
     let service = await Services.findOne({ "metadata.pageurl": cleanId })
       .populate({
         path: "assignedDoctor",

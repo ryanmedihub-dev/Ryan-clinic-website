@@ -326,7 +326,7 @@ export default function Testimonials() {
               <div className="flex items-center gap-3">
                 <div className="text-center">
                   <p className="text-2xl font-bold" style={{ color: "var(--text-primary)" }}>
-                    10K+
+                    5K+
                   </p>
                   <p className="text-xs" style={{ color: "var(--text-muted)" }}>
                     Happy Patients
@@ -452,7 +452,7 @@ export default function Testimonials() {
             style={{ color: "var(--text-secondary)" }}
           >
             Join{" "}
-            <strong style={{ color: "var(--text-primary)" }}>10,000+</strong>{" "}
+            <strong style={{ color: "var(--text-primary)" }}>5,000+</strong>{" "}
             patients who chose Ryan Clinic for permanent, natural results.
           </p>
           <div className="flex flex-wrap gap-3 shrink-0">

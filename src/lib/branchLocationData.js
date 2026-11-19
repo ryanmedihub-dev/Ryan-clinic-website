@@ -9,7 +9,7 @@ export const BRANCHES = {
     address: "CD 163, Block CD, Dakshini Pitampura, New Delhi – 110034",
     mapUrl: "https://maps.google.com/?q=Ryan+Clinic+Pitampura+Delhi",
     phone: "+91-9911111247",
-    hours: "Mon – Sun: 9:00 AM – 7:00 PM",
+    hours: "Mon – Sun: 10:00 AM – 7:00 PM",
     metro: "Kohat Enclave / Pitampura Metro Station",
     landmark: "Near Pitampura TV Tower",
     areas: [

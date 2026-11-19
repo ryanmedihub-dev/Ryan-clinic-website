@@ -99,7 +99,7 @@ export default function OurBranches() {
             <div className="flex gap-8 mb-8">
               {[
                 { num: "20", label: "Cities" },
-                { num: "10K+", label: "Patients" },
+                { num: "5K+", label: "Patients" },
                 { num: "97%", label: "Graft Survival" },
               ].map((s) => (
                 <div key={s.label}>

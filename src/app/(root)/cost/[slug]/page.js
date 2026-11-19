@@ -10,6 +10,7 @@ import FAQCostSection from "../FAQCostSection";
 import CTAButtons from "../CTAButtonsClient";
 import SurgeriesCostCardsClient from "../SurgeriesCostCardsClient";
 import GraftTierCards from "../GraftTierCards";
+import { costPageFixtures } from "@/lib/fixtures/marketingPageFixtures";
 import {
   RefreshCw, CalendarDays, DollarSign, Stethoscope, CreditCard, CalendarCheck, ShieldCheck, FileText,
   Zap, Leaf, Gem, Lock, CheckCircle2, ArrowRight, Syringe, TrendingUp, Clock, BadgeCheck
@@ -26,7 +27,7 @@ const CITY_DEFAULTS = {
   delhi: {
     badge: "Our Delhi Clinic",
     address: "CD 163, Block CD,\nDakshini Pitampura,\nPitampura,\nNew Delhi – 110034",
-    timings: "Monday – Sunday: 9:00 AM – 7:00 PM",
+    timings: "Monday – Sunday: 10:00 AM – 7:00 PM",
     landmark: "Near Pitampura TV Tower",
     nearbyAreas: ["Pitampura", "Rohini", "Shalimar Bagh", "Kohat Enclave", "Shakurpur"],
     phone: "+91-9911111247",
@@ -91,15 +92,23 @@ function getCityDefaults(cityName) {
 ═══════════════════════════════════════════════════════════════ */
 
 const getCostPageBySlug = cache(async (slug) => {
-  await DBConnection();
   const cleanSlug = decodeURIComponent(slug).toLowerCase().trim();
-  const escaped = cleanSlug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const page = await CostPage.findOne({
-    slug: { $regex: new RegExp(`^${escaped}$`, "i") },
-    "settings.isDeleted": { $ne: true },
-  }).lean();
-  if (!page) return null;
-  return JSON.parse(JSON.stringify(page));
+  if (costPageFixtures && costPageFixtures[cleanSlug]) {
+    return costPageFixtures[cleanSlug];
+  }
+  try {
+    await DBConnection();
+    const escaped = cleanSlug.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const page = await CostPage.findOne({
+      slug: { $regex: new RegExp(`^${escaped}$`, "i") },
+      "settings.isDeleted": { $ne: true },
+    }).lean();
+    if (!page) return null;
+    return JSON.parse(JSON.stringify(page));
+  } catch (err) {
+    console.error("getCostPageBySlug error:", err.message);
+    return null;
+  }
 });
 
 export async function generateMetadata({ params }) {
@@ -677,7 +686,7 @@ export default async function DynamicCostPage({ params }) {
     reviewedBy: {
       "@type": "Person",
       name: "Dr. Pranendra Singh",
-      jobTitle: "Senior Plastic Surgeon & Hair Restoration Specialist",
+      jobTitle: "Medical Director & Chief Hair Transplant Surgeon",
       identifier: "Delhi Medical Council DMC-68492",
     },
     ...(isPrpPage ? {

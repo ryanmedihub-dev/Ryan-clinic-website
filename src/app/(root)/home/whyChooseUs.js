@@ -48,9 +48,9 @@ function getWhyItems(city) {
   ];
 }
 
-export default function WhyChooseUs({ city = "Delhi" }) {
+export default function WhyChooseUs({ city = "Delhi", items, hideStats = false }) {
   const [open, setOpen] = useState(0);
-  const whyItems = getWhyItems(city);
+  const whyItems = items && items.length > 0 ? items : getWhyItems(city);
   const trackCTA = useTrackCTA();
 
   return (
@@ -82,26 +82,28 @@ export default function WhyChooseUs({ city = "Delhi" }) {
             </p>
 
             {/* Stats grid */}
-            <div className="grid grid-cols-2 gap-3 mb-8">
-              {[
-                { num: "10,000+", label: "Patients Treated" },
-                { num: "97%", label: "Graft Survival Rate" },
-                { num: "₹40,000", label: "Starting Price" },
-                { num: "18 Months", label: "Follow-Up Support" },
-              ].map((s) => (
-                <div
-                  key={s.label}
-                  className="bg-white border border-gray-100 rounded-xl p-4 flex flex-col gap-1"
-                >
-                  <span className="text-2xl font-bold text-gray-900">
-                    {s.num}
-                  </span>
-                  <span className="text-[11px] text-gray-400 font-medium tracking-wide">
-                    {s.label}
-                  </span>
-                </div>
-              ))}
-            </div>
+            {!hideStats && (
+              <div className="grid grid-cols-2 gap-3 mb-8">
+                {[
+                  { num: "5,000+", label: "Patients Treated" },
+                  { num: "97%", label: "Graft Survival Rate" },
+                  { num: "₹40,000", label: "Starting Price" },
+                  { num: "18 Months", label: "Follow-Up Support" },
+                ].map((s) => (
+                  <div
+                    key={s.label}
+                    className="bg-white border border-gray-100 rounded-xl p-4 flex flex-col gap-1"
+                  >
+                    <span className="text-2xl font-bold text-gray-900">
+                      {s.num}
+                    </span>
+                    <span className="text-[11px] text-gray-400 font-medium tracking-wide">
+                      {s.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Clinic image */}
             <div className="relative rounded-2xl overflow-hidden h-60 sm:h-72 shadow-sm border border-gray-100">
@@ -126,7 +128,7 @@ export default function WhyChooseUs({ city = "Delhi" }) {
               <div className="absolute bottom-0 inset-x-0 p-5">
                 <span className="block w-6 h-0.5 mb-2 rounded-full bg-yellow-400/80" />
                 <p className="text-sm font-bold text-white leading-snug">
-                  Trusted By 10,000+ Patients
+                  Trusted By 5,000+ Patients
                 </p>
                 <p className="text-[11px] text-white/55 mt-0.5">
                   {city} Hair Transplant Specialists

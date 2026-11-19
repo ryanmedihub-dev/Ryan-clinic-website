@@ -84,7 +84,88 @@ function getDefaultSections(pageType) {
   ];
 }
 
-function renderSection(key, d, service, branchName) {
+const fueTrustItems = [
+  {
+    title: "Medical Assessment & FUE Surgical Planning",
+    body: "Before an FUE procedure begins, your doctor evaluates your scalp, hair calibre, recession pattern, and donor zone density. Every surgical plan is developed individually based on clinical evaluation and patient goals.",
+  },
+  {
+    title: "Careful Follicular Extraction & Preservation",
+    body: "Individual follicular units are extracted from the safe donor zone using fine micro-punch instruments. Follicles are carefully handled and preserved in holding solution to minimise out-of-body time prior to implantation.",
+  },
+  {
+    title: "Sterile, Surgical-Grade Operating Theatre",
+    body: "Every procedure is performed in a sterile operating theatre with single-use, surgical-grade instruments, following recognised clinical hygiene and patient safety standards.",
+  },
+  {
+    title: "Transparent, Per-Graft Pricing",
+    body: "Your cost is calculated per confirmed graft count following a clinical scalp assessment. Pricing is explained clearly in advance with no hidden costs.",
+  },
+  {
+    title: "Structured Post-Operative Follow-Up",
+    body: "Ryan Clinic provides structured post-operative consultations to monitor healing, graft integration, and hair growth progress across each stage of recovery.",
+  },
+  {
+    title: "FUE Recovery & Aftercare Guidance",
+    body: "Patients receive detailed written aftercare instructions and post-operative medication on the day of the procedure. Redness and scabbing typically subside within 7–10 days, followed by the normal follicular shedding and regrowth cycle.",
+  },
+  {
+    title: "Continued Clinical Support",
+    body: "Your relationship with Ryan Clinic continues throughout your recovery. Follow-up reviews are scheduled to evaluate growth progression, assess density development, and answer aftercare questions.",
+  },
+  {
+    title: "Patient Experiences & Individual Results",
+    body: "Patients from across Delhi NCR choose Ryan Clinic for FUE and Sapphire FUE procedures. Real clinical before-and-after cases are reviewed during consultation. Individual results vary based on donor density, hair characteristics, and biological healing.",
+  },
+  {
+    title: "Surgical Hygiene & Safety Standards",
+    body: "All FUE procedures follow strict sterilization and clinical hygiene protocols to minimise infection risk, support clean tissue healing, and maintain patient safety throughout surgery.",
+  },
+];
+
+const hairlineTrustItems = [
+  {
+    title: "Medical Assessment & Treatment Planning",
+    body: "Before any hairline procedure begins, your doctor conducts a thorough scalp assessment covering your recession pattern, donor zone density, hair calibre, and facial proportions. Each treatment plan is designed individually — there is no one-size approach to hairline restoration.",
+  },
+  {
+    title: "Careful Graft Handling & Preservation",
+    body: "Healthy follicular units are extracted and implanted with care taken to minimise out-of-body time. Precise extraction patterns are planned to preserve long-term donor density, and each graft is handled to maintain follicle integrity throughout the procedure.",
+  },
+  {
+    title: "Sterile, Surgical-Grade Operating Theatre",
+    body: "Every procedure is performed in a sterile operating theatre with single-use, surgical-grade instruments, following recognised safety and hygiene standards. Patient safety and clinical precision remain at the foundation of every procedure.",
+  },
+  {
+    title: "Transparent, Per-Graft Pricing",
+    body: "Your cost is calculated per confirmed graft count following a scalp assessment. Pricing is explained in full before you commit — your surgeon discusses what your assessment reveals and what it means for your plan. No surprises after the consultation.",
+  },
+  {
+    title: "Structured Post-Operative Follow-Up",
+    body: "Ryan Clinic provides post-operative follow-up consultations to monitor your recovery and growth progression. Our team is available to answer aftercare questions and guide you through each phase — from initial healing through to the later stages of hair regrowth.",
+  },
+  {
+    title: "Hairline Transplant Recovery Guidance",
+    body: "Written aftercare instructions and post-operative medication are provided on the day of your procedure. Swelling and redness typically settle within a week. Transplanted hairs often shed at 2–4 weeks — an expected part of the follicular cycle — before new growth begins.",
+  },
+  {
+    title: "Continued Post-Transplant Support",
+    body: "Your relationship with Ryan Clinic does not end at discharge. Post-operative consultations are available to track your hairline's progress and address any questions as your result develops over the following months.",
+  },
+  {
+    title: "Patient Experiences & Individual Results",
+    body: "Ryan Clinic patients include individuals from across Delhi NCR and from other cities who travel for their hairline procedures. You are encouraged to review genuine before-and-after cases at your consultation. Individual results vary based on donor quality, hair characteristics, graft count, and healing.",
+  },
+  {
+    title: "Surgical Hygiene & Safety Standards",
+    body: "Every hairline transplant at Ryan Clinic is performed in a fully sterile operating environment. All instruments are single-use and surgical-grade. Clinical hygiene protocols are followed throughout every procedure to minimise infection risk and support safe healing.",
+  },
+];
+
+function renderSection(key, d, service, branchName, slug = "") {
+  const isFUE = slug === "fue-hair-transplant";
+  const isHairline = slug === "hairline-transplant";
+
   switch (key) {
     case "overview":
       return (
@@ -106,7 +187,28 @@ function renderSection(key, d, service, branchName) {
       );
 
     case "ourResults":
-      return <OurResults key="ourResults" city={d.city || branchName} />;
+      return (
+        <OurResults
+          key="ourResults"
+          city={d.city || branchName}
+          mobileHeading={
+            d.mobileHeading ||
+            (isFUE
+              ? "FUE Hair Transplant Results in Delhi"
+              : isHairline
+              ? "Hairline Transplant Results in Delhi"
+              : undefined)
+          }
+          desktopHeading={
+            d.desktopHeading ||
+            (isFUE
+              ? "Hair Transplant Before & After: Individual Patient Results"
+              : isHairline
+              ? "Hairline Restoration Before & After Results"
+              : undefined)
+          }
+        />
+      );
 
     case "typesSection":
       return (
@@ -176,7 +278,15 @@ function renderSection(key, d, service, branchName) {
 
     case "whyChooseUs":
       return (
-        <WhyChooseRyanClinic key="whyChooseUs" city={d.city || branchName} />
+        <WhyChooseRyanClinic
+          key="whyChooseUs"
+          city={d.city || branchName}
+          items={
+            d.items ||
+            (isFUE ? fueTrustItems : isHairline ? hairlineTrustItems : undefined)
+          }
+          hideStats={d.hideStats || isFUE || isHairline}
+        />
       );
 
     case "costSection":
@@ -347,12 +457,64 @@ export default async function ServicesPage({ params }) {
     }
   }
 
+  const isFUE = slug === "fue-hair-transplant";
+  const isHairline = slug === "hairline-transplant";
+
   const sections = rawSections
-    .filter((s) => (s.key === "ourDoctor" ? isMeetYourSurgeonEnabled : s.enabled))
+    .filter((s) => {
+      if (s.key === "ourDoctor") return isMeetYourSurgeonEnabled;
+      if (s.key === "testimonials" && (isFUE || isHairline)) return false;
+      return s.enabled;
+    })
     .sort((a, b) => a.order - b.order);
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://www.clinicryan.com",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: service?.metadata?.pageName || branchName || "Hair Transplant in Delhi",
+        item: `https://www.clinicryan.com/${slug}`,
+      },
+    ],
+  };
+
+  const faqSchema =
+    service?.faq && service.faq.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: service.faq.map((item) => ({
+            "@type": "Question",
+            name: item.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: item.answer,
+            },
+          })),
+        }
+      : null;
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
       <div>
         <PageBanner
           breadcrumb={service?.metadata?.pageName}
@@ -360,10 +522,18 @@ export default async function ServicesPage({ params }) {
           description={service?.bannerData?.description}
           bgImage={service?.bannerData?.imageurl}
           alt={service?.bannerData?.imagealt}
+          badgeText={
+            service?.bannerData?.badgeText ||
+            (isFUE
+              ? "Doctor-Led Sapphire FUE Restoration"
+              : isHairline
+              ? "Doctor-Led Hairline Restoration"
+              : "")
+          }
         />
 
         {sections.map((section) =>
-          renderSection(section.key, section.data || {}, service, branchName),
+          renderSection(section.key, section.data || {}, service, branchName, slug),
         )}
       </div>
     </>

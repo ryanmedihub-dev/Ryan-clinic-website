@@ -86,7 +86,7 @@ const features = [
       </svg>
     ),
     number: "09",
-    title: "Trusted by 10,000+ Patients Across India & Abroad",
+    title: "Trusted by 5,000+ Patients Across India & Abroad",
     text: "Ryan Clinic has performed over 10,000 successful hair transplant procedures across Delhi, Mumbai, and Hyderabad. Trusted by Bollywood actors, Instagram influencers, and NRI patients from the UK, Dubai, USA, and Canada — because Turkey-quality results at Indian prices exist only here.",
   },
 ];
@@ -99,7 +99,7 @@ export default function FeaturesOverview() {
         <div className="flex items-center gap-3 mb-4 md:mb-8">
           <span className="block w-8 h-px bg-[#D32F2F]" />
           <span className="text-[#D32F2F] text-[11px] font-semibold tracking-[0.22em] uppercase">
-            Trusted by 10,000+ Patients
+            Trusted by 5,000+ Patients
           </span>
         </div>
 

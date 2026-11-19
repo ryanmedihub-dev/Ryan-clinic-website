@@ -162,7 +162,7 @@ export default function Footer() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
               {[
                 { num: "97%", label: "Graft Survival" },
-                { num: "10K+", label: "Patients" },
+                { num: "5K+", label: "Patients" },
                 { num: "12+", label: "Years" },
                 { num: "4.9★", label: "Google Rating" },
               ].map((s) => (

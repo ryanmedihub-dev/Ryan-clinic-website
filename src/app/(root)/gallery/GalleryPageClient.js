@@ -240,24 +240,28 @@ export function LeadForm() {
         type="submit" disabled={loading}
         className="w-full py-4 rounded-xl text-white font-bold text-sm transition-all hover:opacity-90 disabled:opacity-60 bg-[#D32F2F] shadow-md cursor-pointer"
       >
-        {loading ? "Submitting…" : "Book My Free Analysis"}
+        {loading ? "Submitting…" : "Book Consultation"}
       </button>
       <p className="text-[10px] text-gray-400 text-center">No obligation. 18 months free follow-up included.</p>
     </form>
   );
 }
 
-export default function GalleryPageClient() {
+export default function GalleryPageClient({ initialData = null }) {
   const trackCTA = useTrackCTA();
   const [selectedCity, setSelectedCity] = useState("All");
   const [lightboxImages, setLightboxImages] = useState([]);
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const [openFaq, setOpenFaq] = useState(null);
-  const [gallery, setGallery] = useState(null);
-  const [galleryLoading, setGalleryLoading] = useState(true);
+  const [gallery, setGallery] = useState(initialData);
+  const [galleryLoading, setGalleryLoading] = useState(!initialData);
   const [galleryError, setGalleryError] = useState(false);
 
   useEffect(() => {
+    if (initialData) {
+      setGalleryLoading(false);
+      return;
+    }
     const fetchGallery = async () => {
       try {
         const response = await fetch("/api/gallery/get");
@@ -274,7 +278,7 @@ export default function GalleryPageClient() {
       }
     };
     fetchGallery();
-  }, []);
+  }, [initialData]);
 
   // Build flat case list and city list dynamically from MongoDB data
   const allDynamicCases = gallery?.gallerySection
@@ -320,7 +324,7 @@ export default function GalleryPageClient() {
   const getWhatsAppLink = (c) => {
     if (!c) return "https://api.whatsapp.com/send?phone=+919217958539";
     const titleText = c.title || c.caption || "Case Detail";
-    const text = `Hi, I am viewing Case #${c.id || "N/A"} (${titleText} - ${c.grafts || ""}, ${c.technique || ""}) in the Before & After gallery. I would like a free scalp analysis for similar results.`;
+    const text = `Hi, I am viewing Case #${c.id || "N/A"} (${titleText} - ${c.grafts || ""}, ${c.technique || ""}) in the Before & After gallery. I would like a scalp consultation for similar results.`;
     return `https://api.whatsapp.com/send?phone=+919217958539&text=${encodeURIComponent(text)}`;
   };
 
@@ -429,13 +433,13 @@ export default function GalleryPageClient() {
 
               <div className="flex flex-wrap gap-3">
                 <a
-                  href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20scalp%20analysis"
+                  href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20hair%20transplant%20scalp%20consultation"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-5 py-3 md:px-6 md:py-3.5 rounded-xl text-white font-bold text-sm transition-all hover:opacity-90 bg-[#D32F2F] shadow-md"
-                  onClick={() => trackCTA({ type: "whatsapp", ctaName: "Gallery Hero WA Free Analysis", buttonLocation: "Gallery Hero Section" })}
+                  onClick={() => trackCTA({ type: "whatsapp", ctaName: "Gallery Hero WA Scalp Consultation", buttonLocation: "Gallery Hero Section" })}
                 >
-                  Get Your Free Scalp Analysis
+                  Book Scalp Consultation
                 </a>
                 <a
                   href="tel:+919911111247"
@@ -447,7 +451,7 @@ export default function GalleryPageClient() {
               </div>
             </div>
 
-            {/* Featured drag-to-reveal slider panel */}
+            {/* Featured drag-to-reveal slider panel mapped directly to dedicated Hero Section fields */}
             <div className="bg-white rounded-3xl p-4 md:p-5 border border-stone-200/60 shadow-sm">
               <span className="text-[10px] font-bold text-red-600 uppercase tracking-widest bg-red-50 px-2 py-0.5 rounded inline-block mb-3">Interactive Compare</span>
               <BeforeAfterSlider
@@ -456,7 +460,7 @@ export default function GalleryPageClient() {
                 alt={gallery.heroSection?.altImage || "Hair transplant before and after results gallery — Ryan Clinic"}
                 className="w-full h-64 sm:h-80 md:h-96 rounded-2xl"
               />
-              <p className="text-xs text-gray-500 mt-3 text-center">Case #1: Hover/drag to compare Before vs 12 Months post-op FUE results</p>
+              <p className="text-xs text-gray-500 mt-3 text-center">Hover/drag to compare Before vs 12 Months post-op FUE results</p>
             </div>
           </div>
         </div>
@@ -556,7 +560,21 @@ export default function GalleryPageClient() {
               })}
             </div>
           ) : (
-            <p className="text-gray-400 text-sm text-center py-12">No gallery sections have been added yet.</p>
+            <div className="bg-white rounded-2xl border border-stone-200/80 p-8 sm:p-12 text-center max-w-2xl mx-auto shadow-sm">
+              <ShieldCheck className="w-10 h-10 text-red-600 mx-auto mb-3" />
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Authentic Patient Cases Under Clinical Verification</h3>
+              <p className="text-gray-500 text-sm leading-relaxed mb-6">
+                In strict adherence to clinical standards, every result published by Ryan Clinic requires verified patient consent and unedited standardization. Genuine new case portfolios are currently being documented.
+              </p>
+              <a
+                href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20would%20like%20to%20view%20verified%20case%20results%20for%20my%20hair%20loss%20stage."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold text-xs sm:text-sm bg-[#D32F2F] hover:bg-red-700 shadow-md transition-colors"
+              >
+                Inquire About Verified Case Studies on WhatsApp
+              </a>
+            </div>
           )}
         </div>
       </section>
@@ -567,15 +585,15 @@ export default function GalleryPageClient() {
           {/* CTA Strip */}
           <div className="bg-[#D32F2F] rounded-3xl p-6 sm:p-8 md:p-10 flex flex-col sm:flex-row items-center justify-between gap-5 md:gap-6 mt-0 text-white">
             <div className="text-center sm:text-left">
-              <h3 className="text-base sm:text-lg md:text-xl font-extrabold">See What's Possible for You — Free Analysis</h3>
+              <h3 className="text-base sm:text-lg md:text-xl font-extrabold">See What's Possible for You — Scalp Assessment</h3>
               <p className="text-xs text-white/70 mt-1">Get an expert medical evaluation on your required graft count based on your photos.</p>
             </div>
             <a
-              href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20free%20hair%20transplant%20scalp%20analysis"
+              href="https://api.whatsapp.com/send?phone=+919217958539&text=Hi,%20I%20want%20a%20hair%20transplant%20scalp%20consultation"
               target="_blank"
               rel="noopener noreferrer"
               className="flex-shrink-0 px-6 py-3.5 bg-white text-[#8B1414] hover:bg-stone-100 font-bold rounded-2xl text-xs sm:text-sm shadow-md transition-colors"
-              onClick={() => trackCTA({ type: "whatsapp", ctaName: "Gallery Bottom WA Free Analysis", buttonLocation: "Gallery Bottom Section" })}
+              onClick={() => trackCTA({ type: "whatsapp", ctaName: "Gallery Bottom WA Consultation", buttonLocation: "Gallery Bottom Section" })}
             >
               WhatsApp Us Now →
             </a>
@@ -688,7 +706,7 @@ export default function GalleryPageClient() {
                 Want Results Like These?
               </h2>
               <p className="text-gray-600 text-sm mt-4 leading-relaxed">
-                Every transformation here started with a free scalp analysis. Book yours to get your exact graft count, a natural hairline plan, and an honest hair transplant cost estimate — no obligation.
+                Every transformation here started with a clinical scalp analysis. Book your consultation to get your exact graft count, a natural hairline plan, and an honest hair transplant cost estimate — no obligation.
               </p>
 
               <div className="bg-white p-4 md:p-5 rounded-2xl border border-stone-200/60 shadow-sm mt-5 md:mt-6">
@@ -698,7 +716,7 @@ export default function GalleryPageClient() {
             </div>
 
             <div className="lg:col-span-5 bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-stone-200/60">
-              <h3 className="text-lg font-bold text-gray-900 mb-1">Book My Free Analysis</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-1">Book a Consultation</h3>
               <p className="text-xs text-gray-400 mb-5 md:mb-6">Dr. Pranendra Singh personally reviews every case.</p>
               <LeadForm />
             </div>

@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { Plus, Trash, Save } from "lucide-react";
 import { getValidImageSrc } from "@/lib/utils";
+import PageSectionsPanel from "./PageSectionsPanel";
 
 const Editor = dynamic(() => import("@/components/textEditor"), {
   ssr: false,
@@ -44,6 +45,8 @@ const initialFormState = {
     consultationButtonLabel: "",
     profileButtonLabel: "",
   },
+  pageSections: null,
+  pageSectionsDirty: false,
 };
 
 export default function EditService({ initialData }) {
@@ -147,6 +150,10 @@ export default function EditService({ initialData }) {
           profileButtonLabel:
             initialData.meetYourSurgeon?.profileButtonLabel || "",
         },
+        pageSections: initialData.pageSections?.length
+          ? initialData.pageSections
+          : null,
+        pageSectionsDirty: false,
       });
       setDataLoaded(true);
 
@@ -337,11 +344,24 @@ export default function EditService({ initialData }) {
     setIsSubmitting(true);
     setServerMsg("");
     try {
-      // Send the flat formData structure that the API expects
+      const {
+        pageSections,
+        pageSectionsDirty,
+        ...rest
+      } = formData;
+
+      const payload = {
+        ...rest,
+        ...(pageSectionsDirty && Array.isArray(pageSections)
+          ? { pageSections }
+          : {}),
+      };
+
+      // Send the formatted payload structure that the API expects
       const response = await fetch("/api/service/edit", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData), // Send formData directly
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
@@ -360,12 +380,30 @@ export default function EditService({ initialData }) {
             ...prev,
             assignedDoctor: docId,
             assignedDoctorId: docId,
+            ...(result.service.pageSections
+              ? {
+                  pageSections: result.service.pageSections,
+                  pageSectionsDirty: false,
+                }
+              : {}),
           }));
         } else if (result.service.assignedDoctor === null) {
           setFormData((prev) => ({
             ...prev,
             assignedDoctor: "",
             assignedDoctorId: "",
+            ...(result.service.pageSections
+              ? {
+                  pageSections: result.service.pageSections,
+                  pageSectionsDirty: false,
+                }
+              : {}),
+          }));
+        } else if (result.service.pageSections) {
+          setFormData((prev) => ({
+            ...prev,
+            pageSections: result.service.pageSections,
+            pageSectionsDirty: false,
           }));
         }
       }
@@ -1106,6 +1144,21 @@ export default function EditService({ initialData }) {
               </div>
             </div>
           </div>
+
+          {/* Page Sections & Layout Order */}
+          <PageSectionsPanel
+            pageSections={formData.pageSections}
+            pageType={formData.pageType}
+            pageSlug={formData.pageUrl}
+            assignedDoctor={formData.assignedDoctor || null}
+            onChange={(newSections, isDirty) =>
+              setFormData((prev) => ({
+                ...prev,
+                pageSections: newSections,
+                pageSectionsDirty: isDirty,
+              }))
+            }
+          />
 
           {/* Submit Section */}
           <div className="bg-white rounded-xl border border-gray-200 p-8">

@@ -26,7 +26,7 @@ export function SplitCTA() {
               </h2>
 
               <p className="text-sm text-gray-500 leading-relaxed mb-7">
-                Turkey's exclusive Sapphire FUE, 10,000+ patients, 4.9★ Google
+                Turkey's exclusive Sapphire FUE, 5,000+ patients, 4.9★ Google
                 rating. Get your free scalp analysis, exact graft count &amp;
                 cost breakdown — zero obligation.
               </p>

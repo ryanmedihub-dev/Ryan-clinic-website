@@ -41,6 +41,25 @@ export async function generateMetadata() {
   return defaultMetadata;
 }
 
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://www.clinicryan.com",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Gallery",
+      item: "https://www.clinicryan.com/gallery",
+    },
+  ],
+};
+
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -82,7 +101,7 @@ const faqSchema = {
       name: "How many grafts will I need for results like these?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Graft count depends on your degree of hair loss (Norwood grade): roughly 2,000–2,500 for hairline and temples, 3,000–3,500 for frontal and mid-scalp, and 4,000+ for advanced or crown coverage. A free scalp analysis confirms your exact number.",
+        text: "Graft count depends on your degree of hair loss (Norwood grade): roughly 2,000–2,500 for hairline and temples, 3,000–3,500 for frontal and mid-scalp, and 4,000+ for advanced or crown coverage. A clinical scalp analysis confirms your exact number.",
       },
     },
     {
@@ -99,6 +118,10 @@ const faqSchema = {
 export default function GalleryPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
