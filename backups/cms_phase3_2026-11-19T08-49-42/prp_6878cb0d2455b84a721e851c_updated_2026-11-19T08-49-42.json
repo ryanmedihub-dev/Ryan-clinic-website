@@ -1,0 +1,95 @@
+{
+  "_id": "6878cb0d2455b84a721e851c",
+  "bannerData": {
+    "title": "PRP Hair Treatment in Delhi",
+    "description": "Restore Natural Hair Growth with Doctor-Led Platelet-Rich Plasma (PRP) Therapy at Ryan Clinic, Delhi.",
+    "imageurl": "/uploads/1752746168716-PRP 1.jpg",
+    "imagealt": "Platelet-Rich Plasma (PRP) therapy session for hair restoration"
+  },
+  "benefitsData": {
+    "title": "Benefits of PRP Treatment",
+    "description": "PRP treatment offers numerous benefits:",
+    "component": [
+      {
+        "title": "Biocompatible Autologous Therapy",
+        "description": "PRP is prepared from your own blood, making it biocompatible with minimal risk of adverse reaction. As with any injection-based procedure, your clinician will discuss individual risk factors at consultation."
+      },
+      {
+        "title": "Minimal Downtime",
+        "description": "PRP hair treatment is a minimally invasive procedure performed in a clinical setting. Most patients resume their normal daily activities on the same day, following aftercare guidance from the clinical team."
+      },
+      {
+        "title": "Minimally Invasive Approach",
+        "description": "Unlike surgical hair restoration, PRP treatment involves a blood draw and scalp micro-injections rather than surgical incisions, making it a clinically appropriate option for patients who are not surgical candidates."
+      },
+      {
+        "title": "Targeted Hair Treatment",
+        "description": "PRP therapy is administered to specific scalp areas where hair thinning is present. Treatment plans are individualised based on clinical assessment findings and the pattern of hair loss."
+      }
+    ]
+  },
+  "extraFields": {
+    "detail1": "",
+    "detail2": ""
+  },
+  "faq": [
+    {
+      "question": "What is PRP hair treatment?",
+      "answer": "PRP (Platelet-Rich Plasma) hair treatment involves concentrating the platelet-rich fraction from a small sample of your own blood and administering it to the scalp using micro-injections. The growth factors in platelets may support hair follicle activity in areas of thinning. Suitability and expected outcomes are discussed at your clinical consultation."
+    },
+    {
+      "question": "Is PRP hair treatment safe?",
+      "answer": "PRP uses your own blood components, making it biocompatible with minimal risk of rejection or allergic reaction. As with any injection-based procedure, there are associated risks — including bruising, infection and temporary discomfort at injection sites — which the clinical team explains in full before the procedure."
+    },
+    {
+      "question": "How many sessions are typically required?",
+      "answer": "The number of sessions varies based on the individual's response to treatment, the degree of hair thinning and clinical assessment. The treating clinician will advise on the appropriate treatment plan and schedule during your consultation. Individual protocols differ."
+    },
+    {
+      "question": "When can I expect to see results?",
+      "answer": "Hair changes following PRP therapy develop gradually over several months. Some patients notice a reduction in hair shedding before visible density changes occur. Outcomes vary significantly between individuals based on the cause of hair loss, age, health and other factors."
+    },
+    {
+      "question": "Is the procedure painful?",
+      "answer": "A topical numbing agent is typically applied to the scalp before the micro-injections to minimise discomfort. The blood draw procedure is the same as a standard medical blood collection. Any discomfort experienced during the procedure is generally mild and temporary."
+    }
+  ],
+  "metadata": {
+    "pageName": "PRP Treatment",
+    "pageType": "treatment",
+    "description": "Learn about PRP hair treatment at Ryan Clinic in Delhi, including consultation, suitability and the treatment process. Speak with the clinic about personalised options.",
+    "pageurl": "prp-treatment",
+    "title": "PRP Hair Treatment in Delhi | Ryan Clinic",
+    "overviewData": "<h2>Doctor-Led Platelet-Rich Plasma (PRP) Therapy for Hair at Ryan Clinic, Delhi</h2>\n<p>Platelet-Rich Plasma (PRP) therapy uses your own blood to deliver a concentration of growth factors to targeted areas. At Ryan Clinic in Delhi, PRP therapy is offered as a hair treatment option for patients experiencing hair thinning or early-stage hair loss.</p>\n<p>A small volume of blood is drawn, processed in a centrifuge to concentrate the platelet-rich fraction, and then administered to the scalp using fine micro-injections under clinical conditions. Because PRP uses the patient's own blood components, it is considered biocompatible with minimal risk of adverse reaction — although, as with any injection-based procedure, risks exist and are discussed at consultation.</p>\n<h3>What Is PRP Treatment?</h3>\n<p>PRP stands for Platelet-Rich Plasma. Platelets contain growth factors that play a role in tissue repair and cellular communication. When delivered at higher concentrations to the scalp, PRP therapy aims to support hair follicle activity in areas where thinning is occurring. It is a minimally invasive procedure involving a blood draw and a series of scalp micro-injections.</p>\n<h4>Who May Be a Suitable Candidate?</h4>\n<p>PRP therapy is typically considered for patients with early-to-moderate hair thinning. Suitability depends on the cause and pattern of hair loss, the patient's overall health and blood profile, and clinical assessment. PRP is not appropriate for all types or causes of hair loss. A consultation at Ryan Clinic, Delhi will assess whether PRP is a suitable part of your treatment plan.</p>\n<p>For more information on treatment cost and session structure, please contact the clinic directly — pricing is confirmed following your personal consultation and assessment.</p>",
+    "keywords": [
+      "prp-treatment",
+      "platelet-rich-plasma",
+      "hair-restoration",
+      "skin-rejuvenation"
+    ]
+  },
+  "typesData": {
+    "details": "<h2>How Does PRP Hair Treatment Work at Ryan Clinic?</h2>\n<p>At Ryan Clinic in Delhi, PRP hair treatment is performed in a clinical setting and follows a structured process:</p>\n\n<h3>1. Consultation and Assessment</h3>\n<p>Your clinician reviews your hair loss history, pattern, and overall health. This determines whether PRP is appropriate and what results may realistically be expected in your case.</p>\n\n<h3>2. Blood Collection and Processing</h3>\n<p>A small sample of your blood is drawn and placed in a centrifuge. This separates the blood into its components, concentrating the platelet-rich plasma for use in the treatment.</p>\n\n<h3>3. PRP Administration</h3>\n<p>The prepared PRP is administered to targeted areas of the scalp using fine micro-injections. A topical numbing agent is typically applied beforehand to minimise discomfort during the procedure.</p>\n\n<h3>What to Expect After PRP Treatment</h3>\n<p>Minor scalp tenderness, redness or swelling at injection sites may occur in the hours following the procedure and typically resolves quickly. Most patients can resume normal activities the same day. Changes in hair density develop gradually over several months. Your clinical team will discuss realistic expectations and schedule appropriate follow-up appointments.</p>",
+    "images": [
+      {
+        "url": "/uploads/1752746251503-PRP 4.jpg",
+        "alt": "PRP treatment procedure",
+        "_id": "68f129e045a924eafe977590"
+      },
+      {
+        "url": "/uploads/1752746264423-PRP 2.jpg",
+        "alt": "PRP hair restoration results",
+        "_id": "68f129e045a924eafe977591"
+      },
+      {
+        "url": "/uploads/1752746276190-PRP 3.jpg",
+        "alt": "PRP skin rejuvenation",
+        "_id": "68f129e045a924eafe977592"
+      }
+    ]
+  },
+  "createdAt": "2025-10-16T17:22:40.227Z",
+  "updatedAt": "2026-08-19T05:15:54.699Z",
+  "__v": 1,
+  "pageSections": []
+}

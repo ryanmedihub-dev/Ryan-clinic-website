@@ -120,7 +120,7 @@ function PriceCard({ item }) {
 export default function CostSection({ city = "Delhi", pricing, sectionTitle, sectionDescription }) {
   const PRICING_DATA = pricing?.length ? pricing : PRICING;
   const title = sectionTitle || "Hair Transplant Cost";
-  const description = sectionDescription || `Hair transplant cost in ${city} at Ryan Clinic starts from ₹40,000 and typically ranges up to ₹3,50,000, depending on graft count and technique (about ₹40–₹120 per graft for doctor-led Sapphire FUE). Your exact cost is confirmed after a free scalp analysis. 0% EMI is available.`;
+  const description = sectionDescription || `Hair transplant cost in ${city} at Ryan Clinic starts from ₹40,000 and typically ranges up to ₹3,50,000, depending on graft count and technique (about ₹40–₹120 per graft for doctor-led Sapphire FUE). Your exact cost is confirmed after a free scalp analysis. Contact our team to ask about available payment options.`;
   return (
     <section className="py-20 lg:py-24">
       <div className="containerFull px-6 md:px-8">

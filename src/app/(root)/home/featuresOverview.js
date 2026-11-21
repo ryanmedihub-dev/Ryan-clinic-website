@@ -26,8 +26,8 @@ const features = [
       </svg>
     ),
     number: "03",
-    title: "Transparent Pricing & 0% EMI",
-    text: "Hair transplant starts from ₹35,000. Your complete cost is confirmed after free scalp analysis — before you commit to anything. No hidden charges. No surprise bills. 0% EMI available via HDFC, ICICI & Axis Bank on 6 and 12-month plans.",
+    title: "Transparent Pricing & Payment Options",
+    text: "Hair transplant starts from ₹40,000. Your complete cost is confirmed after free scalp analysis — before you commit to anything. No hidden charges. No surprise bills. Contact our team to discuss available payment options.",
   },
   {
     icon: (

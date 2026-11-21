@@ -23,13 +23,29 @@ async function handler(request) {
       );
     }
 
-    // Format the data according to the schema
+    const existingService = await Services.findById(serviceId).lean();
+    if (!existingService) {
+      return NextResponse.json(
+        { error: "Service not found" },
+        { status: 404 }
+      );
+    }
+
+    // Format the data according to the schema while safely preserving banner badgeText
     const formattedUpdate = {
       bannerData: {
-        title: updateData.bannerTitle || "",
-        description: updateData.bannerDescription || "",
-        imageurl: updateData.bannerImage || "",
-        imagealt: updateData.bannerAlt || "",
+        title: updateData.bannerTitle !== undefined ? updateData.bannerTitle : (existingService.bannerData?.title || ""),
+        description: updateData.bannerDescription !== undefined ? updateData.bannerDescription : (existingService.bannerData?.description || ""),
+        imageurl: updateData.bannerImage !== undefined ? updateData.bannerImage : (existingService.bannerData?.imageurl || ""),
+        imagealt: updateData.bannerAlt !== undefined ? updateData.bannerAlt : (existingService.bannerData?.imagealt || ""),
+        badgeText:
+          updateData.bannerBadgeText !== undefined
+            ? updateData.bannerBadgeText
+            : updateData.badgeText !== undefined
+            ? updateData.badgeText
+            : updateData.bannerData?.badgeText !== undefined
+            ? updateData.bannerData.badgeText
+            : (existingService.bannerData?.badgeText || ""),
       },
       benefitsData: {
         title: updateData.benefitsTitle || "",

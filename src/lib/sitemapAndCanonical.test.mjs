@@ -23,15 +23,25 @@ function isExcluded(url) {
 }
 
 function getSurgeryCanonicalUrl(rawCanonical, slug) {
+  const fallbackUrl = `https://www.clinicryan.com/surgery/${slug}`;
   if (
-    rawCanonical &&
     typeof rawCanonical === "string" &&
-    rawCanonical.includes("/surgery/") &&
     !/-copy(-\d+)?(\/|$)/i.test(rawCanonical)
   ) {
-    return rawCanonical.trim();
+    try {
+      const parsed = new URL(rawCanonical.trim());
+      const normalizedPath = parsed.pathname.replace(/\/+$/, "");
+      if (
+        parsed.origin === "https://www.clinicryan.com" &&
+        normalizedPath === `/surgery/${slug}`
+      ) {
+        return `https://www.clinicryan.com${normalizedPath}`;
+      }
+    } catch {
+      // Invalid URL format falls back safely
+    }
   }
-  return `https://www.clinicryan.com/surgery/${slug}`;
+  return fallbackUrl;
 }
 
 function getDoctorCanonicalUrl(rawCanonical, slug) {
@@ -42,7 +52,7 @@ function getDoctorCanonicalUrl(rawCanonical, slug) {
 
 function formatHairFallPageUrl(rawSlug) {
   const slug = cleanSlugPath(rawSlug, "treatments/");
-  return `/treatments/${slug}/`;
+  return `/treatments/${slug}`;
 }
 
 function toDate(val) {
@@ -133,18 +143,18 @@ test("Surgery Canonical: rejects -copy draft URLs and falls back to clean slug c
   );
 });
 
-test("HairFallPage URL formatting: preserves trailing slash matching canonical tag", () => {
+test("HairFallPage URL formatting: standardizes slash-less URL matching canonical tag", () => {
   assert.equal(
     formatHairFallPageUrl("hair-fall-loss-treatment-in-delhi"),
-    "/treatments/hair-fall-loss-treatment-in-delhi/"
+    "/treatments/hair-fall-loss-treatment-in-delhi"
   );
   assert.equal(
     formatHairFallPageUrl("/treatments/hair-fall-loss-treatment-in-delhi"),
-    "/treatments/hair-fall-loss-treatment-in-delhi/"
+    "/treatments/hair-fall-loss-treatment-in-delhi"
   );
   assert.equal(
     formatHairFallPageUrl("hair-fall-loss-treatment-in-delhi/"),
-    "/treatments/hair-fall-loss-treatment-in-delhi/"
+    "/treatments/hair-fall-loss-treatment-in-delhi"
   );
 });
 
@@ -157,7 +167,7 @@ test("Sitemap Exclusions: blocks draft copy slugs and redirect-only routes", () 
 
   // Valid routes must NOT be excluded
   assert.equal(isExcluded("/hair-transplant-in-delhi"), false);
-  assert.equal(isExcluded("/treatments/hair-fall-loss-treatment-in-delhi/"), false);
+  assert.equal(isExcluded("/treatments/hair-fall-loss-treatment-in-delhi"), false);
   assert.equal(isExcluded("/doctors/hair-transplant-doctor-in-pune"), false);
   assert.equal(isExcluded("/surgery/hair-transplant-surgery-in-kolkata"), false);
 });

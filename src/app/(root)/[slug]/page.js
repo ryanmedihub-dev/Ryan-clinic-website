@@ -84,6 +84,100 @@ function getDefaultSections(pageType) {
   ];
 }
 
+// Service-specific trust items for the four non-transplant service pages
+// These replace the shared hair-transplant accordion on WhyChooseRyanClinic
+const eyebrowTrustItems = [
+  {
+    title: "Personalised Brow Assessment",
+    body: "Before any eyebrow transplant procedure begins, the clinical team assesses your existing brow tissue, natural brow pattern, donor hair characteristics and facial structure. Every treatment plan is designed individually.",
+  },
+  {
+    title: "Doctor-Led Procedure",
+    body: "Eyebrow transplant procedures at Ryan Clinic are performed by trained medical specialists. Precision follicular implantation aligned with the natural direction of brow growth is a critical element of the procedure.",
+  },
+  {
+    title: "Sterile Clinical Environment",
+    body: "Every procedure is performed in a sterile clinical setting with single-use, surgical-grade instruments and established safety standards.",
+  },
+  {
+    title: "Realistic Outcome Discussion",
+    body: "The clinical team explains what results are realistic for your individual case — including the gradual timeline of regrowth, the need for periodic trimming as transplanted hairs retain scalp growth characteristics, and how individual biology influences outcomes.",
+  },
+  {
+    title: "Post-Procedure Aftercare & Follow-Up",
+    body: "Patients receive specific aftercare instructions and scheduled follow-up support to monitor healing and brow hair regrowth progress.",
+  },
+];
+
+const peelsTrustItems = [
+  {
+    title: "Individual Skin Assessment",
+    body: "Before any chemical peel is recommended, the clinical team performs a skin assessment to determine your skin type, concerns and medical history. This ensures that only the appropriate peel type and depth is selected for your skin.",
+  },
+  {
+    title: "Range of Peel Depths",
+    body: "Ryan Clinic offers superficial, medium and deep chemical peels. The choice is determined clinically, not commercially. Contraindications including pregnancy, isotretinoin use and active skin infections are assessed at consultation.",
+  },
+  {
+    title: "Informed Risk Discussion",
+    body: "All chemical peels carry risks including post-inflammatory hyperpigmentation, prolonged sensitivity and healing requirements that vary by peel depth. These are discussed fully before any procedure is agreed.",
+  },
+  {
+    title: "Post-Peel Aftercare Guidance",
+    body: "Detailed aftercare guidance is provided — including sun protection requirements, product restrictions and timelines for resuming normal skincare. Following aftercare instructions is essential to safe recovery and outcome.",
+  },
+  {
+    title: "Delhi Clinical Setting",
+    body: "Chemical peel treatments at Ryan Clinic are performed by trained clinical staff in a controlled, hygienic environment in Delhi.",
+  },
+];
+
+const prpTrustItems = [
+  {
+    title: "Clinical Assessment Before Treatment",
+    body: "PRP therapy suitability depends on the type and cause of your hair loss. A clinical consultation is required to assess whether PRP is appropriate for your individual situation before any treatment begins.",
+  },
+  {
+    title: "Autologous, Biocompatible Process",
+    body: "PRP is prepared from your own blood, making it biocompatible with minimal risk of rejection. As with any injection-based procedure, associated risks are discussed at consultation.",
+  },
+  {
+    title: "Minimally Invasive Approach",
+    body: "PRP hair treatment involves a blood draw and scalp micro-injections performed under clinical conditions with topical numbing to minimise discomfort. It is a minimally invasive procedure with minimal required downtime.",
+  },
+  {
+    title: "Individualised Treatment Planning",
+    body: "Session frequency and the number of treatments are determined based on clinical assessment, your hair loss pattern and your response to treatment. There is no universal protocol applied to every patient.",
+  },
+  {
+    title: "Delhi Clinical Team",
+    body: "PRP hair treatment at Ryan Clinic is administered by trained clinical staff in Delhi. Follow-up appointments are scheduled to monitor response and progress.",
+  },
+];
+
+const alopeciaTrustItems = [
+  {
+    title: "Accurate Diagnosis First",
+    body: "Because alopecia encompasses distinct conditions with different causes — including autoimmune, hormonal, nutritional and genetic factors — an accurate diagnosis is essential before any treatment is recommended. The clinical team at Ryan Clinic assesses the type and extent of hair loss individually.",
+  },
+  {
+    title: "Treatment Options Matched to Your Diagnosis",
+    body: "Medical, minimally invasive and surgical options are available depending on your diagnosis. Not every treatment is suitable for every type of alopecia. The clinical team explains which options are appropriate for your specific situation.",
+  },
+  {
+    title: "Medical Management Where Appropriate",
+    body: "Medically supervised treatments including topical agents, prescribed medications and clinical therapies are discussed where clinically indicated. All medical options are managed and monitored by the treating clinician.",
+  },
+  {
+    title: "Support for Long-Term Management",
+    body: "Many forms of alopecia require ongoing management rather than a single treatment. The clinical team provides structured follow-up to monitor progress and adjust the treatment plan as needed.",
+  },
+  {
+    title: "Delhi Consultation Availability",
+    body: "Clinical consultations for alopecia assessment and treatment planning are available at Ryan Clinic in Delhi. Contact the clinic to arrange an appointment.",
+  },
+];
+
 const fueTrustItems = [
   {
     title: "Medical Assessment & FUE Surgical Planning",
@@ -165,6 +259,21 @@ const hairlineTrustItems = [
 function renderSection(key, d, service, branchName, slug = "") {
   const isFUE = slug === "fue-hair-transplant";
   const isHairline = slug === "hairline-transplant";
+  const isEyebrow = slug === "eyebrow-transplant";
+  const isChemicalPeel = slug === "chemical-skin-peels";
+  const isPRP = slug === "prp-treatment";
+  const isAlopecia = slug === "alopecia-treatments";
+
+  // Resolve service-specific trust items for WhyChooseUs
+  const targetServiceTrustItems = isEyebrow
+    ? eyebrowTrustItems
+    : isChemicalPeel
+    ? peelsTrustItems
+    : isPRP
+    ? prpTrustItems
+    : isAlopecia
+    ? alopeciaTrustItems
+    : undefined;
 
   switch (key) {
     case "overview":
@@ -186,7 +295,9 @@ function renderSection(key, d, service, branchName, slug = "") {
         </section>
       );
 
-    case "ourResults":
+    case "ourResults": {
+      // Chemical Peels, Eyebrow Transplant, PRP & Alopecia: suppress scalp surgical gallery (scalp grafts = misrepresentation)
+      if (isChemicalPeel || isEyebrow || isPRP || isAlopecia) return null;
       return (
         <OurResults
           key="ourResults"
@@ -197,6 +308,8 @@ function renderSection(key, d, service, branchName, slug = "") {
               ? "FUE Hair Transplant Results in Delhi"
               : isHairline
               ? "Hairline Transplant Results in Delhi"
+              : isEyebrow || isPRP || isAlopecia
+              ? "Hair Restoration Results at Ryan Clinic"
               : undefined)
           }
           desktopHeading={
@@ -205,12 +318,38 @@ function renderSection(key, d, service, branchName, slug = "") {
               ? "Hair Transplant Before & After: Individual Patient Results"
               : isHairline
               ? "Hairline Restoration Before & After Results"
+              : isEyebrow || isPRP || isAlopecia
+              ? "Hair Restoration Before & After Results at Ryan Clinic, Delhi"
               : undefined)
           }
         />
       );
+    }
 
-    case "typesSection":
+    case "typesSection": {
+      let typesDetails = service?.typesData?.details;
+
+      if (isEyebrow && typesDetails) {
+        typesDetails = typesDetails
+          .replace(
+            /<h5( style="line-height: 1\.2">)(1\. Consultation:<\/h)5>/g,
+            "<h3$1$23>"
+          )
+          .replace(
+            /<h5( style="line-height: 1\.2">)(2\. Hair Follicle Extraction:<\/h)5>/g,
+            "<h3$1$23>"
+          )
+          .replace(
+            /<h5( style="line-height: 1\.2">)(3\. Precision Implantation:<\/h)5>/g,
+            "<h3$1$23>"
+          );
+      } else if (isAlopecia && typesDetails) {
+        typesDetails = typesDetails.replace(
+          /<h2(\b[^>]*)>Alopecia Treatment Options in Delhi<\/h2>/,
+          "<h2$1>Treatment Approaches at Ryan Clinic</h2>"
+        );
+      }
+
       return (
         <section key="typesSection" className="py-8 md:py-12 h-fit">
           <div className="containerFull px-4 md:px-6">
@@ -267,7 +406,7 @@ function renderSection(key, d, service, branchName, slug = "") {
                 <div
                   className="prose max-w-none pageLayoutBox md:pl-7.5"
                   dangerouslySetInnerHTML={{
-                    __html: sanitizeContent(service?.typesData?.details),
+                    __html: sanitizeContent(typesDetails),
                   }}
                 />
               </div>
@@ -275,19 +414,110 @@ function renderSection(key, d, service, branchName, slug = "") {
           </div>
         </section>
       );
+    }
 
-    case "whyChooseUs":
+    case "whyChooseUs": {
+      const whyHeading =
+        d.heading ||
+        (isEyebrow
+          ? "Eyebrow Restoration at Ryan Clinic"
+          : isChemicalPeel
+          ? "Skin Treatment Planning at Ryan Clinic"
+          : isPRP
+          ? "PRP Hair Treatment at Ryan Clinic"
+          : isAlopecia
+          ? "Alopecia Care at Ryan Clinic"
+          : undefined);
+
+      const whyDescription =
+        d.description ||
+        (isEyebrow
+          ? "Explore personalised assessment and treatment planning for sparse or uneven eyebrows."
+          : isChemicalPeel
+          ? "Explore skin treatment options selected according to individual skin concerns and clinical assessment."
+          : isPRP
+          ? "Learn about PRP treatment options, suitability and personalised care planning for hair concerns."
+          : isAlopecia
+          ? "Hair loss has different causes, so treatment options depend on the underlying condition and clinical assessment."
+          : undefined);
+
+      const whyImageCaption =
+        d.imageCaption ||
+        (targetServiceTrustItems != null ? "Ryan Clinic Delhi" : undefined);
+
+      const whyImageTitle =
+        d.imageTitle ||
+        (targetServiceTrustItems != null ? "Personalised Care" : undefined);
+
+      const whyCtaLabel =
+        d.ctaLabel ||
+        (isEyebrow
+          ? "Book Your Eyebrow Consultation"
+          : isChemicalPeel
+          ? "Book Your Skin Consultation"
+          : isPRP
+          ? "Book Your PRP Consultation"
+          : isAlopecia
+          ? "Book Your Alopecia Consultation"
+          : undefined);
+
+      const whyCtaWhatsappUrl =
+        d.ctaWhatsappUrl ||
+        (isEyebrow
+          ? "https://api.whatsapp.com/send?phone=919217958539&text=" +
+            encodeURIComponent("Hi, I want an eyebrow transplant consultation in Delhi")
+          : isChemicalPeel
+          ? "https://api.whatsapp.com/send?phone=919217958539&text=" +
+            encodeURIComponent("Hi, I want a chemical skin peel consultation in Delhi")
+          : isPRP
+          ? "https://api.whatsapp.com/send?phone=919217958539&text=" +
+            encodeURIComponent("Hi, I want a PRP consultation in Delhi")
+          : isAlopecia
+          ? "https://api.whatsapp.com/send?phone=919217958539&text=" +
+            encodeURIComponent("Hi, I want an alopecia consultation in Delhi")
+          : undefined);
+
+      const whyCtaNote =
+        d.ctaNote ||
+        (isEyebrow
+          ? "Clinical assessment · Personalised brow design · Transparent pricing · No obligation."
+          : isChemicalPeel
+          ? "Skin type evaluation · Treatment planning · Transparent pricing · No obligation."
+          : isPRP
+          ? "Clinical hair assessment · Suitability evaluation · Transparent pricing · No obligation."
+          : isAlopecia
+          ? "Accurate diagnosis · Medical treatment planning · Transparent pricing · No obligation."
+          : undefined);
+
       return (
         <WhyChooseRyanClinic
           key="whyChooseUs"
           city={d.city || branchName}
           items={
             d.items ||
-            (isFUE ? fueTrustItems : isHairline ? hairlineTrustItems : undefined)
+            (isFUE
+              ? fueTrustItems
+              : isHairline
+              ? hairlineTrustItems
+              : targetServiceTrustItems)
           }
-          hideStats={d.hideStats || isFUE || isHairline}
+          hideStats={d.hideStats || isFUE || isHairline || (targetServiceTrustItems != null)}
+          badgeText={d.badgeText}
+          heading={whyHeading}
+          description={whyDescription}
+          imageTitle={whyImageTitle}
+          imageCaption={whyImageCaption}
+          imageAlt={
+            targetServiceTrustItems != null
+              ? "Ryan Clinic medical facility in Delhi"
+              : undefined
+          }
+          ctaLabel={whyCtaLabel}
+          ctaWhatsappUrl={whyCtaWhatsappUrl}
+          ctaNote={whyCtaNote}
         />
       );
+    }
 
     case "costSection":
       return (
@@ -357,9 +587,25 @@ function renderSection(key, d, service, branchName, slug = "") {
       return <RecoveryTimeline key="recoveryTimeline" phases={d.phases} />;
 
     case "extraFields": {
-      const detail1 = service?.extraFields?.detail1;
-      const detail2 = service?.extraFields?.detail2;
+      let detail1 = service?.extraFields?.detail1;
+      let detail2 = service?.extraFields?.detail2;
       if (!detail1 && !detail2) return null;
+
+      if (isEyebrow) {
+        if (detail1) {
+          detail1 = detail1.replace(
+            '<p><span style="font-size: 19px">Post-Procedure Care</span></p>',
+            "<h3>Post-Procedure Care</h3>"
+          );
+        }
+        if (detail2) {
+          detail2 = detail2.replace(
+            '<p style="text-align: justify"><span style="font-size: 19px">Why Eyebrow Transplant</span></p>',
+            "<h3>Why Eyebrow Transplant</h3>"
+          );
+        }
+      }
+
       return (
         <section key="extraFields" className="py-8 md:py-12">
           <div className="containerFull px-4 md:px-6">
@@ -459,11 +705,19 @@ export default async function ServicesPage({ params }) {
 
   const isFUE = slug === "fue-hair-transplant";
   const isHairline = slug === "hairline-transplant";
+  const isEyebrow = slug === "eyebrow-transplant";
+  const isChemicalPeel = slug === "chemical-skin-peels";
+  const isPRP = slug === "prp-treatment";
+  const isAlopecia = slug === "alopecia-treatments";
+  const isTargetService = isEyebrow || isChemicalPeel || isPRP || isAlopecia;
 
   const sections = rawSections
     .filter((s) => {
       if (s.key === "ourDoctor") return isMeetYourSurgeonEnabled;
-      if (s.key === "testimonials" && (isFUE || isHairline)) return false;
+      // Suppress unrelated testimonials on all 4 target pages (no verified service-specific reviews)
+      if (s.key === "testimonials" && (isFUE || isHairline || isTargetService)) return false;
+      // Chemical Peels, Eyebrow & PRP ourResults: suppressed inside renderSection (scalp grafts = misrepresentation)
+      // Other target pages: ourResults and whyChooseUs are rendered with page-specific props via renderSection
       return s.enabled;
     })
     .sort((a, b) => a.order - b.order);
@@ -528,7 +782,34 @@ export default async function ServicesPage({ params }) {
               ? "Doctor-Led Sapphire FUE Restoration"
               : isHairline
               ? "Doctor-Led Hairline Restoration"
+              : isEyebrow
+              ? "Doctor-Led Eyebrow Restoration"
+              : isChemicalPeel
+              ? "Clinical Dermatology & Skin Rejuvenation"
+              : isPRP
+              ? "Doctor-Led PRP Treatment"
+              : isAlopecia
+              ? "Clinical Hair Loss & Alopecia Evaluation"
               : "")
+          }
+          whatsappUrl={
+            isEyebrow
+              ? "https://api.whatsapp.com/send?phone=919217958539&text=" +
+                encodeURIComponent(
+                  "Hi, I want an eyebrow transplant consultation in Delhi"
+                )
+              : isChemicalPeel
+              ? "https://api.whatsapp.com/send?phone=919217958539&text=" +
+                encodeURIComponent(
+                  "Hi, I want a chemical skin peel consultation in Delhi"
+                )
+              : isPRP
+              ? "https://api.whatsapp.com/send?phone=919217958539&text=" +
+                encodeURIComponent("Hi, I want a PRP consultation in Delhi")
+              : isAlopecia
+              ? "https://api.whatsapp.com/send?phone=919217958539&text=" +
+                encodeURIComponent("Hi, I want an alopecia consultation in Delhi")
+              : undefined
           }
         />
 

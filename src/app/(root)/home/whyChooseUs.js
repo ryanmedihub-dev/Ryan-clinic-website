@@ -22,8 +22,8 @@ function getWhyItems(city) {
       body: "Every procedure is performed in a sterile operating theatre with single-use, surgical-grade instruments while following recognised safety standards. Patient safety, hygiene, and precision remain at the heart of every procedure we perform.",
     },
     {
-      title: "Transparent Pricing & 0% EMI",
-      body: "Your complete cost — based on your exact graft count after a free scalp analysis — is confirmed before you commit. No hidden charges. Hair transplant procedures start from ₹40,000, with 0% EMI available on both 6 and 12-month plans.",
+      title: "Transparent Pricing & Payment Options",
+      body: "Your complete cost — based on your exact graft count after a free scalp analysis — is confirmed before you commit. No hidden charges. Hair transplant procedures start from ₹40,000. Contact our team to discuss available payment options.",
     },
     {
       title: "18-Month Follow-Up Support",
@@ -48,7 +48,20 @@ function getWhyItems(city) {
   ];
 }
 
-export default function WhyChooseUs({ city = "Delhi", items, hideStats = false }) {
+export default function WhyChooseUs({
+  city = "Delhi",
+  items,
+  hideStats = false,
+  badgeText,
+  heading,
+  description,
+  imageTitle,
+  imageCaption,
+  imageAlt,
+  ctaLabel,
+  ctaWhatsappUrl,
+  ctaNote,
+}) {
   const [open, setOpen] = useState(0);
   const whyItems = items && items.length > 0 ? items : getWhyItems(city);
   const trackCTA = useTrackCTA();
@@ -60,7 +73,7 @@ export default function WhyChooseUs({ city = "Delhi", items, hideStats = false }
         <div className="flex items-center gap-3 mb-4 md:mb-8">
           <span className="block w-8 h-px bg-[#D32F2F]" />
           <span className="text-[#D32F2F] text-[11px] font-semibold tracking-[0.22em] uppercase">
-            Why Choose Ryan Clinic
+            {badgeText || "Why Choose Ryan Clinic"}
           </span>
         </div>
 
@@ -68,17 +81,22 @@ export default function WhyChooseUs({ city = "Delhi", items, hideStats = false }
           {/* ── Left panel ── */}
           <div className="lg:sticky lg:top-28">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-[1.1] tracking-tight mb-5">
-              Why Patients Choose
-              <br />
-              <span className="text-[#D32F2F]">
-                Ryan Clinic for Hair Transplant
-                <br />
-              </span>
-              in {city}
+              {heading || (
+                <>
+                  Why Patients Choose
+                  <br />
+                  <span className="text-[#D32F2F]">
+                    Ryan Clinic for Hair Transplant
+                    <br />
+                  </span>
+                  in {city}
+                </>
+              )}
             </h2>
 
             <p className="text-gray-500 text-sm md:text-[15px] leading-relaxed mb-8 max-w-lg">
-              When comparing hair transplant clinics in {city}, patients should consider the medical team, treatment planning, graft handling, hairline design, hygiene, pricing transparency and aftercare. Ryan Clinic focuses on doctor-led treatment planning, personalised graft assessment and structured follow-up support. Clinic-specific experience, patient numbers, ratings or outcome claims should be displayed only where they can be verified and kept consistent across the website.
+              {description ||
+                `When comparing hair transplant clinics in ${city}, patients should consider the medical team, treatment planning, graft handling, hairline design, hygiene, pricing transparency and aftercare. Ryan Clinic focuses on doctor-led treatment planning, personalised graft assessment and structured follow-up support. Clinic-specific experience, patient numbers, ratings or outcome claims should be displayed only where they can be verified and kept consistent across the website.`}
             </p>
 
             {/* Stats grid */}
@@ -109,7 +127,7 @@ export default function WhyChooseUs({ city = "Delhi", items, hideStats = false }
             <div className="relative rounded-2xl overflow-hidden h-60 sm:h-72 shadow-sm border border-gray-100">
               <img
                 src="/uploads/gallery.jpg"
-                alt={`Ryan Clinic Hair Transplant ${city}`}
+                alt={imageAlt || (imageCaption ? `Ryan Clinic ${imageCaption} ${city}` : `Ryan Clinic Hair Transplant ${city}`)}
                 loading="lazy"
                 decoding="async"
                 className="w-full h-full object-cover object-top"
@@ -128,10 +146,10 @@ export default function WhyChooseUs({ city = "Delhi", items, hideStats = false }
               <div className="absolute bottom-0 inset-x-0 p-5">
                 <span className="block w-6 h-0.5 mb-2 rounded-full bg-yellow-400/80" />
                 <p className="text-sm font-bold text-white leading-snug">
-                  Trusted By 5,000+ Patients
+                  {imageTitle || "Trusted By 5,000+ Patients"}
                 </p>
                 <p className="text-[11px] text-white/55 mt-0.5">
-                  {city} Hair Transplant Specialists
+                  {imageCaption || `${city} Hair Transplant Specialists`}
                 </p>
               </div>
             </div>
@@ -212,13 +230,16 @@ export default function WhyChooseUs({ city = "Delhi", items, hideStats = false }
             <div className="mt-8 pt-8 border-t border-gray-100">
               <div className="flex flex-wrap gap-3">
                 <a
-                  href={`https://api.whatsapp.com/send?phone=919217958539&text=Hi,%20I%20want%20a%20free%20scalp%20analysis%20in%20${encodeURIComponent(city)}`}
+                  href={
+                    ctaWhatsappUrl ||
+                    `https://api.whatsapp.com/send?phone=919217958539&text=Hi,%20I%20want%20a%20free%20scalp%20analysis%20in%20${encodeURIComponent(city)}`
+                  }
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-3 bg-[#D32F2F] hover:bg-red-700 text-white font-semibold py-4 px-7 text-sm tracking-wide transition-colors rounded-xl justify-center"
                   onClick={() => trackCTA({ type: "whatsapp", ctaName: "Why Choose Us Book Consultation", buttonLocation: "Why Choose Us Section" })}
                 >
-                  Book Your Free Scalp Analysis
+                  {ctaLabel || "Book Your Free Scalp Analysis"}
 
                   <svg
                     className="w-4 h-4"
@@ -257,10 +278,12 @@ export default function WhyChooseUs({ city = "Delhi", items, hideStats = false }
                 </a>
               </div>
 
-              <p className="text-[11px] text-gray-400 mt-3">
-                Free scalp analysis · Personalized graft count · Transparent
-                pricing · No obligation.
-              </p>
+              {ctaNote !== false && (
+                <p className="text-[11px] text-gray-400 mt-3">
+                  {ctaNote ||
+                    "Free scalp analysis · Personalized graft count · Transparent pricing · No obligation."}
+                </p>
+              )}
             </div>
           </div>
         </div>

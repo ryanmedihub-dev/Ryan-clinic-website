@@ -108,7 +108,7 @@ function buildWhyItems(surgeonName) {
         { title: "100% Doctor-Led Surgery — Never Technicians", body: `This is the most important thing to verify at any Ryan Clinic. Every surgical step — extraction, channel creation, and implantation — is performed personally by a certified hair transplant surgeon. We never hand any part of your surgery to a technician.` },
         { title: "97% Graft Survival Rate", body: "Using the original Choi Pen and a careful graft-preservation protocol, our grafts spend minimal time outside the body. The result is a graft survival rate of 97% — well above the Indian industry average of roughly 60–70%." },
         { title: "Sterile, Surgical-Grade Operating Theatre", body: "Every procedure is performed in a sterile operating theatre with single-use, surgical-grade instruments while following recognised safety standards. Patient safety, hygiene, and precision remain at the heart of every procedure." },
-        { title: "Transparent Pricing & 0% EMI", body: "Your complete cost — based on your exact graft count after a free scalp analysis — is confirmed before you commit. No hidden charges. Hair transplant surgery starts from ₹40,000, with 0% EMI available on 6 and 12-month plans." },
+        { title: "Transparent Pricing & Payment Options", body: "Your complete cost — based on your exact graft count after a free scalp analysis — is confirmed before you commit. No hidden charges. Hair transplant surgery starts from ₹40,000. Contact our team to discuss available payment options." },
         { title: "18-Month Follow-Up Support", body: "Ryan Clinic provides free follow-up consultations for 18 months after your procedure. Our WhatsApp support team is available 7 days a week to answer your questions and monitor progress." },
         { title: "Fastest Recovery — Back to Work in 5–7 Days", body: "Our Sapphire FUE technique creates smaller, more precise recipient channels — resulting in less tissue trauma, less swelling, and faster scalp healing. Most patients return to desk work within 5–7 days." },
         { title: "Completely Pain-Free Procedure", body: "Ryan Clinic's Sapphire FUE uses micro-instruments of just 0.7–0.9mm under premium local anaesthesia. The procedure is virtually pain-free throughout. Most patients watch movies or nap comfortably during the 6–8 hour surgery." },
@@ -125,7 +125,7 @@ function buildQuestionsList(surgeonName) {
         { q: "Which technique do you recommend for me, and why?", ans: "Clinics that push one technique for everyone are prioritizing speed over your optimal outcome.", std: "We evaluate your scalp and offer Sapphire FUE or Turkish Technique Choi Pen based on your graft density needs." },
         { q: "How will you design my hairline for a natural result now and in the future?", ans: "A straight, low hairline looks fake as you age. The surgeon must plan for future natural hair recession.", std: "We build a soft, multi-layered hairline gradient that suits your facial structure for life." },
         { q: "Am I a good candidate, or should I consider medical therapy first?", ans: "Unethical clinics sell surgery to patients with active diffuse thinning or poor donor supply.", std: "We conduct a thorough trichological scalp analysis first and recommend medical management if surgery is premature." },
-        { q: "What's the total per-graft cost, and what does aftercare include?", ans: "Hidden charges for anesthesia, post-op wash kits, or follow-ups create unpleasant surprises.", std: "Transparent written per-graft pricing starting at ₹40,000 with 0% EMI and 18 months free follow-up." },
+        { q: "What's the total per-graft cost, and what does aftercare include?", ans: "Hidden charges for anesthesia, post-op wash kits, or follow-ups create unpleasant surprises.", std: "Transparent written per-graft pricing starting at ₹40,000 with 18 months free follow-up. Ask our team about available payment options." },
     ];
 }
 
@@ -142,7 +142,7 @@ function buildFaqList(surgeonName, cityName) {
         { q: "Who is the hair transplant surgeon at Ryan Clinic?", a: `${surgeonName} is our lead surgeon with extensive experience and thousands of successful hair transplants to their name.` },
         { q: "Is a hair transplant surgeon the same as a dermatologist or plastic surgeon?", a: "A hair transplant surgeon may come from different backgrounds. What matters most is genuine hair-restoration training, real surgical experience, and a portfolio that proves the skill — not one specific specialty." },
         { q: "Can a skilled hair transplant surgeon repair a previous bad transplant?", a: "Often, yes. An experienced surgeon can refine an unnatural hairline, add density, or improve an over-harvested donor area. Revision work demands strong surgical judgement, so it's a good marker of skill." },
-        { q: `How much does a hair transplant surgeon in ${cityName} charge?`, a: `It's priced per graft and depends mainly on graft count and technique. At Ryan Clinic the surgeon provides an exact, transparent quote after a free scalp analysis, starting from ₹40,000, with 0% EMI.` },
+        { q: `How much does a hair transplant surgeon in ${cityName} charge?`, a: `It's priced per graft and depends mainly on graft count and technique. At Ryan Clinic the surgeon provides an exact, transparent quote after a free scalp analysis, starting from ₹40,000. Contact our team to discuss available payment options.` },
         { q: `Where can I meet the hair transplant surgeon in ${cityName}?`, a: `Visit our Ryan Clinic centre in ${cityName} to meet the surgeon in person. Check our clinic location details below for the full address, phone, and opening hours.` },
         { q: "How do I book a consultation with the surgeon?", a: "Call or WhatsApp +91-9911111247, or use the booking form. You'll get a scalp analysis, graft count, and cost breakdown with no obligation." },
     ];
@@ -152,7 +152,7 @@ function buildFaqList(surgeonName, cityName) {
 const surgeonFeatures = [
     { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>, number: "01", title: "Hands-On Mastery", text: "Performs extraction, recipient-site creation, and implantation personally — never delegating surgical steps to technicians at any stage." },
     { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>, number: "02", title: "Aesthetic Judgement", text: "Designs hairlines tailored to your facial structure, age progression, and long-term hair loss pattern for a result that looks natural for life." },
-    { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75" /></svg>, number: "03", title: "Transparent Pricing & 0% EMI", text: "Surgery starts from ₹40,000. Your complete cost is confirmed after free scalp analysis — before you commit. No hidden charges. 0% EMI via HDFC, ICICI & Axis Bank." },
+    { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75" /></svg>, number: "03", title: "Transparent Pricing & Payment Options", text: "Surgery starts from ₹40,000. Your complete cost is confirmed after free scalp analysis — before you commit. No hidden charges. Contact our team to discuss available payment options." },
     { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, number: "04", title: "97% Graft Survival Rate", text: "The original Choi Pen minimises graft time outside the body. Combined with our preservation protocol, Ryan Clinic consistently achieves 97% graft survival — far above the 60–70% industry average." },
     { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" /></svg>, number: "05", title: "Completely Pain-Free Procedure", text: "Sapphire FUE uses micro-instruments of 0.7–0.9mm under premium local anaesthesia. Most patients watch movies or nap during the 6–8 hour surgery. No general anaesthesia. No hospital admission." },
     { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>, number: "06", title: "Back to Work in 5–7 Days", text: "Sapphire blades create smaller, more precise recipient channels — less tissue trauma, less swelling, faster healing. Most patients return to desk work within 5–7 days." },
@@ -264,9 +264,9 @@ export default function SurgeonPageClient({ pageData, slug }) {
 
                         {/* ── Right — Content */}
                         <div className="lg:pl-4">
-                            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-[1.15] tracking-tight mb-5 text-gray-900">
+                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-[1.15] tracking-tight mb-5 text-gray-900">
                                 {pageData?.leadSurgeon?.heading || `Best Hair Transplant Surgeon in ${cityName}`}
-                            </h1>
+                            </h2>
 
                             <p className="text-sm md:text-[15px] leading-relaxed mb-8 text-gray-600 font-normal">
                                 {leadSurgeonDesc}
@@ -1249,7 +1249,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
                             {pageData?.procedures?.heading || `Procedures performed by our hair transplant surgeon in ${cityName}`}
                         </h2>
                         <p className="text-gray-500 text-sm md:text-base leading-relaxed my-6">
-                            {pageData?.procedures?.description || "Free scalp analysis included. Transparent per-graft pricing confirmed after your consultation — before you commit. 0% EMI available."}
+                            {pageData?.procedures?.description || "Free scalp analysis included. Transparent per-graft pricing confirmed after your consultation — before you commit. Ask our team about available payment options."}
                         </p>
                     </div>
 
@@ -1324,7 +1324,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
                                         "Exact graft count recommendation",
                                         "Technique suitability assessment",
                                         "Transparent per-graft cost breakdown",
-                                        "0% EMI options discussed",
+                                        "Payment options can be discussed with our team",
                                     ].map((feat, idx) => (
                                         <div key={idx} className="flex items-start gap-2.5">
                                             <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
@@ -1363,7 +1363,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
 
                                 <div className="mb-6">
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-3xl sm:text-4xl font-bold text-[#D32F2F] leading-none">₹35</span>
+                                        <span className="text-3xl sm:text-4xl font-bold text-[#D32F2F] leading-none">₹40</span>
                                         <span className="text-xs font-semibold text-gray-500">per graft onwards</span>
                                     </div>
                                 </div>
@@ -1375,7 +1375,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
                                         "Custom hairline design",
                                         "Sterile OT suite",
                                         "12–18 month structured follow-up",
-                                        "0% EMI available",
+                                        "Ask our team about payment options",
                                     ].map((feat, idx) => (
                                         <div key={idx} className="flex items-start gap-2.5">
                                             <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
@@ -1406,7 +1406,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
 
                                 <div className="mb-6">
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-3xl sm:text-4xl font-bold text-[#D32F2F] leading-none">₹40</span>
+                                        <span className="text-3xl sm:text-4xl font-bold text-[#D32F2F] leading-none">₹50</span>
                                         <span className="text-xs font-semibold text-gray-500">per graft onwards</span>
                                     </div>
                                 </div>
@@ -1418,7 +1418,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
                                         "Maximum density in single session",
                                         "Doctor-performed end-to-end",
                                         "Structured aftercare included",
-                                        "0% EMI available",
+                                        "Ask our team about payment options",
                                     ].map((feat, idx) => (
                                         <div key={idx} className="flex items-start gap-2.5">
                                             <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
@@ -1442,7 +1442,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
 
                     {/* Bottom Disclaimer Note */}
                     <p className="text-center text-xs text-gray-400 font-medium max-w-3xl mx-auto leading-relaxed">
-                        Prices are per-graft starting rates. Your exact cost depends on graft count determined at consultation. All prices include anaesthesia, OT charges, post-op kit, and first follow-up visit. 0% EMI available on all packages.
+                        Prices are per-graft starting rates. Your exact cost depends on graft count determined at consultation. All prices include anaesthesia, OT charges, post-op kit, and first follow-up visit. Ask our team about available payment options.
                     </p>
 
                 </div>
@@ -1685,7 +1685,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
                                         { num: "97%", label: "Graft Survival Rate" },
                                         { num: "4.9★", label: "Google Rating" },
                                         { num: "5K+", label: "Happy Patients" },
-                                        { num: "0%", label: "EMI Available" },
+                                        { num: "Ask", label: "Payment Options" },
                                     ].map((s) => (
                                         <div key={s.label}>
                                             <p className="text-2xl font-bold text-gray-900">{s.num}</p>

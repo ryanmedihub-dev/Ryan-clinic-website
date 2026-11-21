@@ -1,0 +1,110 @@
+{
+  "_id": "6878d11b2455b84a721e85a3",
+  "bannerData": {
+    "title": "Alopecia Treatment in Delhi",
+    "description": "Get Expert Alopecia Assessment and Personalised Hair Loss Treatment at Ryan Clinic, Delhi. Speak with a clinician to understand your options.",
+    "imageurl": "/uploads/1752747796072-Alopecia Treatment 1.jpg",
+    "imagealt": "Targeted clinical therapy for patchy and diffuse alopecia hair loss"
+  },
+  "benefitsData": {
+    "title": "Understanding the Causes of Alopecia – Why Hair Loss Happens",
+    "description": "Hair loss can be distressing, especially when the cause isn't clear. At Ryan Clinic, we help identify and treat the root causes of alopecia and hair thinning. Common reasons for hair loss in men and women include:",
+    "component": [
+      {
+        "title": "1. Hair Loss Due to Stress",
+        "description": "Telogen effluvium occurs when stress-related hair loss pushes follicles into a resting phase, causing excessive shedding. Managing stress through relaxation and lifestyle changes can support natural hair regrowth.",
+        "icon": "⬤",
+        "_id": "6878d11b2455b84a721e85a4"
+      },
+      {
+        "title": "2. Hormonal Imbalances and Hair Loss:",
+        "description": "Pregnancy, menopause, PCOS, and thyroid disorders can disrupt the hair growth cycle, leading to female pattern baldness or diffuse thinning.",
+        "icon": "⬤",
+        "_id": "6878d11b2455b84a721e85a5"
+      },
+      {
+        "title": "3. Autoimmune Diseases and Alopecia Areata:",
+        "description": "In alopecia areata, the immune system mistakenly attacks hair follicles, causing sudden patchy hair loss.",
+        "icon": "⬤",
+        "_id": "6878d11b2455b84a721e85a6"
+      },
+      {
+        "title": "4. Nutritional Deficiencies and Hair Thinning:",
+        "description": "A lack of essential nutrients like biotin, iron, zinc, and vitamin D can weaken hair and slow hair regrowth.",
+        "icon": "⬤",
+        "_id": "6878d11b2455b84a721e85a7"
+      },
+      {
+        "title": "5. Genetic Hair Loss (Androgenetic Alopecia):",
+        "description": "Male and female pattern baldness is hereditary and the most common cause of permanent hair loss. It often requires treatments like PRP therapy, FUE hair transplants, or laser hair therapy.",
+        "icon": "⬤",
+        "_id": "6878d11b2455b84a721e85a8"
+      }
+    ]
+  },
+  "extraFields": {
+    "detail1": "<p><span style=\"font-size: 19px\">Alopecia in Women</span></p><p>Alopecia in women can be emotionally challenging, often linked to female pattern baldness, telogen effluvium, or traction alopecia. Symptoms typically begin with thinning at the crown, a widening part line, or excessive hair shedding, leading to reduced hair density and brittle strands. At Ryan Clinic in Delhi, we offer advanced hair loss treatments for women, including PRP therapy for hair regrowth, FUE hair transplant, low-level laser therapy (LLLT), and specialized scalp treatments to stimulate follicles and promote natural hair growth. Our personalized approach ensures effective solutions for hair thinning and bald spots, helping women regain their confidence with long-lasting results. If you're experiencing excessive hair fall or baldness, visit Ryan Clinic, the best hair loss treatment center in Delhi, for expert care and customized treatment plans.</p>",
+    "detail2": "<p><span style=\"font-size: 19px\">Hair Loss Due to Stress: Effective Solutions for Regrowth</span></p><p>Stress-related hair loss, also known as telogen effluvium, occurs when prolonged emotional or physical stress pushes hair follicles into a resting phase, leading to excessive hair shedding. While this condition is often temporary, early intervention is crucial. At Ryan Clinic in Delhi, we offer a holistic approach to stress-induced alopecia treatment, including mindfulness techniques, yoga for hair growth, and counseling for stress management. Combined with advanced hair regrowth treatments, such as PRP therapy and scalp rejuvenation, our personalized care helps restore healthy hair growth and prevent further thinning. If you're experiencing stress-related hair loss, visit Ryan Clinic, the best hair loss treatment center in Delhi, for expert guidance and effective solutions</p>"
+  },
+  "faq": [
+    {
+      "question": "What is alopecia, and are there different types?",
+      "answer": "Alopecia is a term for hair loss that can present in several forms. The most common types include alopecia areata (patchy loss from an autoimmune process), androgenetic alopecia (progressive pattern hair loss), telogen effluvium (temporary shedding), and traction alopecia (from sustained tension on hair). The type determines the most appropriate treatment, which is why clinical assessment is the starting point."
+    },
+    {
+      "question": "What lifestyle factors can affect hair health?",
+      "answer": "Nutritional status, stress levels, sleep, scalp hygiene and hairstyling practices can all influence hair health. Deficiencies in iron, zinc, vitamin D or protein have been associated with hair shedding in some individuals. While supporting general health is beneficial, lifestyle measures alone are not a treatment for medical conditions such as alopecia areata or androgenetic alopecia, which require clinical management."
+    },
+    {
+      "question": "What causes hair loss?",
+      "answer": "Hair loss can be caused by genetics, hormonal changes, autoimmune conditions, nutritional deficiencies, certain medications, significant physical or emotional stress, and prolonged scalp tension from hairstyling. Identifying the underlying cause during consultation is important because different causes require different approaches."
+    },
+    {
+      "question": "Can alopecia be treated?",
+      "answer": "Many forms of hair loss respond well to appropriate treatment. Androgenetic alopecia can be managed medically and, in eligible patients, surgically. Telogen effluvium often resolves with time and by addressing the underlying trigger. Alopecia areata is managed through treatments that address the autoimmune response. The right approach depends on your specific diagnosis, which is established through clinical assessment."
+    },
+    {
+      "question": "Does stress cause hair loss?",
+      "answer": "Significant physical or emotional stress can trigger telogen effluvium, a form of temporary increased hair shedding that usually occurs two to three months after the stressful event. In most cases, shedding reduces as the trigger resolves and overall health stabilises. Persistent or progressive hair loss should be assessed clinically to rule out other causes."
+    }
+  ],
+  "metadata": {
+    "pageName": "Alopecia Treatment",
+    "pageType": "treatment",
+    "description": "Explore alopecia treatment options at Ryan Clinic in Delhi. Learn about different types of hair loss, consultation and personalised treatment planning.",
+    "pageurl": "alopecia-treatments",
+    "title": "Alopecia Treatment in Delhi | Ryan Clinic",
+    "overviewData": "<h2>Alopecia Treatment Options at Ryan Clinic, Delhi</h2>\n<p>Alopecia refers to hair loss that can affect the scalp or other areas of the body. It presents across a wide spectrum — from temporary shedding triggered by stress or illness, to progressive hair thinning, to patchy or complete hair loss from autoimmune conditions. At Ryan Clinic in Delhi, alopecia assessment involves identifying the specific type and cause of hair loss before discussing appropriate treatment options.</p>\n<h3>What Is Alopecia?</h3>\n<p>Alopecia is not a single condition. The term encompasses several distinct forms of hair loss with different causes, presentations and treatment pathways:</p>\n<ul>\n<li><strong>Alopecia Areata:</strong> An autoimmune condition in which the immune system affects hair follicles, causing patchy hair loss. Treatment focuses on managing the autoimmune response rather than surgical restoration.</li>\n<li><strong>Androgenetic Alopecia:</strong> Commonly known as male or female pattern hair loss, this form follows a characteristic thinning pattern influenced by genetics and hormonal factors. Medical and surgical options may be applicable depending on the stage and extent of loss.</li>\n<li><strong>Telogen Effluvium:</strong> A temporary increase in hair shedding typically triggered by illness, nutritional deficiency, hormonal change or significant stress. It often resolves once the underlying cause is addressed.</li>\n<li><strong>Traction Alopecia:</strong> Hair loss caused by prolonged tension on hair follicles from hairstyling practices. Early intervention and modification of practices can support recovery.</li>\n</ul>\n<h4>Why an Accurate Diagnosis Matters</h4>\n<p>Not all hair loss is the same, and not all treatments are suitable for every type of alopecia. For example, surgical hair transplantation is not appropriate for active autoimmune alopecia areata. A clinical assessment at Ryan Clinic helps identify the type of hair loss you are experiencing so that the most appropriate options can be discussed for your specific situation.</p>\n<h4>Supportive Lifestyle Measures</h4>\n<p>Maintaining a balanced diet adequate in protein, iron, zinc and vitamins that support general health may contribute to overall hair and scalp condition. Some patients explore topical home-use products such as aloe vera or herbal-derived preparations. These are supportive measures only and are not a substitute for clinical diagnosis and appropriate medical treatment. The clinical team at Ryan Clinic will help distinguish between evidence-based treatment options and general wellness measures during your consultation.</p>",
+    "keywords": [
+      "alopecia-treatment",
+      "hair-loss",
+      "prp-therapy",
+      "hair-regrowth",
+      "hair-transplant"
+    ]
+  },
+  "typesData": {
+    "details": "<h2>Alopecia Treatment Options in Delhi</h2>\n<p>At Ryan Clinic in Delhi, the treatment plan for alopecia is individualised based on the type and severity of hair loss, the patient's overall health and their preferences. The following treatment options may be discussed during your consultation, depending on what is clinically appropriate for your situation.</p>\n\n<h3>1. Medical Treatments</h3>\n<p>Topical and oral medications are used in the management of certain forms of alopecia. These include topical minoxidil for androgenetic alopecia, corticosteroid treatments for alopecia areata and other prescribed agents based on clinical assessment. Any medication is recommended and monitored by the treating clinician.</p>\n\n<h3>2. Platelet-Rich Plasma (PRP) Therapy</h3>\n<p>PRP therapy uses concentrated growth factors derived from the patient's own blood and may be considered as part of a broader hair loss management plan for selected cases. Suitability is assessed individually and PRP is not appropriate for all types of alopecia.</p>\n\n<h3>3. Hair Transplantation (FUE)</h3>\n<p>Follicular Unit Extraction (FUE) hair transplantation may be an option for patients with stable androgenetic alopecia who have adequate donor hair. It is not suitable for active autoimmune alopecia areata or other diffuse active forms of hair loss. Surgical suitability is determined through a comprehensive clinical assessment.</p>\n\n<h3>4. Nutritional and Lifestyle Support</h3>\n<p>Addressing nutritional deficiencies — particularly iron, vitamin D, zinc and protein — through dietary adjustment or supplementation may support overall hair health, particularly in cases of telogen effluvium linked to nutritional causes. These measures are complementary to, not a replacement for, clinical treatment where it is indicated.</p>\n\n<h3>5. Consultation-Based Planning</h3>\n<p>All treatment plans at Ryan Clinic begin with a thorough clinical consultation. This allows the clinical team to understand your individual history, perform an appropriate assessment and recommend only the options that are clinically suitable for your situation.</p>",
+    "images": [
+      {
+        "url": "/uploads/1752747928144-Alopecia Treatment 4.jpg",
+        "alt": "Alopecia treatment results at ryan",
+        "_id": "6a23dab60d021e869fa5b408"
+      },
+      {
+        "url": "/uploads/1752747941419-Alopecia Treatment 2.jpg",
+        "alt": "Hair regrowth treatment at ryan",
+        "_id": "6a23dab60d021e869fa5b409"
+      },
+      {
+        "url": "/uploads/1752747949440-Alopecia Treatment 3.jpg",
+        "alt": "Alopecia areata treatment at ryan",
+        "_id": "6a23dab60d021e869fa5b40a"
+      }
+    ]
+  },
+  "createdAt": "2025-10-16T17:20:52.098Z",
+  "updatedAt": "2026-08-19T05:15:54.500Z",
+  "__v": 1,
+  "pageSections": []
+}

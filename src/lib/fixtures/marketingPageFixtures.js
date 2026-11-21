@@ -122,7 +122,7 @@ export const fueCostFixture = {
   "intro": {
     "badge": "Delhi Pricing Guide 2026",
     "heading": "How much does FUE hair transplant cost in Delhi?",
-    "description": "FUE hair transplant cost in Delhi is charged per graft, so your total depends mainly on how many grafts you need (your degree of hair loss and goals) and the technique (Sapphire FUE and THT (Turkey Hair Transplant) usually cost more than basic FUE). As an indicative guide, FUE is commonly priced at a per-graft rate, with a typical full procedure ranging widely by graft count (from ₹30,000 to ₹1,80,000+). At Ryan Clinic in Pitampura, your exact, all-inclusive FUE hair transplant price in Delhi is confirmed after a clinical scalp assessment, with 0% EMI available. The cheapest quote is rarely the best value — you're paying for graft survival and a natural result.",
+    "description": "FUE hair transplant cost in Delhi is charged per graft, so your total depends mainly on how many grafts you need (your degree of hair loss and goals) and the technique (Sapphire FUE and THT (Turkey Hair Transplant) usually cost more than basic FUE). As an indicative guide, FUE is commonly priced at a per-graft rate, with a typical full procedure ranging widely by graft count (from ₹30,000 to ₹1,80,000+). At Ryan Clinic in Pitampura, your exact, all-inclusive FUE hair transplant price in Delhi is confirmed after a clinical scalp assessment, with flexible payment options available. The cheapest quote is rarely the best value — you're paying for graft survival and a natural result.",
     "buttons": [
       {
         "text": "Calculate Your Graft Cost",
@@ -148,7 +148,7 @@ export const fueCostFixture = {
       },
       {
         "label": "Easy Payment Options",
-        "value": "0% Interest Monthly EMI",
+        "value": "Flexible Monthly Payment Plans",
         "icon": "CreditCard"
       }
     ]
@@ -179,7 +179,7 @@ export const fueCostFixture = {
             "text": "Sterile single-use instruments"
           },
           {
-            "text": "0% Interest EMI available"
+            "text": "Flexible payment options available"
           }
         ],
         "badge": "Transparent Rate",
@@ -202,7 +202,7 @@ export const fueCostFixture = {
             "text": "Doctor-planned hairline geometry"
           },
           {
-            "text": "0% Interest EMI available"
+            "text": "Flexible payment options available"
           }
         ],
         "badge": "Most Popular",
@@ -225,7 +225,7 @@ export const fueCostFixture = {
             "text": "Maximum graft survival & natural angle"
           },
           {
-            "text": "0% Interest EMI available"
+            "text": "Flexible payment options available"
           }
         ],
         "badge": "Advanced Tech",
@@ -576,17 +576,17 @@ export const fueCostFixture = {
       {
         "planTitle": "",
         "exampleText": "",
-        "tagText": "0% Interest"
+        "tagText": "Payment Options"
       },
       {
         "planTitle": "",
         "exampleText": "",
-        "tagText": "0% Interest"
+        "tagText": "Payment Options"
       },
       {
         "planTitle": "",
         "exampleText": "",
-        "tagText": "0% Interest"
+        "tagText": "Payment Options"
       }
     ],
     "areasServed": []
@@ -606,7 +606,7 @@ export const fueCostFixture = {
         "text": "Transparent written quote with zero hidden fees"
       },
       {
-        "text": "0% Interest EMI eligibility check"
+        "text": "Payment options and eligibility guidance"
       }
     ],
     "buttonText": "Book Scalp Consultation",
@@ -624,7 +624,7 @@ export const fueCostFixture = {
     "items": [
       {
         "question": "How much does an FUE hair transplant cost in Delhi?",
-        "answer": "FUE is priced per graft, so your total depends mainly on graft count and technique. Ryan Clinic confirms a transparent, all-inclusive price after a clinical scalp assessment, with 0% EMI available.",
+        "answer": "FUE is priced per graft, so your total depends mainly on graft count and technique. Ryan Clinic confirms a transparent, all-inclusive price after a clinical scalp assessment, with flexible payment options available.",
         "displayOrder": 0,
         "active": true
       },
@@ -678,7 +678,7 @@ export const fueCostFixture = {
       },
       {
         "question": "Do you offer EMI for FUE hair transplant in Delhi?",
-        "answer": "Yes — Ryan Clinic offers 0% EMI options so the cost can be spread over instalments.",
+        "answer": "Yes — Ryan Clinic offers flexible payment and installment options so the cost can be spread over manageable payments.",
         "displayOrder": 0,
         "active": true
       },
@@ -698,7 +698,7 @@ export const fueCostFixture = {
     "faqs": [
       {
         "question": "How much does an FUE hair transplant cost in Delhi?",
-        "answer": "FUE is priced per graft, so your total depends mainly on graft count and technique. Ryan Clinic confirms a transparent, all-inclusive price after a clinical scalp assessment, with 0% EMI available.",
+        "answer": "FUE is priced per graft, so your total depends mainly on graft count and technique. Ryan Clinic confirms a transparent, all-inclusive price after a clinical scalp assessment, with flexible payment options available.",
         "displayOrder": 0,
         "active": true
       },
@@ -752,7 +752,7 @@ export const fueCostFixture = {
       },
       {
         "question": "Do you offer EMI for FUE hair transplant in Delhi?",
-        "answer": "Yes — Ryan Clinic offers 0% EMI options so the cost can be spread over instalments.",
+        "answer": "Yes — Ryan Clinic offers flexible payment and installment options so the cost can be spread over manageable payments.",
         "displayOrder": 0,
         "active": true
       },
@@ -1002,7 +1002,7 @@ export const fueCostFixture = {
       "sectionKey": "why-ryan-worth-it",
       "badge": "Why Choose Ryan Clinic",
       "heading": "Why our FUE hair transplant cost in Delhi is worth it",
-      "description": "• Doctor-led at every step — protecting graft survival and a natural hairline.\n• Sapphire FUE and THT options matched to your case.\n• Transparent, all-inclusive per-graft pricing — no day-of surprises.\n• Sterile facility and structured aftercare/follow-up.\n• 0% EMI available.\n\nHonest note: we've avoided 'cheapest in Delhi' and unverifiable absolutes. For a medical page, transparent, honest cost framing builds trust and ranks better than hype.",
+      "description": "• Doctor-led at every step — protecting graft survival and a natural hairline.\n• Sapphire FUE and THT options matched to your case.\n• Transparent, all-inclusive per-graft pricing — no day-of surprises.\n• Sterile facility and structured aftercare/follow-up.\n• Flexible payment options available.\n\nHonest note: we've avoided 'cheapest in Delhi' and unverifiable absolutes. For a medical page, transparent, honest cost framing builds trust and ranks better than hype.",
       "layout": "checklist",
       "items": [
         {
@@ -1057,7 +1057,7 @@ export const fueCostFixture = {
           "active": true
         },
         {
-          "title": "0% Interest Monthly EMI",
+          "title": "Flexible Monthly Payment Plans",
           "subtitle": "Easy Payment",
           "description": "Flexible monthly installment options to make treatment accessible.",
           "value": "",
@@ -1416,7 +1416,7 @@ export const prpCostFixture = {
       "layout": "checklist",
       "items": [
         {
-          "title": "0% Interest EMI Plans",
+          "title": "Flexible Payment Plans",
           "subtitle": "Subject to Verification",
           "description": "Option to split structured PRP packages into monthly installments. Subject to partner approval.",
           "value": "",
@@ -1491,7 +1491,7 @@ export const prpCostFixture = {
       "sectionKey": "prp-with-transplant",
       "badge": "Combined Treatment",
       "heading": "Cost of PRP with a Hair Transplant in Delhi",
-      "description": "PRP may be considered as part of a doctor-guided post-transplant recovery protocol to support graft recovery and nourish newly transplanted follicles.\n\nExplore full surgical graft options: <a href='/cost/hair-transplant-cost-in-delhi'>hair transplant cost in Delhi</a>.",
+      "description": "PRP may be considered as part of a doctor-guided post-transplant recovery protocol to support graft recovery and nourish newly transplanted follicles.\n\nExplore full surgical graft options: <a href='/cost/fue-hair-transplant-cost-in-delhi'>hair transplant cost in Delhi</a>.",
       "layout": "highlight",
       "items": [
         {
@@ -1623,7 +1623,7 @@ export const prpCostFixture = {
       },
       {
         "question": "Can I combine PRP with a hair transplant in Delhi?",
-        "answer": "<p>Yes. PRP may be used as part of a doctor-guided post-transplant recovery protocol. For detailed surgical pricing, see our <a href=\"/cost/hair-transplant-cost-in-delhi\">hair transplant cost in Delhi</a> page.</p>",
+        "answer": "<p>Yes. PRP may be used as part of a doctor-guided post-transplant recovery protocol. For detailed surgical pricing, see our <a href=\"/cost/fue-hair-transplant-cost-in-delhi\">hair transplant cost in Delhi</a> page.</p>",
         "displayOrder": 0,
         "active": true
       },
@@ -1649,7 +1649,7 @@ export const prpCostFixture = {
     "faqs": [
       {
         "question": "How much does PRP hair treatment cost in Delhi?",
-        "answer": "<p>Indicative market rates for PRP hair treatment in Delhi typically range from ₹3,000 to ₹15,000 per session depending on kit quality, doctor involvement, and clinic setup. At Ryan Clinic, your exact treatment plan and pricing are confirmed after doctor consultation.</p>",
+        "answer": "<p>Indicative market rates for PRP hair treatment in Delhi typically range from ₹3,000 to ₹15,000 per session depending on kit quality, doctor involvement, and clinic setup. At Ryan Clinic, a Single PRP Session is ₹3,000, the Initial PRP Course is ₹6,000, and Maintenance is free of cost. Clinical consultation confirms your exact treatment course.</p>",
         "displayOrder": 0,
         "active": true
       },
@@ -1697,7 +1697,7 @@ export const prpCostFixture = {
       },
       {
         "question": "Can I combine PRP with a hair transplant in Delhi?",
-        "answer": "<p>Yes. PRP may be used as part of a doctor-guided post-transplant recovery protocol. For detailed surgical pricing, see our <a href=\"/cost/hair-transplant-cost-in-delhi\">hair transplant cost in Delhi</a> page.</p>",
+        "answer": "<p>Yes. PRP may be used as part of a doctor-guided post-transplant recovery protocol. For detailed surgical pricing, see our <a href=\"/cost/fue-hair-transplant-cost-in-delhi\">hair transplant cost in Delhi</a> page.</p>",
         "displayOrder": 0,
         "active": true
       },
@@ -2320,7 +2320,7 @@ export const mainDelhiServiceFixture = {
   "faq": [
     {
       "question": "1. What is the cost of a hair transplant in Delhi?",
-      "answer": "Hair transplant cost in Delhi at Ryan Clinic is calculated per graft based on your required graft count and chosen technique (such as Basic FUE starting from ₹30 per graft, Sapphire FUE from ₹40 per graft, or THT from ₹50 per graft). Your transparent, personalized cost estimate is confirmed after a clinical consultation, and 0% EMI options are available.",
+      "answer": "Hair transplant cost in Delhi at Ryan Clinic is calculated per graft based on your required graft count and chosen technique (such as Basic FUE starting from ₹30 per graft, Sapphire FUE from ₹40 per graft, or THT from ₹50 per graft). Your transparent, personalized cost estimate is confirmed after a clinical consultation, and flexible payment options are available.",
       "_id": "6a1ecd9431f142ef05edb3a6"
     },
     {
@@ -2330,7 +2330,7 @@ export const mainDelhiServiceFixture = {
     },
     {
       "question": "3. Is EMI available for a hair transplant in Delhi?",
-      "answer": "Yes. Ryan Clinic offers 0% EMI on 6 and 12-month plans via leading banks, so you can spread the cost of your hair transplant in Delhi without interest. Your exact EMI is based on your confirmed graft count.",
+      "answer": "Yes. Ryan Clinic offers flexible payment and installment options so you can spread the cost of your hair transplant in Delhi over time. Contact our team to discuss available plans and eligibility.",
       "_id": "6a1ecd9431f142ef05edb3a8"
     },
     {
@@ -2425,7 +2425,7 @@ export const mainDelhiServiceFixture = {
     "description": "Doctor-led hair restoration in Delhi at Ryan Clinic — Sapphire FUE technique, 97% graft survival. Clinical consultation: +91-9911111247.",
     "pageurl": "hair-transplant-in-delhi",
     "title": "Hair Transplant in Delhi | Sapphire FUE & 97% Graft Survival | Ryan Clinic",
-    "overviewData": "<h2 style=\"line-height:1.2\">Hair Transplant in Delhi     <span style=\"color:#D32F2F\">       — At a Glance</span></h2><p style=\"line-height:1.8\">    A hair transplant in Delhi at Ryan Clinic uses Turkey's Sapphire FUE technique to move your own DHT-resistant follicles into thinning areas for permanent, natural results. It's doctor-performed, virtually painless, done under local anaesthesia in a single 6–8 hour session, with most patients back to desk work in 5–7 days.</p><p style=\"line-height: 1.8\"><br></p><table> <tbody> <tr> <th> <div>            Details        </div> </th> <th> <div>            Information        </div> </th> </tr> <tr> <td> <div> <strong>Technique</strong> </div> </td> <td> <div>            Turkey Sapphire FUE (Original Choi Pen)        </div> </td> </tr> <tr> <td> <div> <strong>Performed By</strong> </div> </td> <td> <div>            Doctor-Led Procedure &amp; Surgical Oversight        </div> </td> </tr> <tr> <td> <div> <strong>Graft Survival</strong> </div> </td> <td> <div>            97%        </div> </td> </tr> <tr> <td> <div> <strong>Cost</strong> </div> </td> <td> <div>            Per-Graft Pricing (From ₹30/graft depending on technique)        </div> </td> </tr> <tr> <td> <div> <strong>Procedure Time</strong> </div> </td> <td> <div>            6–8 Hours (Day Procedure)        </div> </td> </tr> <tr> <td> <div> <strong>Back To Work</strong> </div> </td> <td> <div>            5–7 Days        </div> </td> </tr> <tr> <td> <div> <strong>Final Results</strong> </div> </td> <td> <div>            12–18 Months        </div> </td> </tr> <tr> <td> <div> <strong>Permanence</strong> </div> </td> <td> <div>            Permanent (DHT-Resistant Follicles)        </div> </td> </tr> <tr> <td> <div> <strong>EMI</strong> </div> </td> <td> <div>            0% EMI on 6 &amp; 12 Month Plans        </div> </td> </tr> <tr> <td> <div> <strong>Location</strong> </div> </td> <td> <div>            Pitampura, North Delhi (Serving Delhi NCR)        </div> </td> </tr> </tbody></table>",
+    "overviewData": "<h2 style=\"line-height:1.2\">Hair Transplant in Delhi     <span style=\"color:#D32F2F\">       — At a Glance</span></h2><p style=\"line-height:1.8\">    A hair transplant in Delhi at Ryan Clinic uses Turkey's Sapphire FUE technique to move your own DHT-resistant follicles into thinning areas for permanent, natural results. It's doctor-performed, virtually painless, done under local anaesthesia in a single 6–8 hour session, with most patients back to desk work in 5–7 days.</p><p style=\"line-height: 1.8\"><br></p><table> <tbody> <tr> <th> <div>            Details        </div> </th> <th> <div>            Information        </div> </th> </tr> <tr> <td> <div> <strong>Technique</strong> </div> </td> <td> <div>            Turkey Sapphire FUE (Original Choi Pen)        </div> </td> </tr> <tr> <td> <div> <strong>Performed By</strong> </div> </td> <td> <div>            Doctor-Led Procedure &amp; Surgical Oversight        </div> </td> </tr> <tr> <td> <div> <strong>Graft Survival</strong> </div> </td> <td> <div>            97%        </div> </td> </tr> <tr> <td> <div> <strong>Cost</strong> </div> </td> <td> <div>            Per-Graft Pricing (From ₹30/graft depending on technique)        </div> </td> </tr> <tr> <td> <div> <strong>Procedure Time</strong> </div> </td> <td> <div>            6–8 Hours (Day Procedure)        </div> </td> </tr> <tr> <td> <div> <strong>Back To Work</strong> </div> </td> <td> <div>            5–7 Days        </div> </td> </tr> <tr> <td> <div> <strong>Final Results</strong> </div> </td> <td> <div>            12–18 Months        </div> </td> </tr> <tr> <td> <div> <strong>Permanence</strong> </div> </td> <td> <div>            Permanent (DHT-Resistant Follicles)        </div> </td> </tr> <tr> <td> <div> <strong>EMI</strong> </div> </td> <td> <div>            Flexible Payment Options Available        </div> </td> </tr> <tr> <td> <div> <strong>Location</strong> </div> </td> <td> <div>            Pitampura, North Delhi (Serving Delhi NCR)        </div> </td> </tr> </tbody></table>",
     "keywords": [
       "hair transplant in delhi",
       "best hair transplant in delhi",

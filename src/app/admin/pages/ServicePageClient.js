@@ -12,6 +12,7 @@ import {
   Search,
   FileText,
   Copy,
+  Trash2,
 } from "lucide-react";
 
 function useToast() {
@@ -50,6 +51,8 @@ export default function ServicePageClient({ initialServices = [] }) {
   const [search, setSearch] = useState("");
   const [duplicatingId, setDuplicatingId] = useState(null);
   const [confirmDuplicateService, setConfirmDuplicateService] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
+  const [confirmDeleteService, setConfirmDeleteService] = useState(null);
 
   const filtered = services.filter((s) => {
     const q = search.toLowerCase();
@@ -85,6 +88,31 @@ export default function ServicePageClient({ initialServices = [] }) {
     }
   };
 
+  const handleDelete = async (service) => {
+    if (!service) return;
+    setDeletingId(service._id);
+    try {
+      const res = await fetch("/api/service/delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ _id: service._id }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        toast.success("Deleted", "Service page deleted successfully.");
+        setConfirmDeleteService(null);
+        setServices((prev) => prev.filter((s) => s._id !== service._id));
+      } else {
+        toast.error("Delete Failed", data.message || "Failed to delete service page.");
+      }
+    } catch (err) {
+      console.error("Delete error:", err);
+      toast.error("Error", "Server error while deleting service page.");
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
       <ToastContainer toasts={toast.toasts} removeToast={toast.remove} />
@@ -117,6 +145,50 @@ export default function ServicePageClient({ initialServices = [] }) {
                   className="flex-1 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-sm font-semibold transition-colors disabled:opacity-60 cursor-pointer"
                 >
                   {duplicatingId === confirmDuplicateService._id ? "Duplicating…" : "Duplicate"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {confirmDeleteService && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full border border-gray-200">
+            <div className="flex flex-col items-center text-center gap-4">
+              <div className="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center">
+                <Trash2 className="w-7 h-7 text-red-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">Delete Service Page?</h3>
+                <p className="text-sm text-gray-500 mt-1">
+                  You are about to permanently delete{" "}
+                  <span className="font-semibold text-gray-700">
+                    &ldquo;{confirmDeleteService.metadata?.title || confirmDeleteService.metadata?.pageName || "Untitled"}&rdquo;
+                  </span>
+                  {confirmDeleteService.metadata?.pageurl && (
+                    <>
+                      {" "}(<span className="font-mono text-xs text-gray-600">/{confirmDeleteService.metadata.pageurl}</span>)
+                    </>
+                  )}
+                  . This action cannot be undone.
+                </p>
+              </div>
+              <div className="flex gap-3 w-full mt-2">
+                <button
+                  onClick={() => setConfirmDeleteService(null)}
+                  disabled={deletingId === confirmDeleteService._id}
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-60 cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => handleDelete(confirmDeleteService)}
+                  disabled={deletingId === confirmDeleteService._id}
+                  className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-sm font-semibold transition-colors disabled:opacity-60 cursor-pointer"
+                >
+                  {deletingId === confirmDeleteService._id ? "Deleting…" : "Delete"}
                 </button>
               </div>
             </div>
@@ -230,6 +302,15 @@ export default function ServicePageClient({ initialServices = [] }) {
                               <Copy className="w-3.5 h-3.5" />
                               {duplicatingId === service._id ? "…" : "Duplicate"}
                             </button>
+                            <button
+                              onClick={() => setConfirmDeleteService(service)}
+                              disabled={deletingId === service._id}
+                              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 text-xs font-semibold transition-colors disabled:opacity-50 cursor-pointer"
+                              title="Delete page"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                              {deletingId === service._id ? "…" : "Delete"}
+                            </button>
                           </div>
                         </td>
                       </tr>
@@ -279,6 +360,13 @@ export default function ServicePageClient({ initialServices = [] }) {
                           className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-semibold transition-colors disabled:opacity-50 cursor-pointer"
                         >
                           <Copy className="w-3.5 h-3.5" /> Duplicate
+                        </button>
+                        <button
+                          onClick={() => setConfirmDeleteService(service)}
+                          disabled={deletingId === service._id}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 text-xs font-semibold transition-colors disabled:opacity-50 cursor-pointer"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" /> {deletingId === service._id ? "…" : "Delete"}
                         </button>
                       </div>
                     </div>

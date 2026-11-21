@@ -212,6 +212,10 @@ export async function generateMetadata({ params }) {
     return {
       title: "Doctor Not Found | Ryan Clinic",
       description: "The requested doctor profile could not be found.",
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 

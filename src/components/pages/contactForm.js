@@ -131,6 +131,10 @@ export default function ContactForm({ plain = false, showHeader = true }) {
               <SelectItem value="consultation">Free Consultation</SelectItem>
               <SelectItem value="hair-transplant">Hair Transplant</SelectItem>
               <SelectItem value="beard-transplant">Beard Transplant</SelectItem>
+              <SelectItem value="eyebrow-transplant">Eyebrow Transplant</SelectItem>
+              <SelectItem value="chemical-skin-peels">Chemical Skin Peels</SelectItem>
+              <SelectItem value="prp-treatment">PRP Treatment</SelectItem>
+              <SelectItem value="alopecia-treatments">Alopecia Treatment</SelectItem>
               <SelectItem value="pricing">Pricing Information</SelectItem>
             </SelectContent>
           </Select>

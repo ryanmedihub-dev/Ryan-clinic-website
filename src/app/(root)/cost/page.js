@@ -10,7 +10,7 @@ import { AlertTriangle, ArrowRight, ShieldCheck, MapPin, Phone, CheckCircle2, Sp
 export const metadata = {
   title: "Hair Transplant Cost – City-Wise Pricing Guide | Ryan Clinic",
   description:
-    "Compare hair transplant cost across Delhi, Mumbai & other cities. Per-graft pricing from ₹40, 0% EMI, doctor-led Sapphire FUE & Turkish Technique. Get your free scalp analysis today.",
+    "Compare hair transplant cost across Delhi, Mumbai & other cities. Per-graft pricing from ₹40, flexible payment options, doctor-led Sapphire FUE & Turkish Technique. Get your free scalp analysis today.",
   keywords: [
     "hair transplant cost",
     "hair transplant price india",
@@ -25,13 +25,66 @@ export const metadata = {
   openGraph: {
     title: "Hair Transplant Cost – City-Wise Pricing Guide | Ryan Clinic",
     description:
-      "Compare hair transplant cost across cities. Per-graft pricing from ₹40, 0% EMI, doctor-led procedures.",
+      "Compare hair transplant cost across cities. Per-graft pricing from ₹40, flexible payment options, doctor-led procedures.",
     url: "https://www.clinicryan.com/cost",
     siteName: "Ryan Clinic",
     locale: "en_IN",
     type: "website",
   },
 };
+
+/* ─── Reliable City Mapping & Helpers ───────────────────────────────────── */
+
+const KNOWN_CITIES = [
+  { key: "delhi", name: "Delhi" },
+  { key: "gurgaon", name: "Gurgaon" },
+  { key: "gurugram", name: "Gurgaon" },
+  { key: "mumbai", name: "Mumbai" },
+  { key: "hyderabad", name: "Hyderabad" },
+  { key: "bangalore", name: "Bangalore" },
+  { key: "bengaluru", name: "Bangalore" },
+  { key: "ahmedabad", name: "Ahmedabad" },
+  { key: "pune", name: "Pune" },
+  { key: "kolkata", name: "Kolkata" },
+  { key: "chennai", name: "Chennai" },
+  { key: "lucknow", name: "Lucknow" },
+  { key: "patna", name: "Patna" },
+  { key: "jammu", name: "Jammu" },
+  { key: "noida", name: "Noida" },
+  { key: "bhopal", name: "Bhopal" },
+  { key: "indore", name: "Indore" },
+  { key: "chandigarh", name: "Chandigarh" },
+  { key: "ranchi", name: "Ranchi" },
+  { key: "dehradun", name: "Dehradun" },
+  { key: "jaipur", name: "Jaipur" },
+  { key: "nagpur", name: "Nagpur" },
+];
+
+function getCityFromSlug(rawSlug) {
+  if (!rawSlug || typeof rawSlug !== "string") return null;
+  const s = rawSlug.toLowerCase().trim().replace(/^\/+/, "").replace(/^cost\//, "");
+  for (const item of KNOWN_CITIES) {
+    const regex = new RegExp(`-in-${item.key}(?:-copy(-\\d+)?)?$`, "i");
+    if (regex.test(s)) {
+      return item.name;
+    }
+  }
+  return null;
+}
+
+function hasConflictingCity(text, targetCity) {
+  if (!text || !targetCity || typeof text !== "string") return false;
+  const lower = text.toLowerCase();
+  for (const item of KNOWN_CITIES) {
+    if (item.name.toLowerCase() !== targetCity.toLowerCase()) {
+      const regex = new RegExp(`\\b${item.key}\\b`, "i");
+      if (regex.test(lower)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
 
 /* ─── Data Fetching ──────────────────────────────────────────────────────── */
 
@@ -41,11 +94,16 @@ async function getAllCostPages() {
     const pages = await CostPage.find({
       "settings.status": "published",
       "settings.isDeleted": { $ne: true },
+      slug: { $not: /-copy(-\d+)?$/i },
     })
       .sort({ "settings.displayOrder": 1, createdAt: -1 })
-      .select("title slug hero.pricingLine hero.stats seo.metaDescription services.cards settings intro.badge")
+      .select("title slug pageType hero.pricingLine hero.stats seo.metaDescription services.cards settings intro.badge")
       .lean();
-    return JSON.parse(JSON.stringify(pages));
+    return JSON.parse(
+      JSON.stringify(
+        pages.filter((p) => p?.slug && !/-copy(-\d+)?$/i.test(p.slug))
+      )
+    );
   } catch (error) {
     console.error("Failed to fetch cost pages:", error);
     return [];
@@ -88,7 +146,7 @@ export default async function CostIndexPage() {
       <PageBanner
         breadcrumb="Hair Transplant Cost"
         title="Hair Transplant Cost Guide & City Pricing"
-        description="Transparent Per-Graft Pricing · 0% Interest EMI · Doctor-Led Sapphire FUE & Turkish Technique · Free Scalp Analysis"
+        description="Transparent Per-Graft Pricing · Contact our team to ask about available payment options · Doctor-Led Sapphire FUE & Turkish Technique · Free Scalp Analysis"
         bgImage="/uploads/1752667815707-fue-banner_ro9ae6.webp"
         alt="Hair transplant cost guide — Ryan Clinic pricing"
       />
@@ -119,8 +177,47 @@ export default async function CostIndexPage() {
               cityPages.map((page) => {
                 const cleanSlug = (page.slug || "").replace(/^\/+/, "").replace(/^cost\//, "");
                 const targetHref = `/cost/${cleanSlug}`;
-                const displayTag = page.intro?.badge || page.location || page.title?.replace(/^Hair Transplant Cost (in|for)\s+/i, "") || "Branch Clinic";
+
+                const slugCity = getCityFromSlug(cleanSlug);
+                const displayTag = slugCity || page.intro?.badge || page.location || page.title?.replace(/^Hair Transplant Cost (in|for)\s+/i, "") || "Branch Clinic";
                 const displayBadge = page.badge || (page.settings?.featured ? "Popular" : null);
+
+                const slugLower = (page.slug || "").toLowerCase();
+                const titleLower = (page.title || "").toLowerCase();
+                const pageTypeLower = (page.pageType || "").toLowerCase();
+
+                const isPRP =
+                  pageTypeLower === "prp" ||
+                  slugLower.includes("prp") ||
+                  titleLower.includes("prp");
+
+                const isTransplant =
+                  !isPRP &&
+                  (pageTypeLower === "hair-transplant" ||
+                    pageTypeLower === "transplant" ||
+                    slugLower.includes("transplant") ||
+                    slugLower.includes("fue") ||
+                    titleLower.includes("transplant") ||
+                    titleLower.includes("fue"));
+
+                const hasTitleConflict = slugCity && hasConflictingCity(page.title, slugCity);
+                const cardTitle = hasTitleConflict
+                  ? (isPRP ? `PRP Hair Treatment Cost in ${slugCity}` : `Hair Transplant Cost in ${slugCity}`)
+                  : page.title;
+
+                const hasPricingConflict = slugCity && hasConflictingCity(page.hero?.pricingLine, slugCity);
+                const cardPricingLine = hasPricingConflict
+                  ? (isPRP
+                      ? "Doctor-Led PRP Treatment · Transparent Session Pricing"
+                      : "Transparent Per-Graft Pricing · Doctor-Led Procedures")
+                  : page.hero?.pricingLine;
+
+                const hasDescConflict = slugCity && hasConflictingCity(page.seo?.metaDescription, slugCity);
+                const cardDescription = hasDescConflict
+                  ? (isPRP
+                      ? "Transparent, doctor-led PRP treatment pricing — per-session and structured package options with medical scalp analysis."
+                      : "Transparent, doctor-led hair transplant pricing — per-graft rates, Sapphire FUE technique, and customized graft planning.")
+                  : page.seo?.metaDescription;
 
                 return (
                   <Link
@@ -144,38 +241,60 @@ export default async function CostIndexPage() {
 
                       {/* Card Title */}
                       <h3 className="text-xl font-bold font-serif text-gray-900 group-hover:text-[#e30a17] transition-colors mb-2">
-                        {page.title}
+                        {cardTitle}
                       </h3>
 
                       {/* Pricing Line */}
-                      {page.hero?.pricingLine && (
+                      {cardPricingLine && (
                         <p className="text-xs font-semibold text-gray-700 bg-[#FAF6F3] p-2.5 rounded-xl border border-gray-100 mb-3">
-                          {page.hero.pricingLine}
+                          {cardPricingLine}
                         </p>
                       )}
 
                       {/* Description */}
-                      {page.seo?.metaDescription && (
+                      {cardDescription && (
                         <p className="text-gray-500 text-xs leading-relaxed line-clamp-3 mb-5 font-sans">
-                          {page.seo.metaDescription}
+                          {cardDescription}
                         </p>
                       )}
 
                       {/* Key features checklist */}
-                      <div className="space-y-1.5 mb-6 text-xs text-gray-600 font-medium">
-                        <div className="flex items-center gap-2">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                          <span>Doctor-Led Sapphire FUE &amp; Turkish Technique</span>
+                      {isTransplant && (
+                        <div className="space-y-1.5 mb-6 text-xs text-gray-600 font-medium">
+                          <div className="flex items-center gap-2">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                            <span>Doctor-Led Sapphire FUE &amp; Turkish Technique</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                            <span>Contact our team to ask about available payment options</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                            <span>Free Scalp Analysis &amp; Graft Audit</span>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                          <span>0% Interest EMI Available</span>
+                      )}
+                      {isPRP && (
+                        <div className="space-y-1.5 mb-6 text-xs text-gray-600 font-medium">
+                          <div className="flex items-center gap-2">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                            <span>Doctor Consultation &amp; Scalp Assessment</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                            <span>Contact our team to ask about available payment options</span>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                          <span>Free Scalp Analysis &amp; Graft Audit</span>
+                      )}
+                      {!isTransplant && !isPRP && (
+                        <div className="space-y-1.5 mb-6 text-xs text-gray-600 font-medium">
+                          <div className="flex items-center gap-2">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                            <span>Contact our team to ask about available payment options</span>
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
 
                     {/* Card Footer Button */}
@@ -206,7 +325,7 @@ export default async function CostIndexPage() {
               Hair Transplant Cost <span className="italic text-[#e30a17]">in India</span>
             </h2>
             <p className="text-gray-500 text-xs sm:text-sm md:text-base leading-relaxed mt-3 max-w-4xl font-sans">
-              Hair transplant cost at Ryan Clinic starts from ₹40,000 and typically ranges up to ₹3,50,000, depending on graft count and technique (about ₹40–₹120 per graft for doctor-led Sapphire FUE). Your exact cost is confirmed after a free scalp analysis. 0% EMI is available.
+              Hair transplant cost at Ryan Clinic starts from ₹40,000 and typically ranges up to ₹3,50,000, depending on graft count and technique (about ₹40–₹120 per graft for doctor-led Sapphire FUE). Your exact cost is confirmed after a free scalp analysis. Contact our team to ask about available payment options.
             </p>
           </div>
 
@@ -245,16 +364,26 @@ export default async function CostIndexPage() {
                     Add-on Treatment
                   </p>
                   <h3 className="font-serif italic font-bold text-gray-900 text-xl sm:text-2xl">
-                    PRP Therapy per Session
+                    PRP Therapy with Hair Transplant
                   </h3>
+                  <p className="text-xs sm:text-sm text-gray-500 mt-1 font-sans">
+                    Ask our team about PRP add-on pricing. For standalone session details, explore our{" "}
+                    <Link
+                      href="/cost/prp-hair-treatment-cost-in-delhi"
+                      className="text-[#e30a17] underline hover:text-red-700 font-medium"
+                    >
+                      dedicated PRP cost guide
+                    </Link>
+                    .
+                  </p>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="text-left sm:text-right">
-                    <p className="font-bold text-amber-900 text-xl sm:text-2xl">
-                      Rs. 8,000/-
+                    <p className="font-bold text-amber-900 text-base sm:text-lg">
+                      Pricing on Request
                     </p>
-                    <p className="text-xs text-gray-400 font-normal">
-                      from Rs. 4,000/-
+                    <p className="text-xs text-gray-500 font-normal">
+                      Ask our team about PRP add-on pricing
                     </p>
                   </div>
                   <span className="inline-flex items-center gap-1.5 bg-[#F2E8E0] px-3 py-1 rounded-full text-xs text-gray-600 font-medium shrink-0">
@@ -324,7 +453,7 @@ export default async function CostIndexPage() {
               {/* Trust stats */}
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { n: "15+", l: "Years Doctor Care" },
+                  { n: "15+", l: "Years Surgeon Experience" },
                   { n: "10,000+", l: "Surgeries Done" },
                   { n: "97%", l: "Graft Survival Rate" },
                   { n: "4.9 ★", l: "Google Patient Rating" },

@@ -224,13 +224,13 @@ export default function PRPPageClient() {
 
             <div className="bg-[#FAF9F6] border border-gray-200 rounded-2xl p-5 text-center hover:border-[#D32F2F]/40 transition-all">
               <span className="text-3xl font-extrabold text-[#D32F2F] block mb-1">
-                0% EMI
+                Ask
               </span>
               <span className="text-xs font-semibold text-gray-700 uppercase tracking-wider block">
-                Flexible Plans
+                Payment Options
               </span>
               <span className="text-[11px] text-gray-500 mt-1 block">
-                Easy monthly payments
+                Discuss with our team
               </span>
             </div>
           </div>
@@ -1327,7 +1327,7 @@ export default function PRPPageClient() {
                 <h3 className="text-xl font-bold text-gray-900 mt-4 mb-2">Individual Session</h3>
                 <p className="text-xs text-gray-600 mb-6">Ideal for periodic maintenance or single booster treatment.</p>
                 <div className="text-3xl font-extrabold text-[#D32F2F] mb-6">
-                  Transparent Quote
+                  ₹3,000
                 </div>
               </div>
               <a
@@ -1336,7 +1336,7 @@ export default function PRPPageClient() {
                 rel="noopener noreferrer"
                 className="w-full bg-[#D32F2F] hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider py-3.5 rounded-xl transition-all block text-center"
               >
-                Get Per-Session Price →
+                Book Single Session →
               </a>
             </div>
 
@@ -1352,7 +1352,7 @@ export default function PRPPageClient() {
                 <h3 className="text-xl font-bold text-gray-900 mt-4 mb-2">Multi-Session Package</h3>
                 <p className="text-xs text-gray-600 mb-6">Discounted package rate for complete initial treatment course.</p>
                 <div className="text-3xl font-extrabold text-[#D32F2F] mb-6">
-                  Package Discount
+                  ₹6,000
                 </div>
               </div>
               <a
@@ -1361,20 +1361,20 @@ export default function PRPPageClient() {
                 rel="noopener noreferrer"
                 className="w-full bg-[#D32F2F] hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider py-3.5 rounded-xl transition-all block text-center"
               >
-                Get Package Discount →
+                Book Package Course →
               </a>
             </div>
 
-            {/* EMI card */}
+            {/* Payment options card */}
             <div className="bg-white border border-gray-200 rounded-3xl p-8 shadow-sm text-center flex flex-col justify-between">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-                  0% EMI Financing
+                  Payment Options
                 </span>
-                <h3 className="text-xl font-bold text-gray-900 mt-4 mb-2">Easy Installments</h3>
-                <p className="text-xs text-gray-600 mb-6">0% interest monthly payment options available on packages.</p>
+                <h3 className="text-xl font-bold text-gray-900 mt-4 mb-2">Discuss Payment Plans</h3>
+                <p className="text-xs text-gray-600 mb-6">Ask our team about available payment options for your PRP package.</p>
                 <div className="text-3xl font-extrabold text-gray-900 mb-6">
-                  0% Interest
+                  Ask Team
                 </div>
               </div>
               <a
@@ -1383,7 +1383,7 @@ export default function PRPPageClient() {
                 rel="noopener noreferrer"
                 className="w-full bg-gray-900 hover:bg-gray-800 text-white font-bold text-xs uppercase tracking-wider py-3.5 rounded-xl transition-all block text-center"
               >
-                Check EMI Eligibility →
+                Ask About Payment Options →
               </a>
             </div>
           </div>
@@ -1445,7 +1445,7 @@ export default function PRPPageClient() {
               <div className="text-2xl mb-3">🏷️</div>
               <h3 className="font-bold text-gray-900 text-base mb-2">Transparent Pricing</h3>
               <p className="text-xs text-gray-600 leading-relaxed">
-                Clear pricing quotes with 0% EMI available. Centres in Delhi (Pitampura), Mumbai, and Hyderabad.
+                Clear pricing quotes with flexible payment options available. Centres in Delhi (Pitampura), Mumbai, and Hyderabad.
               </p>
             </div>
           </div>

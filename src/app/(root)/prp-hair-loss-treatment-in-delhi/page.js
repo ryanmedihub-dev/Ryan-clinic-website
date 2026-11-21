@@ -135,7 +135,7 @@ export default function PRPHairLossTreatmentDelhiPage() {
         name: "How much does PRP hair loss treatment cost in Delhi?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "It's usually priced per session, often with package discounts for a course. Your total depends on the number of sessions. Ryan Clinic gives a transparent plan and cost after assessment.",
+          text: "At Ryan Clinic Delhi, a Single PRP Session is ₹3,000, the Initial PRP Course is ₹6,000, and Maintenance is free of cost. Your exact treatment plan is confirmed after clinical consultation.",
         },
       },
       {

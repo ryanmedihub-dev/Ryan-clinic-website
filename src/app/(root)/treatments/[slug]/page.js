@@ -6,6 +6,28 @@ import HairFallPageClient from "./HairFallPageClient";
 
 export const dynamic = "force-dynamic";
 
+// Ensure canonical URL always uses the trusted /treatments/${slug} path.
+// Rejects external origins, cross-namespace paths, draft -copy slugs, and malformed URLs.
+function getTreatmentCanonicalUrl(rawCanonical, slug) {
+  const fallbackUrl = `https://www.clinicryan.com/treatments/${slug}`;
+  if (typeof rawCanonical === "string") {
+    try {
+      const parsed = new URL(rawCanonical.trim());
+      const normalizedPath = parsed.pathname.replace(/\/+$/, "");
+      if (
+        parsed.origin === "https://www.clinicryan.com" &&
+        normalizedPath === `/treatments/${slug}` &&
+        !/-copy(-\d+)?$/i.test(normalizedPath)
+      ) {
+        return `https://www.clinicryan.com${normalizedPath}`;
+      }
+    } catch {
+      // Invalid URL format falls back safely
+    }
+  }
+  return fallbackUrl;
+}
+
 const fetchTreatmentPage = cache(async (slug) => {
   try {
     await DBConnection();
@@ -29,11 +51,15 @@ export async function generateMetadata({ params }) {
     return {
       title: "Treatment | Ryan Clinic",
       description: "Diagnosis-first hair treatment care at Ryan Clinic.",
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 
   const seo = page.seo ?? {};
-  const pageUrl = `https://www.clinicryan.com/treatments/${slug}/`;
+  const canonicalUrl = getTreatmentCanonicalUrl(seo.canonicalUrl, slug);
 
   // keywords is stored as a comma-separated string in the schema
   const keywordsArr = seo.keywords
@@ -51,16 +77,25 @@ export async function generateMetadata({ params }) {
   const ogImageUrl = seo.openGraphImage?.image || "https://www.clinicryan.com/uploads/hairline-banner.webp";
   const ogImageAlt = seo.openGraphImage?.imageAlt || seo.metaTitle || page.pageName;
 
+  const treatmentName =
+    typeof page.pageName === "string" && page.pageName.trim()
+      ? page.pageName.trim()
+      : "Hair Loss Treatment";
+  const metaDescription =
+    (typeof seo.metaDescription === "string" && seo.metaDescription.trim()) ||
+    (typeof page.hero?.description === "string" && page.hero.description.trim()) ||
+    `Learn about ${treatmentName} at Ryan Clinic, including clinical care, treatment planning, and doctor consultations.`;
+
   return {
     title: seo.metaTitle || page.pageName,
-    description: seo.metaDescription || "",
+    description: metaDescription,
     keywords: keywordsArr,
-    alternates: { canonical: seo.canonicalUrl || pageUrl },
+    alternates: { canonical: canonicalUrl },
     robots: robotsMeta,
     openGraph: {
       title: seo.metaTitle || page.pageName,
-      description: seo.metaDescription || "",
-      url: seo.canonicalUrl || pageUrl,
+      description: metaDescription,
+      url: canonicalUrl,
       siteName: "Ryan Clinic",
       locale: "en_IN",
       type: "website",
@@ -76,7 +111,7 @@ export async function generateMetadata({ params }) {
     twitter: {
       card: "summary_large_image",
       title: seo.metaTitle || page.pageName,
-      description: seo.metaDescription || "",
+      description: metaDescription,
       images: [ogImageUrl],
     },
   };
@@ -90,7 +125,7 @@ export default async function TreatmentPage({ params }) {
     notFound();
   }
 
-  const pageUrl = `https://www.clinicryan.com/treatments/${slug}/`;
+  const pageUrl = `https://www.clinicryan.com/treatments/${slug}`;
 
   const faqSchema =
     (page.faq?.faqs ?? []).length > 0

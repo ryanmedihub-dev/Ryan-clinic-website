@@ -73,7 +73,7 @@ export default function GraftTierCards() {
               Graft Packages
             </span>
             <span className="text-gray-600 text-[10px] font-medium px-3 py-1">
-              0% EMI
+              Flexible Payment Plans
             </span>
           </div>
         </div>
@@ -156,7 +156,7 @@ export default function GraftTierCards() {
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="w-4 h-4 rounded-full bg-[#e30a17] flex items-center justify-center shrink-0 text-white text-[9px] font-bold mt-0.5">✓</span>
-                      <span>0% EMI Available</span>
+                      <span>Ask About Payment Options</span>
                     </li>
                   </ul>
                 </div>

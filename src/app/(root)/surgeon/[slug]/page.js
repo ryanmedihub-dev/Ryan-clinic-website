@@ -47,6 +47,23 @@ export async function generateMetadata({ params }) {
     page?.hero?.doctorCard?.image?.url ||
     "https://www.clinicryan.com/uploads/turkey-doctor.jpg";
 
+  const fallbackUrl = `https://www.clinicryan.com/surgeon/${slug}`;
+  let canonicalUrl = fallbackUrl;
+  if (typeof seo.canonical === "string" && !seo.canonical.includes("-copy")) {
+    try {
+      const parsed = new URL(seo.canonical.trim());
+      const normalizedPath = parsed.pathname.replace(/\/+$/, "");
+      if (
+        parsed.origin === "https://www.clinicryan.com" &&
+        normalizedPath === `/surgeon/${slug}`
+      ) {
+        canonicalUrl = `https://www.clinicryan.com${normalizedPath}`;
+      }
+    } catch {
+      // Invalid URL format falls back safely
+    }
+  }
+
   return {
     title:
       seo.metaTitle ||
@@ -58,10 +75,7 @@ export async function generateMetadata({ params }) {
       "Book a free consultation with Ryan Clinic's certified hair transplant surgeon.",
     keywords: seo.keywords || [],
     alternates: {
-      canonical:
-        (seo.canonical && seo.canonical.includes(`/surgeon/${slug}`))
-          ? seo.canonical
-          : `https://www.clinicryan.com/surgeon/${slug}`,
+      canonical: canonicalUrl,
     },
     robots: seo.robots || "index, follow",
     openGraph: {
@@ -73,10 +87,7 @@ export async function generateMetadata({ params }) {
         seo.metaDescription ||
         page?.general?.shortDescription ||
         "",
-      url:
-        (seo.canonical && seo.canonical.includes(`/surgeon/${slug}`))
-          ? seo.canonical
-          : `https://www.clinicryan.com/surgeon/${slug}`,
+      url: canonicalUrl,
       siteName: "Ryan Clinic",
       locale: "en_IN",
       type: "website",

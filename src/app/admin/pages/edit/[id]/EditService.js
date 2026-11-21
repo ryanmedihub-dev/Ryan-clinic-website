@@ -24,6 +24,7 @@ const initialFormState = {
   pageUrl: "",
   bannerTitle: "",
   bannerDescription: "",
+  bannerBadgeText: "",
   bannerImage: "",
   bannerAlt: "",
   overviewContent: "",
@@ -124,6 +125,7 @@ export default function EditService({ initialData }) {
         pageUrl: initialData.metadata?.pageurl || "",
         bannerTitle: initialData.bannerData?.title || "",
         bannerDescription: initialData.bannerData?.description || "",
+        bannerBadgeText: initialData.bannerData?.badgeText || "",
         bannerImage: initialData.bannerData?.imageurl || "",
         bannerAlt: initialData.bannerData?.imagealt || "", // Fixed: imagealt instead of imageAlt
         overviewContent: initialData.metadata?.overviewData || "",
@@ -803,6 +805,21 @@ export default function EditService({ initialData }) {
                   placeholder="Banner Description"
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                 />
+              </div>
+              <div className="lg:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Banner Badge Text (Optional)
+                </label>
+                <input
+                  name="bannerBadgeText"
+                  value={formData.bannerBadgeText || ""}
+                  onChange={handleChange}
+                  placeholder="e.g. Doctor-Led Eyebrow Restoration"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Pill badge text displayed above the banner title. If left blank, uses the service default.
+                </p>
               </div>
               <div className="lg:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">

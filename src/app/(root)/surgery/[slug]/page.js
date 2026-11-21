@@ -8,15 +8,25 @@ import SurgeryPageClient from "@/components/surgery/SurgeryPageClient";
 
 // Ensure canonical URL always uses the /surgery/${slug} architecture and prevents draft/copy URLs
 function getSurgeryCanonicalUrl(rawCanonical, slug) {
+  const fallbackUrl = `https://www.clinicryan.com/surgery/${slug}`;
   if (
-    rawCanonical &&
     typeof rawCanonical === "string" &&
-    rawCanonical.includes("/surgery/") &&
     !/-copy(-\d+)?(\/|$)/i.test(rawCanonical)
   ) {
-    return rawCanonical.trim();
+    try {
+      const parsed = new URL(rawCanonical.trim());
+      const normalizedPath = parsed.pathname.replace(/\/+$/, "");
+      if (
+        parsed.origin === "https://www.clinicryan.com" &&
+        normalizedPath === `/surgery/${slug}`
+      ) {
+        return `https://www.clinicryan.com${normalizedPath}`;
+      }
+    } catch {
+      // Invalid URL format falls back safely
+    }
   }
-  return `https://www.clinicryan.com/surgery/${slug}`;
+  return fallbackUrl;
 }
 
 const getSurgeryPage = cache(async (slug) => {
@@ -39,7 +49,13 @@ export async function generateMetadata({ params }) {
   const page = await getSurgeryPage(slug);
 
   if (!page) {
-    return { title: "Page Not Found" };
+    return {
+      title: "Page Not Found",
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
   }
 
   const seo = page.seo ?? {};
@@ -61,9 +77,18 @@ export async function generateMetadata({ params }) {
     follow: !robotsStr.includes("nofollow"),
   };
 
+  const surgeryName =
+    typeof page.pageName === "string" && page.pageName.trim()
+      ? page.pageName.trim()
+      : "Hair Transplant Surgery";
+  const metaDescription =
+    (typeof seo.metaDescription === "string" && seo.metaDescription.trim()) ||
+    (typeof page.hero?.description === "string" && page.hero.description.trim()) ||
+    `Explore ${surgeryName} at Ryan Clinic. Learn about procedure planning, surgical techniques, and doctor-led care.`;
+
   return {
     title: seo.metaTitle || page.pageName,
-    description: seo.metaDescription || "",
+    description: metaDescription,
     keywords,
     alternates: {
       canonical: canonicalUrl,
@@ -71,7 +96,7 @@ export async function generateMetadata({ params }) {
     robots,
     openGraph: {
       title: seo.metaTitle || page.pageName,
-      description: seo.metaDescription || "",
+      description: metaDescription,
       url: canonicalUrl,
       siteName: "Ryan Clinic",
       locale: "en_IN",
@@ -83,7 +108,7 @@ export async function generateMetadata({ params }) {
     twitter: {
       card: "summary_large_image",
       title: seo.metaTitle || page.pageName,
-      description: seo.metaDescription || "",
+      description: metaDescription,
       images: ogImage ? [ogImage] : [],
     },
   };
@@ -101,7 +126,24 @@ export default async function SurgeryPage({ params }) {
 
   const canonicalUrl = getSurgeryCanonicalUrl(page.seo?.canonicalUrl, slug);
 
-  const cityName = page.city || (page.pageName?.includes("Mumbai") ? "Mumbai" : "Delhi");
+  // Resolve city: prefer verified page.city, then extract from slug/pageName pattern; avoid unsafe default-to-Delhi
+  const cityName = (() => {
+    if (typeof page.city === "string" && page.city.trim()) {
+      return page.city.trim();
+    }
+    const match = slug.match(/(?:in|for)-([a-z]+)/i);
+    if (match) {
+      const citySegment = match[1].toLowerCase();
+      return citySegment.charAt(0).toUpperCase() + citySegment.slice(1);
+    }
+    if (typeof page.pageName === "string") {
+      const pageMatch = page.pageName.match(/\bin\s+([A-Za-z]+)/i);
+      if (pageMatch) {
+        return pageMatch[1];
+      }
+    }
+    return null;
+  })();
 
   const lastModifiedDate = page.updatedAt
     ? new Date(page.updatedAt).toISOString().split("T")[0]
@@ -144,7 +186,8 @@ export default async function SurgeryPage({ params }) {
     "description": "Senior Consultant Plastic & Reconstructive Surgeon specializing in Hair Transplant Surgery."
   };
 
-  const clinicSchema = {
+  // Emit MedicalClinic schema only when a location can be established reliably
+  const clinicSchema = cityName ? {
     "@context": "https://schema.org",
     "@type": "MedicalClinic",
     "name": "Ryan Clinic",
@@ -157,7 +200,7 @@ export default async function SurgeryPage({ params }) {
       "addressLocality": cityName,
       "addressCountry": "IN"
     }
-  };
+  } : null;
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -212,10 +255,12 @@ export default async function SurgeryPage({ params }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(physicianSchema) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(clinicSchema) }}
-      />
+      {clinicSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(clinicSchema) }}
+        />
+      )}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

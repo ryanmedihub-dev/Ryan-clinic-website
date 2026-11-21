@@ -115,11 +115,26 @@ export default function PageBanner({
     "";
 
   const isPrp = pageType === "prp" || (title && title.toLowerCase().includes("prp"));
+  const isEyebrow = pageType === "eyebrow" || (title && title.toLowerCase().includes("eyebrow"));
+  const isPeel = pageType === "peel" || (title && (title.toLowerCase().includes("peel") || title.toLowerCase().includes("chemical")));
+  const isAlopecia = pageType === "alopecia" || (title && title.toLowerCase().includes("alopecia"));
 
   const defaultWaText = isPrp
     ? (cityName
-        ? `Hi, I want a free PRP consultation in ${cityName}`
-        : "Hi, I want a free PRP consultation")
+        ? `Hi, I want a PRP consultation in ${cityName}`
+        : "Hi, I want a PRP consultation")
+    : isEyebrow
+    ? (cityName
+        ? `Hi, I want an eyebrow transplant consultation in ${cityName}`
+        : "Hi, I want an eyebrow transplant consultation")
+    : isPeel
+    ? (cityName
+        ? `Hi, I want a chemical skin peel consultation in ${cityName}`
+        : "Hi, I want a chemical skin peel consultation")
+    : isAlopecia
+    ? (cityName
+        ? `Hi, I want an alopecia consultation in ${cityName}`
+        : "Hi, I want an alopecia consultation")
     : (cityName
         ? `Hi, I want a free hair transplant consultation in ${cityName}`
         : "Hi, I want a free hair transplant consultation");
@@ -128,13 +143,30 @@ export default function PageBanner({
     whatsappUrl ||
     `https://api.whatsapp.com/send?phone=+919217958539&text=${encodeURIComponent(defaultWaText)}`;
 
-  const activeBadgeText =
-    badgeText || (isPrp ? "Doctor-Led PRP Treatment" : "India's Only Turkey Sapphire FUE");
+  const defaultBadgeText = isPrp
+    ? "Doctor-Led PRP Treatment"
+    : isEyebrow
+    ? "Doctor-Led Eyebrow Restoration"
+    : isPeel
+    ? "Clinical Dermatology & Skin Rejuvenation"
+    : isAlopecia
+    ? "Clinical Hair Loss & Alopecia Evaluation"
+    : "India's Only Turkey Sapphire FUE";
+
+  const activeBadgeText = badgeText || defaultBadgeText;
+
+  const defaultAltSuffix = isPeel
+    ? "Ryan Clinic Skin Care"
+    : isEyebrow
+    ? "Ryan Clinic Eyebrow Restoration"
+    : isAlopecia
+    ? "Ryan Clinic Hair Loss Therapy"
+    : "Ryan Clinic Hair Restoration";
 
   const computedAlt =
     imageAlt ||
     alt ||
-    (title ? `${title} — Ryan Clinic Hair Restoration` : "Ryan Clinic Turkey Sapphire FUE Hair Restoration Procedure");
+    (title ? `${title} — ${defaultAltSuffix}` : "Ryan Clinic Procedure");
 
   const bannerImgSrc = getValidImageSrc(bgImage, "/uploads/banner.jpg");
   const isOptimizableImage = canUseNextImageOptimization(bannerImgSrc);

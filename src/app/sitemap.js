@@ -27,7 +27,7 @@
  *   • Hair fall pages (hairfallpages)      — status === "published",
  *                                            excluding -copy slugs.
  *                                            Format matches canonical:
- *                                            /treatments/${slug}/
+ *                                            /treatments/${slug}
  *
  * Adding a new page through the admin panel automatically adds it to the
  * sitemap on the next ISR revalidation (every hour by default).
@@ -70,6 +70,7 @@ const STATIC_PAGES = [
   { url: "/surgeon",                        priority: 0.8, changeFrequency: "weekly",  lastModifiedType: "latest-surgeon" },
   { url: "/surgery",                        priority: 0.8, changeFrequency: "weekly",  lastModifiedType: "latest-surgery" },
   { url: "/cost",                           priority: 0.8, changeFrequency: "weekly",  lastModifiedType: "latest-cost" },
+  { url: "/treatments",                     priority: 0.8, changeFrequency: "weekly",  lastModified: "2026-11-20T10:00:00.000Z" },
   // Legal / policy pages
   { url: "/privacy-policy",                 priority: 0.3, changeFrequency: "yearly",  lastModified: "2026-07-27T08:30:56.000Z" },
   { url: "/terms-and-conditions",           priority: 0.3, changeFrequency: "yearly",  lastModified: "2026-07-10T05:11:52.000Z" },
@@ -292,7 +293,7 @@ async function fetchDoctorPageSlugs() {
 /**
  * Hair fall pages — published and indexable treatment pages.
  * Stored in hairfallpages collection (model HairFallPage).
- * Format matches canonical URL: /treatments/${slug}/ (with trailing slash).
+ * Format matches canonical URL: /treatments/${slug}
  */
 async function fetchHairFallPageSlugs() {
   try {
@@ -308,7 +309,7 @@ async function fetchHairFallPageSlugs() {
       .map((r) => {
         const slug = cleanSlugPath(r.slug, "treatments/");
         return {
-          url: `/treatments/${slug}/`,
+          url: `/treatments/${slug}`,
           lastModified: toDate(r.updatedAt),
           priority: 0.8,
           changeFrequency: "weekly",

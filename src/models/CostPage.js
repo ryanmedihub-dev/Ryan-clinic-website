@@ -639,7 +639,7 @@ const emiPlanSchema = new Schema(
     },
     tagText: {
       type: String,
-      default: "0% Interest",
+      default: "",
       trim: true,
     },
   },
@@ -674,7 +674,7 @@ const priceFactorsSchema = new Schema(
     },
     emiHeading: {
       type: String,
-      default: "0% EMI Available",
+      default: "Payment Options",
       trim: true,
     },
     emiSubheading: {

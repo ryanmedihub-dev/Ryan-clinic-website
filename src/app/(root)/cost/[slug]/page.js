@@ -20,9 +20,60 @@ export const revalidate = 0;
 export const dynamic = "force-dynamic";
 
 /* ═══════════════════════════════════════════════════════════════
-   CITY-SPECIFIC DEFAULTS
+   CITY IDENTIFICATION & SPECIFIC DEFAULTS
    Used as fallbacks when admin hasn't filled visitClinic fields
 ═══════════════════════════════════════════════════════════════ */
+const KNOWN_CITIES = [
+  { key: "delhi", name: "Delhi" },
+  { key: "gurgaon", name: "Gurgaon" },
+  { key: "gurugram", name: "Gurgaon" },
+  { key: "mumbai", name: "Mumbai" },
+  { key: "hyderabad", name: "Hyderabad" },
+  { key: "bangalore", name: "Bangalore" },
+  { key: "bengaluru", name: "Bangalore" },
+  { key: "ahmedabad", name: "Ahmedabad" },
+  { key: "pune", name: "Pune" },
+  { key: "kolkata", name: "Kolkata" },
+  { key: "chennai", name: "Chennai" },
+  { key: "lucknow", name: "Lucknow" },
+  { key: "patna", name: "Patna" },
+  { key: "jammu", name: "Jammu" },
+  { key: "noida", name: "Noida" },
+  { key: "bhopal", name: "Bhopal" },
+  { key: "indore", name: "Indore" },
+  { key: "chandigarh", name: "Chandigarh" },
+  { key: "ranchi", name: "Ranchi" },
+  { key: "dehradun", name: "Dehradun" },
+  { key: "jaipur", name: "Jaipur" },
+  { key: "nagpur", name: "Nagpur" },
+];
+
+function getCityFromSlug(rawSlug) {
+  if (!rawSlug || typeof rawSlug !== "string") return null;
+  const s = rawSlug.toLowerCase().trim().replace(/^\/+/, "").replace(/^cost\//, "");
+  for (const item of KNOWN_CITIES) {
+    const regex = new RegExp(`-in-${item.key}(?:-copy(-\\d+)?)?$`, "i");
+    if (regex.test(s)) {
+      return item.name;
+    }
+  }
+  return null;
+}
+
+function hasConflictingCity(text, targetCity) {
+  if (!text || !targetCity || typeof text !== "string") return false;
+  const lower = text.toLowerCase();
+  for (const item of KNOWN_CITIES) {
+    if (item.name.toLowerCase() !== targetCity.toLowerCase()) {
+      const regex = new RegExp(`\\b${item.key}\\b`, "i");
+      if (regex.test(lower)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 const CITY_DEFAULTS = {
   delhi: {
     badge: "Our Delhi Clinic",
@@ -83,7 +134,9 @@ function getCityDefaults(cityName) {
   if (key.includes("gurgaon") || key.includes("gurugram")) return CITY_DEFAULTS.gurgaon;
   if (key.includes("mumbai")) return CITY_DEFAULTS.mumbai;
   if (key.includes("hyderabad")) return CITY_DEFAULTS.hyderabad;
-  return CITY_DEFAULTS.delhi; // default fallback
+  if (key.includes("delhi") || key.includes("ncr") || key.includes("pitampura")) return CITY_DEFAULTS.delhi;
+  // Non-Delhi cities without verified physical clinic defaults must NOT fall back to Delhi
+  return null;
 }
 
 
@@ -123,29 +176,41 @@ export async function generateMetadata({ params }) {
   }
   const seo = page.seo || {};
 
-  // Extract city from page title first (most reliable — e.g. "Cost in Mumbai" → "Mumbai").
-  // visitClinic.city is only a fallback in case the title doesn't contain a city name.
+  const cleanSlug = page.slug ? page.slug.replace(/^\/+/, "").replace(/^cost\//, "") : slug;
+  const slugCity = getCityFromSlug(cleanSlug);
+
+  // Extract city from verified route slug first, then page title, then visitClinic.city
   const city =
+    slugCity ||
     (page.title ? (page.title.match(/in\s+([A-Za-z\s]+?)(?:\s*[-–,|]|$)/i)?.[1]?.trim() || "") : "") ||
     page.visitClinic?.city ||
     "Delhi";
 
   const lowerCity = city.toLowerCase();
-  const defaultGeoRegion = lowerCity.includes("mumbai")
+  const isDelhi = lowerCity.includes("delhi") || lowerCity.includes("ncr") || lowerCity.includes("pitampura");
+  const isMumbai = lowerCity.includes("mumbai");
+  const isHyderabad = lowerCity.includes("hyderabad");
+  const isGurgaon = lowerCity.includes("gurgaon") || lowerCity.includes("gurugram");
+
+  const defaultGeoRegion = isMumbai
     ? "IN-MH"
-    : lowerCity.includes("hyderabad")
+    : isHyderabad
     ? "IN-TG"
-    : "IN-DL";
-  const defaultGeoPosition = lowerCity.includes("mumbai")
+    : isGurgaon
+    ? "IN-HR"
+    : isDelhi
+    ? "IN-DL"
+    : null;
+
+  const defaultGeoPosition = isMumbai
     ? "19.0760;72.8777"
-    : lowerCity.includes("hyderabad")
+    : isHyderabad
     ? "17.4126;78.4477"
-    : "28.6996;77.1308";
-  const defaultIcbm = lowerCity.includes("mumbai")
-    ? "19.0760, 72.8777"
-    : lowerCity.includes("hyderabad")
-    ? "17.4126, 78.4477"
-    : "28.6996, 77.1308";
+    : isGurgaon
+    ? "28.4350;77.0650"
+    : isDelhi
+    ? "28.6996;77.1308"
+    : null;
 
   const otherMeta = {};
   const geoRegion = seo.geoRegion || defaultGeoRegion;
@@ -159,18 +224,38 @@ export async function generateMetadata({ params }) {
   const isPrpMeta = page.pageType === "prp" || (page.title && page.title.toLowerCase().includes("prp"));
   const ogImgUrl = seo.ogImage || (isPrpMeta ? "/uploads/1752746168716-PRP 1.jpg" : "/uploads/1752667815707-fue-banner_ro9ae6.webp");
 
-  const cleanSlug = page.slug ? page.slug.replace(/^\/+/, "").replace(/^cost\//, "") : slug;
-  const canonicalUrl = (seo.canonical && !seo.canonical.includes("-copy") && seo.canonical.includes(cleanSlug))
-    ? seo.canonical
-    : `https://www.clinicryan.com/cost/${cleanSlug}`;
+  const fallbackUrl = `https://www.clinicryan.com/cost/${cleanSlug}`;
+  let canonicalUrl = fallbackUrl;
+  if (typeof seo.canonical === "string" && !seo.canonical.includes("-copy")) {
+    try {
+      const parsed = new URL(seo.canonical.trim());
+      const normalizedPath = parsed.pathname.replace(/\/+$/, "");
+      if (
+        parsed.origin === "https://www.clinicryan.com" &&
+        normalizedPath === `/cost/${cleanSlug}`
+      ) {
+        canonicalUrl = `https://www.clinicryan.com${normalizedPath}`;
+      }
+    } catch {
+      // Invalid URL format falls back safely
+    }
+  }
+
+  const costTitle =
+    (typeof page.title === "string" && page.title.trim()) ||
+    (city ? `Hair Transplant Cost in ${city}` : "Hair Transplant Cost");
+  const metaDescription =
+    (typeof seo.metaDescription === "string" && seo.metaDescription.trim()) ||
+    (typeof page.hero?.pricingLine === "string" && page.hero.pricingLine.trim()) ||
+    `Compare ${costTitle} at Ryan Clinic. Explore procedure planning, transparent cost factors, and doctor-led care.`;
 
   return {
     title: seo.metaTitle || page.title || "Hair Treatment Cost - Ryan Clinic",
-    description: seo.metaDescription || page.hero?.pricingLine || "",
+    description: metaDescription,
     alternates: { canonical: canonicalUrl },
     openGraph: {
       title: seo.metaTitle || page.title,
-      description: seo.metaDescription || page.hero?.pricingLine || "",
+      description: metaDescription,
       url: canonicalUrl,
       siteName: "Ryan Clinic",
       locale: "en_IN",
@@ -180,7 +265,7 @@ export async function generateMetadata({ params }) {
     twitter: {
       card: "summary_large_image",
       title: seo.metaTitle || page.title,
-      description: seo.metaDescription || page.hero?.pricingLine || "",
+      description: metaDescription,
       images: [ogImgUrl],
     },
     robots: seo.robots || "index, follow",
@@ -635,12 +720,25 @@ export default async function DynamicCostPage({ params }) {
     pricingOptions, contentSections, mythsFacts, visitClinic,
   } = page;
 
-  // Extract city from page title first (most reliable — e.g. "Cost in Mumbai" → "Mumbai").
-  // visitClinic.city is only a fallback in case the title doesn't contain a city name.
+  const cleanSlug = page.slug ? page.slug.replace(/^\/+/, "").replace(/^cost\//, "") : slug;
+  const slugCity = getCityFromSlug(cleanSlug);
+
+  // Extract city from verified route slug first, then page title, then visitClinic.city
   const cityName =
+    slugCity ||
     (page.title ? (page.title.match(/in\s+([A-Za-z\s]+?)(?:\s*[-–,|]|$)/i)?.[1]?.trim() || "") : "") ||
     visitClinic?.city ||
     "Delhi";
+
+  const isPrpPage = page.pageType === "prp" || (page.title && page.title.toLowerCase().includes("prp"));
+
+  const hasTitleConflict = slugCity && hasConflictingCity(page.title, slugCity);
+  const displayTitle = hasTitleConflict
+    ? (isPrpPage ? `PRP Hair Treatment Cost in ${cityName}` : `Hair Transplant Cost in ${cityName}`)
+    : (page.title || "Hair Treatment Cost");
+
+  const hasBadgeConflict = slugCity && hasConflictingCity(intro?.badge, slugCity);
+  const displayBadge = (!hasBadgeConflict && intro?.badge) ? intro.badge : `${cityName} Pricing Guide`;
 
   const faqItems = faq?.faqs || faq?.items || [];
 
@@ -653,8 +751,6 @@ export default async function DynamicCostPage({ params }) {
     (includedSection?.disclosures?.length > 0)
       ? includedSection.disclosures
       : (includedSection?.guarantees || []);
-
-  const isPrpPage = page.pageType === "prp" || (page.title && page.title.toLowerCase().includes("prp"));
 
   const faqSchema = faqItems.length > 0 ? {
     "@context": "https://schema.org",
@@ -672,16 +768,16 @@ export default async function DynamicCostPage({ params }) {
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: "https://www.clinicryan.com" },
       { "@type": "ListItem", position: 2, name: "Cost", item: "https://www.clinicryan.com/cost" },
-      { "@type": "ListItem", position: 3, name: page.title, item: `https://www.clinicryan.com/cost/${page.slug}` },
+      { "@type": "ListItem", position: 3, name: displayTitle, item: `https://www.clinicryan.com/cost/${cleanSlug}` },
     ],
   };
 
   const medicalWebPageSchema = {
     "@context": "https://schema.org",
     "@type": "MedicalWebPage",
-    name: page.title,
+    name: displayTitle,
     description: page.seo?.metaDescription || page.hero?.pricingLine || "",
-    url: `https://www.clinicryan.com/cost/${page.slug}`,
+    url: `https://www.clinicryan.com/cost/${cleanSlug}`,
     lastReviewed: page.updatedAt ? new Date(page.updatedAt).toISOString().split("T")[0] : "2026-08-10",
     reviewedBy: {
       "@type": "Person",
@@ -700,25 +796,28 @@ export default async function DynamicCostPage({ params }) {
 
   const cityDefaults = getCityDefaults(cityName);
   const vc = visitClinic || {};
-  const clinicAddressStr = vc.address || cityDefaults.address || "";
+  const clinicAddressStr = vc.address || cityDefaults?.address || "";
   const addressLines = clinicAddressStr.split("\n").map(l => l.trim()).filter(Boolean);
   const postalCodeMatch = clinicAddressStr.match(/\b\d{6}\b/);
-  const postalCode = postalCodeMatch ? postalCodeMatch[0] : (cityName.toLowerCase().includes("mumbai") ? "400053" : cityName.toLowerCase().includes("hyderabad") ? "500034" : "110034");
+  const isCityDelhi = cityName.toLowerCase().includes("delhi") || cityName.toLowerCase().includes("ncr") || cityName.toLowerCase().includes("pitampura");
+  const postalCode = postalCodeMatch
+    ? postalCodeMatch[0]
+    : (cityName.toLowerCase().includes("mumbai") ? "400053" : cityName.toLowerCase().includes("hyderabad") ? "500034" : isCityDelhi ? "110034" : "");
 
-  const medicalClinicSchema = {
+  const medicalClinicSchema = clinicAddressStr ? {
     "@context": "https://schema.org",
     "@type": "MedicalClinic",
     name: `Ryan Clinic ${cityName}`,
-    telephone: vc.phone || cityDefaults.phone || "+91-9911111247",
+    telephone: vc.phone || cityDefaults?.phone || "+91-9911111247",
     url: "https://www.clinicryan.com",
     address: {
       "@type": "PostalAddress",
       streetAddress: addressLines.slice(0, Math.max(1, addressLines.length - 1)).join(", "),
       addressLocality: addressLines.length > 0 ? addressLines[addressLines.length - 1] : cityName,
-      postalCode: postalCode,
+      ...(postalCode ? { postalCode } : {}),
       addressCountry: "IN",
     },
-  };
+  } : null;
 
   const organizationSchema = {
     "@context": "https://schema.org",
@@ -746,17 +845,17 @@ export default async function DynamicCostPage({ params }) {
       {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalWebPageSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalClinicSchema) }} />
+      {medicalClinicSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalClinicSchema) }} />}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
 
       {/* ── Page Banner (Hero Banner) ─────────── */}
       {vis.hero !== false && (
         <PageBanner
-          breadcrumb={hero?.breadcrumbs && hero.breadcrumbs.length > 0 ? hero.breadcrumbs : ["Home", "Cost", page.title]}
-          title={hero?.title || page.title}
+          breadcrumb={hero?.breadcrumbs && hero.breadcrumbs.length > 0 ? hero.breadcrumbs : ["Home", "Cost", displayTitle]}
+          title={hero?.title || displayTitle}
           description={hero?.pricingLine || ""}
           bgImage={hero?.heroImage || (isPrpPage ? "/uploads/1752746168716-PRP 1.jpg" : "/uploads/1752667815707-fue-banner_ro9ae6.webp")}
-          alt={hero?.heroImageAlt || page.title}
+          alt={hero?.heroImageAlt || displayTitle}
           city={cityName}
           pageType={page.pageType}
           stats={hero?.stats && hero.stats.length > 0 ? hero.stats : (isPrpPage ? [
@@ -777,10 +876,10 @@ export default async function DynamicCostPage({ params }) {
 
               {/* Left: Headline + trust + CTA */}
               <div>
-                <EyebrowLabel text={intro?.badge || `${cityName} Pricing Guide`} />
+                <EyebrowLabel text={displayBadge} />
 
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 leading-tight tracking-tight mb-4">
-                  {intro?.heading || page.title}
+                  {intro?.heading || displayTitle}
                 </h2>
 
                 {/* Medical Reviewer Byline */}
@@ -810,7 +909,7 @@ export default async function DynamicCostPage({ params }) {
                   {[
                     isPrpPage ? "Doctor-Led Treatment" : "Doctor-Led Surgery",
                     "Written Cost Guarantee",
-                    "0% EMI Available",
+                    "Flexible Payment Options",
                     "Free Scalp Analysis",
                   ].map((t) => (
                     <span key={t} className="inline-flex items-center gap-1.5 bg-[#FAF6F3] border border-[#E8E4DF] text-[#333] text-[10px] font-semibold px-3 py-1.5 rounded-full shadow-sm">
@@ -825,7 +924,7 @@ export default async function DynamicCostPage({ params }) {
                   <CTAButtons
                     primary={isPrpPage ? "Book Free PRP Assessment" : "Book Free Doctor Assessment"}
                     city={cityName}
-                    title={page.title}
+                    title={displayTitle}
                     pageType={page.pageType}
                   />
                 </div>
@@ -1101,7 +1200,7 @@ export default async function DynamicCostPage({ params }) {
                     Graft Packages
                   </span>
                   <span className="text-gray-600 text-[10px] font-semibold px-3 py-1">
-                    0% EMI Available
+                    Flexible Payment Plans
                   </span>
                 </div>
               </div>
@@ -1303,13 +1402,16 @@ export default async function DynamicCostPage({ params }) {
                   </div>
                   <div>
                     <span className="inline-block bg-[#e30a17] text-white text-[9px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full mb-2 shadow-sm">
-                      {priceFactors.emiBadge || "0% EMI Available"}
+                      {/* Strip unverified "0% interest" wording from dynamic badge value */}
+                      {priceFactors.emiBadge && !/0%\s*interest/i.test(priceFactors.emiBadge)
+                        ? priceFactors.emiBadge
+                        : "Flexible Payment Options"}
                     </span>
                     <h2 className="text-xl sm:text-2xl font-black text-white">
                       {priceFactors.emiHeading || "Flexible Monthly Installment Plans"}
                     </h2>
                     <p className="text-xs sm:text-sm text-white/60 mt-1 max-w-xl font-sans">
-                      Pay in easy monthly installments with zero interest. Confirm eligibility in 2 minutes.
+                      Ask our team about available payment options and eligibility.
                     </p>
                   </div>
                 </div>
@@ -1323,7 +1425,7 @@ export default async function DynamicCostPage({ params }) {
                   rel="noreferrer"
                   className="shrink-0 inline-flex items-center gap-2 bg-white text-[#e30a17] hover:bg-gray-50 font-extrabold text-xs py-3.5 px-7 rounded-2xl shadow-lg transition-all hover:-translate-y-0.5"
                 >
-                  Check EMI Eligibility <ArrowIcon className="w-3.5 h-3.5" />
+                  Check Payment Options <ArrowIcon className="w-3.5 h-3.5" />
                 </a>
               </div>
             )}
@@ -1505,18 +1607,18 @@ export default async function DynamicCostPage({ params }) {
         const cityDefaults = getCityDefaults(cityName);
 
         // Admin data takes priority; city defaults fill any gaps
-        const vcBadge        = vc.badge        || cityDefaults.badge;
+        const vcBadge        = vc.badge        || cityDefaults?.badge || `Ryan Clinic ${cityName}`;
         const vcHeading      = vc.heading      || `Visiting Ryan Clinic in ${cityName}`;
         const vcDescription  = vc.description  || `Visit our modern ${cityName} clinic for a private trichoscopy examination and custom treatment quote.`;
-        const vcAddress      = vc.address      || cityDefaults.address;
-        const vcTimings      = vc.timings      || cityDefaults.timings;
-        const vcLandmark     = vc.landmark     || cityDefaults.landmark;
-        const vcNearbyAreas  = (vc.nearbyAreas && vc.nearbyAreas.length > 0) ? vc.nearbyAreas : cityDefaults.nearbyAreas;
-        const vcPhone        = vc.phone        || cityDefaults.phone;
-        const vcWhatsapp     = vc.whatsapp     || cityDefaults.whatsapp;
-        const vcButtonLink   = vc.buttonLink   || cityDefaults.buttonLink;
-        const vcButtonText   = vc.buttonText   || cityDefaults.buttonText;
-        const vcMapEmbedUrl  = vc.mapEmbedUrl  || cityDefaults.mapEmbedUrl;
+        const vcAddress      = vc.address      || cityDefaults?.address || null;
+        const vcTimings      = vc.timings      || cityDefaults?.timings || null;
+        const vcLandmark     = vc.landmark     || cityDefaults?.landmark || null;
+        const vcNearbyAreas  = (vc.nearbyAreas && vc.nearbyAreas.length > 0) ? vc.nearbyAreas : (cityDefaults?.nearbyAreas || []);
+        const vcPhone        = vc.phone        || cityDefaults?.phone || "+91-9911111247";
+        const vcWhatsapp     = vc.whatsapp     || cityDefaults?.whatsapp || "+919217958539";
+        const vcButtonLink   = vc.buttonLink   || cityDefaults?.buttonLink || null;
+        const vcButtonText   = vc.buttonText   || cityDefaults?.buttonText || `Get Directions to ${cityName} Clinic`;
+        const vcMapEmbedUrl  = vc.mapEmbedUrl  || cityDefaults?.mapEmbedUrl || null;
 
         return (
           <section className="bg-[#FAF6F3] py-16 md:py-20 border-b border-gray-100">
@@ -1541,13 +1643,15 @@ export default async function DynamicCostPage({ params }) {
                         </div>
                       </div>
                     )}
-                    <div className={`flex items-start gap-3 ${vcAddress ? "border-t border-gray-100 pt-4" : ""}`}>
-                      <span className="text-[#e30a17] text-base shrink-0 mt-0.5">🕐</span>
-                      <div>
-                        <p className="text-xs font-extrabold uppercase tracking-wider text-gray-500 mb-1">Clinic Hours</p>
-                        <p className="text-sm font-semibold text-gray-800">{vcTimings}</p>
+                    {vcTimings && (
+                      <div className={`flex items-start gap-3 ${vcAddress ? "border-t border-gray-100 pt-4" : ""}`}>
+                        <span className="text-[#e30a17] text-base shrink-0 mt-0.5">🕐</span>
+                        <div>
+                          <p className="text-xs font-extrabold uppercase tracking-wider text-gray-500 mb-1">Clinic Hours</p>
+                          <p className="text-sm font-semibold text-gray-800">{vcTimings}</p>
+                        </div>
                       </div>
-                    </div>
+                    )}
                     {vcLandmark && (
                       <div className="flex items-start gap-3 border-t border-gray-100 pt-4">
                         <span className="text-[#e30a17] text-base shrink-0 mt-0.5">🏢</span>

@@ -23,7 +23,7 @@ export const revalidate = 0;
 export const metadata = {
   title: "Hair Transplant Surgery – Advanced FUE & Turkish Technique Procedures | Ryan Clinic",
   description:
-    "Explore hair transplant surgery guides across Delhi & branch clinics. Doctor-led Sapphire FUE & Turkish Technique, 97% graft survival, sterile operating theatres, 0% EMI.",
+    "Explore hair transplant surgery guides across Delhi & branch clinics. Doctor-led Sapphire FUE & Turkish Technique, 97% graft survival, sterile operating theatres, flexible payment options available.",
   keywords: [
     "hair transplant surgery",
     "hair transplant surgery in delhi",

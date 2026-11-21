@@ -19,18 +19,18 @@ export default function FAQCostSection({
 
   const defaultDescription = isPrp
     ? `Everything you need to know about PRP hair treatment costs in ${cityName} — session pricing, packages, what affects cost, and maintenance.`
-    : `Everything you need to know about hair transplant costs in ${cityName} — per-graft pricing, EMI plans, procedure breakdown, and hidden charge guarantees.`;
+    : `Everything you need to know about hair transplant costs in ${cityName} — per-graft pricing, payment options, procedure breakdown, and hidden charge guarantees.`;
 
   const defaultStats = isPrp
     ? [
         { num: "Doctor-Led", label: "PRP Treatment" },
         { num: "3–4", label: "Sessions in Course" },
-        { num: "0% EMI", label: "Available Plans" },
+        { num: "Ask Team", label: "Payment Options" },
         { num: "100%", label: "Written Cost Guarantee" },
       ]
     : [
         { num: "₹40–₹120", label: "Per Graft Price" },
-        { num: "0% EMI", label: "Interest-Free Plans" },
+        { num: "Ask Team", label: "Payment Options" },
         { num: "100%", label: "Written Cost Guarantee" },
         { num: "18 Months", label: "Free Follow-Up" },
       ];
