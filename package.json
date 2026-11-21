@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "node -e \"console.log('lint: next lint removed in Next.js 16; no ESLint configured')\"",
     "branch:export": "node --env-file=.env.local scripts/export-branches.mjs",
     "branch:export:all": "node --env-file=.env.local scripts/export-branches.mjs --all",
     "branch:import": "node --env-file=.env.local scripts/seed-page-sections.mjs --from-file",
