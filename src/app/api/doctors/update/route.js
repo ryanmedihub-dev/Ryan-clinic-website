@@ -85,13 +85,13 @@ const handler = async (req) => {
         if (!doctor && currentSlug) {
             doctor = await Doctor.findOne({
                 slug: currentSlug,
-                deletedAt: { $ne: true },
+                $or: [{ deletedAt: null }, { deletedAt: { $exists: false } }],
             });
         }
         if (!doctor && body.slug) {
             doctor = await Doctor.findOne({
                 slug: body.slug,
-                deletedAt: { $ne: true },
+                $or: [{ deletedAt: null }, { deletedAt: { $exists: false } }],
             });
         }
 
@@ -139,7 +139,7 @@ const handler = async (req) => {
             "verification", "comparison", "surgeonProfile", "surgeryTimeline", "consultation",
             "questionsToAsk", "greatDoctorQualities", "warningSigns", "proceduresPerformed",
             "surgicalProcess", "pricing", "visitClinic", "faq", "keyFacts", "medicalReviewer",
-            "doctorCard"
+            "doctorCard", "teamDoctors"
         ].forEach((key) => {
             if (body[key] !== undefined) {
                 doctor.markModified(key);

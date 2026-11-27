@@ -114,7 +114,7 @@ export default function SchemaMarkup() {
             ],
             aggregateRating: {
               "@type": "AggregateRating",
-              ratingValue: "4.9",
+              ratingValue: "4.7",
               reviewCount: "1000",
               bestRating: "5",
               worstRating: "1",
@@ -172,7 +172,7 @@ export default function SchemaMarkup() {
             ],
             aggregateRating: {
               "@type": "AggregateRating",
-              ratingValue: "4.9",
+              ratingValue: "4.7",
               reviewCount: "500",
               bestRating: "5",
               worstRating: "1",
@@ -230,7 +230,7 @@ export default function SchemaMarkup() {
             ],
             aggregateRating: {
               "@type": "AggregateRating",
-              ratingValue: "4.9",
+              ratingValue: "4.7",
               reviewCount: "300",
               bestRating: "5",
               worstRating: "1",

@@ -272,6 +272,7 @@ export default function DoctorPageClient({ data }) {
         nearbyAreas,
         faqs,
         doctor,
+        doctorProfiles,
         whyItMatters,
         surgeonProfile,
         pricingPackages,
@@ -322,6 +323,10 @@ export default function DoctorPageClient({ data }) {
 
     const doctorCity = (doctor.location || doctor.city || "").trim();
     const citySlug = doctorCity.toLowerCase().replace(/\s+/g, "-");
+    const surgeryHref = citySlug && citySlug !== "noida" ? `/surgery/hair-transplant-surgery-in-${citySlug}` : "/surgery";
+    const teamDoctors = Array.isArray(doctor.teamDoctors)
+        ? doctor.teamDoctors.filter((td) => td && td.doctorName?.trim())
+        : [];
     const resolvedNearbyAreas = (visitClinic?.nearbyLocations && visitClinic.nearbyLocations.length > 0)
         ? visitClinic.nearbyLocations
         : (nearbyAreas || []);
@@ -375,15 +380,26 @@ export default function DoctorPageClient({ data }) {
     );
     const leftCardImageAlt = compLeftCard.image?.alt || `${doctor.name || "Doctor"} — doctor-led hair transplant surgeon`;
 
-    const canonicalYearsExp =
-        (typeof doctor.yearsExperience === "number" && doctor.yearsExperience > 0)
+    // Omit unverified template-cloned page-level experience/case counts on combined multi-doctor docs
+    // (where teamDoctors carry no verified individual stats and parent name lists multiple doctors).
+    const hasVerifiedTeamStats = teamDoctors.some(
+        (td) => Number(td?.yearsExperience) > 0 || Number(td?.proceduresCount) > 0
+    );
+    const isCombinedMultiDoctorWithoutVerifiedStats =
+        (String(doctor.name || "").includes("&") || /\band\b/i.test(String(doctor.name || "")) || teamDoctors.length >= 2) &&
+        !hasVerifiedTeamStats;
+
+    const canonicalYearsExp = isCombinedMultiDoctorWithoutVerifiedStats
+        ? 0
+        : (typeof doctor.yearsExperience === "number" && doctor.yearsExperience > 0)
             ? doctor.yearsExperience
             : (typeof doctor.basicInfo?.yearsExperience === "number" && doctor.basicInfo.yearsExperience > 0)
                 ? doctor.basicInfo.yearsExperience
                 : parseDoctorStatNumber(doctor.basicInfo?.yearsExperience || doctor.yearsExperience || doctor.experience || keyFacts?.experience);
 
-    const canonicalCasesDone =
-        (typeof doctor.proceduresCountNum === "number" && doctor.proceduresCountNum > 0)
+    const canonicalCasesDone = isCombinedMultiDoctorWithoutVerifiedStats
+        ? 0
+        : (typeof doctor.proceduresCountNum === "number" && doctor.proceduresCountNum > 0)
             ? doctor.proceduresCountNum
             : (typeof doctor.basicInfo?.proceduresCount === "number" && doctor.basicInfo.proceduresCount > 0)
                 ? doctor.basicInfo.proceduresCount
@@ -423,12 +439,270 @@ export default function DoctorPageClient({ data }) {
     const rightRiskStatLabel = compRightCard.riskStatLabel || "Poor Outcomes";
 
     const comparisonBottomCaption = comparison?.bottomCaption || (`When you choose the best hair transplant doctor${doctorCity ? ` in ${doctorCity}` : ""}, you're really choosing who does each of these steps.`);
+    const resolvedProfiles = Array.isArray(doctorProfiles) ? doctorProfiles : [];
+    const isMultiDoctorPage = resolvedProfiles.length >= 2;
 
     return (
         <>
             {/* ═════════════════════════════════════════════════════════════════
-                SECTION 1 (HERO): Two-Column Surgeon Profile Hero (Image 2 Reference)
+                SECTION 1 (HERO): Single-Doctor Hero OR Multi-Doctor Zigzag Profiles
             ═════════════════════════════════════════════════════════════════ */}
+            {isMultiDoctorPage ? (
+                <section className="bg-[#FAF7F4] py-12 md:py-16 lg:py-20 border-b border-[#EAE5DF] relative" data-multi-doctor="true">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        {/* Page-level SEO H1 & Intro Header */}
+                        <div className="max-w-4xl mb-12 lg:mb-16">
+                            <SectionLabel text={surgeonProfile?.sectionLabel || (doctorCity ? `YOUR DOCTORS IN ${doctorCity.toUpperCase()}` : "YOUR SURGEONS")} />
+
+                            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-[1.18] tracking-tight mt-1 mb-5">
+                                {surgeonProfile?.heading || `Meet Our Hair Transplant Doctors${doctorCity ? ` in ${doctorCity}` : ""}`}
+                            </h1>
+
+                            {medicalReviewer?.isVerified && medicalReviewer?.reviewerName && (
+                                <div className="mb-5 inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs px-3.5 py-1.5 rounded-lg font-sans">
+                                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                                    <span>
+                                        Medically reviewed by <strong>{medicalReviewer.reviewerName}</strong>
+                                        {medicalReviewer.qualifications ? `, ${medicalReviewer.qualifications}` : ""}
+                                        {doctor.updatedAt ? ` · Updated ${new Date(doctor.updatedAt).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" })}` : ""}
+                                    </span>
+                                </div>
+                            )}
+
+                            <p className="text-gray-600 text-sm md:text-base leading-relaxed font-sans">
+                                {surgeonProfile?.about || doctor.about || doctor.bio || (
+                                    <>
+                                        Consult {resolvedProfiles.map((p) => p.qualification ? `${p.name} (${p.qualification})` : p.name).join(" and ")} at Ryan Clinic{doctorCity ? ` in ${doctorCity}` : ""}.
+                                    </>
+                                )}
+                            </p>
+                        </div>
+
+                        {/* Individual Alternating Zigzag Doctor Profile Sections */}
+                        <div className="space-y-16 lg:space-y-20">
+                            {resolvedProfiles.map((profile, idx) => {
+                                const isTextLeft = idx % 2 === 0;
+                                const textOrderClass = isTextLeft ? "order-2 lg:order-1" : "order-2 lg:order-2";
+                                const cardOrderClass = isTextLeft ? "order-1 lg:order-2" : "order-1 lg:order-1";
+                                const profileCity = profile.city || doctorCity;
+                                const profileWa = formatWhatsAppLink(
+                                    profile.whatsappNumber || doctorWhatsApp,
+                                    `Hi, I want a free hair transplant consultation with ${profile.name}${profileCity ? ` in ${profileCity}` : ""}`
+                                );
+                                const profileImg = getValidImageSrc(profile.profileImage, "/uploads/turkey-doctor.jpg");
+                                const profileStatsList = [
+                                    profile.yearsExperience > 0 ? { label: "Exp.", value: `${profile.yearsExperience}+ Yrs`, color: "text-amber-400" } : null,
+                                    profile.proceduresCount > 0 ? { label: "Surgeries", value: `${profile.proceduresCount.toLocaleString()}+`, color: "text-white" } : null,
+                                    profile.successRate ? { label: "Graft Survival", value: profile.successRate, color: "text-emerald-400" } : null,
+                                ].filter(Boolean);
+
+                                return (
+                                    <article
+                                        key={profile.id || `${profile.name}-${idx}`}
+                                        data-doctor-index={idx}
+                                        data-doctor-layout={isTextLeft ? "text-left" : "image-left"}
+                                        className={idx > 0 ? "pt-14 lg:pt-16 border-t border-[#EAE5DF]" : ""}
+                                    >
+                                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+                                            {/* TEXT / PROFILE INFORMATION COLUMN */}
+                                            <div className={`lg:col-span-7 flex flex-col justify-start ${textOrderClass}`}>
+                                                <SectionLabel text={profile.designation || (profileCity ? `DOCTOR IN ${profileCity.toUpperCase()}` : "CLINIC DOCTOR")} />
+
+                                                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-[1.2] tracking-tight mt-1 mb-4">
+                                                    {profile.name}
+                                                    {profile.qualification ? (
+                                                        <span className="block sm:inline text-lg sm:text-2xl font-bold text-[#D32F2F] sm:ml-2.5">
+                                                            ({profile.qualification})
+                                                        </span>
+                                                    ) : null}
+                                                </h2>
+
+                                                {/* Bio */}
+                                                {profile.bioLines?.length > 0 && (
+                                                    <div className="text-gray-600 text-sm md:text-base leading-relaxed mb-6 font-sans space-y-3">
+                                                        {profile.bioLines.map((line, bIdx) => (
+                                                            <p key={bIdx}>{line}</p>
+                                                        ))}
+                                                    </div>
+                                                )}
+
+                                                {/* Qualifications Card */}
+                                                {profile.qualifications?.length > 0 && (
+                                                    <div className="bg-white rounded-2xl border border-[#E8E4DF] p-5 sm:p-6 mb-5 shadow-sm">
+                                                        <h3 className="text-[11px] font-bold text-[#D32F2F] uppercase tracking-widest mb-3 flex items-center gap-2">
+                                                            <GraduationCap className="w-4 h-4" />
+                                                            Qualifications &amp; Credentials
+                                                        </h3>
+                                                        <ul className="space-y-2">
+                                                            {profile.qualifications.map((q, qIdx) => (
+                                                                <li key={qIdx} className="flex items-start gap-2.5 text-sm text-gray-800">
+                                                                    <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                                                                    <span>
+                                                                        <strong className="font-semibold">{q.degree}</strong>
+                                                                        {q.institute ? ` — ${q.institute}` : ""}
+                                                                    </span>
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                )}
+
+                                                {/* Certifications / Achievements Card */}
+                                                {profile.certifications?.length > 0 && (
+                                                    <div className="bg-white rounded-2xl border border-[#E8E4DF] p-5 sm:p-6 mb-5 shadow-sm">
+                                                        <h3 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
+                                                            <Award className="w-4 h-4 text-[#D32F2F]" />
+                                                            Surgical Highlights &amp; Achievements
+                                                        </h3>
+                                                        <div className="space-y-2.5">
+                                                            {profile.certifications.map((cert, cIdx) => (
+                                                                <div key={cIdx} className="flex items-start gap-2.5">
+                                                                    <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                                                                    <p className="text-sm text-gray-700 font-sans leading-relaxed">{cert}</p>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {/* Specializations Pills */}
+                                                {profile.specializations?.length > 0 && (
+                                                    <div className="flex flex-wrap gap-2 mb-6">
+                                                        {profile.specializations.map((spec) => (
+                                                            <span
+                                                                key={spec}
+                                                                className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-white border border-[#E8E4DF] text-gray-700"
+                                                            >
+                                                                {spec}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                )}
+
+                                                {/* Action Row */}
+                                                <div className="flex flex-wrap items-center gap-4 mb-5">
+                                                    <button
+                                                        type="button"
+                                                        className="inline-flex items-center gap-3 bg-[#D32F2F] hover:bg-red-700 text-white font-extrabold py-3.5 px-7 text-sm rounded-full shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
+                                                        onClick={() => {
+                                                            trackCTA({ type: "whatsapp", ctaName: `Doctor Page Schedule Appointment: ${profile.name}`, buttonLocation: "Multi-Doctor Hero Section" });
+                                                            if (typeof window !== "undefined") {
+                                                                window.dispatchEvent(new CustomEvent("open-appointment-popup"));
+                                                            }
+                                                        }}
+                                                    >
+                                                        Schedule with {profile.name} <ArrowRight className="w-4 h-4 bg-white/20 rounded-full p-0.5" />
+                                                    </button>
+
+                                                    {profile.slug && profile.slug !== doctor.slug ? (
+                                                        <a
+                                                            href={`/doctors/${profile.slug}`}
+                                                            className="inline-flex items-center gap-2 text-gray-900 hover:text-[#D32F2F] font-bold text-sm py-2.5 px-3 transition-colors underline underline-offset-4 decoration-red-300"
+                                                        >
+                                                            View Dedicated Profile
+                                                        </a>
+                                                    ) : (
+                                                        <a
+                                                            href={surgeryHref}
+                                                            className="inline-flex items-center gap-3 text-gray-900 hover:text-[#D32F2F] font-bold text-sm py-2.5 px-3 transition-colors group"
+                                                            onClick={() => trackCTA({ type: "navigation", ctaName: "Doctor Page How We Work", buttonLocation: "Multi-Doctor Hero Section" })}
+                                                        >
+                                                            <span className="w-9 h-9 rounded-full bg-[#D32F2F] text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-md shrink-0">
+                                                                <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
+                                                            </span>
+                                                            <span className="underline underline-offset-4 decoration-red-300 font-bold">Surgical Process</span>
+                                                        </a>
+                                                    )}
+                                                </div>
+
+                                                {/* Rating if verified */}
+                                                {profile.rating > 0 ? (
+                                                    <div className="flex items-center gap-3 pt-4 border-t border-[#EAE5DF] max-w-lg">
+                                                        <div className="flex items-center gap-1 text-amber-400">
+                                                            {[...Array(5)].map((_, sIdx) => (
+                                                                <Star key={sIdx} className="w-4 h-4 fill-current" />
+                                                            ))}
+                                                        </div>
+                                                        <p className="text-xs text-gray-700 font-sans">
+                                                            <strong className="text-gray-900 font-bold">{profile.rating}★</strong> Verified Rating
+                                                        </p>
+                                                    </div>
+                                                ) : null}
+                                            </div>
+
+                                            {/* PROFILE PHOTO / CARD COLUMN */}
+                                            <div className={`lg:col-span-5 lg:sticky lg:top-24 self-start ${cardOrderClass}`}>
+                                                <div className="relative rounded-[32px] overflow-hidden bg-gradient-to-b from-gray-900 via-gray-800 to-black border-4 border-white shadow-2xl group">
+                                                    {profile.isVerified && (
+                                                        <div className="absolute top-4 left-4 z-20">
+                                                            <span className="inline-flex items-center gap-1.5 bg-[#D32F2F] text-white text-[10px] font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow-lg">
+                                                                <ShieldCheck className="w-3.5 h-3.5" />
+                                                                Verified Surgeon
+                                                            </span>
+                                                        </div>
+                                                    )}
+
+                                                    <div className="relative w-full h-[400px] sm:h-[460px]">
+                                                        <Image
+                                                            src={profileImg}
+                                                            alt={profile.profileAlt || `${profile.name} — Hair Transplant Doctor`}
+                                                            fill
+                                                            className="object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                                                            unoptimized
+                                                            priority={idx === 0}
+                                                            sizes="(max-width: 1024px) 100vw, 440px"
+                                                        />
+                                                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent" />
+                                                    </div>
+
+                                                    <div className="absolute bottom-0 left-0 right-0 p-6 z-20 text-white space-y-4">
+                                                        <div>
+                                                            <p className="text-2xl font-black leading-tight text-white">
+                                                                {profile.name}
+                                                                {profile.qualification ? (
+                                                                    <span className="block sm:inline text-sm font-bold text-red-200 sm:ml-2">
+                                                                        ({profile.qualification})
+                                                                    </span>
+                                                                ) : null}
+                                                            </p>
+                                                            <p className="text-red-300 text-xs font-semibold mt-0.5">
+                                                                {profile.designation}
+                                                            </p>
+                                                        </div>
+
+                                                        {profileStatsList.length > 0 && (
+                                                            <div className={`grid gap-2 bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/15 ${
+                                                                profileStatsList.length === 1 ? "grid-cols-1" : profileStatsList.length === 2 ? "grid-cols-2" : "grid-cols-3"
+                                                            }`}>
+                                                                {profileStatsList.map((stat, sIdx) => (
+                                                                    <div key={sIdx} className={`text-center ${sIdx > 0 ? "border-l border-white/15" : ""}`}>
+                                                                        <p className={`text-base font-black ${stat.color} leading-none`}>{stat.value}</p>
+                                                                        <p className="text-[9px] text-gray-300 font-bold uppercase tracking-wider mt-1">{stat.label}</p>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        )}
+
+                                                        <a
+                                                            href={profileWa}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="inline-flex items-center justify-center gap-2 w-full bg-[#D32F2F] hover:bg-red-700 text-white font-extrabold py-3 px-5 rounded-xl text-xs transition-all shadow-lg shadow-red-900/40 hover:-translate-y-0.5"
+                                                            onClick={() => trackCTA({ type: "whatsapp", ctaName: `Consult ${profile.name} Directly`, buttonLocation: "Multi-Doctor Hero Card" })}
+                                                        >
+                                                            Consult {profile.name} Directly <ArrowRight className="w-4 h-4" />
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </section>
+            ) : (
             <section className="bg-[#FAF7F4] py-12 md:py-16 lg:py-20 border-b border-[#EAE5DF] relative">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
@@ -458,11 +732,47 @@ export default function DoctorPageClient({ data }) {
                             {/* 3. Existing CMS biography */}
                             <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-6 font-sans">
                                 {surgeonProfile?.about || doctor.about || doctor.bio || (
-                                    <>
-                                        <strong>{doctor.name}</strong> is dedicated to providing exceptional hair restoration and surgical precision you can trust with a patient-first approach{doctorCity ? ` in ${doctorCity}` : ""}.
-                                    </>
+                                    teamDoctors.length > 0 ? (
+                                        <>
+                                            Consult <strong>{teamDoctors.map((td) => td.qualification ? `${td.doctorName} (${td.qualification})` : td.doctorName).join(" and ")}</strong> at Ryan Clinic{doctorCity ? ` in ${doctorCity}` : ""}.
+                                        </>
+                                    ) : (
+                                        <>
+                                            <strong>{doctor.name}</strong> is dedicated to providing exceptional hair restoration and surgical precision you can trust with a patient-first approach{doctorCity ? ` in ${doctorCity}` : ""}.
+                                        </>
+                                    )
                                 )}
                             </p>
+
+                            {/* Team Doctors List (shown when clinic lists multiple doctors, e.g. Noida) */}
+                            {teamDoctors.length > 0 && (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                                    {teamDoctors.map((td, idx) => (
+                                        <div
+                                            key={idx}
+                                            className="bg-white rounded-2xl border border-[#E8E4DF] p-5 shadow-sm flex flex-col justify-between"
+                                        >
+                                            <div>
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <span className="w-2 h-2 rounded-full bg-[#D32F2F]" />
+                                                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#D32F2F]">
+                                                        {td.designation || (doctorCity ? `${doctorCity} Doctor` : "Clinic Doctor")}
+                                                    </span>
+                                                </div>
+                                                <h2 className="text-lg font-extrabold text-gray-900 leading-snug">
+                                                    {td.doctorName}
+                                                    {td.qualification ? ` (${td.qualification})` : ""}
+                                                </h2>
+                                                {td.about && (
+                                                    <p className="text-xs text-gray-600 leading-relaxed mt-2 font-sans">
+                                                        {td.about}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
 
                             {/* 4. Is Hair Transplant Right for You? Card (populated from CMS data when available) */}
                             {surgeonProfile?.philosophy && (
@@ -524,7 +834,7 @@ export default function DoctorPageClient({ data }) {
                                 </button>
 
                                 <a
-                                    href={`/surgery/hair-transplant-surgery-in-${citySlug}`}
+                                    href={surgeryHref}
                                     className="inline-flex items-center gap-3 text-gray-900 hover:text-[#D32F2F] font-bold text-sm py-2.5 px-3 transition-colors group"
                                     onClick={() => trackCTA({ type: "navigation", ctaName: "Doctor Page How We Work", buttonLocation: "Hero Section" })}
                                 >
@@ -635,6 +945,7 @@ export default function DoctorPageClient({ data }) {
                     </div>
                 </div>
             </section>
+            )}
 
             {/* ═════════════════════════════════════════════════════════════════
                 SECTION 1C: Verified Key Facts Grid (Dynamic CMS Data)
@@ -1186,7 +1497,9 @@ export default function DoctorPageClient({ data }) {
                                 <div>
                                     <p className="text-xs font-bold text-gray-900 mb-0.5">Doctor-Led Surgery Standard</p>
                                     <p className="text-xs text-gray-500 font-sans leading-relaxed">
-                                        {doctor.name || "Our lead surgeon"} personally designs every hairline & performs key extraction and incision steps.
+                                        {teamDoctors.length > 0
+                                            ? "Our qualified clinic doctors personally design every hairline & perform key extraction and incision steps."
+                                            : `${doctor.name || "Our lead surgeon"} personally designs every hairline & performs key extraction and incision steps.`}
                                     </p>
                                 </div>
                             </div>
@@ -1224,18 +1537,18 @@ export default function DoctorPageClient({ data }) {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {(proceduresPerformed?.cards?.length > 0 ? proceduresPerformed.cards : [
-                            { title: "Sapphire FUE Hair Transplant", description: "Microscopic Sapphire blades creating dense, natural recipient channels.", url: citySlug ? `/surgery/hair-transplant-surgery-in-${citySlug}` : "/surgery" },
-                            { title: "Turkish Technique (THI) Direct Implantation", description: "Direct Choi implanter pen insertion with zero channel pre-cutting.", url: citySlug ? `/surgery/hair-transplant-surgery-in-${citySlug}` : "/surgery" },
-                            { title: "Hairline Design & Micro-Dense Packing", description: "Artistic single-hair front rank feathering tailored to facial symmetry.", url: citySlug ? `/surgery/hair-transplant-surgery-in-${citySlug}` : "/surgery" },
+                            { title: "Sapphire FUE Hair Transplant", description: "Microscopic Sapphire blades creating dense, natural recipient channels.", url: surgeryHref },
+                            { title: "Turkish Technique (THI) Direct Implantation", description: "Direct Choi implanter pen insertion with zero channel pre-cutting.", url: surgeryHref },
+                            { title: "Hairline Design & Micro-Dense Packing", description: "Artistic single-hair front rank feathering tailored to facial symmetry.", url: surgeryHref },
                             { title: "Beard & Moustache Transplant", description: "Precision facial hair extraction and high-angle density restoration.", url: "/beard-transplant" },
                             { title: "PRP Hair Loss Therapy", description: "Doctor-administered platelet-rich plasma growth factor injections.", url: citySlug === "delhi" ? "/prp-hair-loss-treatment-in-delhi" : "/prp-treatment" },
-                            { title: "Revision Hair Transplant Repair", description: "Correcting pluggy hairlines, misdirected grafts, and depleted donor zones.", url: citySlug ? `/surgery/hair-transplant-surgery-in-${citySlug}` : "/surgery" },
+                            { title: "Revision Hair Transplant Repair", description: "Correcting pluggy hairlines, misdirected grafts, and depleted donor zones.", url: surgeryHref },
                         ]).map((p, i) => {
                             const getProcedureUrl = (title) => {
                                 const t = (title || "").toLowerCase();
                                 if (t.includes("beard")) return "/beard-transplant";
                                 if (t.includes("prp")) return citySlug === "delhi" ? "/prp-hair-loss-treatment-in-delhi" : "/prp-treatment";
-                                return citySlug ? `/surgery/hair-transplant-surgery-in-${citySlug}` : "/surgery";
+                                return surgeryHref;
                             };
                             const href = p.url || getProcedureUrl(p.title);
                             return (
@@ -1425,7 +1738,7 @@ export default function DoctorPageClient({ data }) {
                         </a>
                         <span className="text-gray-300">·</span>
                         <a
-                            href={`/surgery/hair-transplant-surgery-in-${citySlug || "delhi"}`}
+                            href={surgeryHref}
                             className="text-[#D32F2F] hover:text-red-700 font-semibold underline underline-offset-4 decoration-red-200 hover:decoration-[#D32F2F] transition-all"
                         >
                             hair transplant surgery in {doctorCity || "Delhi"}

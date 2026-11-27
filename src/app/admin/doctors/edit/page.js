@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams, useParams } from "next/navigation";
 import AdminHeader from "@/components/admin/adminHeader";
 import ImageUploader from "@/components/admin/ImageUploader";
+import TeamDoctorsEditor from "@/components/admin/TeamDoctorsEditor";
 import ToastContainer from "@/components/admin/Toast";
 
 function useToast() {
@@ -56,7 +57,7 @@ function EditDoctorContent() {
     const fetchDoctor = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/doctors/get?slug=${currentSlug}`);
+        const res = await fetch(`/api/doctors/get?slug=${encodeURIComponent(currentSlug)}&admin=1`);
         const data = await res.json();
 
         if (res.ok && data.doctor) {
@@ -69,8 +70,8 @@ function EditDoctorContent() {
               city: "Delhi",
               yearsExperience: 0,
               proceduresCount: 0,
-              successRate: "97%",
-              rating: 5.0,
+              successRate: "",
+              rating: 0,
               phoneNumber: "+91-9911111247",
               whatsappNumber: "+91-9911111247",
               email: "info@clinicryan.com",
@@ -270,6 +271,7 @@ function EditDoctorContent() {
               specializations: [],
               ...(doc.doctorCard || {}),
             },
+            teamDoctors: Array.isArray(doc.teamDoctors) ? doc.teamDoctors : [],
           });
         } else {
           toast.error("Not Found", data.message || "Failed to load doctor page.");
@@ -412,6 +414,32 @@ function EditDoctorContent() {
 
       <form onSubmit={handleSubmit} className="space-y-6 px-6 w-full" suppressHydrationWarning>
 
+        <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="font-mono text-slate-600">ID: {formData._id}</span>
+            <span className={`px-2 py-0.5 rounded-full font-bold uppercase ${
+              formData.status === "published" ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"
+            }`}>
+              {formData.status || "draft"}
+            </span>
+            {formData.basicInfo?.city && (
+              <span className="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-semibold">
+                Location: {formData.basicInfo.city}
+              </span>
+            )}
+          </div>
+          {formData.slug && (
+            <a
+              href={`/doctors/${formData.slug}`}
+              target="_blank"
+              rel="noreferrer"
+              className="text-blue-700 font-semibold hover:underline"
+            >
+              View Public Page (/doctors/{formData.slug}) ↗
+            </a>
+          )}
+        </div>
+
         {/* 1. GENERAL INFO */}
         <h3 className="text-2xl font-bold underline mb-5">1. General Info</h3>
         <div className="flex gap-6 flex-col md:flex-row">
@@ -545,11 +573,25 @@ function EditDoctorContent() {
             <label className="block text-sm font-semibold text-gray-700">City / Location</label>
             <input
               type="text"
+              list="clinicryan-cities"
               value={formData.basicInfo?.city || ""}
               onChange={(e) => handleNestedChange("basicInfo", "city", e.target.value)}
               className="w-full mt-2 p-2 border rounded-md"
               placeholder="Delhi"
             />
+            <datalist id="clinicryan-cities">
+              {[
+                "Delhi", "Mumbai", "Hyderabad", "Gurgaon", "Noida",
+                "Bangalore", "Chennai", "Pune", "Kolkata", "Ahmedabad",
+                "Lucknow", "Jammu", "Patna", "Bhopal", "Indore",
+                "Chandigarh", "Ranchi", "Dehradun", "Jaipur", "Nagpur",
+              ].map((c) => (
+                <option key={c} value={c} />
+              ))}
+            </datalist>
+            <p className="text-[11px] text-gray-500 mt-1">
+              Doctors sharing the same branch city automatically appear on that city&apos;s page in alternating zigzag order.
+            </p>
           </div>
           <div className="w-full">
             <label className="block text-sm font-semibold text-gray-700">Years Experience</label>
@@ -575,7 +617,7 @@ function EditDoctorContent() {
             <label className="block text-sm font-semibold text-gray-700">Graft Success Rate</label>
             <input
               type="text"
-              value={formData.basicInfo?.successRate || "97%"}
+              value={formData.basicInfo?.successRate ?? ""}
               onChange={(e) => handleNestedChange("basicInfo", "successRate", e.target.value)}
               className="w-full mt-2 p-2 border rounded-md"
               placeholder="e.g. 97%"
@@ -588,8 +630,11 @@ function EditDoctorContent() {
               step="0.1"
               min="0"
               max="5"
-              value={formData.basicInfo?.rating ?? 5.0}
-              onChange={(e) => handleNestedChange("basicInfo", "rating", parseFloat(e.target.value) || 5.0)}
+              value={formData.basicInfo?.rating ?? 0}
+              onChange={(e) => {
+                const parsed = parseFloat(e.target.value);
+                handleNestedChange("basicInfo", "rating", Number.isNaN(parsed) ? 0 : parsed);
+              }}
               className="w-full mt-2 p-2 border rounded-md"
             />
           </div>
@@ -652,6 +697,13 @@ function EditDoctorContent() {
             placeholder="Profile Image Alt Text"
           />
         </div>
+
+        {/* MULTI-DOCTOR TEAM PROFILES */}
+        <TeamDoctorsEditor
+          teamDoctors={formData.teamDoctors}
+          onChange={(next) => handleTopLevelChange("teamDoctors", next)}
+          enableReordering
+        />
 
         {/* 2B. DOCTOR CARD & LANDING PAGE INFO */}
         <div className="mt-10 p-6 bg-amber-50/50 border border-amber-200/80 rounded-2xl shadow-xs">

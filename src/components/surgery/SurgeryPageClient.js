@@ -1336,7 +1336,7 @@ export default function SurgeryPageClient({ data }) {
                     </div>
                   ))
                 ) : (
-                  [["12+", "Years Care"], ["10K+", "Procedures"], ["97%", "Graft Rate"], ["4.9 ★", "Reviews"]].map(([n, l]) => (
+                  [["12+", "Years Care"], ["10K+", "Procedures"], ["97%", "Graft Rate"], ["4.7 ★", "Reviews"]].map(([n, l]) => (
                     <div key={l} className="bg-white/5 border border-white/10 rounded-2xl p-3 text-center">
                       <p className="text-lg font-black text-[#e30a17]">{n}</p>
                       <p className="text-[9px] font-bold text-white/40 mt-0.5 uppercase tracking-wider">{l}</p>

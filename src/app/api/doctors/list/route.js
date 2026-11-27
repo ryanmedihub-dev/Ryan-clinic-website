@@ -47,8 +47,14 @@ const handler = async (req) => {
             filter.status = status;
         }
 
-        if (featured !== null && featured !== undefined) {
+        if (featured !== null && featured !== undefined && featured !== "") {
             filter.featured = featured === "true";
+        }
+
+        const city = searchParams.get("city")?.trim() || "";
+        if (city) {
+            const escapedCity = city.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            filter["basicInfo.city"] = { $regex: new RegExp(`^\\s*${escapedCity}\\s*$`, "i") };
         }
 
         if (search) {

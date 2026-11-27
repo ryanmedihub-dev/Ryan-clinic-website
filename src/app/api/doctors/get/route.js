@@ -9,6 +9,7 @@ const handler = async (req) => {
 
         const id = searchParams.get("id");
         const slug = searchParams.get("slug");
+        const isAdminRequest = searchParams.get("admin") === "1";
 
         if (!id && !slug) {
             return NextResponse.json(
@@ -22,26 +23,37 @@ const handler = async (req) => {
             );
         }
 
-        // Block demo-doctor-* profiles from any public access via this endpoint.
-        // They are CMS-only records used for branch testing.
+        // Block demo-doctor-* profiles from public access; allow authenticated admin CMS reads.
         if (slug && slug.trim().toLowerCase().startsWith("demo-doctor-")) {
-            return NextResponse.json(
-                { success: false, message: "Doctor not found." },
-                { status: 404 }
-            );
+            if (!isAdminRequest) {
+                return NextResponse.json(
+                    { success: false, message: "Doctor not found." },
+                    { status: 404 }
+                );
+            }
+            const authError = await requireAdmin();
+            if (authError) {
+                return NextResponse.json(
+                    { success: false, message: "Doctor not found." },
+                    { status: 404 }
+                );
+            }
         }
 
         let doctor;
+        const notDeletedFilter = {
+            $or: [{ deletedAt: null }, { deletedAt: { $exists: false } }],
+        };
 
         if (id) {
             doctor = await Doctor.findOne({
                 _id: id,
-                deletedAt: null,
+                ...notDeletedFilter,
             }).lean();
         } else {
             doctor = await Doctor.findOne({
                 slug: slug.trim().toLowerCase(),
-                deletedAt: null,
+                ...notDeletedFilter,
             }).lean();
         }
 

@@ -38,6 +38,7 @@ const initialFormState = {
   extraDetail2: "",
   keywords: [],
   assignedDoctor: "",
+  assignedDoctors: [],
   meetYourSurgeon: {
     enabled: true,
     eyebrow: "",
@@ -142,6 +143,18 @@ export default function EditService({ initialData }) {
           initialData.assignedDoctor?._id
             ? String(initialData.assignedDoctor._id)
             : (typeof initialData.assignedDoctor === "string" ? initialData.assignedDoctor : ""),
+        assignedDoctors: (() => {
+          const fromList = Array.isArray(initialData.assignedDoctors)
+            ? initialData.assignedDoctors
+                .map((d) => (d && typeof d === "object" && d._id ? String(d._id) : typeof d === "string" ? d : ""))
+                .filter(Boolean)
+            : [];
+          if (fromList.length > 0) return fromList;
+          const single = initialData.assignedDoctor?._id
+            ? String(initialData.assignedDoctor._id)
+            : (typeof initialData.assignedDoctor === "string" ? initialData.assignedDoctor : "");
+          return single ? [single] : [];
+        })(),
         meetYourSurgeon: {
           enabled: initialData.meetYourSurgeon?.enabled !== false,
           eyebrow: initialData.meetYourSurgeon?.eyebrow || "",
@@ -190,28 +203,77 @@ export default function EditService({ initialData }) {
     );
   }, [dataLoaded, editorReady, formData]);
 
-  const selectedDoctor = React.useMemo(() => {
-    if (!formData.assignedDoctor) return null;
-    const targetId = String(formData.assignedDoctor);
-    const found = doctorsList.find((d) => String(d._id) === targetId);
+  const resolveDoctorObj = React.useCallback((targetId) => {
+    if (!targetId) return null;
+    const idStr = String(targetId);
+    const found = doctorsList.find((d) => String(d._id) === idStr);
     if (found) return found;
+    if (Array.isArray(initialData?.assignedDoctors)) {
+      const fromInitList = initialData.assignedDoctors.find(
+        (d) => d && typeof d === "object" && String(d._id) === idStr
+      );
+      if (fromInitList) return fromInitList;
+    }
     if (
       initialData?.assignedDoctor &&
       typeof initialData.assignedDoctor === "object" &&
-      String(initialData.assignedDoctor._id) === targetId
+      String(initialData.assignedDoctor._id) === idStr
     ) {
       return initialData.assignedDoctor;
     }
     return null;
-  }, [formData.assignedDoctor, doctorsList, initialData]);
+  }, [doctorsList, initialData]);
 
-  const handleDoctorChange = (e) => {
-    const val = e.target.value;
-    setFormData((prev) => ({
-      ...prev,
-      assignedDoctor: val,
-      assignedDoctorId: val,
+  const selectedDoctorsList = React.useMemo(() => {
+    const ids = Array.isArray(formData.assignedDoctors) ? formData.assignedDoctors : [];
+    return ids.map((id) => ({
+      id: String(id),
+      doc: resolveDoctorObj(id),
     }));
+  }, [formData.assignedDoctors, resolveDoctorObj]);
+
+  const handleAddAssignedDoctor = (e) => {
+    const val = e.target.value;
+    if (!val) return;
+    setFormData((prev) => {
+      const curr = Array.isArray(prev.assignedDoctors) ? prev.assignedDoctors : [];
+      if (curr.includes(val)) return prev;
+      const next = [...curr, val];
+      return {
+        ...prev,
+        assignedDoctors: next,
+        assignedDoctor: next[0] || "",
+        assignedDoctorId: next[0] || "",
+      };
+    });
+  };
+
+  const handleRemoveAssignedDoctor = (idToRemove) => {
+    setFormData((prev) => {
+      const curr = Array.isArray(prev.assignedDoctors) ? prev.assignedDoctors : [];
+      const next = curr.filter((id) => String(id) !== String(idToRemove));
+      return {
+        ...prev,
+        assignedDoctors: next,
+        assignedDoctor: next[0] || "",
+        assignedDoctorId: next[0] || "",
+      };
+    });
+  };
+
+  const handleMoveAssignedDoctor = (idx, dir) => {
+    setFormData((prev) => {
+      const curr = Array.isArray(prev.assignedDoctors) ? [...prev.assignedDoctors] : [];
+      const target = idx + dir;
+      if (target < 0 || target >= curr.length) return prev;
+      [curr[idx], curr[target]] = [curr[target], curr[idx]];
+      return {
+        ...prev,
+        assignedDoctors: curr,
+        assignedDoctor: curr[0] || "",
+        assignedDoctorId: curr[0] || "",
+      };
+    });
   };
 
   const handleMeetYourSurgeonChange = (field, val) => {
@@ -374,40 +436,31 @@ export default function EditService({ initialData }) {
       const result = await response.json();
       setServerMsg("Service updated successfully!");
       if (result.service) {
-        if (result.service.assignedDoctor) {
-          const docId = result.service.assignedDoctor._id
-            ? String(result.service.assignedDoctor._id)
-            : String(result.service.assignedDoctor);
-          setFormData((prev) => ({
-            ...prev,
-            assignedDoctor: docId,
-            assignedDoctorId: docId,
-            ...(result.service.pageSections
-              ? {
-                  pageSections: result.service.pageSections,
-                  pageSectionsDirty: false,
-                }
-              : {}),
-          }));
-        } else if (result.service.assignedDoctor === null) {
-          setFormData((prev) => ({
-            ...prev,
-            assignedDoctor: "",
-            assignedDoctorId: "",
-            ...(result.service.pageSections
-              ? {
-                  pageSections: result.service.pageSections,
-                  pageSectionsDirty: false,
-                }
-              : {}),
-          }));
-        } else if (result.service.pageSections) {
-          setFormData((prev) => ({
-            ...prev,
-            pageSections: result.service.pageSections,
-            pageSectionsDirty: false,
-          }));
-        }
+        const syncedList = Array.isArray(result.service.assignedDoctors)
+          ? result.service.assignedDoctors
+              .map((d) => (d && typeof d === "object" && d._id ? String(d._id) : typeof d === "string" ? d : ""))
+              .filter(Boolean)
+          : result.service.assignedDoctor
+            ? [
+                result.service.assignedDoctor._id
+                  ? String(result.service.assignedDoctor._id)
+                  : String(result.service.assignedDoctor),
+              ]
+            : [];
+
+        const primaryId = syncedList[0] || "";
+        setFormData((prev) => ({
+          ...prev,
+          assignedDoctors: syncedList,
+          assignedDoctor: primaryId,
+          assignedDoctorId: primaryId,
+          ...(result.service.pageSections
+            ? {
+                pageSections: result.service.pageSections,
+                pageSectionsDirty: false,
+              }
+            : {}),
+        }));
       }
     } catch (error) {
       console.error("Error updating service:", error);
@@ -607,79 +660,122 @@ export default function EditService({ initialData }) {
               </div>
             </div>
 
-            {/* Assigned Doctor Dropdown */}
+            {/* Assigned Doctors Multi-Select & Ordering */}
             <div className="space-y-5">
               <div>
                 <label className="block text-sm font-semibold text-gray-800 mb-2">
-                  Assigned Doctor <span className="text-xs font-normal text-gray-500">(Source of truth: Doctor CMS)</span>
+                  Assigned Doctors <span className="text-xs font-normal text-gray-500">(Source of truth: Doctor CMS — multiple doctors render in alternating zigzag layout)</span>
                 </label>
                 <select
-                  value={formData.assignedDoctor || ""}
-                  onChange={handleDoctorChange}
+                  value=""
+                  onChange={handleAddAssignedDoctor}
                   disabled={loadingDoctors}
                   className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                 >
-                  <option value="">— None (No Doctor Assigned) —</option>
-                  {formData.assignedDoctor &&
-                    !doctorsList.some((doc) => String(doc._id) === String(formData.assignedDoctor)) && (
-                      <option value={formData.assignedDoctor}>
-                        {selectedDoctor?.basicInfo?.doctorName
-                          ? `${selectedDoctor.basicInfo.doctorName} (Assigned)`
-                          : "Assigned Doctor (Loading...)"}
+                  <option value="">+ Add a Doctor to this Page…</option>
+                  {doctorsList
+                    .filter((doc) => !(formData.assignedDoctors || []).includes(String(doc._id)))
+                    .map((doc) => (
+                      <option key={doc._id} value={doc._id}>
+                        {doc.basicInfo?.doctorName} — {doc.basicInfo?.designation || "Surgeon"} {doc.basicInfo?.city ? `(${doc.basicInfo.city})` : ""}
                       </option>
-                    )}
-                  {doctorsList.map((doc) => (
-                    <option key={doc._id} value={doc._id}>
-                      {doc.basicInfo?.doctorName} — {doc.basicInfo?.designation || "Surgeon"} {doc.basicInfo?.city ? `(${doc.basicInfo.city})` : ""}
-                    </option>
-                  ))}
+                    ))}
                 </select>
                 <p className="mt-1.5 text-xs text-gray-500">
-                  Only published and active doctors from the Doctor CMS are available for assignment.
+                  Add 1 doctor to show a single surgeon profile, or 2+ doctors to show an alternating zigzag layout. Published non-demo doctors matching the branch city are also automatically discovered.
                 </p>
               </div>
 
-              {/* Read-only Doctor Preview */}
-              {selectedDoctor ? (
-                <div className="p-4 rounded-xl border border-blue-100 bg-blue-50/50 flex flex-col sm:flex-row items-start gap-4">
-                  <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-200 shrink-0 border border-gray-200">
-                    <img
-                      src={getValidImageSrc(selectedDoctor.basicInfo?.profileImage, "/uploads/gallery.jpg")}
-                      alt={selectedDoctor.basicInfo?.doctorName || "Doctor"}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <h4 className="font-bold text-gray-900 text-base">
-                        {selectedDoctor.basicInfo?.doctorName}
-                      </h4>
-                      {selectedDoctor.basicInfo?.city && (
-                        <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-blue-100 text-blue-800">
-                          {selectedDoctor.basicInfo.city}
-                        </span>
-                      )}
-                      <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-green-100 text-green-800">
-                        Published
-                      </span>
+              {/* Independent Preview Cards for Assigned Doctors */}
+              {selectedDoctorsList.length > 0 ? (
+                <div className="space-y-3">
+                  {selectedDoctorsList.map(({ id, doc }, idx) => (
+                    <div
+                      key={id}
+                      className="p-4 rounded-xl border border-blue-100 bg-blue-50/50 flex flex-col sm:flex-row items-start sm:items-center gap-4"
+                    >
+                      <div className="w-16 h-16 rounded-xl overflow-hidden bg-gray-200 shrink-0 border border-gray-200">
+                        <img
+                          src={getValidImageSrc(doc?.basicInfo?.profileImage, "/uploads/gallery.jpg")}
+                          alt={doc?.basicInfo?.doctorName || "Doctor"}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-gray-900 text-white">
+                            #{idx + 1}
+                          </span>
+                          <h4 className="font-bold text-gray-900 text-base">
+                            {doc?.basicInfo?.doctorName || `Doctor (${id})`}
+                          </h4>
+                          {doc?.basicInfo?.city && (
+                            <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-blue-100 text-blue-800">
+                              {doc.basicInfo.city}
+                            </span>
+                          )}
+                          <span className={`text-[11px] font-semibold px-2 py-0.5 rounded ${
+                            doc?.status === "published" ? "bg-green-100 text-green-800" : "bg-amber-100 text-amber-800"
+                          }`}>
+                            {doc?.status || "published"}
+                          </span>
+                        </div>
+                        <p className="text-xs text-gray-600 mt-1 font-medium">
+                          {doc?.basicInfo?.designation || "Hair Restoration Specialist"}
+                        </p>
+                        {doc?.doctorCard?.shortQualification && (
+                          <p className="text-xs text-gray-500 mt-0.5">
+                            Qualifications: {doc.doctorCard.shortQualification}
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <button
+                          type="button"
+                          disabled={idx === 0}
+                          onClick={() => handleMoveAssignedDoctor(idx, -1)}
+                          className="px-2 py-1 text-xs font-bold bg-white border border-gray-200 rounded hover:bg-gray-100 disabled:opacity-40 cursor-pointer"
+                          title="Move up"
+                        >
+                          ↑
+                        </button>
+                        <button
+                          type="button"
+                          disabled={idx === selectedDoctorsList.length - 1}
+                          onClick={() => handleMoveAssignedDoctor(idx, 1)}
+                          className="px-2 py-1 text-xs font-bold bg-white border border-gray-200 rounded hover:bg-gray-100 disabled:opacity-40 cursor-pointer"
+                          title="Move down"
+                        >
+                          ↓
+                        </button>
+                        {doc?.slug && (
+                          <a
+                            href={`/admin/doctors/edit/${doc.slug}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="px-2.5 py-1 text-xs font-semibold bg-white border border-blue-200 text-blue-700 rounded hover:bg-blue-50"
+                          >
+                            Edit
+                          </a>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveAssignedDoctor(id)}
+                          className="px-2.5 py-1 text-xs font-semibold bg-red-50 border border-red-200 text-red-700 rounded hover:bg-red-100 cursor-pointer"
+                        >
+                          Remove
+                        </button>
+                      </div>
                     </div>
-                    <p className="text-xs text-gray-600 mt-1 font-medium">
-                      {selectedDoctor.basicInfo?.designation || "Hair Restoration Specialist"}
-                    </p>
-                    {selectedDoctor.doctorCard?.shortQualification && (
-                      <p className="text-xs text-gray-500 mt-0.5">
-                        Qualifications: {selectedDoctor.doctorCard.shortQualification}
-                      </p>
-                    )}
-                    <div className="mt-2 text-xs text-blue-900 bg-blue-100/70 border border-blue-200/60 rounded-md px-3 py-1.5 inline-block">
-                      ℹ️ Doctor information is managed from Doctor CMS. Name, image, qualifications, certifications, and bio cannot be edited here.
-                    </div>
+                  ))}
+                  <div className="text-xs text-blue-900 bg-blue-100/70 border border-blue-200/60 rounded-md px-3 py-1.5 inline-block">
+                    ℹ️ Each doctor&apos;s bio, photo, qualifications, and stats are edited independently in Doctor CMS without affecting other doctors.
                   </div>
                 </div>
               ) : (
                 <div className="p-4 rounded-xl border border-dashed border-gray-300 bg-gray-50/50 text-center">
                   <p className="text-sm text-gray-500">
-                    No doctor is currently assigned. The "Meet Your Surgeon" section will be safely hidden on the public page until a doctor is assigned.
+                    No doctors explicitly assigned. Any published non-demo doctors in this branch&apos;s city will still appear automatically; if none exist, the &quot;Meet Your Surgeon&quot; section is safely hidden.
                   </p>
                 </div>
               )}
@@ -1168,6 +1264,7 @@ export default function EditService({ initialData }) {
             pageType={formData.pageType}
             pageSlug={formData.pageUrl}
             assignedDoctor={formData.assignedDoctor || null}
+            assignedDoctors={formData.assignedDoctors || []}
             onChange={(newSections, isDirty) =>
               setFormData((prev) => ({
                 ...prev,

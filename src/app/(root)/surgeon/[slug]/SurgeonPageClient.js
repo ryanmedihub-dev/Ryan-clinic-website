@@ -1528,13 +1528,13 @@ export default function SurgeonPageClient({ pageData, slug }) {
                                 </h2>
 
                                 <p className="text-sm text-gray-500 leading-relaxed mb-7">
-                                    Turkey's exclusive Sapphire FUE, 5,000+ patients, 4.9★ Google rating. Get your free scalp analysis, exact graft count &amp; cost breakdown — zero obligation.
+                                    Turkey's exclusive Sapphire FUE, 5,000+ patients, 4.7★ Google rating. Get your free scalp analysis, exact graft count &amp; cost breakdown — zero obligation.
                                 </p>
 
                                 <div className="flex gap-6 mb-7">
                                     {[
                                         { num: "15+", label: "Years" },
-                                        { num: "4.9★", label: "Rating" },
+                                        { num: "4.7★", label: "Rating" },
                                     ].map((s) => (
                                         <div key={s.label}>
                                             <p className="text-xl font-bold text-[#D32F2F]">{s.num}</p>
@@ -1683,7 +1683,7 @@ export default function SurgeonPageClient({ pageData, slug }) {
                                 <div className="grid grid-cols-2 gap-5">
                                     {[
                                         { num: "97%", label: "Graft Survival Rate" },
-                                        { num: "4.9★", label: "Google Rating" },
+                                        { num: "4.7★", label: "Google Rating" },
                                         { num: "5K+", label: "Happy Patients" },
                                         { num: "Ask", label: "Payment Options" },
                                     ].map((s) => (

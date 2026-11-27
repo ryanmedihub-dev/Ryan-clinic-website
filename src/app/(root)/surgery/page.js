@@ -180,7 +180,7 @@ export default async function SurgeryIndexPage() {
                   { n: "10,000+", l: "Surgeries Conducted" },
                   { n: "0%", l: "Surgical Infection Rate" },
                   { n: "97%", l: "Graft Survival Rate" },
-                  { n: "4.9 ★", l: "Patient Satisfaction" },
+                  { n: "4.7 ★", l: "Patient Satisfaction" },
                 ].map((s) => (
                   <div key={s.n} className="bg-white rounded-2xl border border-[#F0E6DE] p-4 text-center">
                     <p className="text-xl md:text-2xl font-bold text-[#e30a17] font-serif">{s.n}</p>

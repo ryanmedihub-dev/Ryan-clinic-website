@@ -133,6 +133,7 @@ export default function PageSectionsPanel({
   pageType = "transplant",
   pageSlug = "",
   assignedDoctor = null,
+  assignedDoctors = [],
   onChange,
 }) {
   const [showResetConfirm, setShowResetConfirm] = useState(false);
@@ -154,13 +155,14 @@ export default function PageSectionsPanel({
     return getDefaultSections(effectivePageType);
   }, [hasSavedSections, pageSections, effectivePageType]);
 
-  // Check if ourDoctor is overridden by an assigned doctor
+  // Check if ourDoctor is overridden by assigned doctor(s)
   const isDoctorAssigned = Boolean(
-    assignedDoctor &&
-      assignedDoctor !== "none" &&
-      assignedDoctor !== "" &&
-      assignedDoctor !== "null" &&
-      assignedDoctor !== "undefined"
+    (Array.isArray(assignedDoctors) && assignedDoctors.length > 0) ||
+      (assignedDoctor &&
+        assignedDoctor !== "none" &&
+        assignedDoctor !== "" &&
+        assignedDoctor !== "null" &&
+        assignedDoctor !== "undefined")
   );
 
   // Check if FUE compliance override applies

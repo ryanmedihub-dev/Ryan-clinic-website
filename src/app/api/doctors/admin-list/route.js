@@ -31,10 +31,11 @@ const handler = async (req) => {
         const search = searchParams.get("search")?.trim() || "";
         const status = searchParams.get("status");
         const featured = searchParams.get("featured");
+        const city = searchParams.get("city")?.trim() || "";
 
         // Sorting
-        const sortBy = searchParams.get("sortBy") || "createdAt";
-        const sortOrder = searchParams.get("sortOrder") === "asc" ? 1 : -1;
+        const sortBy = searchParams.get("sortBy") || "displayOrder";
+        const sortOrder = searchParams.get("sortOrder") === "desc" ? -1 : 1;
 
         // Allowed sorting fields
         const allowedSortFields = [
@@ -47,28 +48,37 @@ const handler = async (req) => {
 
         const sortField = allowedSortFields.includes(sortBy)
             ? sortBy
-            : "createdAt";
+            : "displayOrder";
 
         // Base filter — includes ALL doctors (published real + published demo)
         const filter = {
-            deletedAt: null,
+            $or: [{ deletedAt: null }, { deletedAt: { $exists: false } }],
         };
 
         if (status) {
             filter.status = status;
         }
 
-        if (featured !== null && featured !== undefined) {
+        if (featured !== null && featured !== undefined && featured !== "") {
             filter.featured = featured === "true";
         }
 
+        if (city) {
+            const escapedCity = city.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            filter["basicInfo.city"] = { $regex: new RegExp(`^\\s*${escapedCity}\\s*$`, "i") };
+        }
+
         if (search) {
-            filter.$or = [
+            const searchOr = [
                 { pageName: { $regex: search, $options: "i" } },
+                { slug: { $regex: search, $options: "i" } },
                 { "basicInfo.doctorName": { $regex: search, $options: "i" } },
                 { "basicInfo.designation": { $regex: search, $options: "i" } },
                 { "basicInfo.city": { $regex: search, $options: "i" } },
+                { "teamDoctors.doctorName": { $regex: search, $options: "i" } },
             ];
+            filter.$and = [{ $or: filter.$or }, { $or: searchOr }];
+            delete filter.$or;
         }
 
         const doctors = await Doctor.find(filter)
@@ -80,6 +90,10 @@ const handler = async (req) => {
         basicInfo.designation
         basicInfo.city
         basicInfo.profileImage
+        basicInfo.yearsExperience
+        basicInfo.proceduresCount
+        doctorCard.shortQualification
+        teamDoctors
         status
         featured
         isActive
@@ -88,7 +102,7 @@ const handler = async (req) => {
         updatedAt
       `
             )
-            .sort({ [sortField]: sortOrder })
+            .sort(sortField === "displayOrder" ? { displayOrder: sortOrder, createdAt: -1 } : { [sortField]: sortOrder })
             .skip(skip)
             .limit(limit)
             .lean();

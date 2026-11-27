@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import AdminHeader from "@/components/admin/adminHeader";
 import ImageUploader from "@/components/admin/ImageUploader";
+import TeamDoctorsEditor from "@/components/admin/TeamDoctorsEditor";
 import ToastContainer from "@/components/admin/Toast";
 
 function useToast() {
@@ -36,8 +37,8 @@ const initialState = {
     city: "Delhi",
     yearsExperience: 0,
     proceduresCount: 0,
-    successRate: "97%",
-    rating: 5.0,
+    successRate: "",
+    rating: 0,
     phoneNumber: "",
     whatsappNumber: "",
     email: "",
@@ -209,6 +210,7 @@ const initialState = {
     certifications: [],
     specializations: [],
   },
+  teamDoctors: [],
 };
 
 export default function CreateDoctorPage() {
@@ -468,11 +470,25 @@ export default function CreateDoctorPage() {
             <label className="block text-sm font-semibold text-gray-700">City / Location</label>
             <input
               type="text"
+              list="clinicryan-cities"
               value={formData.basicInfo.city}
               onChange={(e) => handleNestedChange("basicInfo", "city", e.target.value)}
               className="w-full mt-2 p-2 border rounded-md"
               placeholder="Delhi"
             />
+            <datalist id="clinicryan-cities">
+              {[
+                "Delhi", "Mumbai", "Hyderabad", "Gurgaon", "Noida",
+                "Bangalore", "Chennai", "Pune", "Kolkata", "Ahmedabad",
+                "Lucknow", "Jammu", "Patna", "Bhopal", "Indore",
+                "Chandigarh", "Ranchi", "Dehradun", "Jaipur", "Nagpur",
+              ].map((c) => (
+                <option key={c} value={c} />
+              ))}
+            </datalist>
+            <p className="text-[11px] text-gray-500 mt-1">
+              Doctors sharing the same branch city automatically appear on that city&apos;s page in alternating zigzag order.
+            </p>
           </div>
           <div className="w-full">
             <label className="block text-sm font-semibold text-gray-700">Years Experience</label>
@@ -498,7 +514,7 @@ export default function CreateDoctorPage() {
             <label className="block text-sm font-semibold text-gray-700">Graft Success Rate</label>
             <input
               type="text"
-              value={formData.basicInfo.successRate || "97%"}
+              value={formData.basicInfo.successRate ?? ""}
               onChange={(e) => handleNestedChange("basicInfo", "successRate", e.target.value)}
               className="w-full mt-2 p-2 border rounded-md"
               placeholder="e.g. 97%"
@@ -511,8 +527,11 @@ export default function CreateDoctorPage() {
               step="0.1"
               min="0"
               max="5"
-              value={formData.basicInfo.rating}
-              onChange={(e) => handleNestedChange("basicInfo", "rating", parseFloat(e.target.value) || 5.0)}
+              value={formData.basicInfo.rating ?? 0}
+              onChange={(e) => {
+                const parsed = parseFloat(e.target.value);
+                handleNestedChange("basicInfo", "rating", Number.isNaN(parsed) ? 0 : parsed);
+              }}
               className="w-full mt-2 p-2 border rounded-md"
             />
           </div>
@@ -575,6 +594,12 @@ export default function CreateDoctorPage() {
             placeholder="Profile Image Alt Text"
           />
         </div>
+
+        {/* MULTI-DOCTOR TEAM PROFILES (Optional for combined clinic doctor pages) */}
+        <TeamDoctorsEditor
+          teamDoctors={formData.teamDoctors}
+          onChange={(next) => handleTopLevelChange("teamDoctors", next)}
+        />
 
         {/* 2B. DOCTOR CARD & LANDING PAGE INFO */}
         <div className="mt-10 p-6 bg-amber-50/50 border border-amber-200/80 rounded-2xl shadow-xs">

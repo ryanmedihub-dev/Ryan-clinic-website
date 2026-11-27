@@ -108,7 +108,7 @@ export default function FaqSection() {
               <div className="grid grid-cols-2 gap-5">
                 {[
                   { num: "97%", label: "Graft Survival Rate" },
-                  { num: "4.9★", label: "Google Rating" },
+                  { num: "4.7★", label: "Google Rating" },
                   { num: "5K+", label: "Happy Patients" },
                   { num: "0%", label: "EMI Available" },
                 ].map((s) => (

@@ -30,6 +30,7 @@ export default function DoctorListingPage() {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [city, setCity] = useState("");
   const [status, setStatus] = useState("");
   const [featured, setFeatured] = useState("");
   const [page, setPage] = useState(1);
@@ -45,12 +46,15 @@ export default function DoctorListingPage() {
     try {
       const query = new URLSearchParams();
       query.set("page", page);
-      query.set("limit", 10);
+      query.set("limit", 50);
+      query.set("sortBy", "displayOrder");
+      query.set("sortOrder", "asc");
       if (search) query.set("search", search);
+      if (city) query.set("city", city);
       if (status) query.set("status", status);
       if (featured !== "") query.set("featured", featured);
 
-      const res = await fetch(`/api/doctors/list?${query.toString()}`);
+      const res = await fetch(`/api/doctors/admin-list?${query.toString()}`);
       const data = await res.json();
 
       if (res.ok && data.success) {
@@ -66,7 +70,7 @@ export default function DoctorListingPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, search, status, featured]);
+  }, [page, search, city, status, featured]);
 
   useEffect(() => {
     fetchDoctors();
@@ -157,6 +161,28 @@ export default function DoctorListingPage() {
               className="border border-gray-300 rounded-lg px-3 py-2 text-sm w-full sm:w-72 outline-none focus:ring-2 focus:ring-blue-500"
             />
 
+            {/* City / Location Filter */}
+            <select
+              value={city}
+              onChange={(e) => {
+                setCity(e.target.value);
+                setPage(1);
+              }}
+              className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">All Locations</option>
+              {[
+                "Delhi", "Mumbai", "Hyderabad", "Gurgaon", "Noida",
+                "Bangalore", "Chennai", "Pune", "Kolkata", "Ahmedabad",
+                "Lucknow", "Jammu", "Patna", "Bhopal", "Indore",
+                "Chandigarh", "Ranchi", "Dehradun", "Jaipur", "Nagpur",
+              ].map((loc) => (
+                <option key={loc} value={loc}>
+                  {loc}
+                </option>
+              ))}
+            </select>
+
             {/* Status Filter */}
             <select
               value={status}
@@ -219,6 +245,7 @@ export default function DoctorListingPage() {
                     <th className="p-4">Doctor</th>
                     <th className="p-4">Slug &amp; Page Name</th>
                     <th className="p-4">Location</th>
+                    <th className="p-4">Order</th>
                     <th className="p-4">Status</th>
                     <th className="p-4">Featured</th>
                     <th className="p-4 text-right">Actions</th>
@@ -229,7 +256,11 @@ export default function DoctorListingPage() {
                     const profileImg = getValidImageSrc(doc.basicInfo?.profileImage, "/uploads/turkey-doctor.jpg");
                     const doctorName = doc.basicInfo?.doctorName || doc.pageName || "Doctor";
                     const designation = doc.basicInfo?.designation || "Surgeon";
-                    const city = doc.basicInfo?.city || "Delhi";
+                    const cityVal = doc.basicInfo?.city || "Delhi";
+                    const isDemo = /^demo-doctor-/i.test(doc.slug || "");
+                    const teamCount = Array.isArray(doc.teamDoctors)
+                      ? doc.teamDoctors.filter((t) => t?.doctorName?.trim()).length
+                      : 0;
 
                     return (
                       <tr key={doc._id} className="hover:bg-gray-50/80 transition-colors">
@@ -245,8 +276,23 @@ export default function DoctorListingPage() {
                               />
                             </div>
                             <div>
-                              <p className="font-bold text-gray-900 leading-tight">{doctorName}</p>
-                              <p className="text-xs text-gray-500 mt-0.5">{designation}</p>
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                <p className="font-bold text-gray-900 leading-tight">{doctorName}</p>
+                                {isDemo && (
+                                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 border border-gray-200">
+                                    Template
+                                  </span>
+                                )}
+                                {teamCount > 0 && (
+                                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
+                                    {teamCount} Doctors
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-xs text-gray-500 mt-0.5">
+                                {doc.doctorCard?.shortQualification ? `${doc.doctorCard.shortQualification} • ` : ""}
+                                {designation}
+                              </p>
                             </div>
                           </div>
                         </td>
@@ -259,7 +305,11 @@ export default function DoctorListingPage() {
                         </td>
 
                         <td className="p-4 text-gray-600 font-medium">
-                          {city}
+                          {cityVal}
+                        </td>
+
+                        <td className="p-4 text-gray-600 font-mono text-xs">
+                          #{doc.displayOrder ?? 0}
                         </td>
 
                         <td className="p-4">

@@ -31,7 +31,7 @@ const DEFAULT_DOCTORS = [
     city: "Delhi",
     experience: "15+ Yrs",
     procedures: "7,500+",
-    rating: "4.9 ★",
+    rating: "4.7 ★",
     survivalRate: "97%",
     image: "/uploads/turkey-doctor.jpg",
     slug: "hair-transplant-surgeon-in-delhi",
@@ -55,7 +55,7 @@ const DEFAULT_DOCTORS = [
     city: "Mumbai",
     experience: "12+ Yrs",
     procedures: "5,000+",
-    rating: "4.9 ★",
+    rating: "4.7 ★",
     survivalRate: "97%",
     image: "/uploads/about-one.jpg",
     slug: "dr-pranendra-singh",
@@ -166,12 +166,7 @@ export default function DoctorCarouselClient({ initialDoctors = [] }) {
         highlights:
           card.certifications?.length && card.certifications.filter(Boolean).length
             ? card.certifications.filter(Boolean).slice(0, 4)
-            : [
-                "100% Doctor-Led Surgery (Zero technician handover)",
-                "Meticulous Follicular Extraction & Implantation",
-                "Microscopic hairline design tailored to facial structure",
-                "Comprehensive Post-Op Recovery Care",
-              ],
+            : [],
         featured: doc.featured || idx === 0,
       };
     });
@@ -290,10 +285,12 @@ export default function DoctorCarouselClient({ initialDoctors = [] }) {
                     {activeDoc.location || activeDoc.city}
                   </span>
 
-                  <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-white bg-[#D32F2F] px-2.5 py-1 rounded-full shadow-xs">
-                    <ShieldCheck className="w-3 h-3 text-white" />
-                    Turkey Certified
-                  </span>
+                  {activeDoc.highlights?.some((h) => /turkey/i.test(h)) && (
+                    <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-white bg-[#D32F2F] px-2.5 py-1 rounded-full shadow-xs">
+                      <ShieldCheck className="w-3 h-3 text-white" />
+                      Turkey Certified
+                    </span>
+                  )}
                 </div>
 
                 {/* Bottom Photo Label */}
@@ -362,7 +359,7 @@ export default function DoctorCarouselClient({ initialDoctors = [] }) {
 
                     <div className="bg-[#FAF6F3] p-2.5 rounded-xl border border-[#F0E6DE] text-center overflow-hidden flex flex-col justify-center items-center">
                       <span className="text-base sm:text-lg font-black text-amber-700 block leading-tight truncate max-w-full font-sans">
-                        {activeDoc.rating || "4.9 ★"}
+                        {activeDoc.rating || "4.7 ★"}
                       </span>
                       <span className="text-[9.5px] font-bold text-gray-500 uppercase tracking-wider block mt-1 leading-none truncate max-w-full font-sans">
                         Patient Rating
@@ -506,10 +503,12 @@ export default function DoctorCarouselClient({ initialDoctors = [] }) {
                       <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                       <span>100% Doctor-Led Hair Restoration</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>{d.experience} Surgical Experience</span>
-                    </div>
+                    {d.experience && d.experience !== "—" && (
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>{d.experience} Surgical Experience</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 

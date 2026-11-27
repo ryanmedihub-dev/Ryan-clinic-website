@@ -322,24 +322,52 @@ const OurDoctorEditor = memo(({ value, onChange }) => {
     };
   }, []);
 
-  const selectedDoctorId = data.assignedDoctorId || data.assignedDoctor || "";
-  const selectedDoctor = useMemo(() => {
-    return doctorsList.find((d) => d._id === selectedDoctorId) || null;
-  }, [doctorsList, selectedDoctorId]);
+  const selectedDoctorIds = useMemo(() => {
+    if (Array.isArray(data.assignedDoctors) && data.assignedDoctors.length > 0) {
+      return data.assignedDoctors.map(String);
+    }
+    const single = data.assignedDoctorId || data.assignedDoctor || "";
+    return single ? [String(single)] : [];
+  }, [data.assignedDoctors, data.assignedDoctorId, data.assignedDoctor]);
 
-  const setDoctorId = useCallback(
+  const selectedDoctorObjects = useMemo(() => {
+    return selectedDoctorIds.map((id) => ({
+      id,
+      doc: doctorsList.find((d) => String(d._id) === id) || null,
+    }));
+  }, [doctorsList, selectedDoctorIds]);
+
+  const addDoctorId = useCallback(
     (id) => {
+      if (!id || selectedDoctorIds.includes(id)) return;
+      const next = [...selectedDoctorIds, id];
+      const d = {
+        ...data,
+        assignedDoctors: next,
+        assignedDoctorId: next[0],
+        assignedDoctor: next[0],
+      };
+      onChange(JSON.stringify(d));
+    },
+    [data, selectedDoctorIds, onChange]
+  );
+
+  const removeDoctorId = useCallback(
+    (id) => {
+      const next = selectedDoctorIds.filter((item) => item !== id);
       const d = { ...data };
-      if (id) {
-        d.assignedDoctorId = id;
-        d.assignedDoctor = id;
+      if (next.length > 0) {
+        d.assignedDoctors = next;
+        d.assignedDoctorId = next[0];
+        d.assignedDoctor = next[0];
       } else {
+        delete d.assignedDoctors;
         delete d.assignedDoctorId;
         delete d.assignedDoctor;
       }
       onChange(Object.keys(d).length ? JSON.stringify(d) : "");
     },
-    [data, onChange]
+    [data, selectedDoctorIds, onChange]
   );
 
   const setMeetYourSurgeon = useCallback(
@@ -362,47 +390,57 @@ const OurDoctorEditor = memo(({ value, onChange }) => {
     <div className="space-y-4">
       <div>
         <label className={LC}>
-          Assigned Doctor <span className="text-gray-400 font-normal">(Source of truth: Doctor CMS)</span>
+          Assigned Doctors <span className="text-gray-400 font-normal">(Source of truth: Doctor CMS — multiple allowed)</span>
         </label>
         <select
           className={FC}
-          value={selectedDoctorId}
+          value=""
           disabled={loadingDoctors}
-          onChange={(e) => setDoctorId(e.target.value)}
+          onChange={(e) => addDoctorId(e.target.value)}
         >
-          <option value="">— None (No Doctor Assigned) —</option>
-          {doctorsList.map((doc) => (
-            <option key={doc._id} value={doc._id}>
-              {doc.basicInfo?.doctorName} — {doc.basicInfo?.designation || "Surgeon"} {doc.basicInfo?.city ? `(${doc.basicInfo.city})` : ""}
-            </option>
-          ))}
+          <option value="">+ Add Doctor to this Page…</option>
+          {doctorsList
+            .filter((doc) => !selectedDoctorIds.includes(String(doc._id)))
+            .map((doc) => (
+              <option key={doc._id} value={doc._id}>
+                {doc.basicInfo?.doctorName} — {doc.basicInfo?.designation || "Surgeon"} {doc.basicInfo?.city ? `(${doc.basicInfo.city})` : ""}
+              </option>
+            ))}
         </select>
       </div>
 
-      {selectedDoctor ? (
-        <div className="p-3.5 rounded-xl border border-blue-100 bg-blue-50/50 flex items-start gap-3">
-          <div className="w-14 h-14 rounded-lg overflow-hidden bg-gray-200 shrink-0 border border-gray-200">
-            <img
-              src={getValidImageSrc(selectedDoctor.basicInfo?.profileImage, "/uploads/gallery.jpg")}
-              alt={selectedDoctor.basicInfo?.doctorName || "Doctor"}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="flex-1 min-w-0">
-            <h4 className="font-bold text-gray-900 text-sm">
-              {selectedDoctor.basicInfo?.doctorName}
-            </h4>
-            <p className="text-xs text-gray-600 mt-0.5">
-              {selectedDoctor.basicInfo?.designation || "Hair Restoration Specialist"} {selectedDoctor.basicInfo?.city ? `• ${selectedDoctor.basicInfo.city}` : ""}
-            </p>
-            <p className="text-[11px] text-amber-800 bg-amber-50 border border-amber-200/80 rounded px-2 py-1 mt-2 inline-block">
-              ℹ️ Doctor information is managed from Doctor CMS.
-            </p>
-          </div>
+      {selectedDoctorObjects.length > 0 ? (
+        <div className="space-y-2.5">
+          {selectedDoctorObjects.map(({ id, doc }, idx) => (
+            <div key={id} className="p-3 rounded-xl border border-blue-100 bg-blue-50/50 flex items-center gap-3">
+              <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-200 shrink-0 border border-gray-200">
+                <img
+                  src={getValidImageSrc(doc?.basicInfo?.profileImage, "/uploads/gallery.jpg")}
+                  alt={doc?.basicInfo?.doctorName || "Doctor"}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h4 className="font-bold text-gray-900 text-sm">
+                  #{idx + 1} {doc?.basicInfo?.doctorName || id}
+                </h4>
+                <p className="text-xs text-gray-600">
+                  {doc?.basicInfo?.designation || "Hair Restoration Specialist"} {doc?.basicInfo?.city ? `• ${doc.basicInfo.city}` : ""}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => removeDoctorId(id)}
+                className="px-2 py-1 text-xs font-semibold text-red-700 bg-red-50 border border-red-200 rounded hover:bg-red-100 cursor-pointer"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
         </div>
       ) : (
         <p className="text-xs text-gray-400 italic">
-          No doctor assigned. Section will be safely hidden on the public page.
+          No doctors explicitly assigned. Published non-demo doctors matching the branch city will still resolve automatically.
         </p>
       )}
 
@@ -967,7 +1005,11 @@ export default function CreateServicePage() {
         }));
 
         const ourDocSec = sectionsPayload.find((s) => s.key === "ourDoctor");
+        const assignedDoctors = Array.isArray(ourDocSec?.data?.assignedDoctors)
+          ? ourDocSec.data.assignedDoctors.filter(Boolean)
+          : [];
         const assignedDoctor =
+          assignedDoctors[0] ||
           ourDocSec?.data?.assignedDoctorId ||
           ourDocSec?.data?.assignedDoctor ||
           null;
@@ -979,6 +1021,7 @@ export default function CreateServicePage() {
           body: JSON.stringify({
             ...form,
             assignedDoctor,
+            assignedDoctors: assignedDoctors.length ? assignedDoctors : (assignedDoctor ? [assignedDoctor] : []),
             meetYourSurgeon,
             pageSections: sectionsPayload,
           }),

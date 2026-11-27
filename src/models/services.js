@@ -70,6 +70,12 @@ const serviceSchema = new mongoose.Schema(
       ref: "Doctor",
       default: null,
     },
+    assignedDoctors: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Doctor",
+      },
+    ],
     meetYourSurgeon: {
       enabled: { type: Boolean, default: true },
       eyebrow: { type: String, default: "" },
@@ -87,6 +93,7 @@ const serviceSchema = new mongoose.Schema(
 if (
   mongoose.models.Services &&
   (!mongoose.models.Services.schema.paths.assignedDoctor ||
+    !mongoose.models.Services.schema.paths.assignedDoctors ||
     !mongoose.models.Services.schema.paths.meetYourSurgeon)
 ) {
   delete mongoose.models.Services;

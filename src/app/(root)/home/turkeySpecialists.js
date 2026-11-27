@@ -13,7 +13,7 @@ const stats = [
   { num: "12+", label: "Years of Excellence" },
   { num: "10K+", label: "Successful Procedures" },
   { num: "97%", label: "Graft Survival Rate" },
-  { num: "4.9★", label: "Google Rating" },
+  { num: "4.7★", label: "Google Rating" },
 ];
 
 export default function TurkeySpecialists() {

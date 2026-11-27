@@ -456,7 +456,7 @@ export default async function CostIndexPage() {
                   { n: "15+", l: "Years Surgeon Experience" },
                   { n: "10,000+", l: "Surgeries Done" },
                   { n: "97%", l: "Graft Survival Rate" },
-                  { n: "4.9 ★", l: "Google Patient Rating" },
+                  { n: "4.7 ★", l: "Google Patient Rating" },
                 ].map((s) => (
                   <div key={s.n} className="bg-[#FAF6F3] rounded-2xl border border-[#F0E6DE] p-4 text-center">
                     <p className="text-xl md:text-2xl font-bold text-[#e30a17]">{s.n}</p>

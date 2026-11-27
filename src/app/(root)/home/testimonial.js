@@ -310,7 +310,7 @@ export default function Testimonials() {
                       className="text-4xl font-bold"
                       style={{ color: "var(--text-primary)" }}
                     >
-                      4.9
+                      4.7
                     </span>
                     <StarRating rating={5} />
                   </div>

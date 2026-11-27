@@ -23,14 +23,11 @@ const services = [
 ];
 
 const locations = [
-  { label: "Bangalore", href: "/hair-transplant-in-bangalore" },
-  { label: "Chennai", href: "/hair-transplant-in-chennai" },
-  { label: "Kolkata", href: "/hair-transplant-in-kolkata" },
-  { label: "Pune", href: "/hair-transplant-in-pune" },
-  { label: "Ahmedabad", href: "/hair-transplant-in-ahmedabad" },
-  { label: "Lucknow", href: "/hair-transplant-in-lucknow" },
-  { label: "Jammu", href: "/hair-transplant-in-jammu" },
-  { label: "Patna", href: "/hair-transplant-in-patna" },
+  { label: "Delhi", href: "/hair-transplant-in-delhi" },
+  { label: "Mumbai", href: "/hair-transplant-in-mumbai" },
+  { label: "Hyderabad", href: "/hair-transplant-in-hyderabad" },
+  { label: "Noida", href: "/hair-transplant-in-noida" },
+  { label: "Gurgaon", href: "/hair-transplant-in-gurgaon" },
 ];
 
 const quickLinks = [
@@ -79,7 +76,7 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-white text-sm font-medium">
             <span style={{ color: "#FFD700", fontSize: "1rem" }}>★★★★★</span>
-            <span>4.9 Google Rating</span>
+            <span>4.7 Google Rating</span>
             <span className="hidden sm:block opacity-40">·</span>
             <span className="hidden sm:block">Based on 1,000+ Reviews</span>
           </div>
@@ -154,8 +151,8 @@ export default function Footer() {
               Ryan Clinic is India's premier hair transplant centre, exclusively
               specialising in Turkey Sapphire FUE — the same technique that made
               Turkey the world's hair transplant capital. Certified doctors,
-              97% graft survival, and transparent pricing across Delhi, Mumbai
-              &amp; Hyderabad.
+              97% graft survival, and transparent pricing Across Delhi, Mumbai,
+              Hyderabad, Gurgaon, Noida and major cities of India.
             </p>
 
             {/* Trust badges */}
@@ -164,7 +161,7 @@ export default function Footer() {
                 { num: "97%", label: "Graft Survival" },
                 { num: "5K+", label: "Patients" },
                 { num: "12+", label: "Years" },
-                { num: "4.9★", label: "Google Rating" },
+                { num: "4.7★", label: "Google Rating" },
               ].map((s) => (
                 <div
                   key={s.label}

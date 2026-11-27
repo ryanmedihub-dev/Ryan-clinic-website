@@ -339,6 +339,23 @@ const doctorSchema = new mongoose.Schema(
       },
     },
 
+    /* ── Branch Team Doctors (optional, for clinics with multiple doctors) ── */
+    teamDoctors: {
+      type: [
+        new mongoose.Schema(
+          {
+            doctorName: { type: String, trim: true, default: "" },
+            qualification: { type: String, trim: true, default: "" },
+            designation: { type: String, trim: true, default: "" },
+            about: { type: String, trim: true, default: "" },
+            profileImage: { type: imageSchema, default: () => ({}) },
+          },
+          { _id: false }
+        ),
+      ],
+      default: [],
+    },
+
     /* ── 13. Great Doctor Qualities ── */
     greatDoctorQualities: {
       sectionLabel: { type: String, trim: true, default: "" },

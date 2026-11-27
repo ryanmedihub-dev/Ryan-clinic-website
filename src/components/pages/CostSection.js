@@ -128,7 +128,7 @@ export default function CostSection({ city = "Delhi", pricing, sectionTitle, sec
           {/* Top strip */}
           <div className="flex items-center gap-0 mb-10">
             <span className="flex-1 h-px bg-linear-to-r from-[#e30a17] to-transparent" />
-            <span className="text-[9.5px] font-semibold tracking-[0.35em] uppercase text-[#e30a17] px-5 whitespace-nowrap">
+            <span className="text-[9.5px] font-semibold tracking-[0.18em] sm:tracking-[0.35em] uppercase text-[#e30a17] px-2.5 sm:px-5 text-center sm:whitespace-nowrap">
               Sapphire FUE &nbsp;·&nbsp; Original Choi Pen &nbsp;·&nbsp; Turkey
               Technique
             </span>
@@ -161,13 +161,13 @@ export default function CostSection({ city = "Delhi", pricing, sectionTitle, sec
           </div>
 
           {/* Card grid */}
-          <div className="grid grid-cols-3 gap-0.5 bg-[#d8d1c7] rounded-2xl overflow-hidden mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0.5 bg-[#d8d1c7] rounded-2xl overflow-hidden mb-6">
             {PRICING_DATA.map((item) => (
               <PriceCard key={item.num} item={item} />
             ))}
 
             {/* PRP — full width */}
-            <div className="col-span-2 bg-red-50  transition-colors p-6">
+            <div className="col-span-1 sm:col-span-2 bg-red-50 transition-colors p-6">
               <div className="flex items-center justify-between gap-4 flex-wrap">
                 <div>
                   <p className="text-[14px] font-medium tracking-[0.15em] text-[#c9b99f] mb-1">

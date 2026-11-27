@@ -82,46 +82,99 @@ async function handler(request) {
       formattedUpdate.metadata.branchName = updateData.branchName;
     }
 
-    // Handle assignedDoctor validation
-    const rawDoctorInput =
-      updateData.assignedDoctorId !== undefined
-        ? updateData.assignedDoctorId
-        : updateData.assignedDoctor;
-
-    let assignedDoctorId = null;
-    if (rawDoctorInput && typeof rawDoctorInput === "object" && rawDoctorInput._id) {
-      assignedDoctorId = String(rawDoctorInput._id).trim();
-    } else if (typeof rawDoctorInput === "string") {
-      assignedDoctorId = rawDoctorInput.trim();
-    }
-
-    if (
-      assignedDoctorId &&
-      assignedDoctorId !== "none" &&
-      assignedDoctorId !== "" &&
-      assignedDoctorId !== "null" &&
-      assignedDoctorId !== "undefined"
-    ) {
-      if (!mongoose.Types.ObjectId.isValid(assignedDoctorId)) {
-        return NextResponse.json(
-          { error: "Invalid Doctor ID format" },
-          { status: 400 }
-        );
+    // Handle assignedDoctors (ordered array) & backwards-compatible assignedDoctor
+    let normalizedAssignedDoctorIds = null;
+    if (Array.isArray(updateData.assignedDoctors)) {
+      const seenIds = new Set();
+      normalizedAssignedDoctorIds = [];
+      for (const rawItem of updateData.assignedDoctors) {
+        let idStr = "";
+        if (rawItem && typeof rawItem === "object" && rawItem._id) {
+          idStr = String(rawItem._id).trim();
+        } else if (typeof rawItem === "string") {
+          idStr = rawItem.trim();
+        }
+        if (
+          idStr &&
+          idStr !== "none" &&
+          idStr !== "null" &&
+          idStr !== "undefined" &&
+          !seenIds.has(idStr)
+        ) {
+          if (!mongoose.Types.ObjectId.isValid(idStr)) {
+            return NextResponse.json(
+              { error: `Invalid Doctor ID format in assignedDoctors: ${idStr}` },
+              { status: 400 }
+            );
+          }
+          seenIds.add(idStr);
+          normalizedAssignedDoctorIds.push(idStr);
+        }
       }
-      const doctorExists = await Doctor.findOne({
-        _id: assignedDoctorId,
-        deletedAt: null,
-      }).select("_id basicInfo status isActive");
 
-      if (!doctorExists) {
-        return NextResponse.json(
-          { error: "Assigned doctor not found" },
-          { status: 400 }
-        );
+      if (normalizedAssignedDoctorIds.length > 0) {
+        const matchedDocs = await Doctor.find({
+          _id: { $in: normalizedAssignedDoctorIds },
+          $or: [{ deletedAt: null }, { deletedAt: { $exists: false } }],
+        }).select("_id");
+        if (matchedDocs.length !== normalizedAssignedDoctorIds.length) {
+          return NextResponse.json(
+            { error: "One or more assigned doctors were not found" },
+            { status: 400 }
+          );
+        }
       }
-      formattedUpdate.assignedDoctor = new mongoose.Types.ObjectId(assignedDoctorId);
+
+      formattedUpdate.assignedDoctors = normalizedAssignedDoctorIds.map(
+        (id) => new mongoose.Types.ObjectId(id)
+      );
+      formattedUpdate.assignedDoctor =
+        formattedUpdate.assignedDoctors[0] || null;
     } else {
-      formattedUpdate.assignedDoctor = null;
+      // Legacy single assignedDoctor fallback
+      const rawDoctorInput =
+        updateData.assignedDoctorId !== undefined
+          ? updateData.assignedDoctorId
+          : updateData.assignedDoctor;
+
+      let assignedDoctorId = null;
+      if (rawDoctorInput && typeof rawDoctorInput === "object" && rawDoctorInput._id) {
+        assignedDoctorId = String(rawDoctorInput._id).trim();
+      } else if (typeof rawDoctorInput === "string") {
+        assignedDoctorId = rawDoctorInput.trim();
+      }
+
+      if (
+        assignedDoctorId &&
+        assignedDoctorId !== "none" &&
+        assignedDoctorId !== "" &&
+        assignedDoctorId !== "null" &&
+        assignedDoctorId !== "undefined"
+      ) {
+        if (!mongoose.Types.ObjectId.isValid(assignedDoctorId)) {
+          return NextResponse.json(
+            { error: "Invalid Doctor ID format" },
+            { status: 400 }
+          );
+        }
+        const doctorExists = await Doctor.findOne({
+          _id: assignedDoctorId,
+          $or: [{ deletedAt: null }, { deletedAt: { $exists: false } }],
+        }).select("_id basicInfo status isActive");
+
+        if (!doctorExists) {
+          return NextResponse.json(
+            { error: "Assigned doctor not found" },
+            { status: 400 }
+          );
+        }
+        const oid = new mongoose.Types.ObjectId(assignedDoctorId);
+        formattedUpdate.assignedDoctor = oid;
+        formattedUpdate.assignedDoctors = [oid];
+      } else if (rawDoctorInput !== undefined) {
+        formattedUpdate.assignedDoctor = null;
+        formattedUpdate.assignedDoctors = [];
+      }
     }
 
     // Handle meetYourSurgeon presentation settings
@@ -147,11 +200,17 @@ async function handler(request) {
       serviceId,
       { $set: formattedUpdate },
       { new: true, strict: false }
-    ).populate({
-      path: "assignedDoctor",
-      select: "basicInfo doctorCard credentials surgeonProfile hero keyFacts medicalReviewer comparison slug status isActive deletedAt",
-      strictPopulate: false,
-    });
+    )
+      .populate({
+        path: "assignedDoctor",
+        select: "basicInfo doctorCard credentials surgeonProfile hero keyFacts medicalReviewer comparison teamDoctors displayOrder createdAt slug status isActive deletedAt",
+        strictPopulate: false,
+      })
+      .populate({
+        path: "assignedDoctors",
+        select: "basicInfo doctorCard credentials surgeonProfile hero keyFacts medicalReviewer comparison teamDoctors displayOrder createdAt slug status isActive deletedAt",
+        strictPopulate: false,
+      });
 
     if (!updatedService) {
       return NextResponse.json(

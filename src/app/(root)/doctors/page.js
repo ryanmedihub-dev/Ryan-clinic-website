@@ -174,7 +174,7 @@ export default async function DoctorsPage() {
                   { n: "15+", l: "Years Doctor Care" },
                   { n: "10,000+", l: "Surgeries Conducted" },
                   { n: "97%", l: "Graft Survival Rate" },
-                  { n: "4.9 ★", l: "Patient Satisfaction" },
+                  { n: "4.7 ★", l: "Patient Satisfaction" },
                 ].map((s) => (
                   <div key={s.n} className="bg-white rounded-2xl border border-[#F0E6DE] p-4 text-center shadow-xs">
                     <p className="text-xl md:text-2xl font-bold text-[#D32F2F] font-sans">{s.n}</p>

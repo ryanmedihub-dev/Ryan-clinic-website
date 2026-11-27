@@ -5,7 +5,7 @@ import ContactForm from "@/components/pages/contactForm";
 import FAQSection from "./FAQSection";
 import PleoFeatures from "./PleoFeatures";
 import OurResults from "../home/ourResults";
-import { getServiceBySlug } from "@/lib/serviceData";
+import { getServiceBySlug, getResolvedDoctorsForService } from "@/lib/serviceData";
 import { notFound } from "next/navigation";
 import Testimonials from "../home/testimonial";
 import WhyChooseRyanClinic from "../home/whyChooseUs";
@@ -256,7 +256,7 @@ const hairlineTrustItems = [
   },
 ];
 
-function renderSection(key, d, service, branchName, slug = "") {
+function renderSection(key, d, service, branchName, slug = "", resolvedDoctors = []) {
   const isFUE = slug === "fue-hair-transplant";
   const isHairline = slug === "hairline-transplant";
   const isEyebrow = slug === "eyebrow-transplant";
@@ -534,24 +534,16 @@ function renderSection(key, d, service, branchName, slug = "") {
       const meetYourSurgeon = service?.meetYourSurgeon || d?.meetYourSurgeon || {};
       if (meetYourSurgeon.enabled === false) return null;
 
-      const doctor = service?.assignedDoctor;
-      const isDoctorPublished =
-        doctor?.status ? String(doctor.status).toLowerCase() === "published" : true;
-      const isEligible =
-        doctor &&
-        typeof doctor === "object" &&
-        isDoctorPublished &&
-        !doctor.deletedAt &&
-        doctor.isActive !== false;
-
-      if (!isEligible) return null;
+      const eligibleDoctors = Array.isArray(resolvedDoctors) ? resolvedDoctors : [];
+      if (eligibleDoctors.length === 0) return null;
 
       return (
         <OurDoctorSection
           key="ourDoctor"
           city={d.city || branchName}
-          doctor={doctor}
-          cmsDoctor={doctor}
+          doctors={eligibleDoctors}
+          doctor={eligibleDoctors[0]}
+          cmsDoctor={eligibleDoctors[0]}
           settings={meetYourSurgeon}
           sectionSettings={meetYourSurgeon}
           meetYourSurgeon={meetYourSurgeon}
@@ -686,8 +678,10 @@ export default async function ServicesPage({ params }) {
       : getDefaultSections(service?.metadata?.pageType)
   );
 
+  const resolvedDoctors = await getResolvedDoctorsForService(service, branchName);
+
   const isMeetYourSurgeonEnabled = service?.meetYourSurgeon?.enabled !== false;
-  if (service?.assignedDoctor && isMeetYourSurgeonEnabled) {
+  if (resolvedDoctors.length > 0 && isMeetYourSurgeonEnabled) {
     const hasOurDoc = rawSections.some((s) => s.key === "ourDoctor");
     if (!hasOurDoc) {
       const costIdx = rawSections.findIndex((s) => s.key === "costSection");
@@ -814,7 +808,7 @@ export default async function ServicesPage({ params }) {
         />
 
         {sections.map((section) =>
-          renderSection(section.key, section.data || {}, service, branchName, slug),
+          renderSection(section.key, section.data || {}, service, branchName, slug, resolvedDoctors),
         )}
       </div>
     </>

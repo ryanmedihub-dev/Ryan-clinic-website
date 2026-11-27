@@ -12,7 +12,13 @@ export async function GET() {
       .populate({
         path: "assignedDoctor",
         select:
-          "basicInfo doctorCard credentials surgeonProfile hero keyFacts medicalReviewer comparison slug status isActive deletedAt",
+          "basicInfo doctorCard credentials surgeonProfile hero keyFacts medicalReviewer comparison teamDoctors displayOrder createdAt slug status isActive deletedAt",
+        strictPopulate: false,
+      })
+      .populate({
+        path: "assignedDoctors",
+        select:
+          "basicInfo doctorCard credentials surgeonProfile hero keyFacts medicalReviewer comparison teamDoctors displayOrder createdAt slug status isActive deletedAt",
         strictPopulate: false,
       })
       .lean();

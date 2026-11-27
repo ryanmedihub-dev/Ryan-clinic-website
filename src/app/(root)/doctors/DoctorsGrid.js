@@ -13,7 +13,7 @@ import { doctors as staticDoctors } from "@/lib/doctorsData";
 const trustStats = [
   { value: "10,000+", label: "Successful Procedures" },
   { value: "97%", label: "Graft Survival Rate" },
-  { value: "4.9 ★", label: "Google Rating" },
+  { value: "4.7 ★", label: "Google Rating" },
   { value: "12+", label: "Years of Excellence" },
 ];
 
@@ -97,10 +97,10 @@ function LanguageIcon() {
 function DoctorCard({ doctor }) {
   const trackCTA = useTrackCTA();
   const metrics = [
-    { v: doctor.procedures, l: "Procedures" },
-    { v: `${doctor.rating} ★`, l: "Google Rating" },
-    { v: `${doctor.experience} Yrs`, l: "Experience" },
-  ];
+    doctor.procedures ? { v: doctor.procedures, l: "Procedures" } : null,
+    doctor.rating ? { v: `${doctor.rating} ★`, l: "Google Rating" } : null,
+    doctor.experience ? { v: `${doctor.experience} Yrs`, l: "Experience" } : null,
+  ].filter(Boolean);
 
   return (
     <article
@@ -189,34 +189,38 @@ function DoctorCard({ doctor }) {
       <div className="flex flex-col flex-1 min-w-0 p-6 lg:p-8 gap-6">
 
         {/* ── metrics strip ── */}
-        <div
-          className="grid grid-cols-3 rounded-xl overflow-hidden"
-          style={{ border: "1px solid var(--border-light)" }}
-        >
-          {metrics.map((m, i) => (
-            <div
-              key={m.l}
-              className="flex flex-col items-center justify-center py-4 px-2 text-center"
-              style={{
-                background: "var(--bg-soft)",
-                borderRight: i < 2 ? "1px solid var(--border-light)" : "none",
-              }}
-            >
-              <span
-                className="text-xl sm:text-2xl font-bold leading-none"
-                style={{ color: "var(--primary-red)" }}
+        {metrics.length > 0 && (
+          <div
+            className={`grid rounded-xl overflow-hidden ${
+              metrics.length === 1 ? "grid-cols-1" : metrics.length === 2 ? "grid-cols-2" : "grid-cols-3"
+            }`}
+            style={{ border: "1px solid var(--border-light)" }}
+          >
+            {metrics.map((m, i) => (
+              <div
+                key={m.l}
+                className="flex flex-col items-center justify-center py-4 px-2 text-center"
+                style={{
+                  background: "var(--bg-soft)",
+                  borderRight: i < metrics.length - 1 ? "1px solid var(--border-light)" : "none",
+                }}
               >
-                {m.v}
-              </span>
-              <span
-                className="text-[9px] font-bold uppercase tracking-wider mt-1"
-                style={{ color: "var(--text-muted)" }}
-              >
-                {m.l}
-              </span>
-            </div>
-          ))}
-        </div>
+                <span
+                  className="text-xl sm:text-2xl font-bold leading-none"
+                  style={{ color: "var(--primary-red)" }}
+                >
+                  {m.v}
+                </span>
+                <span
+                  className="text-[9px] font-bold uppercase tracking-wider mt-1"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  {m.l}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* ── about ── */}
         <p className="text-[13.5px] leading-[1.8]" style={{ color: "var(--text-secondary)" }}>
@@ -359,35 +363,31 @@ function DoctorCard({ doctor }) {
 function normalizeDbDoctor(doc) {
   const b = doc.basicInfo || {};
   const prof = doc.surgeonProfile || {};
+  const card = doc.doctorCard || {};
   return {
     id: doc._id || doc.slug,
     name: b.doctorName || doc.pageName || "Dr. Specialist",
     designation: b.designation || "Hair Transplant Surgeon",
     location: b.city || "Delhi",
     city: b.city || "Delhi",
-    experience: b.yearsExperience ? `${b.yearsExperience}` : "15",
-    procedures: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : "5,000+",
-    rating: b.rating || 4.9,
+    experience: b.yearsExperience ? `${b.yearsExperience}` : "",
+    procedures: b.proceduresCount ? `${b.proceduresCount.toLocaleString()}+` : "",
+    rating: b.rating || null,
     image: getValidImageSrc(b.profileImage, "/uploads/turkey-doctor.jpg"),
     languages: b.languages?.length ? b.languages : ["English", "Hindi"],
     slug: doc.slug,
-    specialtyBadge: b.designation || "Turkey Certified",
-    about: prof.about || b.shortDescription || "Board-certified hair transplant surgeon specializing in doctor-led Sapphire FUE.",
-    specializations: prof.specializations?.length
-      ? prof.specializations
-      : ["Sapphire FUE", "Turkish Technique Hair Restoration", "Beard & Eyebrow Transplant"],
-    qualifications: prof.qualifications?.length
-      ? prof.qualifications
-      : [
-          { degree: "MBBS", institute: "Recognized Medical Council" },
-          { degree: "Turkey Certification", institute: "International Hair Restoration Association" },
-        ],
-    certifications: prof.certifications?.length
-      ? prof.certifications
-      : ["Turkey Sapphire FUE Fellowship Certified", "ISHRS International Member"],
-    achievements: prof.achievements?.length
-      ? prof.achievements
-      : ["5,000+ Successful Hair Restoration Procedures", "97% Follicle Survival Rate"],
+    specialtyBadge: card.shortQualification || doc.keyFacts?.qualifications || b.designation || "Ryan Clinic",
+    about: card.cardDescription || prof.about || b.shortDescription || "",
+    specializations: card.specializations?.length
+      ? card.specializations
+      : (prof.specializations?.length ? prof.specializations : []),
+    qualifications: card.qualifications?.length
+      ? card.qualifications
+      : (prof.qualifications?.length ? prof.qualifications : []),
+    certifications: card.certifications?.length
+      ? card.certifications
+      : (prof.certifications?.length ? prof.certifications : []),
+    achievements: prof.achievements?.length ? prof.achievements : [],
   };
 }
 

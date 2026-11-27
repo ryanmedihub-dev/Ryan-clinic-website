@@ -5,6 +5,8 @@ import PageBanner from "@/components/layouts/pageBanner";
 import Doctor from "@/models/Doctors";
 import { DBConnection } from "@/lib/db";
 import { getValidImageSrc } from "@/lib/utils";
+import { getDoctorsByCity } from "@/lib/serviceData";
+import { expandDoctorProfiles, resolveBranchDoctors } from "@/lib/doctorProfiles.mjs";
 
 // ─── City → Geo Lookup ───────────────────────────────────────────────────────
 // ISO 3166-2 region codes + verified clinic-area coordinates.
@@ -158,7 +160,8 @@ function normalizeDoctor(dbDoc) {
     procedures: canonicalProcCount > 0 ? `${canonicalProcCount.toLocaleString()}+` : "",
     proceduresCount: canonicalProcCount > 0 ? `${canonicalProcCount.toLocaleString()}+` : "",
     successRate: b.successRate || null,
-    rating: b.rating || 5.0,
+    rating: b.rating || null,
+    teamDoctors: Array.isArray(dbDoc.teamDoctors) ? dbDoc.teamDoctors : [],
     about: localizeText(s.about || "", docCity),
     biography: s.biography || "",
     philosophy: s.philosophy || "",
@@ -223,9 +226,10 @@ export async function generateMetadata({ params }) {
   const locationText = doctor.location ? ` in ${doctor.location}` : "";
   const metaTitle = seo.metaTitle || `${doctor.name} — Hair Transplant Doctor${locationText} | Ryan Clinic`;
   const metaDesc = seo.metaDescription || `${doctor.name} is a hair transplant surgeon${locationText} at Ryan Clinic. Book a free consultation.`;
-  // Doctor landing pages are unique canonical routes matching /doctors/${slug}.
-  // Ignore any outdated/invalid name-based canonicalUrl from MongoDB.
-  const canonicalUrl = `https://www.clinicryan.com/doctors/${slug}`;
+  // Doctor landing pages are unique canonical routes matching /doctors/${doctor.slug}.
+  // Always normalize to lowercase canonical slug even when accessed via mixed-case URLs.
+  const canonicalSlug = (doctor.slug || slug).toLowerCase();
+  const canonicalUrl = `https://www.clinicryan.com/doctors/${canonicalSlug}`;
   const ogImageUrl = getValidImageSrc(seo.openGraphImage, getValidImageSrc(doctor.image, "/uploads/turkey-doctor.jpg"));
   const fullOgImage = ogImageUrl.startsWith("http") ? ogImageUrl : `https://www.clinicryan.com${ogImageUrl}`;
 
@@ -369,6 +373,26 @@ const cityNearbyAreas = {
     "Secunderabad",
     "Kukatpally",
   ],
+  Noida: [
+    "Sector 18",
+    "Sector 62",
+    "Sector 15",
+    "Sector 50",
+    "Sector 137",
+    "Sector 76",
+    "Greater Noida",
+    "Indirapuram",
+  ],
+  Gurgaon: [
+    "Sector 46",
+    "DLF Phase 1",
+    "DLF Phase 2",
+    "DLF Phase 3",
+    "Cyber City",
+    "Golf Course Road",
+    "Sohna Road",
+    "MG Road",
+  ],
 };
 
 const FAQS = [
@@ -491,27 +515,58 @@ export default async function DoctorPage({ params }) {
   const bannerImage = getValidImageSrc(doctor.hero?.heroImage, "/uploads/1752667815707-fue-banner_ro9ae6.webp");
   const bannerAlt = doctor.hero?.heroImage?.alt || `${doctor.name} — Ryan Clinic`;
 
-  // Doctor landing pages are unique canonical routes matching /doctors/${slug}.
-  const canonicalUrl = `https://www.clinicryan.com/doctors/${slug}`;
+  // Doctor landing pages are unique canonical routes matching /doctors/${doctor.slug}.
+  const canonicalSlug = (doctor.slug || slug).toLowerCase();
+  const canonicalUrl = `https://www.clinicryan.com/doctors/${canonicalSlug}`;
   const clinicCity = doctor.visitClinic?.address?.addressLocality || doctor.location || doctor.city || "";
   const clinicAddressLine = doctor.visitClinic?.address?.streetAddress || doctor.basicInfo?.clinicAddress || "";
   const clinicPhone = doctor.basicInfo?.phoneNumber || doctor.visitClinic?.contact?.phone || "+91-9911111247";
   const dateModified = doctor.updatedAt ? new Date(doctor.updatedAt).toISOString() : new Date().toISOString();
 
-  const physicianSchema = {
-    "@context": "https://schema.org",
-    "@type": "Physician",
-    "@id": `${canonicalUrl}#physician`,
-    "name": doctor.name,
-    "jobTitle": doctor.designation || "Hair Transplant Surgeon",
-    "medicalSpecialty": "Hair Restoration Surgery",
-    "worksFor": {
-      "@type": "MedicalClinic",
-      "name": "Ryan Clinic",
-      "url": "https://www.clinicryan.com"
-    },
-    "image": doctor.image ? (doctor.image.startsWith("http") ? doctor.image : `https://www.clinicryan.com${doctor.image}`) : "https://www.clinicryan.com/uploads/turkey-doctor.jpg"
-  };
+  const isMainDocPublished = doctor.status ? String(doctor.status).toLowerCase() === "published" : true;
+  const cityPeers = isMainDocPublished && doctor.city ? await getDoctorsByCity(doctor.city) : [];
+  const mergedCityDocs = isMainDocPublished
+    ? resolveBranchDoctors({
+        assignedDoctors: [doctor],
+        cityDoctors: cityPeers,
+      })
+    : [doctor];
+  const expandedProfiles = expandDoctorProfiles(mergedCityDocs.length ? mergedCityDocs : [doctor], doctor.city);
+  const teamDoctors = Array.isArray(doctor.teamDoctors) ? doctor.teamDoctors.filter((td) => td?.doctorName) : [];
+
+  const physicianSchemas = expandedProfiles.length > 1
+    ? expandedProfiles.map((ep, idx) => ({
+        "@context": "https://schema.org",
+        "@type": "Physician",
+        "@id": `${canonicalUrl}#physician-${idx + 1}`,
+        "name": ep.qualification ? `${ep.name} (${ep.qualification})` : ep.name,
+        "jobTitle": ep.designation || doctor.designation || "Hair Transplant Doctor",
+        "medicalSpecialty": "Hair Restoration Surgery",
+        "worksFor": {
+          "@type": "MedicalClinic",
+          "name": "Ryan Clinic",
+          "url": "https://www.clinicryan.com"
+        },
+        "image": ep.profileImage?.image
+          ? (ep.profileImage.image.startsWith("http") ? ep.profileImage.image : `https://www.clinicryan.com${ep.profileImage.image}`)
+          : (typeof ep.profileImage === "string" && ep.profileImage
+              ? (ep.profileImage.startsWith("http") ? ep.profileImage : `https://www.clinicryan.com${ep.profileImage}`)
+              : "https://www.clinicryan.com/uploads/turkey-doctor.jpg")
+      }))
+    : [{
+        "@context": "https://schema.org",
+        "@type": "Physician",
+        "@id": `${canonicalUrl}#physician`,
+        "name": doctor.name,
+        "jobTitle": doctor.designation || "Hair Transplant Surgeon",
+        "medicalSpecialty": "Hair Restoration Surgery",
+        "worksFor": {
+          "@type": "MedicalClinic",
+          "name": "Ryan Clinic",
+          "url": "https://www.clinicryan.com"
+        },
+        "image": doctor.image ? (doctor.image.startsWith("http") ? doctor.image : `https://www.clinicryan.com${doctor.image}`) : "https://www.clinicryan.com/uploads/turkey-doctor.jpg"
+      }];
 
   const profilePageSchema = {
     "@context": "https://schema.org",
@@ -519,7 +574,9 @@ export default async function DoctorPage({ params }) {
     "@id": canonicalUrl,
     "url": canonicalUrl,
     "name": `${doctor.name} — Profile`,
-    "mainEntity": { "@id": `${canonicalUrl}#physician` },
+    "mainEntity": expandedProfiles.length > 1
+      ? physicianSchemas.map((p) => ({ "@id": p["@id"] }))
+      : { "@id": `${canonicalUrl}#physician` },
     "dateModified": dateModified
   };
 
@@ -605,7 +662,7 @@ export default async function DoctorPage({ params }) {
 
   if (!jsonLdOutput) {
     const jsonLdSchemas = [
-      physicianSchema,
+      ...physicianSchemas,
       profilePageSchema,
       medicalClinicSchema,
       faqSchemaData,
@@ -653,6 +710,7 @@ export default async function DoctorPage({ params }) {
           nearbyAreas: (cityNearbyAreas[doctor.city] || []),
           faqs,
           doctor: cleanDoctor,
+          doctorProfiles: expandedProfiles,
           whyItMatters,
           surgeonProfile: surgeonProfileData,
           pricingPackages,
