@@ -519,7 +519,7 @@ export default async function DoctorPage({ params }) {
   const canonicalSlug = (doctor.slug || slug).toLowerCase();
   const canonicalUrl = `https://www.clinicryan.com/doctors/${canonicalSlug}`;
   const clinicCity = doctor.visitClinic?.address?.addressLocality || doctor.location || doctor.city || "";
-  const clinicAddressLine = doctor.visitClinic?.address?.streetAddress || doctor.basicInfo?.clinicAddress || "";
+  const clinicAddressLine = doctor.visitClinic?.address?.streetAddress || doctor.visitClinic?.address?.address || doctor.basicInfo?.clinicAddress || "";
   const clinicPhone = doctor.basicInfo?.phoneNumber || doctor.visitClinic?.contact?.phone || "+91-9911111247";
   const dateModified = doctor.updatedAt ? new Date(doctor.updatedAt).toISOString() : new Date().toISOString();
 

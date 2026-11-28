@@ -1803,7 +1803,7 @@ export default function DoctorPageClient({ data }) {
                                         <div>
                                             <p className="font-bold text-gray-900 text-xs uppercase tracking-wider text-gray-400 mb-0.5 font-sans">Clinic Address</p>
                                             <p className="text-gray-700 text-xs font-semibold leading-relaxed">
-                                                {visitClinic?.address?.streetAddress || doctor.basicInfo?.clinicAddress || (doctorCity ? `Ryan Clinic, ${doctorCity}` : "Contact clinic for address")}
+                                                {visitClinic?.address?.streetAddress || visitClinic?.address?.address || doctor.basicInfo?.clinicAddress || (doctorCity ? `Ryan Clinic, ${doctorCity}` : "Contact clinic for address")}
                                             </p>
                                         </div>
                                     </div>

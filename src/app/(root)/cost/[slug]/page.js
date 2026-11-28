@@ -127,11 +127,25 @@ const CITY_DEFAULTS = {
     mapEmbedUrl:
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3509.324!2d77.065!3d28.435!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x8eb67acb58dcca35!2sRyan+Clinic!5e0!3m2!1sen!2sin!4v1691234567893!5m2!1sen!2sin",
   },
+  bangalore: {
+    badge: "Our Bangalore Clinic",
+    address: "No. 56/6, First Floor,\n6th C Main Road,\nnear Tilaknagar Police Station,\n4th T Block East, Jayanagar,\nBengaluru, Karnataka – 560011",
+    timings: "Monday – Saturday: 9:00 AM – 7:00 PM",
+    landmark: "Near Tilaknagar Police Station, 4th T Block East, Jayanagar",
+    nearbyAreas: ["Jayanagar", "Tilaknagar", "4th T Block East", "JP Nagar", "BTM Layout", "Koramangala"],
+    phone: "+91-9911111247",
+    whatsapp: "+919217958539",
+    buttonText: "Get Directions to Bangalore Clinic",
+    buttonLink: "https://maps.google.com/?q=No.+56%2F6,+First+Floor,+6th+C+Main+Road,+near+Tilaknagar+Police+Station,+4th+T+Block+East,+Jayanagar,+Bengaluru,+Karnataka+560011",
+    mapEmbedUrl:
+      "https://maps.google.com/maps?q=No.+56%2F6,+First+Floor,+6th+C+Main+Road,+near+Tilaknagar+Police+Station,+4th+T+Block+East,+Jayanagar,+Bengaluru,+Karnataka+560011&output=embed",
+  },
 };
 
 function getCityDefaults(cityName) {
   const key = (cityName || "").toLowerCase().trim();
   if (key.includes("gurgaon") || key.includes("gurugram")) return CITY_DEFAULTS.gurgaon;
+  if (key.includes("bangalore") || key.includes("bengaluru")) return CITY_DEFAULTS.bangalore;
   if (key.includes("mumbai")) return CITY_DEFAULTS.mumbai;
   if (key.includes("hyderabad")) return CITY_DEFAULTS.hyderabad;
   if (key.includes("delhi") || key.includes("ncr") || key.includes("pitampura")) return CITY_DEFAULTS.delhi;
@@ -802,7 +816,7 @@ export default async function DynamicCostPage({ params }) {
   const isCityDelhi = cityName.toLowerCase().includes("delhi") || cityName.toLowerCase().includes("ncr") || cityName.toLowerCase().includes("pitampura");
   const postalCode = postalCodeMatch
     ? postalCodeMatch[0]
-    : (cityName.toLowerCase().includes("mumbai") ? "400053" : cityName.toLowerCase().includes("hyderabad") ? "500034" : isCityDelhi ? "110034" : "");
+    : (cityName.toLowerCase().includes("mumbai") ? "400053" : cityName.toLowerCase().includes("hyderabad") ? "500034" : (cityName.toLowerCase().includes("bangalore") || cityName.toLowerCase().includes("bengaluru")) ? "560011" : isCityDelhi ? "110034" : "");
 
   const medicalClinicSchema = clinicAddressStr ? {
     "@context": "https://schema.org",
